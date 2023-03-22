@@ -10,7 +10,6 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.input.Camera;
-import org.dreambot.api.methods.input.Keyboard;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -32,6 +31,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.Item;
 
 import java.awt.*;
@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 @ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat",
-        version = 1.5, category = Category.MINING, image = "")
+        version = 1.6, category = Category.MINING, image = "")
 public class WatMiner extends AbstractScript implements ExperienceListener {
     private enum State {
         ON_TASK,
@@ -117,17 +117,17 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     private String muleTarget = "";
     private int myWorld;
     private boolean forceBank = false;
-    private Item oldPickaxe;
+
     @Override
     public void onStart() {
         currentState = State.BANKING;
         pickTypes = new HashMap<Integer, String>() {
             {
-                put(40, "Rune pickaxe");
-                put(30, "Adamant pickaxe");
-                put(20, "Mithril pickaxe");
-                put(10, "Steel pickaxe");
-                put(0, "Iron pickaxe");
+                put(41, "Rune pickaxe");
+                put(31, "Adamant pickaxe");
+                put(21, "Mithril pickaxe");
+                put(11, "Steel pickaxe");
+                put(1, "Iron pickaxe");
             }
         };
 
@@ -158,6 +158,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     public int onLoop() {
         switch (currentState) {
             case MULING: {
+                // TODO walk to G.E first, then send message to mule server
                 if(!muling) {
                     try (Socket socket = new Socket("localhost", 8081)) {
                         // Send a message to the server
@@ -187,9 +188,15 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 }
                 else {
                     if(!muleTarget.isEmpty()) {
-                        if(NPCs.closest("Grand Exchange Clerk") != null) {
+                        Tile safeTile = new Tile(3164, 3487);
+
+                        if(Map.isTileOnMap(safeTile) && !Map.isTileOnScreen(safeTile)) {
+                            Camera.rotateToTile(safeTile);
+                        }
+
+                        if(Players.getLocal().getTile().equals(safeTile) || Trade.isOpen()) {
                             if(!Trade.isOpen()) {
-                                if (Players.closest(muleTarget) != null && Players.closest(muleTarget).distance() <= 5) {
+                                if (Players.closest(muleTarget) != null) {
                                     Trade.tradeWithPlayer(muleTarget);
                                     return 3000;
                                 }
@@ -211,6 +218,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         muling = false;
                                         muleTarget = "";
                                         handleHop(myWorld);
+                                        mySells.clear();
                                         myWorld = 0;
                                         return 1;
                                     }
@@ -220,8 +228,9 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                             }
                         }
                         else {
-                            if(Walking.shouldWalk(7)) {
-                                Walking.walk(3164, 3486);
+                            if(shouldWalk(safeTile)) {
+                                Walking.walk(safeTile);
+                                Sleep.sleep(1000, 1800);
                             }
                         }
                     }
@@ -248,20 +257,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                     }
                 }
 
-                if (currentPickaxe != null) {
-                    for (int key : pickTypes.keySet()) {
-                        if (key <= 30) {
-                            if (!Equipment.isSlotEmpty(EquipmentSlot.WEAPON) && pickTypes.containsValue(Equipment.getItemInSlot(EquipmentSlot.WEAPON).getName())) {
-                                if (Skills.getRealLevel(Skill.MINING) >= (key + 10)) {
-                                    oldPickaxe = currentPickaxe;
-                                    currentPickaxe = null;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
                 if (!Inventory.isFull() && currentPickaxe != null && !forceBank) {
                     currentState = State.TRAVERSING_TO_TASK;
                     return 1;
@@ -272,20 +267,26 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
                 if (NPCs.closest("Banker") != null) {
                     if (!Bank.isOpen()) {
-                        Sleep.sleepUntil(Bank::open, 25000);
+                        Bank.open();
+                        Sleep.sleepUntil(Bank::isOpen, 10000);
+                        if(!Bank.isOpen())
+                            return 1;
+
                         Bank.depositAll("Coins");
-                        Sleep.sleep(100,200);
+                        Sleep.sleep(100, 120);
+
+                        if (currentPickaxe != null && Inventory.contains(currentPickaxe.getName())) {
+                            Bank.depositAllExcept(currentPickaxe.getName());
+                        } else {
+                            Bank.depositAllItems();
+                        }
+
                         if (Bank.contains("Iron ore") && Bank.get("Iron ore").getAmount() >= 1000) {
                             if (!Bank.getWithdrawMode().equals(BankMode.NOTE)) {
                                 Bank.setWithdrawMode(BankMode.NOTE);
                             }
 
-                            if (currentPickaxe != null)
-                                Bank.depositAllExcept(currentPickaxe.getName());
-                            else
-                                Bank.depositAllItems();
-
-                            Sleep.sleep(100, 800);
+                            Sleep.sleep(100, 200);
 
                             for (String type : sellList) {
                                 if (Bank.contains(type)) {
@@ -305,106 +306,157 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                             return 1;
                         }
 
+                        AtomicBoolean reCheck = new AtomicBoolean(true);
                         if (currentPickaxe == null) {
-                            if(Bank.count("Coins") >= 30000) {
-                                if(oldPickaxe != null) {
-                                    if (Equipment.contains(oldPickaxe)) {
-                                        Bank.depositAllEquipment();
-                                        Sleep.sleep(500, 1200);
-                                    } else {
-                                        if (Inventory.contains(oldPickaxe)) {
-                                            Bank.deposit(oldPickaxe);
-                                            Sleep.sleep(500, 1200);
-                                        }
-                                    }
-                                }
-
+                            if (Bank.count("Coins") >= 30000) {
                                 pickTypes.keySet().stream()
                                         .sorted(Comparator.reverseOrder())
                                         .forEach(key -> {
                                             String value = pickTypes.get(key);
-                                            if (Bank.contains(value) && Skills.getRealLevel(Skill.MINING) >= key) {
-                                                if (currentPickaxe == null && !isUpgrading.get()) {
-                                                    if (key <= 30 && Skills.getRealLevel(Skill.MINING) >= (key + 10)) {
+                                            if (currentPickaxe == null && !isUpgrading.get()) {
+                                                if (key <= 30 && Skills.getRealLevel(Skill.MINING) >= (key + 10)) {
+                                                    if (Bank.contains(pickTypes.get(key + 10))) {
+                                                        Bank.depositAllItems();
+                                                        Sleep.sleep(100, 120);
+                                                        currentPickaxe = Bank.get(pickTypes.get(key + 10));
+                                                        Bank.withdraw(currentPickaxe.getName());
+                                                        Sleep.sleep(100, 120);
+                                                    } else {
                                                         isUpgrading.set(true);
                                                         buyingType = key + 10;
                                                         Bank.depositAllItems();
                                                         Sleep.sleep(100, 200);
                                                         Bank.withdraw("Coins", 30000);
-                                                    } else {
+                                                    }
+                                                } else {
+                                                    if (Bank.contains(value)) {
                                                         currentPickaxe = Bank.get(value);
                                                         Bank.depositAllItems();
                                                         Sleep.sleep(100, 200);
                                                         Bank.withdraw(currentPickaxe.getID(), 1);
-                                                        Sleep.sleep(500, 1000);
+                                                        Sleep.sleep(100, 200);
                                                     }
                                                 }
                                             }
                                         });
-                            }
-                            else {
-                                currentPickaxe = Bank.get(oldPickaxe.getName());
-                                Bank.depositAllItems();
-                                Sleep.sleep(100, 200);
-                                Bank.withdraw(oldPickaxe.getID(), 1);
-                                Sleep.sleep(500, 1000);
-                            }
-                        }
-
-                        if (currentPickaxe == null) {
-                            if (!isUpgrading.get()) {
-                                Logger.log("pickaxe for your level was not available");
-                                return 1;
+                            } else {
+                                pickTypes.keySet().stream()
+                                        .sorted(Comparator.reverseOrder())
+                                        .forEach(key -> {
+                                            if (currentPickaxe == null) {
+                                                String value = pickTypes.get(key);
+                                                if (Bank.contains(value) && Skills.getRealLevel(Skill.MINING) >= key) {
+                                                    currentPickaxe = Bank.get(value);
+                                                    Bank.withdraw(currentPickaxe.getName());
+                                                    Sleep.sleep(100, 120);
+                                                }
+                                            }
+                                        });
                             }
                         } else {
-                            Logger.log("using a " + currentPickaxe.getName());
-                        }
+                            pickTypes.keySet().stream()
+                                    .sorted(Comparator.reverseOrder())
+                                    .forEach(key -> {
+                                        String value = pickTypes.get(key);
+                                        int nextLevel = key + 10;
+                                        if (Bank.count("Coins") >= 30000) {
+                                            if (key <= 30 && !isUpgrading.get()) {
+                                                if (currentPickaxe.getName().equals(value)) {
+                                                    if (Skills.getRealLevel(Skill.MINING) >= nextLevel && getPickaxeLevel(currentPickaxe.getName()) <= nextLevel) {
+                                                        if (Bank.contains(pickTypes.get(nextLevel))) {
+                                                            Bank.depositAllItems();
+                                                            Sleep.sleep(100, 120);
 
-                        if (!isUpgrading.get()) {
-                            Bank.depositAllExcept(currentPickaxe -> currentPickaxe != null && currentPickaxe.getName().toLowerCase().contains("pickaxe"));
-                        }
+                                                            if (Equipment.contains(value)) {
+                                                                Bank.depositAllEquipment();
+                                                                Sleep.sleep(100, 120);
+                                                            }
 
-                        Sleep.sleep(800);
+                                                            currentPickaxe = Bank.get(pickTypes.get(nextLevel));
+                                                            Bank.withdraw(pickTypes.get(nextLevel));
+                                                            Sleep.sleep(100, 120);
+                                                        } else {
+                                                            isUpgrading.set(true);
+                                                            buyingType = nextLevel;
 
-                        if (Bank.contains("Coins") && Bank.get("Coins").getAmount() >= 100000 && !isUpgrading.get()) {
-                            if (currentPickaxe != null)
-                                Bank.depositAllExcept(currentPickaxe.getName());
-                            else
-                                Bank.depositAllItems();
+                                                            Bank.depositAllItems();
+                                                            Sleep.sleep(100, 200);
 
-                            Sleep.sleep(50, 100);
-                            Bank.withdrawAll("Coins");
-                            currentState = State.MULING;
-                            Bank.close();
-                            return 1;
-                        }
+                                                            if (Equipment.contains(value)) {
+                                                                Bank.depositAllEquipment();
+                                                                Sleep.sleep(100, 120);
+                                                            }
 
-                        Bank.close();
-                        Sleep.sleep(800);
+                                                            Bank.withdraw("Coins", 30000);
+                                                            Sleep.sleep(100, 120);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if (reCheck.get() && !currentPickaxe.getName().equals(value)) {
+                                                // check if this pick is better than current pick
+                                                if(getPickaxeLevel(currentPickaxe.getName()) <= key) {
+                                                    if (Bank.contains(value) && Skills.getRealLevel(Skill.MINING) >= key) {
+                                                        Bank.depositAllItems();
+                                                        Sleep.sleep(100, 120);
 
-                        if (!isUpgrading.get()) {
-                            for (java.util.Map.Entry<Integer, String> ent : pickTypes.entrySet()) {
-                                if (ent.getValue().toLowerCase().equals(currentPickaxe.getName().toLowerCase()) && Skills.getRealLevel(Skill.ATTACK) >= ent.getKey()) {
-                                    canEquip = true;
-                                }
-                            }
+                                                        if (Equipment.contains(currentPickaxe.getName())) {
+                                                            Bank.depositAllEquipment();
+                                                            Sleep.sleep(100, 150);
+                                                        }
 
-                            Item slotItem = Equipment.getItemInSlot(EquipmentSlot.WEAPON);
-                            if ((slotItem == null || !slotItem.getName().equals(currentPickaxe.getName())) && canEquip) {
-                                if (Inventory.get(currentPickaxe.getID()) != null) {
-                                    Inventory.get(currentPickaxe.getID()).interact();
-                                }
-                            }
+                                                        currentPickaxe = Bank.get(value);
+                                                        Bank.withdraw(value);
+                                                        Sleep.sleep(100, 150);
 
-                            usingAltLocation = false;
-                            currentState = State.TRAVERSING_TO_TASK;
-                        } else {
-                            currentState = State.BUYING_AT_GE;
+                                                        reCheck.set(false);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    });
                         }
                     }
+
+                    if (currentPickaxe == null) {
+                        if (!isUpgrading.get()) {
+                            Logger.log("Pickaxe for your level was not available");
+                            return 1;
+                        }
+                    } else {
+                        Logger.log("Using a " + currentPickaxe.getName());
+                    }
+
+                    Sleep.sleep(100, 500);
+
+                    if (Bank.contains("Coins") && Bank.get("Coins").getAmount() >= 100000 && !isUpgrading.get()) {
+                        if (currentPickaxe != null)
+                            Bank.depositAllExcept(currentPickaxe.getName());
+                        else
+                            Bank.depositAllItems();
+
+                        Sleep.sleep(50, 100);
+                        Bank.withdrawAll("Coins");
+                        currentState = State.MULING;
+                        Bank.close();
+                        return 1;
+                    }
+
+                    Bank.close();
+                    Sleep.sleep(800);
+
+                    if (!isUpgrading.get()) {
+                        usingAltLocation = false;
+                        currentState = State.TRAVERSING_TO_TASK;
+                    } else {
+                        currentState = State.BUYING_AT_GE;
+                    }
+
                 } else {
-                    if (Walking.shouldWalk(7)) {
+                    if (shouldWalk(BankLocation.VARROCK_EAST.getTile())) {
                         Walking.walk(BankLocation.VARROCK_EAST.getTile());
+                        Sleep.sleep(1000, 1800);
                     }
                 }
                 return 3;
@@ -440,15 +492,15 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
                     GrandExchange.close();
 
-                    currentPickaxe = Inventory.get(pickTypes.get(buyingType + 10));
+                    currentPickaxe = Inventory.get(pickTypes.get(buyingType));
                     buyingType = 0;
                     forceBank = true;
                     currentState = State.BANKING;
-                    oldPickaxe = null;
 
                 } else {
-                    if (Walking.shouldWalk(7)) {
+                    if (shouldWalk(BankLocation.GRAND_EXCHANGE.getTile())) {
                         Walking.walk(BankLocation.GRAND_EXCHANGE);
+                        Sleep.sleep(1000, 1800);
                     }
                 }
                 return 3;
@@ -486,8 +538,9 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                     }
                 }
                 else {
-                    if (Walking.shouldWalk(7)) {
+                    if (shouldWalk(BankLocation.GRAND_EXCHANGE.getTile())) {
                         Walking.walk(BankLocation.GRAND_EXCHANGE);
+                        Sleep.sleep(1000, 1800);
                     }
                 }
 
@@ -501,8 +554,9 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                     currentState = State.ON_TASK;
                 }
                 else {
-                    if (Walking.shouldWalk(7)) {
+                    if (shouldWalk(varrockEastMine)) {
                         Walking.walk(varrockEastMine);
+                        Sleep.sleep(1000, 1800);
                     }
                 }
 
@@ -522,16 +576,33 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 List<Tile> toUse;
                 if(!usingAltLocation) {
                     toUse = varrockEastRocks;
+
                     if(lastGotRock > 0 && (Instant.now().getEpochSecond() - lastGotRock) > 20) {
                         toUse = varrockEastAltRocks;
                         usingAltLocation = true;
-                    }
-                    else if(lastGotRock > 0 && (Instant.now().getEpochSecond() - lastGotRock) > 60) {
-                        handleHop(0);
-                        return 10000;
+                        lastGotRock = Instant.now().getEpochSecond();
                     }
                 } else {
-                    toUse = varrockEastAltRocks;
+                    boolean switchBack = true;
+                    for(Player pl : Players.all()) {
+                        if(pl.getTile().equals(varrockEastMine)) {
+                            switchBack = false;
+                            break;
+                        }
+                    }
+
+                    if(lastGotRock > 0 && (Instant.now().getEpochSecond() - lastGotRock) > 30) {
+                        usingAltLocation = false;
+                        handleHop(0);
+                        return 600;
+                    }
+
+                    if(switchBack) {
+                        toUse = varrockEastRocks;
+                        usingAltLocation = false;
+                    }
+                    else
+                        toUse = varrockEastAltRocks;
                 }
 
                 if(!gotRock || (lastGotRock <= 0 || (Instant.now().getEpochSecond() - lastGotRock) > 10) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null)) {
@@ -576,7 +647,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                     }
 
                     if(!muling) {
-                        if(currentPickaxe == null) {
+                        if(currentPickaxe == null || (!Inventory.contains(currentPickaxe.getName()) && !Equipment.contains(currentPickaxe.getName()))) {
+                            currentPickaxe = null;
                             currentState = State.BANKING;
                         }
                         else {
@@ -614,6 +686,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         g.setFont(new Font("Verdana", Font.BOLD, 15));
         g.drawString("Ores: " + oreMined + " (" + timer.getHourlyRate(oreMined) + "/h)", 43, 403);
         g.drawString("Exp: " + expGained + " (" + timer.getHourlyRate(expGained) + "/h)", 43, 423);
+        g.drawString("Mining level: " + Skills.getRealLevel(Skill.MINING), 43, 443);
     }
 
     public void handleHop(int world) {
@@ -634,5 +707,23 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
             WorldHopper.hopWorld(world);
         }
         currentState = State.HOPPING;
+    }
+
+    private boolean shouldWalk(Tile tile) {
+        if(!Players.getLocal().getTile().equals(tile))
+            return true;
+
+        return false;
+    }
+
+    private int getPickaxeLevel(String name) {
+        name = name.toLowerCase();
+        switch(name) {
+            case "rune pickaxe": return 41;
+            case "adamant pickaxe": return 31;
+            case "mithril pickaxe": return 21;
+            case "steel pickaxe": return 11;
+            default: return 0;
+        }
     }
 }
