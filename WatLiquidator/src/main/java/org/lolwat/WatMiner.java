@@ -158,7 +158,15 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     public int onLoop() {
         switch (currentState) {
             case MULING: {
-                // TODO walk to G.E first, then send message to mule server
+                Tile safeTile = new Tile(3164, 3487);
+                if(!Map.isTileOnMap(safeTile)) {
+                    if(Walking.shouldWalk(5)) {
+                        Walking.walk(safeTile);
+                        return 3000;
+                    }
+                    return 3000;
+                }
+
                 if(!muling) {
                     try (Socket socket = new Socket("localhost", 8081)) {
                         // Send a message to the server
@@ -188,8 +196,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 }
                 else {
                     if(!muleTarget.isEmpty()) {
-                        Tile safeTile = new Tile(3164, 3487);
-
                         if(Map.isTileOnMap(safeTile) && !Map.isTileOnScreen(safeTile)) {
                             Camera.rotateToTile(safeTile);
                         }
@@ -198,7 +204,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                             if(!Trade.isOpen()) {
                                 if (Players.closest(muleTarget) != null) {
                                     Trade.tradeWithPlayer(muleTarget);
-                                    return 3000;
+                                    return 3500;
                                 }
                             } else {
                                 if(Trade.isOpen()) {
@@ -239,6 +245,11 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 return 3;
             }
             case BANKING: {
+                if(!Client.isLoggedIn()) {
+                    Logger.log("waiting for login");
+                    return 500;
+                }
+
                 AtomicBoolean isUpgrading = new AtomicBoolean(false);
 
                 if (!Tab.INVENTORY.isOpen()) {
@@ -313,6 +324,23 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         .sorted(Comparator.reverseOrder())
                                         .forEach(key -> {
                                             String value = pickTypes.get(key);
+                                            if(currentPickaxe == null && !isUpgrading.get()) {
+                                                if(Skills.getRealLevel(Skill.MINING) >= getPickaxeLevel(value)) {
+                                                    if (Bank.contains(value)) {
+                                                        currentPickaxe = Bank.get(value);
+                                                        Bank.depositAllItems();
+                                                        Sleep.sleep(100, 150);
+                                                        Bank.withdraw(currentPickaxe.getName());
+                                                    } else {
+                                                        isUpgrading.set(true);
+                                                        buyingType = key;
+                                                        Bank.depositAllItems();
+                                                        Sleep.sleep(100, 130);
+                                                        Bank.withdraw("Coins", 30000);
+                                                    }
+                                                }
+                                            }
+                                            /*
                                             if (currentPickaxe == null && !isUpgrading.get()) {
                                                 if (key <= 30 && Skills.getRealLevel(Skill.MINING) >= (key + 10)) {
                                                     if (Bank.contains(pickTypes.get(key + 10))) {
@@ -337,7 +365,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                                         Sleep.sleep(100, 200);
                                                     }
                                                 }
-                                            }
+                                            }*/
                                         });
                             } else {
                                 pickTypes.keySet().stream()
@@ -362,7 +390,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         if (Bank.count("Coins") >= 30000) {
                                             if (key <= 30 && !isUpgrading.get()) {
                                                 if (currentPickaxe.getName().equals(value)) {
-                                                    if (Skills.getRealLevel(Skill.MINING) >= nextLevel && getPickaxeLevel(currentPickaxe.getName()) <= nextLevel) {
+                                                    if (Skills.getRealLevel(Skill.MINING) >= nextLevel && getPickaxeLevel(currentPickaxe.getName()) < nextLevel) {
                                                         if (Bank.contains(pickTypes.get(nextLevel))) {
                                                             Bank.depositAllItems();
                                                             Sleep.sleep(100, 120);
@@ -710,10 +738,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     }
 
     private boolean shouldWalk(Tile tile) {
-        if(!Players.getLocal().getTile().equals(tile))
-            return true;
-
-        return false;
+        return Walking.shouldWalk(5);
     }
 
     private int getPickaxeLevel(String name) {
