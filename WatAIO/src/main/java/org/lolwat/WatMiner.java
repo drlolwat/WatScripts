@@ -51,7 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 @ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat",
-        version = 1.6, category = Category.MINING, image = "")
+        version = 1.7, category = Category.MINING, image = "")
 public class WatMiner extends AbstractScript implements ExperienceListener {
     private enum State {
         ON_TASK,
@@ -276,9 +276,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 if (NPCs.closest("Banker") != null) {
                     if (!Bank.isOpen()) {
                         Bank.open();
-                        Sleep.sleepUntil(Bank::isOpen, 10000);
                         if(!Bank.isOpen())
-                            return 1;
+                            return 1000;
 
                         Bank.depositAll("Coins");
                         Sleep.sleep(100, 120);
@@ -359,8 +358,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         String value = pickTypes.get(key);
                                         int nextLevel = key + 10;
                                         if (Bank.count("Coins") >= 30000) {
-                                            if (key <= 30 && !isUpgrading.get() && Skills.getRealLevel(Skill.MINING) >= nextLevel) {
-                                                if (currentPickaxe.getName().equals(value)) {
+                                            if (!isUpgrading.get() && Skills.getRealLevel(Skill.MINING) >= nextLevel) { //TODO remove <= 30. check if current pick is rune, if so then just say fuckoff
+                                                if (currentPickaxe.getName().equals(value) && getPickaxeLevel(currentPickaxe.getName()) <= 40) {
                                                     if (getPickaxeLevel(currentPickaxe.getName()) < nextLevel) {
                                                         if (Bank.contains(pickTypes.get(nextLevel))) {
                                                             Bank.depositAllItems();
@@ -514,7 +513,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                         for(String mySell : mySells) {
                             if (Inventory.contains(mySell)) {
                                 Inventory.get(mySell).interact();
-                                Sleep.sleep(100, 300);
+                                Sleep.sleep(100, 600);
                                 GrandExchange.getDecreasePriceFivePercentButton().interact();
                                 Sleep.sleep(100, 300);
                                 GrandExchange.getDecreasePriceFivePercentButton().interact();
