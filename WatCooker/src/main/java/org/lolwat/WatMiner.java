@@ -47,9 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
       TODO
-        selling ore
-        buying a better pickaxe when the time comes
-        mule
+        fix rune pickaxe issues lol
  */
 
 @ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat",
@@ -162,9 +160,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 if(!Map.isTileOnMap(safeTile)) {
                     if(Walking.shouldWalk(5)) {
                         Walking.walk(safeTile);
-                        return 3000;
                     }
-                    return 3000;
                 }
 
                 if(!muling) {
@@ -184,11 +180,13 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                         if (response.startsWith("OK")) {
                             muling = true;
                             myWorld = Worlds.getCurrentWorld();
+                            int targetWorld = 0;
                             String[] sp = response.split("\\|");
                             if (sp.length > 0) {
                                 muleTarget = sp[1];
+                                targetWorld = Integer.parseInt(sp[2]);
                             }
-                            handleHop(308);
+                            handleHop(targetWorld);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -236,7 +234,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                         else {
                             if(shouldWalk(safeTile)) {
                                 Walking.walk(safeTile);
-                                Sleep.sleep(1000, 1800);
                             }
                         }
                     }
@@ -340,32 +337,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                                     }
                                                 }
                                             }
-                                            /*
-                                            if (currentPickaxe == null && !isUpgrading.get()) {
-                                                if (key <= 30 && Skills.getRealLevel(Skill.MINING) >= (key + 10)) {
-                                                    if (Bank.contains(pickTypes.get(key + 10))) {
-                                                        Bank.depositAllItems();
-                                                        Sleep.sleep(100, 120);
-                                                        currentPickaxe = Bank.get(pickTypes.get(key + 10));
-                                                        Bank.withdraw(currentPickaxe.getName());
-                                                        Sleep.sleep(100, 120);
-                                                    } else {
-                                                        isUpgrading.set(true);
-                                                        buyingType = key + 10;
-                                                        Bank.depositAllItems();
-                                                        Sleep.sleep(100, 200);
-                                                        Bank.withdraw("Coins", 30000);
-                                                    }
-                                                } else {
-                                                    if (Bank.contains(value)) {
-                                                        currentPickaxe = Bank.get(value);
-                                                        Bank.depositAllItems();
-                                                        Sleep.sleep(100, 200);
-                                                        Bank.withdraw(currentPickaxe.getID(), 1);
-                                                        Sleep.sleep(100, 200);
-                                                    }
-                                                }
-                                            }*/
                                         });
                             } else {
                                 pickTypes.keySet().stream()
@@ -388,9 +359,9 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         String value = pickTypes.get(key);
                                         int nextLevel = key + 10;
                                         if (Bank.count("Coins") >= 30000) {
-                                            if (key <= 30 && !isUpgrading.get()) {
+                                            if (key <= 30 && !isUpgrading.get() && Skills.getRealLevel(Skill.MINING) >= nextLevel) {
                                                 if (currentPickaxe.getName().equals(value)) {
-                                                    if (Skills.getRealLevel(Skill.MINING) >= nextLevel && getPickaxeLevel(currentPickaxe.getName()) < nextLevel) {
+                                                    if (getPickaxeLevel(currentPickaxe.getName()) < nextLevel) {
                                                         if (Bank.contains(pickTypes.get(nextLevel))) {
                                                             Bank.depositAllItems();
                                                             Sleep.sleep(100, 120);
@@ -484,7 +455,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 } else {
                     if (shouldWalk(BankLocation.VARROCK_EAST.getTile())) {
                         Walking.walk(BankLocation.VARROCK_EAST.getTile());
-                        Sleep.sleep(1000, 1800);
                     }
                 }
                 return 3;
@@ -528,7 +498,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 } else {
                     if (shouldWalk(BankLocation.GRAND_EXCHANGE.getTile())) {
                         Walking.walk(BankLocation.GRAND_EXCHANGE);
-                        Sleep.sleep(1000, 1800);
                     }
                 }
                 return 3;
@@ -568,7 +537,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 else {
                     if (shouldWalk(BankLocation.GRAND_EXCHANGE.getTile())) {
                         Walking.walk(BankLocation.GRAND_EXCHANGE);
-                        Sleep.sleep(1000, 1800);
                     }
                 }
 
@@ -584,7 +552,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 else {
                     if (shouldWalk(varrockEastMine)) {
                         Walking.walk(varrockEastMine);
-                        Sleep.sleep(1000, 1800);
                     }
                 }
 
