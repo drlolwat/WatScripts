@@ -358,7 +358,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         String value = pickTypes.get(key);
                                         int nextLevel = key + 10;
                                         if (Bank.count("Coins") >= 30000) {
-                                            if (!isUpgrading.get() && Skills.getRealLevel(Skill.MINING) >= nextLevel) { //TODO remove <= 30. check if current pick is rune, if so then just say fuckoff
+                                            if (!isUpgrading.get() && Skills.getRealLevel(Skill.MINING) >= nextLevel) {
                                                 if (currentPickaxe.getName().equals(value) && getPickaxeLevel(currentPickaxe.getName()) <= 40) {
                                                     if (getPickaxeLevel(currentPickaxe.getName()) < nextLevel) {
                                                         if (Bank.contains(pickTypes.get(nextLevel))) {
@@ -394,7 +394,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                                         } else {
                                             if (reCheck.get() && !currentPickaxe.getName().equals(value)) {
                                                 // check if this pick is better than current pick
-                                                if(getPickaxeLevel(currentPickaxe.getName()) <= key) {
+                                                if(getPickaxeLevel(currentPickaxe.getName()) <= key && getPickaxeLevel(currentPickaxe.getName()) <= 40) {
                                                     if (Bank.contains(value) && Skills.getRealLevel(Skill.MINING) >= key) {
                                                         Bank.depositAllItems();
                                                         Sleep.sleep(100, 120);
@@ -571,10 +571,18 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 if(!usingAltLocation) {
                     toUse = varrockEastRocks;
 
-                    if(lastGotRock > 0 && (Instant.now().getEpochSecond() - lastGotRock) > 20) {
-                        toUse = varrockEastAltRocks;
-                        usingAltLocation = true;
-                        lastGotRock = Instant.now().getEpochSecond();
+                    if(Players.getLocal().getLevel() >= 15) {
+                        if (lastGotRock > 0 && (Instant.now().getEpochSecond() - lastGotRock) > 20) {
+                            toUse = varrockEastAltRocks;
+                            usingAltLocation = true;
+                            lastGotRock = Instant.now().getEpochSecond();
+                        }
+                    } else {
+                        if (lastGotRock > 0 && (Instant.now().getEpochSecond() - lastGotRock) > 20) {
+                            usingAltLocation = false;
+                            handleHop(0);
+                            return 600;
+                        }
                     }
                 } else {
                     boolean switchBack = true;
