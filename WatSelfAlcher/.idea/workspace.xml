@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Pickaxe upgrading should be good now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" afterDir="false" />
     </list>
@@ -76,7 +76,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681886653691</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Pickaxe upgrading should be good now">
+      <created>1681890915841</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1681890915841</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -84,6 +91,7 @@
     <MESSAGE value="Lol" />
     <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that" />
     <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested" />
+    <MESSAGE value="Pickaxe upgrading should be good now" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pickaxe upgrading should be good now" />
   </component>
 </project>
