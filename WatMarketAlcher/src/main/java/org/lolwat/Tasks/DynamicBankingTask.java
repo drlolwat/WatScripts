@@ -135,7 +135,7 @@ public class DynamicBankingTask implements WatTask {
                 for (Map.Entry<String, Integer> buyItem : grandExchangeToBuy.entrySet()) {
                     Logger.log(buyItem.getKey() + " Quantity of: " + buyItem.getValue());
                     // Calculate the amount of money we are going to need to buy everything at market price or so.
-                    totalValue += LivePrices.get(buyItem.getKey());
+                    totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue());
                 }
 
                 // Holy shit! Probably gonna be a lot.
