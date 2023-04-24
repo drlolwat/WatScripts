@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Cleaned project">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Concept">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/DynamicBankingTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/ItemUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" afterDir="false" />
@@ -50,7 +52,8 @@
     "last_opened_file_path": "/home/lolwat/IdeaProjects/WatMiner",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "discord-application"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -111,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682306170636</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Concept">
+      <created>1682308506401</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1682308506401</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -122,6 +132,7 @@
     <MESSAGE value="Pickaxe upgrading should be good now" />
     <MESSAGE value="&lt;= 15cb now only use the south rocks." />
     <MESSAGE value="Cleaned project" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned project" />
+    <MESSAGE value="Concept" />
+    <option name="LAST_COMMIT_MESSAGE" value="Concept" />
   </component>
 </project>
