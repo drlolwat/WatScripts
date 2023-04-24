@@ -1,10 +1,17 @@
 package org.lolwat.Tasks.Mining;
 
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.utilities.Logger;
+import org.lolwat.Tasks.DynamicBankingTask;
 import org.lolwat.Tasks.WatTask;
+import org.lolwat.Utils.ItemUtils;
+import org.lolwat.WatMiner;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class VarrockEastIron implements WatTask {
@@ -27,8 +34,22 @@ public class VarrockEastIron implements WatTask {
     }
 
     @Override
-    public void execute() {
-        // Task logic here
+    public void execute(WatMiner instance) {
+        String pickaxe = ItemUtils.getBestPickaxeForLevel();
+        if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
+            Logger.log("No pickaxe, best one I can use is " + pickaxe);
+
+            HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
+                {
+                    put(pickaxe, 1);
+                    put("Fuck", 3);
+                }
+            };
+
+            instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, null, true);
+        } else {
+
+        }
     }
 
     @Override
