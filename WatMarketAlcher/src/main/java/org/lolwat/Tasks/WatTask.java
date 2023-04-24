@@ -9,12 +9,11 @@ import org.dreambot.api.methods.skills.Skills;
 import java.util.*;
 
 public interface WatTask {
-    String name = "";
     HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     List<Quest> questRequirements = new ArrayList<>();
 
     default String getName() {
-        return name;
+        return "";
     }
 
     default boolean hasLevelRequirements() {
@@ -35,5 +34,28 @@ public interface WatTask {
         }
 
         return true;
+    }
+
+    default boolean canPerformTask() {
+        if(requiresTradeUnrestricted()) {
+            if(Quests.getQuestPoints() < 10 && Skills.getTotalLevel() < 100) {
+                return false;
+            }
+        }
+
+        return hasLevelRequirements() && hasQuestRequirements();
+    }
+
+    void execute();
+    default boolean requiresLogin() {
+        return true;
+    }
+
+    default boolean requiresTradeUnrestricted() {
+        return false;
+    }
+
+    default int loopTime() {
+        return 1;
     }
 }
