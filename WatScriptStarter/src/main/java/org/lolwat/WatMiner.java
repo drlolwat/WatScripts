@@ -17,7 +17,7 @@ import java.util.Map;
 
 @ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat", version = 2.0, category = Category.MINING, image = "")
 public class WatMiner extends AbstractScript implements ExperienceListener {
-    HashMap<Integer, WatTask> tasks;
+    public HashMap<Integer, WatTask> tasks;
     public WatTask currentTask;
     public boolean fatalError = false;
 
@@ -80,6 +80,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         }
 
         currentTask.execute(this);
-        return currentTask.loopTime();
+        return currentTask.loopTime() > 0 ? currentTask.loopTime() : 5;
     }
 }

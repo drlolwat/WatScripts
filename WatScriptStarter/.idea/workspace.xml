@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="DynamicBankingTask started, need to work on DynamicGrandExchangeTask">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="DynamicBankingTask taking into account multi quantity for LivePrices">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/DynamicGrandExchangeTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/DynamicBankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/DynamicBankingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682319700310</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="DynamicBankingTask taking into account multi quantity for LivePrices">
+      <created>1682320199541</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1682320199541</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -137,6 +146,7 @@
     <MESSAGE value="Cleaned project" />
     <MESSAGE value="Concept" />
     <MESSAGE value="DynamicBankingTask started, need to work on DynamicGrandExchangeTask" />
-    <option name="LAST_COMMIT_MESSAGE" value="DynamicBankingTask started, need to work on DynamicGrandExchangeTask" />
+    <MESSAGE value="DynamicBankingTask taking into account multi quantity for LivePrices" />
+    <option name="LAST_COMMIT_MESSAGE" value="DynamicBankingTask taking into account multi quantity for LivePrices" />
   </component>
 </project>
