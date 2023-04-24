@@ -1,27 +1,43 @@
 package org.lolwat.Tasks.Mining;
 
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.Tasks.WatTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 
 public class VarrockEastIron implements WatTask {
-    String name = "Varrock East Iron";
+    private Tile defaultSquare = new Tile(3286, 3368);
+    private Tile alternateSquare = new Tile(3285, 3370);
 
-    private Tile varrockEastMine = new Tile(3286, 3368);
-    private Tile varrockEastAlt = new Tile(3285, 3370);
+    private List<Tile> defaultRocks;
+    private List<Tile> alternateRocks;
 
-    private List<Tile> varrockEastRocks;
-    private List<Tile> varrockEastAltRocks;
+    @Override
+    public String getName() {
+        return "Varrock East Iron";
+    }
 
-    HashMap<Skill, Integer> levelRequirements = new HashMap<Skill, Integer>() {
-        {
-            put(Skill.MINING, 15);
-        }
-    };
+    public VarrockEastIron() {
+        levelRequirements.put(Skill.MINING, 15);
 
+        defaultRocks = Arrays.asList(new Tile(3286, 3369), new Tile(3285, 3368));
+        alternateRocks = Arrays.asList(new Tile(3288, 3370), new Tile(3285, 3369));
+    }
+
+    @Override
+    public void execute() {
+        // Task logic here
+    }
+
+    @Override
+    public int loopTime() {
+        return 5;
+    }
+
+    @Override
+    public boolean requiresTradeUnrestricted() {
+        return true;
+    }
 }
