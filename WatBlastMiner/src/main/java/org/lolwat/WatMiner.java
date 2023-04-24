@@ -18,8 +18,8 @@ import java.util.Map;
 @ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat", version = 2.0, category = Category.MINING, image = "")
 public class WatMiner extends AbstractScript implements ExperienceListener {
     HashMap<Integer, WatTask> tasks;
-    WatTask currentTask;
-    boolean fatalError = false;
+    public WatTask currentTask;
+    public boolean fatalError = false;
 
     @Override
     public void onStart() {
@@ -38,9 +38,10 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         tasks.put(100, new VarrockEastIron());
 
         Logger.log("Added " + tasks.size() + " WatTasks");
-        Logger.log("Assessing tasks to see what is available for us to perform");
+    }
 
-        // Loop through the tasks based on their Integer priority
+    private void evaluate() {
+        Logger.log("Assessing tasks to see what is available for us to perform");
         tasks.entrySet().stream()
                 .sorted(Map.Entry.<Integer, WatTask>comparingByKey().reversed())
                 .forEach(entry -> {
@@ -58,29 +59,27 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 });
 
         if(currentTask == null) {
-            Logger.error("No tasks were available to perform");
+            Logger.error("Unable to pick a task: does not meet any requirements");
             fatalError = true;
         }
     }
 
     @Override
     public int onLoop() {
-        if(currentTask == null) {
-            // We should send the player back to re-assessment here because we can flag a new task by simply
-            // nullifying the old one i guess
-            return -1;
-        }
-
         if(fatalError) {
-            return -1;
-        }
-
-        if(currentTask.requiresLogin() && !Client.isLoggedIn()) {
-            Logger.info("Waiting for login...");
             return 1;
         }
 
-        currentTask.execute();
+        if(!Client.isLoggedIn()) {
+            return 1;
+        }
+
+        if(currentTask == null) {
+            evaluate();
+            return 1;
+        }
+
+        currentTask.execute(this);
         return currentTask.loopTime();
     }
 }
