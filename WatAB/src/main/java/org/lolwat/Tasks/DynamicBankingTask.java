@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DynamicBankingTask implements WatTask {
-    private String name = "";
-    private WatTask postTask = null;
-    private HashMap<String, Integer> requiredItems;
-    private boolean depositAllFirst = false;
-    private boolean buyMissingItems = false;
-    private HashMap<String, Integer> grandExchangeToBuy;
+    private final String name;
+    private final WatTask postTask;
+    private final HashMap<String, Integer> requiredItems;
+    private final boolean depositAllFirst;
+    private final boolean buyMissingItems;
+    private final HashMap<String, Integer> grandExchangeToBuy;
 
     public DynamicBankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing) {
         name = taskName;
@@ -29,13 +29,6 @@ public class DynamicBankingTask implements WatTask {
         buyMissingItems = buyMissing;
         postTask = post;
         grandExchangeToBuy = new HashMap<>();
-    }
-
-    public DynamicBankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post) {
-        name = taskName;
-        postTask = post;
-        requiredItems = required;
-        depositAllFirst = depositAll;
     }
 
     @Override
@@ -99,7 +92,7 @@ public class DynamicBankingTask implements WatTask {
                             // We own the right amount already
                             Bank.withdraw(item.getKey(), item.getValue());
                         } else {
-                            // We don't own the right amount of it, TODO Grand Exchange Task
+                            // We don't own the right amount of it
                             if (buyMissingItems) {
                                 Logger.log("We need " + item.getValue() + " more of " + item.getKey() + ", adding to G.E buy list");
                                 grandExchangeToBuy.put(item.getKey(), item.getValue());
@@ -110,7 +103,7 @@ public class DynamicBankingTask implements WatTask {
                             return;
                         }
                     } else {
-                        // We don't own any of it, TODO Grand Exchange Task
+                        // We don't own any of it
                         if (buyMissingItems) {
                             Logger.log("We need " + item.getValue() + " more of " + item.getKey() + ", adding to G.E buy list");
                             grandExchangeToBuy.put(item.getKey(), item.getValue());
@@ -120,22 +113,20 @@ public class DynamicBankingTask implements WatTask {
                         }
                         return;
                     }
-
-                    requiredItems.clear();
                 }
             }
 
-            if (requiredItems.size() <= 0) {
-                Logger.log("We are finished with checking our required items.");
-            }
+            requiredItems.clear();
+
+            Logger.log("We are finished with checking our required items.");
 
             if (grandExchangeToBuy.size() > 0 && buyMissingItems) {
                 Logger.log("We need to create a DynamicGrandExchangeTask to buy " + grandExchangeToBuy.size() + " items: ");
                 int totalValue = 0;
                 for (Map.Entry<String, Integer> buyItem : grandExchangeToBuy.entrySet()) {
                     Logger.log(buyItem.getKey() + " Quantity of: " + buyItem.getValue());
-                    // Calculate the amount of money we are going to need to buy everything at market price or so.
-                    totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue());
+                    // Calculate the amount of money we are going to need to buy everything at market price or so + 10%
+                    totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue()) * 2;
                 }
 
                 // Holy shit! Probably gonna be a lot.
@@ -143,14 +134,17 @@ public class DynamicBankingTask implements WatTask {
                 if(Bank.contains("Coins")) {
                     Item bankCoins = Bank.get("Coins");
                     if(bankCoins != null && bankCoins.getAmount() >= totalValue) {
-                        // We can set up our G.E offer now.
+                        Bank.depositAllItems();
+                        Bank.withdraw(bankCoins.getID(), totalValue);
+                        Bank.close();
+                        // Send them to the Grand Exchange and have them do another task after (null means it will evaluate when complete)
+                        instance.currentTask = new DynamicGrandExchangeTask("Buying missing items", false, grandExchangeToBuy, postTask);
                     }
                     else {
                         Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
                         instance.fatalError = true;
                     }
                 }
-
             } else {
                 // We are done banking operations, and we are NOT setting up a Grand Exchange Task.
                 Bank.close();

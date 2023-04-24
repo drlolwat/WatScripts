@@ -44,7 +44,7 @@ public class VarrockEastIron implements WatTask {
                 }
             };
 
-            instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, null, true);
+            instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, this, true);
         } else {
 
         }
