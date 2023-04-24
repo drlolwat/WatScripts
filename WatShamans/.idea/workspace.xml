@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="&lt;= 15cb now only use the south rocks.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/BezierMouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Mouse/BezierMouse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/CameraOrientation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Camera/CameraOrientation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +22,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -95,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681957646906</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="&lt;= 15cb now only use the south rocks.">
+      <created>1682305953118</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1682305953118</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
