@@ -38,11 +38,9 @@ public class VarrockEastIron implements WatTask {
         String pickaxe = ItemUtils.getBestPickaxeForLevel();
         if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("No pickaxe, best one I can use is " + pickaxe);
-
             HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
                 {
                     put(pickaxe, 1);
-                    put("Fuck", 3);
                 }
             };
 
