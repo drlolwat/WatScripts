@@ -1,5 +1,6 @@
 package org.lolwat;
 
+import javafx.scene.chart.ValueAxis;
 import org.dreambot.api.Client;
 import org.dreambot.api.data.GameState;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -33,6 +34,9 @@ import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.Mouse.BezierMouse;
+import org.lolwat.Tasks.Mining.VarrockEastIron;
+import org.lolwat.Tasks.WatTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -107,7 +111,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     private List<String> sellList;
     private List<String> mySells;
     private boolean usingAltLocation;
-    private boolean canEquip = false;
     private int oreMined = 0;
     private int expGained = 0;
     private Timer timer;
@@ -115,6 +118,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     private String muleTarget = "";
     private int myWorld;
     private boolean forceBank = false;
+    private boolean cameraSetup = false;
 
     @Override
     public void onStart() {
@@ -150,6 +154,11 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         timer = new Timer();
+
+        WatTask task = new VarrockEastIron();
+        if(task.hasLevelRequirements()) {
+            System.out.println(task.getName());
+        }
     }
 
     @Override
@@ -245,6 +254,17 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
                 if(!Client.isLoggedIn()) {
                     Logger.log("waiting for login");
                     return 500;
+                }
+
+                if(!cameraSetup) {
+                    cameraSetup = true;
+                    if(Players.getLocal() != null) {
+                        Camera.rotateToPitch(88);
+                        Sleep.sleep(50, 100);
+                        Camera.rotateToYaw(0);
+                        Sleep.sleep(50, 100);
+                        Camera.setZoom(0);
+                    }
                 }
 
                 AtomicBoolean isUpgrading = new AtomicBoolean(false);
