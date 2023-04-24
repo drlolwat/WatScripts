@@ -5,6 +5,7 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.lolwat.WatMiner;
 
 import java.util.*;
 
@@ -46,7 +47,7 @@ public interface WatTask {
         return hasLevelRequirements() && hasQuestRequirements();
     }
 
-    void execute();
+    void execute(WatMiner instance);
     default boolean requiresLogin() {
         return true;
     }
