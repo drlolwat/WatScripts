@@ -1,19 +1,11 @@
-package org.lolwat; /**
- * WindMouse from SMART by Benland100
- * Copyright to Benland100, (Benjamin J. Land)
- *
- * Prepped for DreamBot 3
- **/
+package org.lolwat.Mouse;
 
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.input.mouse.algorithm.MouseMovementAlgorithm;
 import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.input.mouse.MouseSettings;
 
 import java.awt.*;
-
-import static java.lang.Thread.sleep;
 
 public class BezierMouse implements MouseMovementAlgorithm {
     private boolean isMoving = false;
@@ -25,28 +17,28 @@ public class BezierMouse implements MouseMovementAlgorithm {
 
         isMoving = true;
         Point suitPos = abstractMouseDestination.getSuitablePoint();
-        bezierMouse(suitPos);
+        generatePoints(suitPos);
         isMoving = false;
 
         return distance(Mouse.getPosition(), suitPos) < 2;
     }
 
-    public void bezierMouse(Point point) {
+    public void generatePoints(Point point) {
         Point curPos = Mouse.getPosition();
         double initialDistance = distance(point, curPos);
         double currentDistance = initialDistance;
 
         while (currentDistance / initialDistance > 0.05 && Calculations.random(1) == 2) { // Loop until distance ratio is below 5% or counter reaches 10
             Point rp = randomPoint(curPos, point);
-            mouseBezier(curPos, rp);
+            moveCursor(curPos, rp);
             sleep(1, 100);
             curPos = Mouse.getPosition();
             currentDistance = distance(point, curPos);
         }
-        mouseBezier(curPos, point);
+        moveCursor(curPos, point);
     }
 
-    private void mouseBezier(Point startPos, Point endPos) {
+    private void moveCursor(Point startPos, Point endPos) {
         Point controlPoint = randomPoint(startPos, endPos);
         int steps = Calculations.random(5, 25);
 
