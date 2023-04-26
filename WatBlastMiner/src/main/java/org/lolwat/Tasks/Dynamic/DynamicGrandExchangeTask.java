@@ -1,5 +1,6 @@
-package org.lolwat.Tasks;
+package org.lolwat.Tasks.Dynamic;
 
+import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
@@ -11,6 +12,7 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
+import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatMiner;
 
 import java.util.HashMap;
@@ -41,6 +43,22 @@ public class DynamicGrandExchangeTask implements WatTask {
                 Camera.rotateToEntity(clerk);
             }
 
+            // Check if we are selling here, if so, make sure we already have everything we need.
+            // if not, quickly create a new task to grab the shit we need from the bank.
+            if(isSelling) { // 2 loops of the inventory shouldn't really harm performance, it's just bad practice
+                HashMap<String, Integer> req = new HashMap<>();
+                for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
+                    if(!Inventory.contains(item.getKey())) {
+                        req.put(item.getKey(), item.getValue());
+                    }
+                }
+
+                if(req.size() > 0) {
+                    instance.currentTask = new DynamicBankingTask("Grabbing required items", req, true, this, false);
+                    return;
+                }
+            }
+
             if (!GrandExchange.isOpen()) {
                 GrandExchange.open();
             }
@@ -52,6 +70,7 @@ public class DynamicGrandExchangeTask implements WatTask {
                 return;
             }
 
+            Logger.log("==== Beginning G.E Main Operations ====");
             for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                 // Get a slot. If unavailable, will cancel the other offers we have going
                 int slot = GrandExchange.getFirstOpenSlot();
@@ -64,14 +83,24 @@ public class DynamicGrandExchangeTask implements WatTask {
                     continue;
 
                 if (GrandExchange.contains(item.getKey())) {
-                    Logger.error("Stuck buying item: " + item.getKey() + ", maybe try buying it manually?");
+                    Logger.error("Stuck buying/selling item: " + item.getKey() + ", maybe try buying/selling it manually?");
                     instance.fatalError = true;
                     return;
                 }
 
                 if (isSelling) {
-                    // TODO sell code.
+                    if(Inventory.contains(item.getKey())) {
+                        Logger.log("Selling: " + item.getKey());
+                        Inventory.get(item.getKey()).interact();
+                        Sleep.sleep(100, 600);
+                        GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 0.7));
+                        Sleep.sleep(100, 200);
+                        GrandExchange.confirm();
+                        Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
+                        GrandExchange.collect();
+                    }
                 } else {
+                    Logger.log("Buying: " + item.getKey());
                     GrandExchange.openBuyScreen(slot);
 
                     // Sleep until the buy screen is open, or 5 seconds, whichever is faster
@@ -98,7 +127,7 @@ public class DynamicGrandExchangeTask implements WatTask {
 
             itemList.clear();
 
-            Logger.log("We are finished with our Grand Exchange transactions");
+            Logger.log("==== Grand Exchange Operations: Complete ====");
             GrandExchange.close();
 
             if (!Bank.open()) {
