@@ -4,6 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
+import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.Mouse.BezierMouse;
@@ -80,6 +81,14 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         }
 
         currentTask.execute(this);
-        return currentTask.loopTime() > 0 ? currentTask.loopTime() : 5;
+        // We have to check below, because sometimes we rid ourselves of the task before the loop will complete.
+        return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 5) : 5;
+    }
+
+    @Override
+    public void onGained(ExperienceEvent ev) {
+        if(currentTask != null) {
+            currentTask.onExpGained(ev.getSkill(), ev.getChange());
+        }
     }
 }

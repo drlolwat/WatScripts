@@ -1,14 +1,16 @@
-package org.lolwat.Tasks;
+package org.lolwat.Tasks.Dynamic;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatMiner;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ public class DynamicBankingTask implements WatTask {
     private final boolean depositAllFirst;
     private final boolean buyMissingItems;
     private final HashMap<String, Integer> grandExchangeToBuy;
+    private final HashMap<String, Integer> sellItemsToCheck;
 
     public DynamicBankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing) {
         name = taskName;
@@ -29,6 +32,17 @@ public class DynamicBankingTask implements WatTask {
         buyMissingItems = buyMissing;
         postTask = post;
         grandExchangeToBuy = new HashMap<>();
+        sellItemsToCheck = new HashMap<>();
+    }
+
+    public DynamicBankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing, HashMap<String, Integer> muleItems) {
+        name = taskName;
+        requiredItems = required;
+        depositAllFirst = depositAll;
+        buyMissingItems = buyMissing;
+        postTask = post;
+        grandExchangeToBuy = new HashMap<>();
+        sellItemsToCheck = muleItems;
     }
 
     @Override
@@ -46,7 +60,7 @@ public class DynamicBankingTask implements WatTask {
             }
 
             // Sleep until the bank is open, or 7.5 seconds, whichever comes first
-            Sleep.sleepUntil(Bank::isOpen, 7500);
+            Sleep.sleepUntil(Bank::isOpen, 1000);
 
             // If it's still not open, we'll restart the loop which will redo the above.
             if (!Bank.isOpen()) {
@@ -54,11 +68,49 @@ public class DynamicBankingTask implements WatTask {
             }
 
             // Does the bank request want us to deposit everything
-            if (depositAllFirst) {
+            if (depositAllFirst && !Inventory.isEmpty()) {
                 // Deposit everything except the items we require from the request
-                //Bank.depositAllExcept(requiredItems.keySet().toArray(new String[0]));
+                for(Item it : Inventory.all()) {
+                    if(!requiredItems.containsKey(it.getName())) {
+                        Bank.depositAll(it);
+                    }
+                }
+
                 Bank.depositAllEquipment();
             }
+
+            // Let's check for the items and quantity that we want to trigger for selling, if provided
+            if(sellItemsToCheck.size() > 0) {
+                Logger.log("==== Checking for sell-able items ====");
+                HashMap<String, Integer> items = new HashMap<>();
+                for(Map.Entry<String, Integer> item : sellItemsToCheck.entrySet()) {
+                    if(Bank.contains(item.getKey())) {
+                        Item it = Bank.get(item.getKey());
+                        if(it != null && ((item.getValue() > 0 && it.getAmount() >= item.getValue()) || (item.getValue() < 0 && it.getAmount() >= -item.getValue()))) {
+                            Logger.log("Sell target met for: " + item.getKey() + "(" + item.getValue() + ")");
+                            items.put(it.getName(), item.getValue() < 0 ? it.getAmount() : item.getValue());
+                        }
+                    }
+                }
+
+                if(items.size() > 0) {
+                    instance.currentTask = new DynamicGrandExchangeTask("Selling items", true, items, null);
+                    Bank.setWithdrawMode(BankMode.NOTE);
+                    for(Map.Entry<String, Integer> it : items.entrySet()) {
+                        if(Inventory.size() < 26) {
+                            Bank.withdraw(it.getKey(), it.getValue());
+                        }
+                    }
+                    Bank.setWithdrawMode(BankMode.ITEM);
+                    return;
+                }
+
+                items.clear();
+            }
+
+            // TODO ***********************************************************************************
+            // TODO ****  We should check for the required amount of gold (minus safety net) to trigger muling here
+            // TODO ***********************************************************************************
 
             // Loop through our required items
             Logger.log("==== Looping through required items ====");
@@ -155,14 +207,16 @@ public class DynamicBankingTask implements WatTask {
         }
         else {
             BankLocation loc = BankLocation.getNearest();
-            if(loc != null && Walking.shouldWalk(7)) {
-                Walking.walk(loc);
+            if(loc != null) {
+                if(Walking.shouldWalk()) {
+                    Walking.walk(loc);
+                }
             }
         }
     }
 
     @Override
     public int loopTime() {
-        return 50;
+        return 500;
     }
 }
