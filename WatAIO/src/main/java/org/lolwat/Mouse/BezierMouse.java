@@ -4,6 +4,7 @@ import org.dreambot.api.input.Mouse;
 import org.dreambot.api.input.mouse.algorithm.MouseMovementAlgorithm;
 import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.utilities.Sleep;
 
 import java.awt.*;
 
@@ -31,7 +32,7 @@ public class BezierMouse implements MouseMovementAlgorithm {
         while (currentDistance / initialDistance > 0.05 && Calculations.random(1) == 2) { // Loop until distance ratio is below 5% or counter reaches 10
             Point rp = randomPoint(curPos, point);
             moveCursor(curPos, rp);
-            sleep(1, 100);
+            Sleep.sleep(1, 100);
             curPos = Mouse.getPosition();
             currentDistance = distance(point, curPos);
         }
@@ -45,7 +46,7 @@ public class BezierMouse implements MouseMovementAlgorithm {
         for (int i = 0; i <= steps; i++) {
             double t = (double) i / steps;
             Point pointOnCurve = calculateBezierPoint(t, startPos, controlPoint, endPos);
-            sleep(34);
+            Sleep.sleep(34);
             Mouse.hop(pointOnCurve);
         }
     }
@@ -70,21 +71,5 @@ public class BezierMouse implements MouseMovementAlgorithm {
 
     private static double distance(Point a, Point b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-    }
-
-    private void sleep(int min, int max) {
-        try {
-            Thread.sleep(Calculations.random(min, max));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
