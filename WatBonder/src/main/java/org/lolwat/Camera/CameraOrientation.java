@@ -77,7 +77,6 @@ public enum CameraOrientation {
             yaw += Math.abs(rng);
         }
 
-
         Camera.mouseRotateTo(yaw, Camera.getPitch());
     }
 
