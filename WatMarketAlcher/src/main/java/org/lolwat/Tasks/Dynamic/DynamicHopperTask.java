@@ -11,6 +11,7 @@ public class DynamicHopperTask implements WatTask {
     private final WatTask postTask;
     private final int world;
 
+    @Override
     public String getName() {
         return "World Hopping";
     }
@@ -20,6 +21,7 @@ public class DynamicHopperTask implements WatTask {
         world = toWorld;
     }
 
+    @Override
     public void execute(WatMiner instance) {
         if (!Tab.LOGOUT.isOpen()) {
             Tab.LOGOUT.open();
@@ -48,12 +50,12 @@ public class DynamicHopperTask implements WatTask {
 
     @Override
     public boolean hasLevelRequirements() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasQuestRequirements() {
-        return false;
+        return true;
     }
 
     @Override
