@@ -59,4 +59,8 @@ public interface WatTask {
     default int loopTime() {
         return 1;
     }
+
+    default void onExpGained(Skill skill, int exp) {
+
+    }
 }

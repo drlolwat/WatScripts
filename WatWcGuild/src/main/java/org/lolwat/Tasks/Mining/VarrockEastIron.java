@@ -2,14 +2,26 @@ package org.lolwat.Tasks.Mining;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.input.Camera;
+import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
-import org.lolwat.Tasks.DynamicBankingTask;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.interactive.Player;
+import org.lolwat.Tasks.Dynamic.DynamicBankingTask;
+import org.lolwat.Tasks.Dynamic.DynamicHopperTask;
+import org.lolwat.Tasks.Dynamic.DynamicTraversalTask;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.Utils.ItemUtils;
 import org.lolwat.WatMiner;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +29,12 @@ import java.util.List;
 public class VarrockEastIron implements WatTask {
     private Tile defaultSquare = new Tile(3286, 3368);
     private Tile alternateSquare = new Tile(3285, 3370);
-
     private List<Tile> defaultRocks;
     private List<Tile> alternateRocks;
+    private boolean usingAlternateRocks = false;
+    private long lastSuccessfulRock = 0;
+    private boolean gotRock;
+    private GameObject rock;
 
     @Override
     public String getName() {
@@ -36,27 +51,127 @@ public class VarrockEastIron implements WatTask {
     @Override
     public void execute(WatMiner instance) {
         String pickaxe = ItemUtils.getBestPickaxeForLevel();
-        if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
-            Logger.log("No pickaxe, best one I can use is " + pickaxe);
-            HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
-                {
-                    put(pickaxe, 1);
-                }
-            };
 
+        HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
+            {
+                put(pickaxe, 1);
+            }
+        };
+
+        if(WorldHopper.isWorldHopperOpen()) {
+            WorldHopper.closeWorldHopper();
+        }
+
+        if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
+            Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
             instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, this, true);
         } else {
+            if(!Tab.INVENTORY.isOpen()) {
+                Tab.INVENTORY.open();
+            }
 
+            // Check if we need to bank, and tell the Banking task to check if we have over 1000 ore, in which case sell it.
+            // We use -1000 so the script knows to check for 1000, but also to sell all of it.
+            // If we checked for 1000, then it would only withdraw 1000.
+            if (Inventory.isFull()) {
+                Logger.log("My inventory is full, to the bank!");
+                instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, this, true, new HashMap<String, Integer>() {
+                    {
+                        put("Iron ore", -1000);
+                    }
+                });
+                lastSuccessfulRock = 0;
+                return;
+            }
+
+            if (!Map.isTileOnScreen(defaultSquare)) {
+                Logger.log("I need to traverse to the location.");
+                instance.currentTask = new DynamicTraversalTask(defaultSquare, false, this);
+                return;
+            }
+
+            //Logger.log("Current time: " + Instant.now().getEpochSecond());
+            //Logger.log("Last success: " + lastSuccessfulRock);
+            //Logger.log("Since last success: " + (Instant.now().getEpochSecond() - lastSuccessfulRock));
+
+            List<Tile> currentlyUsing;
+            if (!usingAlternateRocks) {
+                currentlyUsing = defaultRocks;
+
+                if(Players.getLocal().getLevel() >= 15) {
+                    if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock ) > 20) {
+                        currentlyUsing = alternateRocks;
+                        usingAlternateRocks = true;
+                        lastSuccessfulRock = Instant.now().getEpochSecond();
+                    }
+                } else {
+                    if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock ) > 20) {
+                        usingAlternateRocks = false;
+                        lastSuccessfulRock = 0;
+                        instance.currentTask = new DynamicHopperTask(0, this);
+                        return;
+                    }
+                }
+            } else { // Using the alternate spot
+                boolean returnBack = true;
+                for (Player pl : Players.all()) {
+                    if (pl.getTile().equals(defaultSquare)) {
+                        returnBack = false;
+                    }
+                }
+
+                if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) >= 20) {
+                    lastSuccessfulRock = 0;
+                    instance.currentTask = new DynamicHopperTask(0, this);
+                    return;
+                }
+
+                if (returnBack) {
+                    currentlyUsing = defaultRocks;
+                    usingAlternateRocks = false;
+                } else {
+                    currentlyUsing = alternateRocks;
+                }
+            }
+
+            if (!gotRock || (lastSuccessfulRock <= 0 || (Instant.now().getEpochSecond() - lastSuccessfulRock) > 10) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null)) {
+                if (Players.getLocal().isMoving()) {
+                    Sleep.sleep(1000, 1500);
+                }
+
+                for (Tile tile : currentlyUsing) {
+                    GameObject obj = GameObjects.getTopObjectOnTile(tile);
+                    if (obj.getModelColors() != null) {
+                        rock = obj;
+
+                        if (!obj.isOnScreen()) {
+                            Camera.rotateToEntity(rock);
+                        }
+
+                        obj.interact();
+                        gotRock = true;
+                        break;
+                    }
+                }
+
+                Sleep.sleepUntil(() -> (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null), 8000);
+            }
         }
     }
 
     @Override
     public int loopTime() {
-        return 5;
+        return 650;
     }
 
     @Override
     public boolean requiresTradeUnrestricted() {
         return true;
+    }
+
+    @Override
+    public void onExpGained(Skill skill, int amount) {
+        gotRock = false;
+        lastSuccessfulRock = Instant.now().getEpochSecond();
     }
 }
