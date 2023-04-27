@@ -2,6 +2,7 @@ package org.lolwat.Tasks.Mining;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -170,8 +171,11 @@ public class VarrockEastIron implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount) {
+    public void onExpGained(Skill skill, int amount, WatMiner instance) {
         gotRock = false;
         lastSuccessfulRock = Instant.now().getEpochSecond();
+
+        instance.expGained += amount;
+        instance.rocksMined += 1;
     }
 }
