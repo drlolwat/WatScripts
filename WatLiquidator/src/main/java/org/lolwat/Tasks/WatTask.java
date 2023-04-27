@@ -7,7 +7,9 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatMiner;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public interface WatTask {
     HashMap<Skill, Integer> levelRequirements = new HashMap<>();
@@ -60,7 +62,7 @@ public interface WatTask {
         return 1;
     }
 
-    default void onExpGained(Skill skill, int exp) {
+    default void onExpGained(Skill skill, int amount, WatMiner instance) {
 
     }
 }

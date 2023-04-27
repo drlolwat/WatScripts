@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="G.E Selling, VarrockEastIron Task, Traversing Task, minor adjustments">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Complete world hopper">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicHopperTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicHopperTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicGrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicGrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682499294807</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Complete world hopper">
+      <created>1682499814635</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1682499814635</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -160,6 +170,7 @@
     <MESSAGE value="DynamicBankingTask taking into account multi quantity for LivePrices" />
     <MESSAGE value="G.E buying" />
     <MESSAGE value="G.E Selling, VarrockEastIron Task, Traversing Task, minor adjustments" />
-    <option name="LAST_COMMIT_MESSAGE" value="G.E Selling, VarrockEastIron Task, Traversing Task, minor adjustments" />
+    <MESSAGE value="Complete world hopper" />
+    <option name="LAST_COMMIT_MESSAGE" value="Complete world hopper" />
   </component>
 </project>
