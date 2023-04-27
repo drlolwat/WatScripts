@@ -103,7 +103,6 @@ public class DynamicGrandExchangeTask implements WatTask {
                     Logger.log("Buying: " + item.getKey());
                     GrandExchange.openBuyScreen(slot);
 
-                    // Sleep until the buy screen is open, or 5 seconds, whichever is faster
                     Sleep.sleep(400, 800);
 
                     // Add the item.
