@@ -1,16 +1,21 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Timer;
 import org.lolwat.Mouse.BezierMouse;
 import org.lolwat.Tasks.Mining.VarrockEastIron;
 import org.lolwat.Tasks.WatTask;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +27,15 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     public WatTask currentTask;
     public boolean fatalError = false;
 
+    public Integer rocksMined = 0;
+    public Integer expGained = 0;
+    private Timer timer;
+
     @Override
     public void onStart() {
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
+        Walking.setMinimapTargetSize(15);
 
         Logger.log("WatMiner is starting, creating WatTask instances");
 
@@ -39,6 +49,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         tasks.put(100, new VarrockEastIron());
 
         Logger.log("Added " + tasks.size() + " WatTasks");
+
+        timer = new Timer();
     }
 
     private void evaluate() {
@@ -88,7 +100,51 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     @Override
     public void onGained(ExperienceEvent ev) {
         if(currentTask != null) {
-            currentTask.onExpGained(ev.getSkill(), ev.getChange());
+            currentTask.onExpGained(ev.getSkill(), ev.getChange(), this);
         }
+    }
+
+    @Override
+    public void onPaint(Graphics g) {
+        // ChatGPT wrote this
+        // Enable anti-aliasing for smoother text
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        // Set the font metrics for sizing the chatbox
+        FontMetrics fm = g2d.getFontMetrics();
+
+        // Determine the height of each section
+        int sectionHeight = 58;
+
+        // Draw the background
+        g.setColor(new Color(42, 42, 42, 220));
+        int boxWidth = Math.max(400, fm.stringWidth("WatMiner V2: " + currentTask.getName()));
+        int boxHeight = 2 * sectionHeight;
+        g.fillRect(0, 0, boxWidth, boxHeight);
+
+        // Draw the border
+        g.setColor(new Color(107, 107, 107));
+        g.drawRect(0, 0, boxWidth, boxHeight);
+
+        // Draw the title
+        g.setColor(new Color(220, 220, 220));
+        g.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        g.drawString("WatMiner V2: " + currentTask.getName(), 15, 30);
+        g.drawLine(15, 42, boxWidth - 15, 42);
+
+        // Draw the mining/ore stats
+        g.setColor(new Color(220, 220, 220));
+        g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        g.drawString("Ores mined: " + rocksMined, 15, 70);
+        g.drawString("Mining rate: " + timer.getHourlyRate(rocksMined) + "/h", boxWidth / 2, 70);
+        g.drawString("Mining level: " + Skills.getRealLevel(Skill.MINING), 15, 85);
+        g.drawString("Exp gained: " + expGained, boxWidth / 2, 85);
+
+        // Draw the script statistics information
+        g.drawString("Runtime: " + Timer.formatTime(timer.elapsed()), 15, 100);
+
+        // Draw a horizontal line at the bottom of the box
+        g.setColor(new Color(107, 107, 107));
     }
 }
