@@ -23,6 +23,7 @@ public class DynamicGrandExchangeTask implements WatTask {
     private final HashMap<String, Integer> itemList;
     private final WatTask postTask;
     private final boolean isSelling;
+    private int retries = 0;
 
     public DynamicGrandExchangeTask(String taskName, boolean selling, HashMap<String, Integer> items, WatTask post) {
         name = taskName;
@@ -97,14 +98,18 @@ public class DynamicGrandExchangeTask implements WatTask {
                 if (item.getValue() == 0)
                     continue;
 
-                if (GrandExchange.contains(item.getKey())) {
-                    Logger.error("Stuck buying/selling item: " + item.getKey() + ", maybe try buying/selling it manually?");
-                    instance.fatalError = true;
-                    return;
+                // pre collect
+                if(GrandExchange.isReadyToCollect()) {
+                    GrandExchange.collect();
                 }
 
-                if(GrandExchange.getOpenSlot() == -1 && GrandExchange.isReadyToCollect()) {
-                    GrandExchange.collect();
+                if (GrandExchange.contains(item.getKey())) {
+                    if(retries >= 3) {
+                        Logger.error("Stuck buying/selling item: " + item.getKey() + ", maybe try buying/selling it manually?");
+                        instance.fatalError = true;
+                    }
+                    retries++;
+                    return;
                 }
 
                 if (isSelling) {
