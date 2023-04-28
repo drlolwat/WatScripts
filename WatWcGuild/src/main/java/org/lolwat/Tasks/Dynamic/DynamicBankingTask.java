@@ -4,6 +4,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -77,8 +78,12 @@ public class DynamicBankingTask implements WatTask {
                     }
                 }
 
-                Bank.depositAllEquipment();
+                if(!Equipment.isEmpty()) {
+                    Bank.depositAllEquipment();
+                }
             }
+
+            //TODO deposit items if we don't have enough space to meet the request
 
             // Let's check for the items and quantity that we want to trigger for selling, if provided
             if(sellItemsToCheck.size() > 0) {
@@ -99,6 +104,10 @@ public class DynamicBankingTask implements WatTask {
                     Bank.setWithdrawMode(BankMode.NOTE);
                     for(Map.Entry<String, Integer> it : items.entrySet()) {
                         if(Inventory.size() < 26) {
+                            // we have to double check here lol just in case, for notes
+                            if(!Bank.getWithdrawMode().equals(BankMode.NOTE)) {
+                                Bank.setWithdrawMode(BankMode.NOTE);
+                            }
                             Bank.withdraw(it.getKey(), it.getValue());
                         }
                     }
