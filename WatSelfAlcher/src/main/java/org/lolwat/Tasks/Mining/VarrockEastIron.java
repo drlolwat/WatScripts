@@ -23,6 +23,7 @@ import org.lolwat.Utils.ItemUtils;
 import org.lolwat.WatMiner;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -59,13 +60,24 @@ public class VarrockEastIron implements WatTask {
             }
         };
 
+        HashMap<String, Integer> alwaysSell = new HashMap<String, Integer>() {
+            {
+                put("Coal", -1);
+                put("Tin ore", -1);
+                put("Copper ore", -1);
+                put("Logs", -1);
+                put("Oak logs", -1);
+                put("Gold bar", -1);
+            }
+        };
+
         if(WorldHopper.isWorldHopperOpen()) {
             WorldHopper.closeWorldHopper();
         }
 
         if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, this, true);
+            instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, this, true, alwaysSell);
         } else {
             if(!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -79,6 +91,7 @@ public class VarrockEastIron implements WatTask {
                 instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, this, true, new HashMap<String, Integer>() {
                     {
                         put("Iron ore", -1000);
+                        putAll(alwaysSell);
                     }
                 });
                 lastSuccessfulRock = 0;
