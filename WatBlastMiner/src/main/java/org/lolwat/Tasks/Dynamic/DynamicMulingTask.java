@@ -4,8 +4,11 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.methods.world.Worlds;
+import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatMiner;
@@ -78,33 +81,41 @@ public class DynamicMulingTask implements WatTask {
             }
         }
         else {
+            if(WorldHopper.isWorldHopperOpen()) {
+                WorldHopper.closeWorldHopper();
+            }
+
+            if(Tabs.isOpen(Tab.INVENTORY)) {
+                Tabs.open(Tab.INVENTORY);
+            }
+
             // do we have a target
             if(!target.isEmpty()) {
                 // is the trade window closed
-                if(!Trade.isOpen()) {
+                if (!Trade.isOpen() && (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5)) {
                     // are we near the player
-                    if(Players.closest(target) != null) {
-                        if(lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
+                    if (Players.closest(target) != null) {
+                        if (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
                             Trade.tradeWithPlayer(target);
                             lastSentRequest = Instant.now().getEpochSecond();
+                            Sleep.sleepUntil(Trade::isOpen, 2000);
                         }
                     }
                 }
-                else { // trade is open
-                    // are we on the first window
-                    if(Trade.isOpen(1)) {
-                        if (Inventory.contains("Coins") && Inventory.get("Coins") != null) {
-                            Trade.addItem("Coins", Inventory.get("Coins").getAmount());
-                        }
 
-                        Trade.acceptTrade(1);
+                // are we on the first window
+                if (Trade.isOpen(1)) {
+                    if (Inventory.contains("Coins") && Inventory.get("Coins") != null) {
+                        Trade.addItem("Coins", Inventory.get("Coins").getAmount());
                     }
+                    Sleep.sleep(2000, 3000);
+                    Trade.acceptTrade(1);
+                }
 
-                    if(Trade.isOpen(2)) {
-                        Trade.acceptTrade(2);
-                        Sleep.sleepUntil(() -> !Trade.isOpen(), 2000);
-                        completed = true;
-                    }
+                if (Trade.isOpen(2)) {
+                    Trade.acceptTrade(2);
+                    Sleep.sleepUntil(() -> !Trade.isOpen(), 2000);
+                    completed = true;
                 }
             }
         }

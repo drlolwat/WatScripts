@@ -10,6 +10,7 @@ import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.lolwat.Mouse.BezierMouse;
 import org.lolwat.Tasks.Mining.VarrockEastIron;
@@ -27,6 +28,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     public Integer rocksMined = 0;
     public Integer expGained = 0;
     private Timer timer;
+    private boolean firstStart = true;
     public final int MULE_TRIGGER = 100000;
     public final int MULE_SAFETY_NET = 25000;
 
@@ -84,6 +86,11 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
         if(!Client.isLoggedIn()) {
             return 1;
+        }
+
+        if(firstStart) {
+            Sleep.sleep(5000);
+            firstStart = false;
         }
 
         if(currentTask == null) {
