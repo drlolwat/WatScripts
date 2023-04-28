@@ -43,10 +43,10 @@ public class DynamicGrandExchangeTask implements WatTask {
                 Camera.rotateToEntity(clerk);
             }
 
+            HashMap<String, Integer> req = new HashMap<>();
             // Check if we are selling here, if so, make sure we already have everything we need.
             // if not, quickly create a new task to grab the shit we need from the bank.
             if(isSelling) { // 2 loops of the inventory shouldn't really harm performance, it's just bad practice
-                HashMap<String, Integer> req = new HashMap<>();
                 for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                     if(!Inventory.contains(item.getKey())) {
                         req.put(item.getKey(), item.getValue());
@@ -58,13 +58,27 @@ public class DynamicGrandExchangeTask implements WatTask {
                     return;
                 }
             }
+            else {
+                int moneyRequired = 0;
+                for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
+                    if(!Inventory.contains(item.getKey())) {
+                        moneyRequired += (LivePrices.get(item.getKey()) * item.getValue() * 1.8);
+                    }
+                }
+
+                if(!Inventory.contains("Coins") || (Inventory.get("Coins") != null && Inventory.get("Coins").getAmount() < moneyRequired)) {
+                    req.put("Coins", moneyRequired);
+                    instance.currentTask = new DynamicBankingTask("Grabbing coins", req, true, this, false);
+                    return;
+                }
+            }
 
             if (!GrandExchange.isOpen()) {
                 GrandExchange.open();
             }
 
             Logger.log("Opening Grand Exchange");
-            Sleep.sleepUntil(GrandExchange::isOpen, 7500);
+            Sleep.sleepUntil(GrandExchange::isOpen, 1000);
 
             if (!GrandExchange.isOpen()) {
                 return;
@@ -93,7 +107,7 @@ public class DynamicGrandExchangeTask implements WatTask {
                         Logger.log("Selling: " + item.getKey());
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
-                        GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 0.7));
+                        GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 0.65));
                         Sleep.sleep(100, 200);
                         GrandExchange.confirm();
                         Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
@@ -138,7 +152,6 @@ public class DynamicGrandExchangeTask implements WatTask {
             Bank.close();
 
             instance.currentTask = null;
-
         }
         else {
             if(Walking.shouldWalk(7)) {

@@ -36,7 +36,7 @@ public class DynamicTraversalTask implements WatTask {
             instance.currentTask = postTask;
         }
         else {
-            if(Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= 3)) {
+            if(Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= 2)) {
                 Walking.walk(target);
                 lastWalk = Instant.now().getEpochSecond();
             }

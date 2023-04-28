@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
@@ -71,7 +72,7 @@ public class DynamicBankingTask implements WatTask {
             if (depositAllFirst && !Inventory.isEmpty()) {
                 // Deposit everything except the items we require from the request
                 for(Item it : Inventory.all()) {
-                    if(!requiredItems.containsKey(it.getName())) {
+                    if(it != null && requiredItems != null && !requiredItems.containsKey(it.getName())) {
                         Bank.depositAll(it);
                     }
                 }
@@ -111,6 +112,26 @@ public class DynamicBankingTask implements WatTask {
             // TODO ***********************************************************************************
             // TODO ****  We should check for the required amount of gold (minus safety net) to trigger muling here
             // TODO ***********************************************************************************
+            int invMoney = 0;
+            int bankMoney = 0;
+
+            if(Inventory.contains("Coins")) {
+                invMoney = Inventory.get("Coins").getAmount();
+            }
+
+            if(Bank.contains("Coins")) {
+                bankMoney = Bank.get("Coins").getAmount();
+            }
+
+            if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
+                int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
+                if(toWithdraw > 0) {
+                    Bank.withdraw("Coins", toWithdraw);
+                    Bank.close();
+                    instance.currentTask = new DynamicMulingTask("Muling Gold", Worlds.getCurrentWorld());
+                    return;
+                }
+            }
 
             // Loop through our required items
             Logger.log("==== Looping through required items ====");
