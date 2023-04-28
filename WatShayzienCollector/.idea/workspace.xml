@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Complete world hopper">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="updates here and there">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicMulingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicBankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicBankingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicGrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicGrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicTraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Dynamic/DynamicTraversalTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Mining/VarrockEastIron.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/WatTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatMiner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682499814635</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="updates here and there">
+      <created>1682602837350</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1682602837350</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -171,6 +181,7 @@
     <MESSAGE value="G.E buying" />
     <MESSAGE value="G.E Selling, VarrockEastIron Task, Traversing Task, minor adjustments" />
     <MESSAGE value="Complete world hopper" />
-    <option name="LAST_COMMIT_MESSAGE" value="Complete world hopper" />
+    <MESSAGE value="updates here and there" />
+    <option name="LAST_COMMIT_MESSAGE" value="updates here and there" />
   </component>
 </project>
