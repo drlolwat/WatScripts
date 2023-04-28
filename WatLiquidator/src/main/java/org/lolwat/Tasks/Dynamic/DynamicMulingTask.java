@@ -85,7 +85,7 @@ public class DynamicMulingTask implements WatTask {
                 WorldHopper.closeWorldHopper();
             }
 
-            if(Tabs.isOpen(Tab.INVENTORY)) {
+            if(!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
             }
 
@@ -98,7 +98,7 @@ public class DynamicMulingTask implements WatTask {
                         if (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
                             Trade.tradeWithPlayer(target);
                             lastSentRequest = Instant.now().getEpochSecond();
-                            Sleep.sleepUntil(Trade::isOpen, 2000);
+                            Sleep.sleepUntil(Trade::isOpen, 5000);
                         }
                     }
                 }
