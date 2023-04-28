@@ -16,9 +16,7 @@ import org.lolwat.Tasks.Mining.VarrockEastIron;
 import org.lolwat.Tasks.WatTask;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat", version = 2.0, category = Category.MINING, image = "")
@@ -26,10 +24,11 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     public HashMap<Integer, WatTask> tasks;
     public WatTask currentTask;
     public boolean fatalError = false;
-
     public Integer rocksMined = 0;
     public Integer expGained = 0;
     private Timer timer;
+    public final int MULE_TRIGGER = 100000;
+    public final int MULE_SAFETY_NET = 25000;
 
     @Override
     public void onStart() {
@@ -106,45 +105,47 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
     @Override
     public void onPaint(Graphics g) {
-        // ChatGPT wrote this
-        // Enable anti-aliasing for smoother text
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        if(currentTask != null) {
+            // ChatGPT wrote this
+            // Enable anti-aliasing for smoother text
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        // Set the font metrics for sizing the chatbox
-        FontMetrics fm = g2d.getFontMetrics();
+            // Set the font metrics for sizing the chatbox
+            FontMetrics fm = g2d.getFontMetrics();
 
-        // Determine the height of each section
-        int sectionHeight = 58;
+            // Determine the height of each section
+            int sectionHeight = 58;
 
-        // Draw the background
-        g.setColor(new Color(42, 42, 42, 220));
-        int boxWidth = Math.max(400, fm.stringWidth("WatMiner V2: " + currentTask.getName()));
-        int boxHeight = 2 * sectionHeight;
-        g.fillRect(0, 0, boxWidth, boxHeight);
+            // Draw the background
+            g.setColor(new Color(42, 42, 42, 220));
+            int boxWidth = Math.max(400, fm.stringWidth("WatMiner V2: " + currentTask.getName()));
+            int boxHeight = 2 * sectionHeight;
+            g.fillRect(0, 0, boxWidth, boxHeight);
 
-        // Draw the border
-        g.setColor(new Color(107, 107, 107));
-        g.drawRect(0, 0, boxWidth, boxHeight);
+            // Draw the border
+            g.setColor(new Color(107, 107, 107));
+            g.drawRect(0, 0, boxWidth, boxHeight);
 
-        // Draw the title
-        g.setColor(new Color(220, 220, 220));
-        g.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        g.drawString("WatMiner V2: " + currentTask.getName(), 15, 30);
-        g.drawLine(15, 42, boxWidth - 15, 42);
+            // Draw the title
+            g.setColor(new Color(220, 220, 220));
+            g.setFont(new Font("Segoe UI", Font.BOLD, 20));
+            g.drawString("WatMiner V2: " + currentTask.getName(), 15, 30);
+            g.drawLine(15, 42, boxWidth - 15, 42);
 
-        // Draw the mining/ore stats
-        g.setColor(new Color(220, 220, 220));
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        g.drawString("Ores mined: " + rocksMined, 15, 70);
-        g.drawString("Mining rate: " + timer.getHourlyRate(rocksMined) + "/h", boxWidth / 2, 70);
-        g.drawString("Mining level: " + Skills.getRealLevel(Skill.MINING), 15, 85);
-        g.drawString("Exp gained: " + expGained, boxWidth / 2, 85);
+            // Draw the mining/ore stats
+            g.setColor(new Color(220, 220, 220));
+            g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            g.drawString("Ores mined: " + rocksMined, 15, 70);
+            g.drawString("Mining rate: " + timer.getHourlyRate(rocksMined) + "/h", boxWidth / 2, 70);
+            g.drawString("Mining level: " + Skills.getRealLevel(Skill.MINING), 15, 85);
+            g.drawString("Exp gained: " + expGained, boxWidth / 2, 85);
 
-        // Draw the script statistics information
-        g.drawString("Runtime: " + Timer.formatTime(timer.elapsed()), 15, 100);
+            // Draw the script statistics information
+            g.drawString("Runtime: " + Timer.formatTime(timer.elapsed()), 15, 100);
 
-        // Draw a horizontal line at the bottom of the box
-        g.setColor(new Color(107, 107, 107));
+            // Draw a horizontal line at the bottom of the box
+            g.setColor(new Color(107, 107, 107));
+        }
     }
 }
