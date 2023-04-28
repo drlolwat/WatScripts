@@ -12,6 +12,7 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatMiner;
 
@@ -102,12 +103,22 @@ public class DynamicGrandExchangeTask implements WatTask {
                     return;
                 }
 
+                if(GrandExchange.getOpenSlot() == -1 && GrandExchange.isReadyToCollect()) {
+                    GrandExchange.collect();
+                }
+
                 if (isSelling) {
                     if(Inventory.contains(item.getKey())) {
                         Logger.log("Selling: " + item.getKey());
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
-                        GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 0.65));
+                        WidgetChild fivePercent = GrandExchange.getDecreasePriceFivePercentButton();
+
+                        if(fivePercent != null) {
+                            fivePercent.interact();
+                            fivePercent.interact();
+                        }
+
                         Sleep.sleep(100, 200);
                         GrandExchange.confirm();
                         Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
