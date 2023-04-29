@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
@@ -50,6 +51,11 @@ public class DynamicBankingTask implements WatTask {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
     }
 
     @Override
@@ -244,7 +250,17 @@ public class DynamicBankingTask implements WatTask {
     }
 
     @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
     public int loopTime() {
         return 500;
+    }
+
+    @Override
+    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+
     }
 }
