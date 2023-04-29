@@ -100,7 +100,6 @@ public class DynamicBankingTask implements WatTask {
                 }
 
                 if(items.size() > 0) {
-                    instance.currentTask = new DynamicGrandExchangeTask("Selling items", true, items, null);
                     Bank.setWithdrawMode(BankMode.NOTE);
                     for(Map.Entry<String, Integer> it : items.entrySet()) {
                         if(Inventory.size() < 26) {
@@ -112,6 +111,7 @@ public class DynamicBankingTask implements WatTask {
                         }
                     }
                     Bank.setWithdrawMode(BankMode.ITEM);
+                    instance.currentTask = new DynamicGrandExchangeTask("Selling items", true, items, null);
                     return;
                 }
             }
