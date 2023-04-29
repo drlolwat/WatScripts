@@ -4,6 +4,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
@@ -37,6 +38,11 @@ public class DynamicMulingTask implements WatTask {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
     }
 
     @Override
@@ -122,12 +128,17 @@ public class DynamicMulingTask implements WatTask {
     }
 
     @Override
-    public boolean requiresTradeUnrestricted() {
-        return true;
+    public boolean requiresLogin() {
+        return false;
     }
 
     @Override
     public int loopTime() {
         return 400;
+    }
+
+    @Override
+    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+
     }
 }
