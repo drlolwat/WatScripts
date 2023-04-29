@@ -103,6 +103,7 @@ public class DynamicGrandExchangeTask implements WatTask {
                     GrandExchange.collect();
                 }
 
+                /*
                 if (GrandExchange.contains(item.getKey())) {
                     if(retries >= 3) {
                         Logger.error("Stuck buying/selling item: " + item.getKey() + ", maybe try buying/selling it manually?");
@@ -110,7 +111,7 @@ public class DynamicGrandExchangeTask implements WatTask {
                     }
                     retries++;
                     return;
-                }
+                }*/
 
                 if (isSelling) {
                     if(Inventory.contains(item.getKey())) {
