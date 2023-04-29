@@ -105,7 +105,7 @@ public class DynamicBankingTask implements WatTask {
                     for(Map.Entry<String, Integer> it : items.entrySet()) {
                         if(Inventory.size() < 26) {
                             // we have to double check here lol just in case, for notes
-                            if(!Bank.getWithdrawMode().equals(BankMode.NOTE)) {
+                            if(Bank.getWithdrawMode().equals(BankMode.NOTE)) {
                                 Bank.setWithdrawMode(BankMode.NOTE);
                             }
                             Bank.withdraw(it.getKey(), it.getValue());
@@ -114,8 +114,6 @@ public class DynamicBankingTask implements WatTask {
                     Bank.setWithdrawMode(BankMode.ITEM);
                     return;
                 }
-
-                items.clear();
             }
 
             // TODO ***********************************************************************************
