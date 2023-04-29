@@ -2,7 +2,6 @@ package org.lolwat.Tasks.Mining;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -24,13 +23,11 @@ import org.lolwat.WatMiner;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class VarrockEastIron implements WatTask {
-    private Tile defaultSquare = new Tile(3286, 3368);
-    private Tile alternateSquare = new Tile(3285, 3370);
+public class FaladorGuild implements WatTask {
+    private Tile defaultSquare = new Tile(3033, 9738);
     private List<Tile> defaultRocks;
     private List<Tile> alternateRocks;
     private boolean usingAlternateRocks = false;
@@ -38,16 +35,27 @@ public class VarrockEastIron implements WatTask {
     private boolean gotRock;
     private GameObject rock;
 
-    @Override
-    public String getName() {
-        return "Varrock East Iron";
+
+    public FaladorGuild() {
+        levelRequirements.put(Skill.MINING, 60);
+        defaultRocks = new ArrayList<Tile>(){
+            {
+                add(new Tile(3033, 9737));
+                add(new Tile(3034, 9738));
+            }
+        };
+
+        alternateRocks = new ArrayList<Tile>() {
+            {
+                add(new Tile(3032, 9737));
+                add(new Tile(3032, 9739));
+            }
+        };
     }
 
-    public VarrockEastIron() {
-        levelRequirements.put(Skill.MINING, 15);
-
-        defaultRocks = Arrays.asList(new Tile(3286, 3369), new Tile(3285, 3368));
-        alternateRocks = Arrays.asList(new Tile(3288, 3370), new Tile(3285, 3369));
+    @Override
+    public String getName() {
+        return "Falador Mining Guild";
     }
 
     @Override
@@ -68,9 +76,17 @@ public class VarrockEastIron implements WatTask {
                 put("Logs", -1);
                 put("Oak logs", -1);
                 put("Gold bar", -1);
+                put("Bronze bar", -1);
+                put("Feather", -1);
+                put("Fire rune", -1);
+                put("Iron arrow", -1);
+                put("Salmon", -1);
+                put("Trout", -1);
+                put("Iron bar", -1);
             }
         };
 
+        //todo make this instanceof in watminer global task
         if(WorldHopper.isWorldHopperOpen()) {
             WorldHopper.closeWorldHopper();
         }
@@ -134,8 +150,8 @@ public class VarrockEastIron implements WatTask {
                     }
                 }
 
-                if(!Map.isTileOnScreen(alternateSquare)) {
-                    Camera.rotateToTile(alternateSquare);
+                if(!Map.isTileOnScreen(defaultSquare)) {
+                    Camera.rotateToTile(defaultSquare);
                 }
 
                 if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) >= 20) {
@@ -178,13 +194,13 @@ public class VarrockEastIron implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
+    public boolean requiresTradeUnrestricted() {
+        return true;
     }
 
     @Override
-    public boolean requiresTradeUnrestricted() {
-        return true;
+    public int loopTime() {
+        return 650;
     }
 
     @Override
