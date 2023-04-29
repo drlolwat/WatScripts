@@ -87,17 +87,26 @@ public class DynamicGrandExchangeTask implements WatTask {
             }
 
             Logger.log("==== Beginning G.E Main Operations ====");
+            Logger.log("We have " + itemList.size() + " items to deal with");
             for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                 // Get a slot. If unavailable, will cancel the other offers we have going
                 int slot = GrandExchange.getFirstOpenSlot();
                 if (slot == -1) {
-                    Logger.log("No slots available in G.E, cancelling.");
-                    GrandExchange.cancelAll();
-                    return;
+                    if(GrandExchange.isReadyToCollect()) {
+                        GrandExchange.collect();
+                    }
+
+                    if (GrandExchange.getFirstOpenSlot() == -1) {
+                        Logger.log("No slots available in G.E, cancelling.");
+                        GrandExchange.cancelAll();
+                        return;
+                    }
                 }
 
-                if (item.getValue() == 0)
+                if (item.getValue() == 0) {
+                    Logger.error("Trying to sell 0 of " + item.getKey());
                     continue;
+                }
 
                 // pre collect
                 if(GrandExchange.isReadyToCollect()) {
