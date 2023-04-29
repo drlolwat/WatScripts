@@ -4,6 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -14,6 +15,8 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.lolwat.Mouse.BezierMouse;
+import org.lolwat.Tasks.Dynamic.DynamicHopperTask;
+import org.lolwat.Tasks.Mining.FaladorGuild;
 import org.lolwat.Tasks.Mining.VarrockEastIron;
 import org.lolwat.Tasks.WatTask;
 
@@ -48,6 +51,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         // want to add Blast mining, then it would be 101 so they pick it first.
         // (if they have the available stats/quests, otherwise VarrockEastIron would go first)
         //tasks.Put(101, new BlastMiner());
+        tasks.put(101, new FaladorGuild());
         tasks.put(100, new VarrockEastIron());
 
         Logger.log("Added " + tasks.size() + " WatTasks");
@@ -99,6 +103,10 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         if(currentTask == null) {
             evaluate();
             return 1;
+        }
+
+        if(WorldHopper.isWorldHopperOpen()) {
+            WorldHopper.closeWorldHopper();
         }
 
         currentTask.execute(this);
