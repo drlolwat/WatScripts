@@ -112,6 +112,10 @@ public class VarrockEastIron implements WatTask {
             if (!usingAlternateRocks) {
                 currentlyUsing = defaultRocks;
 
+                if(!Map.isTileOnScreen(defaultSquare)) {
+                    Camera.rotateToTile(defaultSquare);
+                }
+
                 if(Players.getLocal().getLevel() >= 15) {
                     if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock ) > 20) {
                         currentlyUsing = alternateRocks;
@@ -132,6 +136,10 @@ public class VarrockEastIron implements WatTask {
                     if (pl.getTile().equals(defaultSquare)) {
                         returnBack = false;
                     }
+                }
+
+                if(!Map.isTileOnScreen(alternateSquare)) {
+                    Camera.rotateToTile(alternateSquare);
                 }
 
                 if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) >= 20) {
@@ -159,7 +167,7 @@ public class VarrockEastIron implements WatTask {
                         rock = obj;
 
                         if (!obj.isOnScreen()) {
-                            Camera.rotateToEntity(rock);
+                            Camera.rotateToEntity(obj);
                         }
 
                         obj.interact();
