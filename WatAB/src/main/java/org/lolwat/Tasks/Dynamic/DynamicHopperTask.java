@@ -1,5 +1,6 @@
 package org.lolwat.Tasks.Dynamic;
 
+import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
@@ -44,18 +45,18 @@ public class DynamicHopperTask implements WatTask {
     }
 
     @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
     public int loopTime() {
         return 500;
     }
 
     @Override
-    public boolean hasLevelRequirements() {
-        return true;
-    }
+    public void onExpGained(Skill skill, int amount, WatMiner instance) {
 
-    @Override
-    public boolean hasQuestRequirements() {
-        return true;
     }
 
     @Override

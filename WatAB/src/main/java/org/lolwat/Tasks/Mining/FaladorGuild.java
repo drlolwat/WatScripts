@@ -7,7 +7,10 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
@@ -35,9 +38,13 @@ public class FaladorGuild implements WatTask {
     private boolean gotRock;
     private GameObject rock;
 
+    private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
 
     public FaladorGuild() {
-        levelRequirements.put(Skill.MINING, 60);
+        setRequirements(new HashMap<Skill, Integer>() {{
+            put(Skill.MINING, 60);
+        }}, new ArrayList<>());
+
         defaultRocks = new ArrayList<Tile>(){
             {
                 add(new Tile(3033, 9737));
@@ -51,6 +58,21 @@ public class FaladorGuild implements WatTask {
                 add(new Tile(3032, 9739));
             }
         };
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        for (java.util.Map.Entry<Skill, Integer> map : levelRequirements.entrySet()) {
+            if (map.getValue() > Skills.getRealLevel(map.getKey())) {
+                return false;
+            }
+        }
+
+        return Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100;
+    }
+
+    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
+        levelRequirements.putAll(skills);
     }
 
     @Override
@@ -194,7 +216,7 @@ public class FaladorGuild implements WatTask {
     }
 
     @Override
-    public boolean requiresTradeUnrestricted() {
+    public boolean requiresLogin() {
         return true;
     }
 
