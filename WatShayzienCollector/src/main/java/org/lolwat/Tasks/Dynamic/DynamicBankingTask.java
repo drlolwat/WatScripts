@@ -234,9 +234,7 @@ public class DynamicBankingTask implements WatTask {
             } else {
                 // We are done banking operations, and we are NOT setting up a Grand Exchange Task.
                 Bank.close();
-                if(postTask != null) {
-                    instance.currentTask = postTask;
-                }
+                instance.currentTask = postTask;
             }
         }
         else {
