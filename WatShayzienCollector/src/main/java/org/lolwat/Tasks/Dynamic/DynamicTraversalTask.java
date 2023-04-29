@@ -3,6 +3,7 @@ package org.lolwat.Tasks.Dynamic;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -45,18 +46,18 @@ public class DynamicTraversalTask implements WatTask {
     }
 
     @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
     public int loopTime() {
         return 400;
     }
 
     @Override
-    public boolean hasLevelRequirements() {
-        return false;
-    }
+    public void onExpGained(Skill skill, int amount, WatMiner instance) {
 
-    @Override
-    public boolean hasQuestRequirements() {
-        return false;
     }
 
     @Override

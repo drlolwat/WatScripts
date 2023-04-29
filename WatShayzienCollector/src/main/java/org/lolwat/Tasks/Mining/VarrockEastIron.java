@@ -2,13 +2,15 @@ package org.lolwat.Tasks.Mining;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
@@ -37,6 +39,7 @@ public class VarrockEastIron implements WatTask {
     private long lastSuccessfulRock = 0;
     private boolean gotRock;
     private GameObject rock;
+    private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
 
     @Override
     public String getName() {
@@ -44,10 +47,27 @@ public class VarrockEastIron implements WatTask {
     }
 
     public VarrockEastIron() {
-        levelRequirements.put(Skill.MINING, 15);
+        setRequirements(new HashMap<Skill, Integer>() {{
+            put(Skill.MINING, 15);
+        }}, new ArrayList<>());
 
         defaultRocks = Arrays.asList(new Tile(3286, 3369), new Tile(3285, 3368));
         alternateRocks = Arrays.asList(new Tile(3288, 3370), new Tile(3285, 3369));
+    }
+
+    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
+        levelRequirements.putAll(skills);
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        for (java.util.Map.Entry<Skill, Integer> map : levelRequirements.entrySet()) {
+            if (map.getValue() > Skills.getRealLevel(map.getKey())) {
+                return false;
+            }
+        }
+
+        return Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100;
     }
 
     @Override
@@ -178,15 +198,14 @@ public class VarrockEastIron implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
-    public boolean requiresTradeUnrestricted() {
+    public boolean requiresLogin() {
         return true;
     }
 
+    @Override
+    public int loopTime() {
+        return 650;
+    }
     @Override
     public void onExpGained(Skill skill, int amount, WatMiner instance) {
         gotRock = false;
