@@ -91,6 +91,7 @@ public class DynamicGrandExchangeTask implements WatTask {
                 // Get a slot. If unavailable, will cancel the other offers we have going
                 int slot = GrandExchange.getFirstOpenSlot();
                 if (slot == -1) {
+                    Logger.log("No slots available in G.E, cancelling.");
                     GrandExchange.cancelAll();
                     return;
                 }
@@ -114,8 +115,8 @@ public class DynamicGrandExchangeTask implements WatTask {
                 }*/
 
                 if (isSelling) {
+                    Logger.log("Selling: " + item.getKey());
                     if(Inventory.contains(item.getKey())) {
-                        Logger.log("Selling: " + item.getKey());
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
                         WidgetChild fivePercent = GrandExchange.getDecreasePriceFivePercentButton();
@@ -129,6 +130,9 @@ public class DynamicGrandExchangeTask implements WatTask {
                         GrandExchange.confirm();
                         Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
                         GrandExchange.collect();
+                    }
+                    else {
+                        Logger.log("Item was not in inventory: " + item.getKey());
                     }
                 } else {
                     Logger.log("Buying: " + item.getKey());
@@ -156,6 +160,11 @@ public class DynamicGrandExchangeTask implements WatTask {
             }
 
             itemList.clear();
+
+            Sleep.sleep(3000);
+            if(GrandExchange.isReadyToCollect()) {
+                GrandExchange.collect();
+            }
 
             Logger.log("==== Grand Exchange Operations: Complete ====");
             GrandExchange.close();
