@@ -8,7 +8,6 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -25,16 +24,15 @@ import org.lolwat.Utils.ItemUtils;
 import org.lolwat.WatMiner;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class VarrockEastIron implements WatTask {
-    private Tile defaultSquare = new Tile(3286, 3368);
-    private Tile alternateSquare = new Tile(3285, 3370);
-    private List<Tile> defaultRocks;
-    private List<Tile> alternateRocks;
+    private final Tile defaultSquare = new Tile(3286, 3368);
+    private final Tile alternateSquare = new Tile(3285, 3370);
+    private final List<Tile> defaultRocks;
+    private final List<Tile> alternateRocks;
     private boolean usingAlternateRocks = false;
     private long lastSuccessfulRock = 0;
     private boolean gotRock;
@@ -49,13 +47,13 @@ public class VarrockEastIron implements WatTask {
     public VarrockEastIron() {
         setRequirements(new HashMap<Skill, Integer>() {{
             put(Skill.MINING, 15);
-        }}, new ArrayList<>());
+        }});
 
         defaultRocks = Arrays.asList(new Tile(3286, 3369), new Tile(3285, 3368));
         alternateRocks = Arrays.asList(new Tile(3288, 3370), new Tile(3285, 3369));
     }
 
-    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
+    public void setRequirements(HashMap<Skill, Integer> skills) {
         levelRequirements.putAll(skills);
     }
 
@@ -108,7 +106,7 @@ public class VarrockEastIron implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, this, true, new HashMap<String, Integer>() {
+                instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, null, true, new HashMap<String, Integer>() {
                     {
                         put("Iron ore", -1000);
                         putAll(alwaysSell);
