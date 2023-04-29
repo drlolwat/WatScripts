@@ -4,6 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
@@ -52,6 +53,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         Logger.log("Added " + tasks.size() + " WatTasks");
 
         timer = new Timer();
+
+        getRandomManager().disableSolver(RandomEvent.DISMISS);
     }
 
     private void evaluate() {
