@@ -8,6 +8,7 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -34,6 +35,11 @@ public class DynamicGrandExchangeTask implements WatTask {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
     }
 
     @Override
@@ -197,7 +203,17 @@ public class DynamicGrandExchangeTask implements WatTask {
     }
 
     @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
     public int loopTime() {
         return 5;
+    }
+
+    @Override
+    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+
     }
 }
