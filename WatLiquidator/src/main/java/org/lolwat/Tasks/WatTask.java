@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.List;
 
 public interface WatTask {
-
     String getName();
     boolean canPerformTask();
     void execute(WatMiner instance);
