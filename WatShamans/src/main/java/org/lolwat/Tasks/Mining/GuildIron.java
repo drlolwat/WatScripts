@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FaladorGuild implements WatTask {
+public class GuildIron implements WatTask {
     private Tile defaultSquare = new Tile(3033, 9738);
     private List<Tile> defaultRocks;
     private List<Tile> alternateRocks;
@@ -40,7 +40,7 @@ public class FaladorGuild implements WatTask {
 
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
 
-    public FaladorGuild() {
+    public GuildIron() {
         setRequirements(new HashMap<Skill, Integer>() {{
             put(Skill.MINING, 60);
         }}, new ArrayList<>());
@@ -77,7 +77,7 @@ public class FaladorGuild implements WatTask {
 
     @Override
     public String getName() {
-        return "Falador Mining Guild";
+        return "Mining Guild: Iron";
     }
 
     @Override
@@ -100,10 +100,6 @@ public class FaladorGuild implements WatTask {
                 put("Gold bar", -1);
                 put("Bronze bar", -1);
                 put("Feather", -1);
-                put("Fire rune", -1);
-                put("Iron arrow", -1);
-                put("Salmon", -1);
-                put("Trout", -1);
                 put("Iron bar", -1);
             }
         };
