@@ -1,6 +1,8 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -15,12 +17,13 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.lolwat.Mouse.BezierMouse;
-import org.lolwat.Tasks.Dynamic.DynamicHopperTask;
-import org.lolwat.Tasks.Mining.FaladorGuild;
+import org.lolwat.Tasks.Mining.GuildCoal;
+import org.lolwat.Tasks.Mining.GuildIron;
 import org.lolwat.Tasks.Mining.VarrockEastIron;
 import org.lolwat.Tasks.WatTask;
 
 import java.awt.*;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +34,13 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
     public boolean fatalError = false;
     public Integer rocksMined = 0;
     public Integer expGained = 0;
+    public Integer goldMuled = 0;
     private Timer timer;
     private boolean firstStart = true;
     public final int MULE_TRIGGER = 100000;
     public final int MULE_SAFETY_NET = 25000;
+    private Tile lastKnownPosition = null;
+    private long lastCheckedPosition = 0;
 
     @Override
     public void onStart() {
@@ -51,7 +57,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
         // want to add Blast mining, then it would be 101 so they pick it first.
         // (if they have the available stats/quests, otherwise VarrockEastIron would go first)
         //tasks.Put(101, new BlastMiner());
-        tasks.put(101, new FaladorGuild());
+        tasks.put(102, new GuildCoal());
+        tasks.put(101, new GuildIron());
         tasks.put(100, new VarrockEastIron());
 
         Logger.log("Added " + tasks.size() + " WatTasks");
@@ -109,9 +116,26 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
             WorldHopper.closeWorldHopper();
         }
 
+        if(Client.isLoggedIn() && (lastCheckedPosition == 0 || (Instant.now().getEpochSecond() - lastCheckedPosition) >= 600)) { // Check if the client hasn't moved for 10 minutes
+            if(Players.getLocal() != null) { // If they haven't moved for 10 minutes, we're gonna reset their task
+                if(lastKnownPosition != null && Players.getLocal().getTile().equals(lastKnownPosition)) {
+                    currentTask = null;
+                    lastKnownPosition = Players.getLocal().getTile();
+                    lastCheckedPosition = Instant.now().getEpochSecond();
+                    Logger.log("Stuck on a task.. resetting");
+                    evaluate();
+                    return 500;
+                }
+
+                lastKnownPosition = Players.getLocal().getTile();
+                lastCheckedPosition = Instant.now().getEpochSecond();
+                Logger.log("We logged our position for idle checking");
+            }
+        }
+
         currentTask.execute(this);
         // We have to check below, because sometimes we rid ourselves of the task before the loop will complete.
-        return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 5) : 5;
+        return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
     }
 
     @Override
@@ -137,7 +161,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
             // Draw the background
             g.setColor(new Color(42, 42, 42, 220));
-            int boxWidth = Math.max(400, fm.stringWidth("WatMiner V2: " + currentTask.getName()));
+            int boxWidth = Math.max(400, fm.stringWidth("WatMiner - " + currentTask.getName()));
             int boxHeight = 2 * sectionHeight;
             g.fillRect(0, 0, boxWidth, boxHeight);
 
@@ -148,7 +172,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
             // Draw the title
             g.setColor(new Color(220, 220, 220));
             g.setFont(new Font("Segoe UI", Font.BOLD, 20));
-            g.drawString("WatMiner V2: " + currentTask.getName(), 15, 30);
+            g.drawString("WatMiner - " + currentTask.getName(), 15, 30);
             g.drawLine(15, 42, boxWidth - 15, 42);
 
             // Draw the mining/ore stats
@@ -159,11 +183,23 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
             g.drawString("Mining level: " + Skills.getRealLevel(Skill.MINING), 15, 85);
             g.drawString("Exp gained: " + expGained, boxWidth / 2, 85);
 
-            // Draw the script statistics information
+
             g.drawString("Runtime: " + Timer.formatTime(timer.elapsed()), 15, 100);
+            g.drawString("Gold muled: " + simplifyNumber(goldMuled), boxWidth / 2, 100);
 
             // Draw a horizontal line at the bottom of the box
             g.setColor(new Color(107, 107, 107));
+        }
+    }
+
+    //TODO make utils for numbers
+    public static String simplifyNumber(double number) {
+        if (number >= 1000000) {
+            return String.format("%.2fM", number / 1000000);
+        } else if (number >= 1000) {
+            return String.format("%.2fK", number / 1000);
+        } else {
+            return String.format("%.2f", number);
         }
     }
 }
