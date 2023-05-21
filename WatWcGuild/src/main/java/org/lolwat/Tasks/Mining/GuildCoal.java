@@ -8,6 +8,7 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -24,37 +25,22 @@ import org.lolwat.Utils.ItemUtils;
 import org.lolwat.WatMiner;
 
 import java.time.Instant;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VarrockEastIron implements WatTask {
-    private final Tile defaultSquare = new Tile(3286, 3368);
-    private final Tile alternateSquare = new Tile(3285, 3370);
-    private final List<Tile> defaultRocks;
-    private final List<Tile> alternateRocks;
-    private boolean usingAlternateRocks = false;
+public class GuildCoal implements WatTask {
+    private Tile defaultSquare = new Tile(3033, 9738);
     private long lastSuccessfulRock = 0;
     private boolean gotRock;
     private GameObject rock;
+
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
 
-    @Override
-    public String getName() {
-        return "Varrock East: Iron";
-    }
-
-    public VarrockEastIron() {
+    public GuildCoal() {
         setRequirements(new HashMap<Skill, Integer>() {{
-            put(Skill.MINING, 15);
-        }});
-
-        defaultRocks = Arrays.asList(new Tile(3286, 3369), new Tile(3285, 3368));
-        alternateRocks = Arrays.asList(new Tile(3288, 3370), new Tile(3285, 3369));
-    }
-
-    public void setRequirements(HashMap<Skill, Integer> skills) {
-        levelRequirements.putAll(skills);
+            put(Skill.MINING, 70);
+        }}, new ArrayList<>());
     }
 
     @Override
@@ -66,6 +52,15 @@ public class VarrockEastIron implements WatTask {
         }
 
         return Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100;
+    }
+
+    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
+        levelRequirements.putAll(skills);
+    }
+
+    @Override
+    public String getName() {
+        return "Mining Guild: Coal";
     }
 
     @Override
@@ -80,16 +75,19 @@ public class VarrockEastIron implements WatTask {
 
         HashMap<String, Integer> alwaysSell = new HashMap<String, Integer>() {
             {
-                put("Iron ore", -1000);
-                put("Coal", -1);
+                put("Iron ore", -1);
                 put("Tin ore", -1);
                 put("Copper ore", -1);
                 put("Logs", -1);
                 put("Oak logs", -1);
                 put("Gold bar", -1);
+                put("Bronze bar", -1);
+                put("Feather", -1);
+                put("Iron bar", -1);
             }
         };
 
+        //todo make this instanceof in watminer global task
         if(WorldHopper.isWorldHopperOpen()) {
             WorldHopper.closeWorldHopper();
         }
@@ -107,9 +105,9 @@ public class VarrockEastIron implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, null, true, new HashMap<String, Integer>() {
+                instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, this, true, new HashMap<String, Integer>() {
                     {
-                        put("Iron ore", -1000);
+                        put("Coal", -1000);
                         putAll(alwaysSell);
                     }
                 });
@@ -117,63 +115,10 @@ public class VarrockEastIron implements WatTask {
                 return;
             }
 
-            if (!Map.isTileOnScreen(defaultSquare)) {
+            if (!Map.isTileOnScreen(defaultSquare) && !Map.isTileOnMap(defaultSquare)) {
                 Logger.log("I need to traverse to the location.");
                 instance.currentTask = new DynamicTraversalTask(defaultSquare, false, this);
                 return;
-            }
-
-            List<Tile> currentlyUsing;
-            if (!usingAlternateRocks) {
-                currentlyUsing = defaultRocks;
-
-                if(!Map.isTileOnScreen(defaultSquare)) {
-                    Camera.rotateToTile(defaultSquare);
-                }
-
-                if(Players.getLocal().getLevel() >= 15) {
-                    if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock ) > 20) {
-                        currentlyUsing = alternateRocks;
-                        usingAlternateRocks = true;
-                        lastSuccessfulRock = Instant.now().getEpochSecond();
-                    }
-                } else {
-                    if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock ) > 20) {
-                        usingAlternateRocks = false;
-                        lastSuccessfulRock = 0;
-                        instance.currentTask = new DynamicHopperTask(0, this);
-                        return;
-                    }
-                }
-            } else { // Using the alternate spot
-                boolean returnBack = true;
-                for (Player pl : Players.all()) {
-                    if (pl.getTile().equals(defaultSquare)) {
-                        returnBack = false;
-                    }
-                }
-
-                if(!Map.isTileOnScreen(alternateSquare)) {
-                    Camera.rotateToTile(alternateSquare);
-                }
-
-                if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) >= 20) {
-                    lastSuccessfulRock = 0;
-                    instance.currentTask = new DynamicHopperTask(0, this);
-                    return;
-                }
-
-                if (returnBack) {
-                    currentlyUsing = defaultRocks;
-                    usingAlternateRocks = false;
-                } else {
-                    currentlyUsing = alternateRocks;
-                }
-            }
-
-            if(!Map.isTileOnScreen(currentlyUsing.get(0))) {
-                Camera.rotateToTile(currentlyUsing.get(0));
-                Sleep.sleep(100, 300);
             }
 
             if (!gotRock || (lastSuccessfulRock <= 0 || (Instant.now().getEpochSecond() - lastSuccessfulRock) > 10) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null)) {
@@ -181,19 +126,16 @@ public class VarrockEastIron implements WatTask {
                     Sleep.sleep(1000, 1500);
                 }
 
-                for (Tile tile : currentlyUsing) {
-                    GameObject obj = GameObjects.getTopObjectOnTile(tile);
-                    if (obj.getModelColors() != null) {
-                        rock = obj;
+                GameObject obj = GameObjects.closest("Coal rocks");
+                if (obj.getModelColors() != null) {
+                    rock = obj;
 
-                        if (!obj.isOnScreen()) {
-                            Camera.rotateToEntity(obj);
-                        }
-
-                        obj.interact();
-                        gotRock = true;
-                        break;
+                    if (!obj.isOnScreen()) {
+                        Camera.rotateToEntity(obj);
                     }
+
+                    obj.interact();
+                    gotRock = true;
                 }
 
                 Sleep.sleepUntil(() -> (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null), 8000);
@@ -210,6 +152,7 @@ public class VarrockEastIron implements WatTask {
     public int loopTime() {
         return 650;
     }
+
     @Override
     public void onExpGained(Skill skill, int amount, WatMiner instance) {
         gotRock = false;

@@ -106,44 +106,27 @@ public class DynamicBankingTask implements WatTask {
                 }
 
                 if(items.size() > 0) {
-                    Bank.setWithdrawMode(BankMode.NOTE);
                     for(Map.Entry<String, Integer> it : items.entrySet()) {
-                        if(Inventory.size() < 26) {
-                            // we have to double check here lol just in case, for notes
-                            if(Bank.getWithdrawMode().equals(BankMode.NOTE)) {
+                        if(!Inventory.isFull() && Bank.contains(it.getKey())) {
+                            if(Bank.getWithdrawMode() != BankMode.NOTE) {
                                 Bank.setWithdrawMode(BankMode.NOTE);
                             }
+                            Logger.log("Withdrawing " + it.getKey());
+                            // we have to double check here lol just in case, for notes
                             Bank.withdraw(it.getKey(), it.getValue());
+                            Sleep.sleep(100, 500);
                         }
                     }
-                    Bank.setWithdrawMode(BankMode.ITEM);
-                    instance.currentTask = new DynamicGrandExchangeTask("Selling items", true, items, null);
-                    return;
-                }
-            }
 
-            // TODO ***********************************************************************************
-            // TODO ****  We should check for the required amount of gold (minus safety net) to trigger muling here
-            // TODO ***********************************************************************************
-            int invMoney = 0;
-            int bankMoney = 0;
-
-            if(Inventory.contains("Coins")) {
-                invMoney = Inventory.get("Coins").getAmount();
-            }
-
-            if(Bank.contains("Coins")) {
-                bankMoney = Bank.get("Coins").getAmount();
-            }
-
-            if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
-                int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
-                if(toWithdraw > 0) {
-                    Bank.withdraw("Coins", toWithdraw);
                     Bank.close();
-                    instance.currentTask = new DynamicMulingTask("Muling Gold", Worlds.getCurrentWorld());
+                    instance.sleep(1000, 3000);
+                    instance.currentTask = new DynamicGrandExchangeTask("Selling items", true, items, this);
                     return;
                 }
+            }
+
+            if(Bank.getWithdrawMode() != BankMode.ITEM) {
+                Bank.setWithdrawMode(BankMode.ITEM);
             }
 
             // Loop through our required items
@@ -212,7 +195,7 @@ public class DynamicBankingTask implements WatTask {
                 for (Map.Entry<String, Integer> buyItem : grandExchangeToBuy.entrySet()) {
                     Logger.log(buyItem.getKey() + " Quantity of: " + buyItem.getValue());
                     // Calculate the amount of money we are going to need to buy everything at market price or so + 10%
-                    totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue()) * 2;
+                    totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue()) * 1.3;
                 }
 
                 // Holy shit! Probably gonna be a lot.
@@ -224,7 +207,7 @@ public class DynamicBankingTask implements WatTask {
                         Bank.withdraw(bankCoins.getID(), totalValue);
                         Bank.close();
                         // Send them to the Grand Exchange and have them do another task after (null means it will evaluate when complete)
-                        instance.currentTask = new DynamicGrandExchangeTask("Buying missing items", false, grandExchangeToBuy, postTask);
+                        instance.currentTask = new DynamicGrandExchangeTask("Buying missing items", false, grandExchangeToBuy, null);
                     }
                     else {
                         Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
@@ -232,6 +215,30 @@ public class DynamicBankingTask implements WatTask {
                     }
                 }
             } else {
+                // TODO ***********************************************************************************
+                // TODO ****  We should check for the required amount of gold (minus safety net) to trigger muling here
+                // TODO ***********************************************************************************
+                int invMoney = 0;
+                int bankMoney = 0;
+
+                if(Inventory.contains("Coins")) {
+                    invMoney = Inventory.get("Coins").getAmount();
+                }
+
+                if(Bank.contains("Coins")) {
+                    bankMoney = Bank.get("Coins").getAmount();
+                }
+
+                if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
+                    int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
+                    if(toWithdraw > 0) {
+                        Bank.withdraw("Coins", toWithdraw);
+                        Bank.close();
+                        instance.currentTask = new DynamicMulingTask("Muling Gold", Worlds.getCurrentWorld());
+                        return;
+                    }
+                }
+
                 // We are done banking operations, and we are NOT setting up a Grand Exchange Task.
                 Bank.close();
                 instance.currentTask = postTask;
