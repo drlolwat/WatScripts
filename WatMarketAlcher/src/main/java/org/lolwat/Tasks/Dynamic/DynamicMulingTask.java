@@ -10,6 +10,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatMiner;
@@ -58,6 +59,7 @@ public class DynamicMulingTask implements WatTask {
         }
 
         if(!active) {
+            Logger.log("Sending mule connection");
             try (Socket socket = new Socket("localhost", 8081)) {
                 // Send a message to the server
                 String message = "READY|" + Players.getLocal().getName();
@@ -80,6 +82,7 @@ public class DynamicMulingTask implements WatTask {
                         targetWorld = Integer.parseInt(sp[2]);
                     }
 
+                    Logger.log("Good to go, hopping");
                     instance.currentTask = new DynamicHopperTask(targetWorld, this);
                 }
             } catch (Exception e) {
@@ -112,6 +115,7 @@ public class DynamicMulingTask implements WatTask {
                 // are we on the first window
                 if (Trade.isOpen(1)) {
                     if (Inventory.contains("Coins") && Inventory.get("Coins") != null) {
+                        instance.goldMuled += Inventory.get("Coins").getAmount();
                         Trade.addItem("Coins", Inventory.get("Coins").getAmount());
                     }
                     Sleep.sleep(2000, 3000);
@@ -120,9 +124,11 @@ public class DynamicMulingTask implements WatTask {
 
                 if (Trade.isOpen(2)) {
                     Trade.acceptTrade(2);
-                    Sleep.sleepUntil(() -> !Trade.isOpen(), 2000);
                     completed = true;
+                    Sleep.sleepUntil(() -> !Trade.isOpen(), 2000);
                 }
+            } else {
+                Logger.log("Waiting for mule to show up");
             }
         }
     }
