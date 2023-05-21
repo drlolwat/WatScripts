@@ -4,6 +4,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
+import org.dreambot.api.methods.grandexchange.GrandExchangeItem;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -55,7 +56,7 @@ public class DynamicGrandExchangeTask implements WatTask {
             // Check if we are selling here, if so, make sure we already have everything we need.
             // if not, quickly create a new task to grab the shit we need from the bank.
             if(isSelling) { // 2 loops of the inventory shouldn't really harm performance, it's just bad practice
-                for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
+               /* for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                     if(!Inventory.contains(item.getKey())) {
                         req.put(item.getKey(), item.getValue());
                     }
@@ -64,13 +65,13 @@ public class DynamicGrandExchangeTask implements WatTask {
                 if(req.size() > 0) {
                     instance.currentTask = new DynamicBankingTask("Grabbing required items", req, true, this, false);
                     return;
-                }
+                }*/
             }
             else {
-                int moneyRequired = 0;
+                /*int moneyRequired = 0;
                 for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                     if(!Inventory.contains(item.getKey())) {
-                        moneyRequired += (LivePrices.get(item.getKey()) * item.getValue() * 1.8);
+                        moneyRequired += (LivePrices.get(item.getKey()) * item.getValue()) * 1.3;
                     }
                 }
 
@@ -78,35 +79,59 @@ public class DynamicGrandExchangeTask implements WatTask {
                     req.put("Coins", moneyRequired);
                     instance.currentTask = new DynamicBankingTask("Grabbing coins", req, true, this, false);
                     return;
-                }
+                }*/
             }
+
+            //if (!GrandExchange.isOpen()) {
+            //    Sleep.sleep(500, 1000);
+            //}
+
+            Logger.log("Opening Grand Exchange");
 
             if (!GrandExchange.isOpen()) {
                 GrandExchange.open();
-            }
-
-            Logger.log("Opening Grand Exchange");
-            Sleep.sleepUntil(GrandExchange::isOpen, 1000);
-
-            if (!GrandExchange.isOpen()) {
                 return;
             }
+
+            //Sleep.sleepUntil(GrandExchange::isOpen, 10000);
+
+
+            Sleep.sleep(1000, 3000);
 
             Logger.log("==== Beginning G.E Main Operations ====");
             Logger.log("We have " + itemList.size() + " items to deal with");
             for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                 // Get a slot. If unavailable, will cancel the other offers we have going
-                int slot = GrandExchange.getFirstOpenSlot();
-                if (slot == -1) {
+                if (GrandExchange.getFirstOpenSlot() == -1) {
+                    Sleep.sleep(500, 900);
                     if(GrandExchange.isReadyToCollect()) {
                         GrandExchange.collect();
                     }
+                    Sleep.sleep(500, 900);
 
                     if (GrandExchange.getFirstOpenSlot() == -1) {
-                        Logger.log("No slots available in G.E, cancelling.");
-                        GrandExchange.cancelAll();
-                        return;
+                        for(GrandExchangeItem gxIt : GrandExchange.getItems()) {
+
+                            if(gxIt.isReadyToCollect()) {
+                                GrandExchange.collect();
+                            } else {
+                                GrandExchange.cancelOffer(gxIt.getSlot());
+                            }
+
+                            Sleep.sleep(100, 400);
+                        }
+
+                        Sleep.sleep(100, 300);
+                        GrandExchange.collect();
                     }
+                }
+
+                int slot = GrandExchange.getFirstOpenSlot();
+                if(slot == -1) {
+                    Logger.log("Crazy slot issue again with the G.E");
+                    instance.currentTask = null;
+                    instance.fatalError = true;
+                    return;
                 }
 
                 if (item.getValue() == 0) {
@@ -158,7 +183,7 @@ public class DynamicGrandExchangeTask implements WatTask {
                     // Add the item.
                     GrandExchange.addBuyItem(item.getKey());
                     Sleep.sleep(100, 300);
-                    GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) * 1.8));
+                    GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) * 1.3));
                     Sleep.sleep(100, 300);
                     GrandExchange.confirm();
 
@@ -192,7 +217,7 @@ public class DynamicGrandExchangeTask implements WatTask {
             Bank.depositAllItems();
             Bank.close();
 
-            instance.currentTask = null;
+            instance.currentTask = postTask;
         }
         else {
             if(Walking.shouldWalk(7)) {
