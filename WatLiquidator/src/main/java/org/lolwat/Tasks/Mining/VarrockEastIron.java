@@ -186,7 +186,7 @@ public class VarrockEastIron implements WatTask {
                     if (obj.getModelColors() != null) {
                         rock = obj;
 
-                        if (!obj.isOnScreen()) {
+                        if (!Map.isTileOnScreen(obj.getTile())) {
                             Camera.rotateToEntity(obj);
                         }
 
