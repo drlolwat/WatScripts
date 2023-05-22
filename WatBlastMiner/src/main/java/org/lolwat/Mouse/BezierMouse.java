@@ -29,13 +29,15 @@ public class BezierMouse implements MouseMovementAlgorithm {
         double initialDistance = distance(point, curPos);
         double currentDistance = initialDistance;
 
-        while (currentDistance / initialDistance > 0.05 && Calculations.random(1) == 2) { // Loop until distance ratio is below 5% or counter reaches 10
-            Point rp = randomPoint(curPos, point);
-            moveCursor(curPos, rp);
-            Sleep.sleep(1, 100);
-            curPos = Mouse.getPosition();
-            currentDistance = distance(point, curPos);
-        }
+        try {
+            while (currentDistance / initialDistance > 0.05 && Calculations.random(1) == 2) { // Loop until distance ratio is below 5% or counter reaches 10
+                Point rp = randomPoint(curPos, point);
+                moveCursor(curPos, rp);
+                //Thread.sleep(1, 100);
+                curPos = Mouse.getPosition();
+                currentDistance = distance(point, curPos);
+            }
+        } catch (Exception ignored) { }
         moveCursor(curPos, point);
     }
 
@@ -43,12 +45,14 @@ public class BezierMouse implements MouseMovementAlgorithm {
         Point controlPoint = randomPoint(startPos, endPos);
         int steps = Calculations.random(5, 25);
 
-        for (int i = 0; i <= steps; i++) {
-            double t = (double) i / steps;
-            Point pointOnCurve = calculateBezierPoint(t, startPos, controlPoint, endPos);
-            Sleep.sleep(34);
-            Mouse.hop(pointOnCurve);
-        }
+        try {
+            for (int i = 0; i <= steps; i++) {
+                double t = (double) i / steps;
+                Point pointOnCurve = calculateBezierPoint(t, startPos, controlPoint, endPos);
+                Thread.sleep(34);
+                Mouse.hop(pointOnCurve);
+            }
+        } catch (Exception ignored) { }
     }
 
     private static Point calculateBezierPoint(double t, Point p0, Point p1, Point p2) {
