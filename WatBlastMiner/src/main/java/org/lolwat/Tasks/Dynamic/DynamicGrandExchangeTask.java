@@ -52,49 +52,12 @@ public class DynamicGrandExchangeTask implements WatTask {
                 Camera.rotateToEntity(clerk);
             }
 
-            HashMap<String, Integer> req = new HashMap<>();
-            // Check if we are selling here, if so, make sure we already have everything we need.
-            // if not, quickly create a new task to grab the shit we need from the bank.
-            if(isSelling) { // 2 loops of the inventory shouldn't really harm performance, it's just bad practice
-               /* for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
-                    if(!Inventory.contains(item.getKey())) {
-                        req.put(item.getKey(), item.getValue());
-                    }
-                }
-
-                if(req.size() > 0) {
-                    instance.currentTask = new DynamicBankingTask("Grabbing required items", req, true, this, false);
-                    return;
-                }*/
-            }
-            else {
-                /*int moneyRequired = 0;
-                for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
-                    if(!Inventory.contains(item.getKey())) {
-                        moneyRequired += (LivePrices.get(item.getKey()) * item.getValue()) * 1.3;
-                    }
-                }
-
-                if(!Inventory.contains("Coins") || (Inventory.get("Coins") != null && Inventory.get("Coins").getAmount() < moneyRequired)) {
-                    req.put("Coins", moneyRequired);
-                    instance.currentTask = new DynamicBankingTask("Grabbing coins", req, true, this, false);
-                    return;
-                }*/
-            }
-
-            //if (!GrandExchange.isOpen()) {
-            //    Sleep.sleep(500, 1000);
-            //}
-
             Logger.log("Opening Grand Exchange");
 
             if (!GrandExchange.isOpen()) {
                 GrandExchange.open();
                 return;
             }
-
-            //Sleep.sleepUntil(GrandExchange::isOpen, 10000);
-
 
             Sleep.sleep(1000, 3000);
 
@@ -123,6 +86,7 @@ public class DynamicGrandExchangeTask implements WatTask {
 
                         Sleep.sleep(100, 300);
                         GrandExchange.collect();
+                        Sleep.sleep(500, 800);
                     }
                 }
 
@@ -180,22 +144,30 @@ public class DynamicGrandExchangeTask implements WatTask {
 
                     Sleep.sleep(400, 800);
 
-                    // Add the item.
-                    GrandExchange.addBuyItem(item.getKey());
-                    Sleep.sleep(100, 300);
-                    GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) * 1.3));
-                    Sleep.sleep(100, 300);
-                    GrandExchange.confirm();
+                    while(item.getValue() > 0) {
+                        // Add the item.
+                        if (GrandExchange.addBuyItem(item.getKey())) {
+                            int itemCost = (int) (LivePrices.get(item.getKey()) * 1.3);
+                            if(Inventory.contains("Coins") && itemCost > Inventory.get("Coins").getAmount()) {
+                                itemCost = Inventory.get("Coins").getAmount();
+                            }
 
-                    // Sleep until the item is available..
-                    Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 10000);
+                            Sleep.sleep(100, 300);
+                            GrandExchange.setPrice(itemCost);
+                            Sleep.sleep(100, 300);
+                            GrandExchange.confirm();
 
-                    if (GrandExchange.isReadyToCollect(slot)) {
-                        GrandExchange.collect();
-                        item.setValue(0);
+                            // Sleep until the item is available..
+                            Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 10000);
+
+                            if (GrandExchange.isReadyToCollect(slot)) {
+                                GrandExchange.collect();
+                                item.setValue(0);
+                            }
+
+                            Sleep.sleep(50, 125);
+                        }
                     }
-
-                    Sleep.sleep(50, 125);
                 }
             }
 
