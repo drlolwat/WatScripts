@@ -113,7 +113,7 @@ public class DynamicBankingTask implements WatTask {
                             }
                             Logger.log("Withdrawing " + it.getKey());
                             // we have to double check here lol just in case, for notes
-                            Bank.withdraw(it.getKey(), it.getValue());
+                            Bank.withdrawAll(it.getKey());
                             Sleep.sleep(100, 500);
                         }
                     }
