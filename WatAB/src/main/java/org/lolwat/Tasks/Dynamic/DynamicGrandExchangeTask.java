@@ -1,6 +1,5 @@
 package org.lolwat.Tasks.Dynamic;
 
-import com.google.common.collect.Lists;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -15,13 +14,11 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatMiner;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class DynamicGrandExchangeTask implements WatTask {
     private final String name;
@@ -174,7 +171,9 @@ public class DynamicGrandExchangeTask implements WatTask {
                 }
             }
 
-            Sleep.sleep(2000, 3000);
+            itemList.clear();
+
+            Sleep.sleep(3000);
             if(GrandExchange.isReadyToCollect()) {
                 GrandExchange.collect();
             }
@@ -187,26 +186,14 @@ public class DynamicGrandExchangeTask implements WatTask {
             }
 
             Sleep.sleepUntil(Bank::isOpen, 7500);
-
-            // Deposit only what we don't need.
-            if(itemList.size() > 0) {
-                for(Item it : Inventory.all()) {
-                    if(!itemList.containsKey(it.getName())) {
-                        Bank.deposit(it.getName());
-                        Sleep.sleep(100, 250);
-                    }
-                }
-            } else {
-                Bank.depositAllItems();
-            }
-
+            Bank.depositAllItems();
             Bank.close();
 
-            itemList.clear();
-            instance.currentTask = postTask;
+            instance.currentTask = postTask; //
         }
         else {
             if(Walking.shouldWalk(7)) {
+                Logger.log("Walking to Grand Exchange");
                 Walking.walk(BankLocation.GRAND_EXCHANGE);
             }
         }
