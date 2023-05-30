@@ -16,7 +16,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.Tasks.WatTask;
-import org.lolwat.WatMiner;
+import org.lolwat.WatAIO;
 
 import java.util.HashMap;
 
@@ -44,7 +44,7 @@ public class DynamicGrandExchangeTask implements WatTask {
     }
 
     @Override
-    public void execute(WatMiner instance) {
+    public void execute(WatAIO instance) {
         if(NPCs.closest("Grand Exchange Clerk") != null) {
             Logger.log("Grand Exchange Clerk: within sight");
             Entity clerk = NPCs.closest("Grand Exchange Clerk");
@@ -210,7 +210,7 @@ public class DynamicGrandExchangeTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
     }
 }
