@@ -111,10 +111,20 @@ public class DynamicBankingTask implements WatTask {
                             if(Bank.getWithdrawMode() != BankMode.NOTE) {
                                 Bank.setWithdrawMode(BankMode.NOTE);
                             }
+
                             Logger.log("Withdrawing " + it.getKey());
                             // we have to double check here lol just in case, for notes
-                            Bank.withdraw(it.getKey(), it.getValue());
-                            Sleep.sleep(100, 500);
+                            Item bankItem = Bank.get(it.getKey());
+                            if(bankItem != null) {
+                                if (bankItem.getAmount() == it.getValue()) {
+                                    // If the item amount in the bank matches it.getValue(), withdraw all
+                                    Bank.withdrawAll(it.getKey());
+                                } else {
+                                    // Otherwise, withdraw the specific quantity
+                                    Bank.withdraw(it.getKey(), it.getValue());
+                                }
+                                Sleep.sleep(100, 500);
+                            }
                         }
                     }
 
