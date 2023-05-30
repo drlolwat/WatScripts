@@ -189,7 +189,7 @@ public class DynamicGrandExchangeTask implements WatTask {
             Bank.depositAllItems();
             Bank.close();
 
-            instance.currentTask = postTask; //
+            instance.currentTask = postTask;
         }
         else {
             if(Walking.shouldWalk(7)) {
