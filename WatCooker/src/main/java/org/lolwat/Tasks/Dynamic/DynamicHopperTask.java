@@ -6,7 +6,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
-import org.lolwat.WatMiner;
+import org.lolwat.WatAIO;
 
 public class DynamicHopperTask implements WatTask {
     private final WatTask postTask;
@@ -23,7 +23,7 @@ public class DynamicHopperTask implements WatTask {
     }
 
     @Override
-    public void execute(WatMiner instance) {
+    public void execute(WatAIO instance) {
         if (!Tab.LOGOUT.isOpen()) {
             Tab.LOGOUT.open();
             Sleep.sleep(500, 1000);
@@ -55,7 +55,7 @@ public class DynamicHopperTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
     }
 
