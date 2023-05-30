@@ -8,12 +8,11 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
-import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
-import org.lolwat.WatMiner;
+import org.lolwat.WatAIO;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -47,7 +46,7 @@ public class DynamicMulingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatMiner instance) {
+    public void execute(WatAIO instance) {
         if(NPCs.closest("Grand Exchange Clerk") == null) {
             instance.currentTask = new DynamicTraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
             return;
@@ -115,7 +114,7 @@ public class DynamicMulingTask implements WatTask {
                 // are we on the first window
                 if (Trade.isOpen(1)) {
                     if (Inventory.contains("Coins") && Inventory.get("Coins") != null) {
-                        instance.goldMuled += Inventory.get("Coins").getAmount();
+                        //instance.goldMuled += Inventory.get("Coins").getAmount();
                         Trade.addItem("Coins", Inventory.get("Coins").getAmount());
                     }
                     Sleep.sleep(2000, 3000);
@@ -144,7 +143,7 @@ public class DynamicMulingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
     }
 }
