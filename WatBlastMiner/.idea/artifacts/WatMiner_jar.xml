@@ -2,7 +2,7 @@
   <artifact type="jar" name="WatMiner:jar">
     <output-path>$USER_HOME$/DreamBot/Scripts</output-path>
     <root id="archive" name="WatMiner.jar">
-      <element id="module-output" name="WatMiner" />
+      <element id="module-output" name="WatAIO" />
     </root>
   </artifact>
 </component>
