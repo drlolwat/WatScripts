@@ -1,14 +1,12 @@
 package org.lolwat.Tasks.Dynamic;
 
-import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
-import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
-import org.lolwat.WatMiner;
+import org.lolwat.WatAIO;
 
 import java.time.Instant;
 
@@ -31,7 +29,7 @@ public class DynamicTraversalTask implements WatTask {
     }
 
     @Override
-    public void execute(WatMiner instance) {
+    public void execute(WatAIO instance) {
         if(Players.getLocal().getTile().equals(target) || (!mustBeOnTile && target.distance() <= 5)) {
             Logger.log("Reached target: X:" + target.getX() + ", Y:" + target.getY());
             instance.currentTask = postTask;
@@ -56,7 +54,7 @@ public class DynamicTraversalTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
     }
 
