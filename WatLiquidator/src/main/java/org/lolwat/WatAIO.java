@@ -21,6 +21,7 @@ import org.lolwat.Tasks.Mining.GuildCoal;
 import org.lolwat.Tasks.Mining.GuildIron;
 import org.lolwat.Tasks.Mining.VarrockEastIron;
 import org.lolwat.Tasks.WatTask;
+import org.lolwat.Utils.SkillUtils;
 
 import java.awt.*;
 import java.time.Instant;
@@ -99,52 +100,67 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
     @Override
     public void onPaint(Graphics g) {
-        if(currentTask != null) {
-            // ChatGPT wrote this
-            // Enable anti-aliasing for smoother text
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        // Enable anti-aliasing for smoother text
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-            // Set the font metrics for sizing the chatbox
-            FontMetrics fm = g2d.getFontMetrics();
+        // Set the font metrics for sizing the chatbox
+        FontMetrics fm = g2d.getFontMetrics();
 
-            // Determine the height of each section
-            int sectionHeight = 58;
-
-            // Draw the background
-            g.setColor(new Color(42, 42, 42, 220));
-            int boxWidth = Math.max(400, fm.stringWidth("WatAIO"));
-            int boxHeight = 2 * sectionHeight;
-            g.fillRect(0, 0, boxWidth, boxHeight);
-
-            // Draw the border
-            g.setColor(new Color(107, 107, 107));
-            g.drawRect(0, 0, boxWidth, boxHeight);
-
-            // Draw the title
-            g.setColor(new Color(220, 220, 220));
-            g.setFont(new Font("Segoe UI", Font.BOLD, 20));
-            g.drawString("WatAIO", 15, 30);
-            g.drawLine(15, 42, boxWidth - 15, 42);
-
-            // Draw the mining/ore stats
-            g.setColor(new Color(220, 220, 220));
-            g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            g.drawString("Current task: " + currentTask.getName(), 15, 70);
-            g.drawString("Runtime: " + Timer.formatTime(timer.elapsed()), 15, 100);
-            // Draw a horizontal line at the bottom of the box
-            g.setColor(new Color(107, 107, 107));
+        // Calculate the number of free-to-play skills
+        int freeSkillsCount = 0;
+        for (int i = 0; i < 23; i++) {
+            Skill sk = Skill.forId(i);
+            if(SkillUtils.isFreeToPlay(sk)) {
+                freeSkillsCount++;
+            }
         }
-    }
 
-    //TODO make utils for numbers
-    public static String simplifyNumber(double number) {
-        if (number >= 1000000) {
-            return String.format("%.2fM", number / 1000000);
-        } else if (number >= 1000) {
-            return String.format("%.2fK", number / 1000);
-        } else {
-            return String.format("%.2f", number);
+        int rowHeight = 30; // The height of each row, adjust this as needed
+        int rowsCount = 3 + 2; // 3 rows of skills + 2 rows of additional text
+        int boxHeight = (rowsCount * rowHeight) - 38; // remove 28px for padding
+
+        // Draw the background
+        g.setColor(new Color(42, 42, 42, 220));
+        int boxWidth = 480;  // Set a fixed box width to fit 7 columns
+        g.fillRect(0, 0, boxWidth, boxHeight);
+
+        // Draw the border
+        g.setColor(new Color(107, 107, 107));
+        g.drawRect(0, 0, boxWidth, boxHeight);
+
+        // Draw the title
+        g.setColor(new Color(220, 220, 220));
+        g.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        g.drawString("WatAIO", 15, 30);
+        g.drawLine(15, 42, boxWidth - 15, 42);
+
+        // Draw two rows of additional information
+        g.setColor(new Color(220, 220, 220));
+        g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Placeholder3", "Placeholder4"}};
+        int rowOffset = 16;
+        for (int row = 0; row < 2; row++) {
+            for (int col = 0; col < 2; col++) {
+                g.drawString(additionalInfo[row][col], 170 + col * 150, rowOffset + row * 20);
+            }
+        }
+
+        // Draw the skill stats
+        int yOffset = 70;
+        int count = 0;  // Track number of skills drawn to properly calculate column and row
+        for (int i = 0; i < freeSkillsCount; i++) {
+            Skill sk = Skill.forId(i);
+            if(SkillUtils.isFreeToPlay(sk)) {
+                int column = count % 7;
+                int row = count / 7;
+
+                int x = 15 + column * 65; // Adjust the x-offset for 7 columns
+                int y = yOffset + row * 20;
+
+                g.drawString(sk.getName().substring(0, 3) + ": " + Skills.getRealLevel(sk), x, y);
+                count++;
+            }
         }
     }
 }
