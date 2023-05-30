@@ -118,6 +118,10 @@ public class VarrockEastIron implements WatTask {
             }
 
             if (!Map.isTileOnScreen(defaultSquare)) {
+                if(Map.isTileOnMap(defaultSquare)) {
+                    Camera.rotateToTile(defaultSquare);
+                }
+
                 Logger.log("I need to traverse to the location.");
                 instance.currentTask = new DynamicTraversalTask(defaultSquare, false, this);
                 return;
@@ -186,7 +190,7 @@ public class VarrockEastIron implements WatTask {
                     if (obj.getModelColors() != null) {
                         rock = obj;
 
-                        if (!obj.isOnScreen()) {
+                        if (!Map.isTileOnScreen(obj.getTile())) {
                             Camera.rotateToEntity(obj);
                         }
 
