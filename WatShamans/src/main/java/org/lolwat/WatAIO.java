@@ -24,23 +24,20 @@ import org.lolwat.Tasks.WatTask;
 
 import java.awt.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@ScriptManifest(name = "WatMiner", description = "It is what it is", author = "lolwat", version = 2.0, category = Category.MINING, image = "")
-public class WatMiner extends AbstractScript implements ExperienceListener {
-    public HashMap<Integer, WatTask> tasks;
+@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC, image = "")
+public class WatAIO extends AbstractScript implements ExperienceListener {
+    private Timer timer;
+    private List<WatTask> allTasks;
+    private boolean firstStart = true;
     public WatTask currentTask;
     public boolean fatalError = false;
-    public Integer rocksMined = 0;
-    public Integer expGained = 0;
-    public Integer goldMuled = 0;
-    private Timer timer;
-    private boolean firstStart = true;
-    public final int MULE_TRIGGER = 100000;
-    public final int MULE_SAFETY_NET = 25000;
-    private Tile lastKnownPosition = null;
-    private long lastCheckedPosition = 0;
+    public static int MULE_SAFETY_NET = 25000;
+    public static int MULE_TRIGGER = 125000;
 
     @Override
     public void onStart() {
@@ -50,18 +47,8 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
         Logger.log("WatMiner is starting, creating WatTask instances");
 
-        // Self-explanatory, eventually we'll probably want to dynamically load everything in the Tasks/Building Tasks/Mining etc
-        tasks = new HashMap<>();
-
-        // The higher the integer, the more important the task. So if we
-        // want to add Blast mining, then it would be 101 so they pick it first.
-        // (if they have the available stats/quests, otherwise VarrockEastIron would go first)
-        //tasks.Put(101, new BlastMiner());
-        tasks.put(102, new GuildCoal());
-        tasks.put(101, new GuildIron());
-        tasks.put(100, new VarrockEastIron());
-
-        Logger.log("Added " + tasks.size() + " WatTasks");
+        allTasks = new ArrayList<>();
+        Logger.log("Added " + allTasks.size() + " WatTasks");
 
         timer = new Timer();
 
@@ -70,26 +57,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
     private void evaluate() {
         Logger.log("Assessing tasks to see what is available for us to perform");
-        tasks.entrySet().stream()
-                .sorted(Map.Entry.<Integer, WatTask>comparingByKey().reversed())
-                .forEach(entry -> {
-                    if(currentTask == null) {
-                        WatTask task = entry.getValue();
-                        if (task.canPerformTask()) {
-                            currentTask = task; // Begins the task if it can be done. Maybe wait for login to do this logic
-                            Logger.log("Picked a task: " + currentTask.getName());
-                        } else {
-                            // Else we can probably add in logic here to check if we have tasks to meet the requirements
-                            // and perform those if possible (though ideally any acc we pass to this script can perform
-                            // most if not all of the tasks already via another builder script or something)
-                        }
-                    }
-                });
 
-        if(currentTask == null) {
-            Logger.error("Unable to pick a task: does not meet any requirements");
-            fatalError = true;
-        }
     }
 
     @Override
@@ -116,22 +84,6 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
             WorldHopper.closeWorldHopper();
         }
 
-        if(Client.isLoggedIn() && (lastCheckedPosition == 0 || (Instant.now().getEpochSecond() - lastCheckedPosition) >= 600)) { // Check if the client hasn't moved for 10 minutes
-            if(Players.getLocal() != null) { // If they haven't moved for 10 minutes, we're gonna reset their task
-                if(lastKnownPosition != null && Players.getLocal().getTile().equals(lastKnownPosition)) {
-                    currentTask = null;
-                    lastKnownPosition = Players.getLocal().getTile();
-                    lastCheckedPosition = Instant.now().getEpochSecond();
-                    Logger.log("Stuck on a task.. resetting");
-                    evaluate();
-                    return 500;
-                }
-
-                lastKnownPosition = Players.getLocal().getTile();
-                lastCheckedPosition = Instant.now().getEpochSecond();
-                Logger.log("We logged our position for idle checking");
-            }
-        }
 
         currentTask.execute(this);
         // We have to check below, because sometimes we rid ourselves of the task before the loop will complete.
@@ -161,7 +113,7 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
 
             // Draw the background
             g.setColor(new Color(42, 42, 42, 220));
-            int boxWidth = Math.max(400, fm.stringWidth("WatMiner - " + currentTask.getName()));
+            int boxWidth = Math.max(400, fm.stringWidth("WatAIO"));
             int boxHeight = 2 * sectionHeight;
             g.fillRect(0, 0, boxWidth, boxHeight);
 
@@ -172,21 +124,14 @@ public class WatMiner extends AbstractScript implements ExperienceListener {
             // Draw the title
             g.setColor(new Color(220, 220, 220));
             g.setFont(new Font("Segoe UI", Font.BOLD, 20));
-            g.drawString("WatMiner - " + currentTask.getName(), 15, 30);
+            g.drawString("WatAIO", 15, 30);
             g.drawLine(15, 42, boxWidth - 15, 42);
 
             // Draw the mining/ore stats
             g.setColor(new Color(220, 220, 220));
             g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            g.drawString("Ores mined: " + rocksMined, 15, 70);
-            g.drawString("Mining rate: " + timer.getHourlyRate(rocksMined) + "/h", boxWidth / 2, 70);
-            g.drawString("Mining level: " + Skills.getRealLevel(Skill.MINING), 15, 85);
-            g.drawString("Exp gained: " + expGained, boxWidth / 2, 85);
-
-
+            g.drawString("Current task: " + currentTask.getName(), 15, 70);
             g.drawString("Runtime: " + Timer.formatTime(timer.elapsed()), 15, 100);
-            g.drawString("Gold muled: " + simplifyNumber(goldMuled), boxWidth / 2, 100);
-
             // Draw a horizontal line at the bottom of the box
             g.setColor(new Color(107, 107, 107));
         }

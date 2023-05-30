@@ -14,7 +14,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.Tasks.WatTask;
-import org.lolwat.WatMiner;
+import org.lolwat.WatAIO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +59,7 @@ public class DynamicBankingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatMiner instance) {
+    public void execute(WatAIO instance) {
         // Are we near a banker?
         if(NPCs.closest("Banker") != null) {
             // Open the bank if we don't have it open
@@ -275,7 +275,7 @@ public class DynamicBankingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
     }
 }
