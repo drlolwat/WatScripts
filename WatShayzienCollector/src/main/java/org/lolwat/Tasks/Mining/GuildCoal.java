@@ -131,7 +131,7 @@ public class GuildCoal implements WatTask {
                     rock = obj;
 
                     if (!obj.isOnScreen()) {
-                        Camera.rotateToEntity(obj);
+                        Camera.rotateToEntity(obj); // lol
                     }
 
                     obj.interact();
