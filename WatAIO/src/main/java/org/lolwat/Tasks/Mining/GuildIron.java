@@ -22,7 +22,7 @@ import org.lolwat.Tasks.Dynamic.DynamicHopperTask;
 import org.lolwat.Tasks.Dynamic.DynamicTraversalTask;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.Utils.ItemUtils;
-import org.lolwat.WatMiner;
+import org.lolwat.WatAIO;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class GuildIron implements WatTask {
     }
 
     @Override
-    public void execute(WatMiner instance) {
+    public void execute(WatAIO instance) {
         String pickaxe = ItemUtils.getBestPickaxeForLevel();
 
         HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
@@ -222,11 +222,11 @@ public class GuildIron implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatMiner instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
         gotRock = false;
         lastSuccessfulRock = Instant.now().getEpochSecond();
 
-        instance.expGained += amount;
-        instance.rocksMined += 1;
+        //instance.expGained += amount;
+        //instance.rocksMined += 1;
     }
 }
