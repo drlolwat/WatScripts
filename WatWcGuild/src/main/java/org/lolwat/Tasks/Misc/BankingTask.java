@@ -228,24 +228,26 @@ public class BankingTask implements WatTask {
                 // TODO ***********************************************************************************
                 // TODO ****  We should check for the required amount of gold (minus safety net) to trigger muling here
                 // TODO ***********************************************************************************
-                int invMoney = 0;
-                int bankMoney = 0;
+                if(!instance.MULE_DEAD) {
+                    int invMoney = 0;
+                    int bankMoney = 0;
 
-                if(Inventory.contains("Coins")) {
-                    invMoney = Inventory.get("Coins").getAmount();
-                }
+                    if (Inventory.contains("Coins")) {
+                        invMoney = Inventory.get("Coins").getAmount();
+                    }
 
-                if(Bank.contains("Coins")) {
-                    bankMoney = Bank.get("Coins").getAmount();
-                }
+                    if (Bank.contains("Coins")) {
+                        bankMoney = Bank.get("Coins").getAmount();
+                    }
 
-                if((invMoney + bankMoney) >= WatAIO.MULE_TRIGGER) {
-                    int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
-                    if(toWithdraw > 0) {
-                        Bank.withdraw("Coins", toWithdraw);
-                        Bank.close();
-                        instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld());
-                        return;
+                    if ((invMoney + bankMoney) >= WatAIO.MULE_TRIGGER) {
+                        int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
+                        if (toWithdraw > 0) {
+                            Bank.withdraw("Coins", toWithdraw);
+                            Bank.close();
+                            instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld());
+                            return;
+                        }
                     }
                 }
 
