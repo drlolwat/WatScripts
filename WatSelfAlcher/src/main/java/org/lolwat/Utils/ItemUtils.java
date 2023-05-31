@@ -13,13 +13,13 @@ public class ItemUtils {
     public static String getRockNameForType(RockType type) {
         switch(type) {
             default: return "";
-            case COPPER: return "copper";
-            case TIN: return "tin";
-            case IRON: return "iron";
-            case COAL: return "coal";
-            case MITHRIL: return "mithril";
-            case ADAMANTITE: return "adamantite";
-            case RUNITE: return "runite";
+            case COPPER: return "Copper rocks";
+            case TIN: return "Tin rocks";
+            case IRON: return "Iron rocks";
+            case COAL: return "Coal rocks";
+            case MITHRIL: return "Mithril rocks";
+            case ADAMANTITE: return "Adamantite rocks";
+            case RUNITE: return "Runite rocks";
         }
     }
 
@@ -29,7 +29,7 @@ public class ItemUtils {
             put(31, "Adamant pickaxe");
             put(21, "Mithril pickaxe");
             put(11, "Steel pickaxe");
-            put(1, "Iron pickaxe");
+            put(1, "Bronze pickaxe");
         }
     };
 
@@ -50,7 +50,7 @@ public class ItemUtils {
             case "adamant pickaxe": return 31;
             case "mithril pickaxe": return 21;
             case "steel pickaxe": return 11;
-            default: return 0;
+            default: return 1;
         }
     }
 
@@ -70,8 +70,7 @@ public class ItemUtils {
             return pickaxeTypes.get(11);
         }
         else {
-            Logger.error("Unable to select a valid pickaxe for my level");
-            return null;
+            return pickaxeTypes.get(1);
         }
     }
 }
