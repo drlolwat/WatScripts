@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Dynamic;
+package org.lolwat.Tasks.Misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -20,7 +20,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
-public class DynamicMulingTask implements WatTask {
+public class MulingTask implements WatTask {
     String name;
     boolean active;
     String target;
@@ -28,7 +28,7 @@ public class DynamicMulingTask implements WatTask {
     int originalWorld;
     boolean completed = false;
 
-    public DynamicMulingTask(String taskName, int currentWorld) {
+    public MulingTask(String taskName, int currentWorld) {
         name = taskName;
         active = false;
         target = "";
@@ -48,12 +48,12 @@ public class DynamicMulingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(NPCs.closest("Grand Exchange Clerk") == null) {
-            instance.currentTask = new DynamicTraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
+            instance.currentTask = new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
             return;
         }
 
         if(completed) {
-            instance.currentTask = new DynamicHopperTask(originalWorld, null);
+            instance.currentTask = new HopperTask(originalWorld, null);
             return;
         }
 
@@ -82,7 +82,7 @@ public class DynamicMulingTask implements WatTask {
                     }
 
                     Logger.log("Good to go, hopping");
-                    instance.currentTask = new DynamicHopperTask(targetWorld, this);
+                    instance.currentTask = new HopperTask(targetWorld, this);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,5 +145,10 @@ public class DynamicMulingTask implements WatTask {
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return null;
     }
 }

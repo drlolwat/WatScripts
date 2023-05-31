@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Dynamic;
+package org.lolwat.Tasks.Misc;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
@@ -8,7 +8,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatAIO;
 
-public class DynamicHopperTask implements WatTask {
+public class HopperTask implements WatTask {
     private final WatTask postTask;
     private final int world;
 
@@ -17,7 +17,7 @@ public class DynamicHopperTask implements WatTask {
         return "World Hopping";
     }
 
-    public DynamicHopperTask(int toWorld, WatTask post) {
+    public HopperTask(int toWorld, WatTask post) {
         postTask = post;
         world = toWorld;
     }
@@ -62,5 +62,10 @@ public class DynamicHopperTask implements WatTask {
     @Override
     public boolean canPerformTask() {
         return true;
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return null;
     }
 }
