@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Dynamic;
+package org.lolwat.Tasks.Misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
@@ -20,14 +20,14 @@ import org.lolwat.WatAIO;
 
 import java.util.HashMap;
 
-public class DynamicGrandExchangeTask implements WatTask {
+public class GrandExchangeTask implements WatTask {
     private final String name;
     private final HashMap<String, Integer> itemList;
     private final WatTask postTask;
     private final boolean isSelling;
     private int retries = 0;
 
-    public DynamicGrandExchangeTask(String taskName, boolean selling, HashMap<String, Integer> items, WatTask post) {
+    public GrandExchangeTask(String taskName, boolean selling, HashMap<String, Integer> items, WatTask post) {
         name = taskName;
         itemList = items;
         postTask = post;
@@ -212,5 +212,10 @@ public class DynamicGrandExchangeTask implements WatTask {
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
 
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return null;
     }
 }

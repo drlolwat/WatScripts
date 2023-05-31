@@ -17,9 +17,9 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
-import org.lolwat.Tasks.Dynamic.DynamicBankingTask;
-import org.lolwat.Tasks.Dynamic.DynamicHopperTask;
-import org.lolwat.Tasks.Dynamic.DynamicTraversalTask;
+import org.lolwat.Tasks.Misc.BankingTask;
+import org.lolwat.Tasks.Misc.HopperTask;
+import org.lolwat.Tasks.Misc.TraversalTask;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.Utils.ItemUtils;
 import org.lolwat.WatAIO;
@@ -111,7 +111,7 @@ public class GuildIron implements WatTask {
 
         if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new DynamicBankingTask("Grabbing Pickaxe", bankItems, true, this, true, alwaysSell);
+            instance.currentTask = new BankingTask("Grabbing Pickaxe", bankItems, true, this, true, alwaysSell);
         } else {
             if(!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -122,7 +122,7 @@ public class GuildIron implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new DynamicBankingTask("Banking Ore", bankItems, true, this, true, new HashMap<String, Integer>() {
+                instance.currentTask = new BankingTask("Banking Ore", bankItems, true, this, true, new HashMap<String, Integer>() {
                     {
                         put("Iron ore", -1000);
                         putAll(alwaysSell);
@@ -134,7 +134,7 @@ public class GuildIron implements WatTask {
 
             if (!Map.isTileOnScreen(defaultSquare)) {
                 Logger.log("I need to traverse to the location.");
-                instance.currentTask = new DynamicTraversalTask(defaultSquare, false, this);
+                instance.currentTask = new TraversalTask(defaultSquare, false, this);
                 return;
             }
 
@@ -156,7 +156,7 @@ public class GuildIron implements WatTask {
                     if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock ) > 20) {
                         usingAlternateRocks = false;
                         lastSuccessfulRock = 0;
-                        instance.currentTask = new DynamicHopperTask(0, this);
+                        instance.currentTask = new HopperTask(0, this);
                         return;
                     }
                 }
@@ -174,7 +174,7 @@ public class GuildIron implements WatTask {
 
                 if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) >= 20) {
                     lastSuccessfulRock = 0;
-                    instance.currentTask = new DynamicHopperTask(0, this);
+                    instance.currentTask = new HopperTask(0, this);
                     return;
                 }
 
@@ -225,8 +225,10 @@ public class GuildIron implements WatTask {
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         gotRock = false;
         lastSuccessfulRock = Instant.now().getEpochSecond();
+    }
 
-        //instance.expGained += amount;
-        //instance.rocksMined += 1;
+    @Override
+    public Skill trainsSkill() {
+        return Skill.MINING;
     }
 }
