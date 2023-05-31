@@ -40,6 +40,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     public boolean fatalError = false;
     public static int MULE_SAFETY_NET = 25000;
     public static int MULE_TRIGGER = 125000;
+    public boolean MULE_DEAD = false;
     public static HashMap<Skill, Integer> skillTargets;
 
     @Override

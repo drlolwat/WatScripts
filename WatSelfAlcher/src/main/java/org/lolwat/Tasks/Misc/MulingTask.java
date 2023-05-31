@@ -1,6 +1,7 @@
 package org.lolwat.Tasks.Misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -27,6 +28,7 @@ public class MulingTask implements WatTask {
     long lastSentRequest = 0;
     int originalWorld;
     boolean completed = false;
+    int retries = 0;
 
     public MulingTask(String taskName, int currentWorld) {
         name = taskName;
@@ -58,6 +60,28 @@ public class MulingTask implements WatTask {
         }
 
         if(!active) {
+            if(retries > 5) {
+                instance.MULE_DEAD = true;
+                // put GP back
+                if(!Bank.isOpen()) {
+                    Bank.open();
+                    Sleep.sleepUntil(Bank::isOpen, 10000);
+
+                    if(Inventory.contains("Coins")) {
+                        Bank.depositAll("Coins");
+                    }
+
+                    Sleep.sleepUntil(() -> !Inventory.contains("Coins"), 5000);
+                    Bank.close();
+                }
+
+                if(!Inventory.contains("Coins")) {
+                    instance.currentTask = null;
+                }
+
+                return;
+            }
+
             Logger.log("Sending mule connection");
             try (Socket socket = new Socket("localhost", 8081)) {
                 // Send a message to the server
@@ -87,6 +111,7 @@ public class MulingTask implements WatTask {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            retries++;
         }
         else {
             if(WorldHopper.isWorldHopperOpen()) {
