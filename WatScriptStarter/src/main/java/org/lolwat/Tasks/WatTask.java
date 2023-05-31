@@ -10,4 +10,5 @@ public interface WatTask {
     boolean requiresLogin();
     int loopTime();
     void onExpGained(Skill skill, int amount, WatAIO instance);
+    Skill trainsSkill();
 }
