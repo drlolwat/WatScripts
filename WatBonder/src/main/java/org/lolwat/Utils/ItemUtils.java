@@ -3,12 +3,25 @@ package org.lolwat.Utils;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
+import org.lolwat.Enums.RockType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ItemUtils {
+    public static String getRockNameForType(RockType type) {
+        switch(type) {
+            default: return "";
+            case COPPER: return "copper";
+            case TIN: return "tin";
+            case IRON: return "iron";
+            case COAL: return "coal";
+            case MITHRIL: return "mithril";
+            case ADAMANTITE: return "adamantite";
+            case RUNITE: return "runite";
+        }
+    }
 
     public static HashMap<Integer, String> pickaxeTypes = new HashMap<Integer, String>() {
         {

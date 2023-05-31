@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Dynamic;
+package org.lolwat.Tasks.Misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
@@ -19,7 +19,7 @@ import org.lolwat.WatAIO;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DynamicBankingTask implements WatTask {
+public class BankingTask implements WatTask {
     private final String name;
     private final WatTask postTask;
     private final HashMap<String, Integer> requiredItems;
@@ -28,7 +28,7 @@ public class DynamicBankingTask implements WatTask {
     private final HashMap<String, Integer> grandExchangeToBuy;
     private final HashMap<String, Integer> sellItemsToCheck;
 
-    public DynamicBankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing) {
+    public BankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing) {
         name = taskName;
         requiredItems = required;
         depositAllFirst = depositAll;
@@ -38,14 +38,14 @@ public class DynamicBankingTask implements WatTask {
         sellItemsToCheck = new HashMap<>();
     }
 
-    public DynamicBankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing, HashMap<String, Integer> muleItems) {
+    public BankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing, HashMap<String, Integer> sellItems) {
         name = taskName;
         requiredItems = required;
         depositAllFirst = depositAll;
         buyMissingItems = buyMissing;
         postTask = post;
         grandExchangeToBuy = new HashMap<>();
-        sellItemsToCheck = muleItems;
+        sellItemsToCheck = sellItems;
     }
 
     @Override
@@ -92,7 +92,7 @@ public class DynamicBankingTask implements WatTask {
             //TODO deposit items if we don't have enough space to meet the request
 
             // Let's check for the items and quantity that we want to trigger for selling, if provided
-            if(sellItemsToCheck.size() > 0) {
+            if(sellItemsToCheck != null && sellItemsToCheck.size() > 0) {
                 Logger.log("==== Checking for sell-able items ====");
                 HashMap<String, Integer> items = new HashMap<>();
                 for(Map.Entry<String, Integer> item : sellItemsToCheck.entrySet()) {
@@ -130,7 +130,7 @@ public class DynamicBankingTask implements WatTask {
 
                     Bank.close();
                     instance.sleep(1000, 3000);
-                    instance.currentTask = new DynamicGrandExchangeTask("Selling items", true, items, this);
+                    instance.currentTask = new GrandExchangeTask("Selling items", true, items, this);
                     return;
                 }
             }
@@ -140,7 +140,7 @@ public class DynamicBankingTask implements WatTask {
             }
 
             // Loop through our required items
-            Logger.log("==== Looping through required items ====");
+            Logger.log("==== Making sure we have required items ====");
             for (Map.Entry<String, Integer> item : requiredItems.entrySet()) {
                 if (grandExchangeToBuy.containsKey(item.getKey()))
                     continue;
@@ -178,8 +178,8 @@ public class DynamicBankingTask implements WatTask {
                             } else {
                                 Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we only have " + bankItem.getAmount());
                                 instance.fatalError = true;
+                                return; ////// MOVED REUTNR FROM AFTER BRACE
                             }
-                            return;
                         }
                     } else {
                         // We don't own any of it
@@ -189,15 +189,15 @@ public class DynamicBankingTask implements WatTask {
                         } else {
                             Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we own none");
                             instance.fatalError = true;
+                            return; ///// MOVED RETURN FROM AFTER BRACE
                         }
-                        return;
                     }
                 }
             }
 
             requiredItems.clear();
 
-            Logger.log("We are finished with checking our required items.");
+            Logger.log("==== Finished checking for required items ====");
 
             if (grandExchangeToBuy.size() > 0 && buyMissingItems) {
                 Logger.log("We need to create a DynamicGrandExchangeTask to buy " + grandExchangeToBuy.size() + " items: ");
@@ -217,7 +217,7 @@ public class DynamicBankingTask implements WatTask {
                         Bank.withdraw(bankCoins.getID(), totalValue);
                         Bank.close();
                         // Send them to the Grand Exchange and have them do another task after (null means it will evaluate when complete)
-                        instance.currentTask = new DynamicGrandExchangeTask("Buying missing items", false, grandExchangeToBuy, null);
+                        instance.currentTask = new GrandExchangeTask("Buying missing items", false, grandExchangeToBuy, this); // RETURNING THIS AS POST TASK INSTEAD OF NULL
                     }
                     else {
                         Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
@@ -239,12 +239,12 @@ public class DynamicBankingTask implements WatTask {
                     bankMoney = Bank.get("Coins").getAmount();
                 }
 
-                if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
-                    int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
+                if((invMoney + bankMoney) >= WatAIO.MULE_TRIGGER) {
+                    int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
                     if(toWithdraw > 0) {
                         Bank.withdraw("Coins", toWithdraw);
                         Bank.close();
-                        instance.currentTask = new DynamicMulingTask("Muling Gold", Worlds.getCurrentWorld());
+                        instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld());
                         return;
                     }
                 }
@@ -275,7 +275,10 @@ public class DynamicBankingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {}
 
+    @Override
+    public Skill trainsSkill() {
+        return null;
     }
 }
