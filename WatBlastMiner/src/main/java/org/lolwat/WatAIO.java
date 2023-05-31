@@ -16,10 +16,9 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.lolwat.Mouse.BezierMouse;
-import org.lolwat.Tasks.Mining.GuildCoal;
-import org.lolwat.Tasks.Mining.GuildIron;
-import org.lolwat.Tasks.Mining.MiningTask;
-import org.lolwat.Tasks.Mining.VarrockEastIron;
+import org.lolwat.Tasks.Manager.TaskManager;
+import org.lolwat.Tasks.Types.Mining.MiningTask;
+import org.lolwat.Tasks.Types.Misc.HopperTask;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.Utils.SkillUtils;
 
@@ -31,16 +30,16 @@ import java.util.List;
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC, image = "")
 public class WatAIO extends AbstractScript implements ExperienceListener {
     private Timer timer;
-    private HashMap<Skill, WatTask> allTasks;
+    private List<WatTask> allTasks;
     private boolean firstStart = true;
     private Skill skillSelected;
     private long skillSelectedAt;
     private int skillRunTime;
-    public WatTask currentTask;
-    public boolean fatalError = false;
     public static int MULE_SAFETY_NET = 25000;
     public static int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;
+    public WatTask currentTask;
+    public boolean fatalError = false;
     public static HashMap<Skill, Integer> skillTargets;
 
     @Override
@@ -74,32 +73,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 put(Skill.MINING, 99);
             }};
 
-        //TODO TaskManager
-        List<List<Tile>> varrockEastRockList = new ArrayList<List<Tile>>() {
-            {
-                // first entry is always the primary list
-                add(new ArrayList<Tile>() { {
-                    add(new Tile(3286, 3369));
-                    add(new Tile(3285, 3368));
-                }});
 
-                // can add unlimited additional arrays of tiles for the bot to use
-                // or one huge array, or we can pass just a rocks name like "Coal rocks" instead of arrays and it will
-                // wander around and grab them all
-                add(new ArrayList<Tile>() { {
-                    add(new Tile(3288, 3370));
-                    add(new Tile(3285, 3369));
-                }});
-            }
-        };
-
-        // like WatMiner. -1000 means check for 1000 and sell it all. 1000 would mean check for 1000 and sell only 1000
-        HashMap<String, Integer> varrockEastToSell = new HashMap<String, Integer>() { {
-            put("Iron ore", -1000);
-        }};
-
-        allTasks = new HashMap<>();
-        allTasks.put(Skill.MINING, new MiningTask(15, new Tile(3286, 3368), varrockEastRockList, varrockEastToSell, this));
+        TaskManager.setupAllTasks(this);
+        allTasks = TaskManager.getAllTasks();
+        Logger.log("Set up " + allTasks.size() + " total tasks");
     }
 
     private void evaluate() {
@@ -125,10 +102,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             skillRunTime = 2700; // 45 mins for now.
         }
 
-        for(Map.Entry<Skill, WatTask> map : allTasks.entrySet()) {
-            if(map.getKey().equals(skillSelected) && map.getValue().canPerformTask()) {
-                // maybe add a flag to avoid the task if it's below us.
-                currentTask = map.getValue();
+        for(WatTask task : allTasks) {
+            if(task.trainsSkill().equals(skillSelected) && task.canPerformTask() &&
+                    Skills.getRealLevel(skillSelected) <= task.avoidAfterLevel()) {
+                currentTask = task;
+                Logger.log("I have selected " + currentTask.getName());
                 return;
             }
         }
@@ -154,14 +132,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             return 1;
         }
 
-        if(WorldHopper.isWorldHopperOpen()) {
+        if((currentTask != null && !(currentTask instanceof HopperTask)) && WorldHopper.isWorldHopperOpen()) {
             WorldHopper.closeWorldHopper();
         }
 
+        if(currentTask != null) {
+            currentTask.execute(this);
+            // We have to check below, because sometimes we rid ourselves of the task before the loop will complete.
+            return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
+        }
 
-        currentTask.execute(this);
-        // We have to check below, because sometimes we rid ourselves of the task before the loop will complete.
-        return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
+        return 1000;
     }
 
     @Override
