@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Mining;
+package org.lolwat.Tasks.Types.Mining;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
@@ -17,10 +17,9 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
-import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.Tasks.Misc.BankingTask;
-import org.lolwat.Tasks.Misc.HopperTask;
-import org.lolwat.Tasks.Misc.TraversalTask;
+import org.lolwat.Tasks.Types.Misc.BankingTask;
+import org.lolwat.Tasks.Types.Misc.HopperTask;
+import org.lolwat.Tasks.Types.Misc.TraversalTask;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.Utils.ItemUtils;
 import org.lolwat.WatAIO;
@@ -37,14 +36,14 @@ public class MiningTask implements WatTask {
     private List<List<Tile>> alternateRockList;
     private HashMap<String, Integer> sellingItems;
     private String rockName;
-    private WatAIO instance;
     private boolean usingAlternateRocks = false;
     private long lastSuccessfulRock = 0;
     private boolean gotRock;
     private GameObject rock;
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
+    private Integer maxMiningLevel = 0;
 
-    public MiningTask(int miningLevel, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, WatAIO core) {
+    public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, WatAIO core) {
         setRequirements(new HashMap<Skill, Integer>() {{
             put(Skill.MINING, miningLevel);
         }}, new ArrayList<>());
@@ -52,10 +51,12 @@ public class MiningTask implements WatTask {
         defaultSquare = startPosition;
         rockName = pRockName;
         sellingItems = sellableProduct;
-        instance = core;
+        maxMiningLevel = maxMining;
+
+        Logger.log("Set up a roaming mining task for " + rockName);
     }
 
-    public MiningTask(int miningLevel, Tile startPosition, List<List<Tile>> rockLists, HashMap<String, Integer> sellableProduct, WatAIO core) {
+    public MiningTask(int miningLevel, int maxMining, Tile startPosition, List<List<Tile>> rockLists, HashMap<String, Integer> sellableProduct, WatAIO core) {
         setRequirements(new HashMap<Skill, Integer>() {{
             put(Skill.MINING, miningLevel);
         }}, new ArrayList<>());
@@ -72,6 +73,7 @@ public class MiningTask implements WatTask {
             }
 
             Logger.log("Set up a mining task with " + defaultRocks.size() + " default rock(s) and " + alternateRockList.size() + " alternate rock list(s)");
+
         } else {
             // no rocks? kill task
             Logger.error("Mining task had no rocks setup");
@@ -87,11 +89,12 @@ public class MiningTask implements WatTask {
             Logger.error("Mining task had no default location setup");
             core.fatalError = true;
             core.currentTask = null;
+            return;
         }
 
         sellingItems = sellableProduct;
-        instance = core;
         rockName = "";
+        maxMiningLevel = maxMining;
     }
 
     @Override
@@ -261,5 +264,10 @@ public class MiningTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return Skill.MINING;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return maxMiningLevel;
     }
 }

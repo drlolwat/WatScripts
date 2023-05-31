@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Misc;
+package org.lolwat.Tasks.Types.Misc;
 
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
@@ -35,11 +35,10 @@ public class TraversalTask implements WatTask {
             instance.currentTask = postTask;
         }
         else {
-            if(Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= 2)) {
+            if(Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
                 Walking.walk(target);
                 lastWalk = Instant.now().getEpochSecond();
             }
-            //Sleep.sleepUntil(()-> Walking.getDestinationDistance() <= 5, Calculations.random(3000, 4500));
         }
     }
 
@@ -66,5 +65,10 @@ public class TraversalTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return null;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return 101;
     }
 }
