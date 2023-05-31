@@ -11,4 +11,5 @@ public interface WatTask {
     int loopTime();
     void onExpGained(Skill skill, int amount, WatAIO instance);
     Skill trainsSkill();
+    Integer avoidAfterLevel();
 }
