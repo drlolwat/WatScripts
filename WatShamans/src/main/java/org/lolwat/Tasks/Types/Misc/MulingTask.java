@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Misc;
+package org.lolwat.Tasks.Types.Misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
@@ -175,5 +175,10 @@ public class MulingTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return null;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return 101;
     }
 }
