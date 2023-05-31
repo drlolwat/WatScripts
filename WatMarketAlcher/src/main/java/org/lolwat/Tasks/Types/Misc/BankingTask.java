@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Misc;
+package org.lolwat.Tasks.Types.Misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
@@ -225,9 +225,6 @@ public class BankingTask implements WatTask {
                     }
                 }
             } else {
-                // TODO ***********************************************************************************
-                // TODO ****  We should check for the required amount of gold (minus safety net) to trigger muling here
-                // TODO ***********************************************************************************
                 if(!instance.MULE_DEAD) {
                     int invMoney = 0;
                     int bankMoney = 0;
@@ -282,5 +279,10 @@ public class BankingTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return null;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return 101;
     }
 }
