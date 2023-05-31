@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Dynamic;
+package org.lolwat.Tasks.Misc;
 
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
@@ -10,7 +10,7 @@ import org.lolwat.WatAIO;
 
 import java.time.Instant;
 
-public class DynamicTraversalTask implements WatTask {
+public class TraversalTask implements WatTask {
     WatTask postTask;
     boolean mustBeOnTile;
     Tile target;
@@ -18,10 +18,10 @@ public class DynamicTraversalTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Traversing Map";
+        return "Traversing";
     }
 
-    public DynamicTraversalTask(Tile tile, boolean tileOnly, WatTask post) {
+    public TraversalTask(Tile tile, boolean tileOnly, WatTask post) {
         target = tile;
         mustBeOnTile = tileOnly;
         postTask = post;
@@ -61,5 +61,10 @@ public class DynamicTraversalTask implements WatTask {
     @Override
     public boolean canPerformTask() {
         return true;
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return null;
     }
 }

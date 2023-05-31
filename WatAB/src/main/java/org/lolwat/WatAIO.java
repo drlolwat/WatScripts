@@ -1,7 +1,6 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -19,26 +18,29 @@ import org.dreambot.api.utilities.Timer;
 import org.lolwat.Mouse.BezierMouse;
 import org.lolwat.Tasks.Mining.GuildCoal;
 import org.lolwat.Tasks.Mining.GuildIron;
+import org.lolwat.Tasks.Mining.MiningTask;
 import org.lolwat.Tasks.Mining.VarrockEastIron;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.Utils.SkillUtils;
 
 import java.awt.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC, image = "")
 public class WatAIO extends AbstractScript implements ExperienceListener {
     private Timer timer;
-    private List<WatTask> allTasks;
+    private HashMap<Skill, WatTask> allTasks;
     private boolean firstStart = true;
+    private Skill skillSelected;
+    private long skillSelectedAt;
+    private int skillRunTime;
     public WatTask currentTask;
     public boolean fatalError = false;
     public static int MULE_SAFETY_NET = 25000;
     public static int MULE_TRIGGER = 125000;
+    public static HashMap<Skill, Integer> skillTargets;
 
     @Override
     public void onStart() {
@@ -46,19 +48,89 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
 
-        Logger.log("WatMiner is starting, creating WatTask instances");
-
-        allTasks = new ArrayList<>();
-        Logger.log("Added " + allTasks.size() + " WatTasks");
+        Logger.log("WatAIO is starting, creating WatTask instances");
 
         timer = new Timer();
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
+
+        skillTargets = new HashMap<Skill, Integer>(){
+            {
+                //put(Skill.ATTACK, 99);
+                //put(Skill.STRENGTH, 99);
+                //put(Skill.DEFENCE, 99);
+                //put(Skill.RANGED, 99);
+                //put(Skill.PRAYER, 99);
+                //put(Skill.MAGIC, 99);
+                //put(Skill.RUNECRAFTING, 99);
+                //put(Skill.HITPOINTS, 99);
+                //put(Skill.COOKING, 99);
+                //put(Skill.WOODCUTTING, 99);
+                //put(Skill.FISHING, 99);
+                //put(Skill.FIREMAKING, 99);
+                //put(Skill.CRAFTING, 99);
+                //put(Skill.SMITHING, 99);
+                put(Skill.MINING, 99);
+            }};
+
+        //TODO TaskManager
+        List<List<Tile>> varrockEastRockList = new ArrayList<List<Tile>>() {
+            {
+                // first entry is always the primary list
+                add(new ArrayList<Tile>() { {
+                    add(new Tile(3286, 3369));
+                    add(new Tile(3285, 3368));
+                }});
+
+                // can add unlimited additional arrays of tiles for the bot to use
+                // or one huge array, or we can pass just a rocks name like "Coal rocks" instead of arrays and it will
+                // wander around and grab them all
+                add(new ArrayList<Tile>() { {
+                    add(new Tile(3288, 3370));
+                    add(new Tile(3285, 3369));
+                }});
+            }
+        };
+
+        // like WatMiner. -1000 means check for 1000 and sell it all. 1000 would mean check for 1000 and sell only 1000
+        HashMap<String, Integer> varrockEastToSell = new HashMap<String, Integer>() { {
+            put("Iron ore", -1000);
+        }};
+
+        allTasks = new HashMap<>();
+        allTasks.put(Skill.MINING, new MiningTask(15, new Tile(3286, 3368), varrockEastRockList, varrockEastToSell, this));
     }
 
     private void evaluate() {
         Logger.log("Assessing tasks to see what is available for us to perform");
 
+        // lets remove skills we meet the goals of.
+        List<Skill> toRemove = new ArrayList<>();
+        for(Skill skill : skillTargets.keySet()) {
+            if(Skills.getRealLevel(skill) >= skillTargets.get(skill))
+                toRemove.add(skill);
+        }
+
+        for(Skill rem : toRemove) {
+            skillTargets.remove(rem);
+        }
+
+        long now = Instant.now().getEpochSecond();
+        List<Skill> skills = new ArrayList<>(skillTargets.keySet());
+
+        if(skillSelected == null || (now - skillSelectedAt) >= skillRunTime) {
+            skillSelected = skills.get(new Random().nextInt(skills.size()));
+            skillSelectedAt = now;
+            skillRunTime = 2700; // 45 mins for now.
+        }
+
+        for(Map.Entry<Skill, WatTask> map : allTasks.entrySet()) {
+            if(map.getKey().equals(skillSelected) && map.getValue().canPerformTask()) {
+                // maybe add a flag to avoid the task if it's below us.
+                currentTask = map.getValue();
+                return;
+            }
+        }
     }
 
     @Override
@@ -76,7 +148,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             firstStart = false;
         }
 
-        if(currentTask == null) {
+        if(currentTask == null || (skillSelectedAt > 0 && (Instant.now().getEpochSecond() - skillSelectedAt) >= skillRunTime)) {
             evaluate();
             return 1;
         }
