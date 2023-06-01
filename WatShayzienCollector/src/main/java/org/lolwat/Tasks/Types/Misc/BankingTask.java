@@ -241,6 +241,8 @@ public class BankingTask implements WatTask {
                         int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
                         if (toWithdraw > 0) {
                             Bank.withdraw("Coins", toWithdraw);
+                            Sleep.sleep(100, 500);
+                            Bank.depositAllExcept("Coins");
                             Bank.close();
                             instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld());
                             return;
