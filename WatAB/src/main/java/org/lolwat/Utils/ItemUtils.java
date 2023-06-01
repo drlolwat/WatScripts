@@ -4,6 +4,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.Enums.IngotType;
 import org.lolwat.Enums.OreType;
+import org.lolwat.Enums.TreeType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,13 +75,13 @@ public class ItemUtils {
         }
     };
 
-    public static List<String> grandExchangeSellList = new ArrayList<String>() {
+    public static HashMap<Integer, String> hatchetTypes = new HashMap<Integer, String>() {
         {
-            add("Iron ore");
-            add("Uncut sapphire");
-            add("Uncut emerald");
-            add("Uncut ruby");
-            add("Uncut diamond");
+            put(41, "Rune axe");
+            put(31, "Adamant axe");
+            put(21, "Mithril axe");
+            put(11, "Steel axe");
+            put(1, "Bronze axe");
         }
     };
 
@@ -114,4 +115,45 @@ public class ItemUtils {
             return pickaxeTypes.get(1);
         }
     }
+
+    public static String getBestHatchetForLevel() {
+        int level = Skills.getRealLevel(Skill.WOODCUTTING);
+
+        if(level >= 41) {
+            return hatchetTypes.get(41);
+        }
+        else if(level >= 31) {
+            return hatchetTypes.get(31);
+        }
+        else if(level >= 21) {
+            return hatchetTypes.get(21);
+        }
+        else if(level >= 11) {
+            return hatchetTypes.get(11);
+        }
+        else {
+            return hatchetTypes.get(1);
+        }
+    }
+
+    public static String getLogName(TreeType type) {
+        switch(type) {
+            default: return "Logs";
+            case OAK: return "Oak logs";
+            case YEW: return "Yew logs";
+            case MAPLE: return "Maple logs";
+            case WILLOW: return "Willow logs";
+        }
+    }
+
+    public static String getTreeName(TreeType type) {
+        switch(type) {
+            default: return "Tree";
+            case OAK: return "Oak";
+            case YEW: return "Yew";
+            case MAPLE: return "Maple";
+            case WILLOW: return "Willow";
+        }
+    }
+
 }
