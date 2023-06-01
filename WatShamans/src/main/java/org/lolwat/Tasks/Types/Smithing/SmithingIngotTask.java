@@ -77,7 +77,7 @@ public class SmithingIngotTask implements WatTask {
 
                 if(Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
                     Widgets.getWidget(270).getChild(WidgetUtils.getIngotWidgetId(smithingType)).interact();
-                    Sleep.sleepUntil(() -> cooldown > 10, 45000);
+                    Sleep.sleepUntil(() -> cooldown > 10, 30000);
                 }
             }
         }
@@ -89,7 +89,7 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Smithing " + smithingType.toString().toLowerCase() + " bars";
+        return "Smelting " + smithingType.toString().toLowerCase() + " bars";
     }
 
     @Override
