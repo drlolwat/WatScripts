@@ -52,8 +52,6 @@ public class MiningTask implements WatTask {
         rockName = pRockName;
         sellingItems = sellableProduct;
         maxMiningLevel = maxMining;
-
-        Logger.log("Set up a roaming mining task for " + rockName);
     }
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, List<List<Tile>> rockLists, HashMap<String, Integer> sellableProduct, WatAIO core) {
@@ -71,9 +69,6 @@ public class MiningTask implements WatTask {
 
                 alternateRockList.add(rockTiles);
             }
-
-            Logger.log("Set up a mining task with " + defaultRocks.size() + " default rock(s) and " + alternateRockList.size() + " alternate rock list(s)");
-
         } else {
             // no rocks? kill task
             Logger.error("Mining task had no rocks setup");
@@ -105,7 +100,7 @@ public class MiningTask implements WatTask {
             }
         }
 
-        return Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100;
+        return true;
     }
 
     public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
