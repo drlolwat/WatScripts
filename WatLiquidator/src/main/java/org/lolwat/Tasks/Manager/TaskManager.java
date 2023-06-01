@@ -2,7 +2,9 @@ package org.lolwat.Tasks.Manager;
 
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.Enums.IngotType;
 import org.lolwat.Tasks.Types.Mining.MiningTask;
+import org.lolwat.Tasks.Types.Smithing.SmithingIngotTask;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -22,6 +24,7 @@ public class TaskManager {
         instance = core;
 
         allTasks.addAll(createMiningTasks());
+        allTasks.addAll(createSmithingTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -32,6 +35,15 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+    }
+
+    private static List<WatTask> createSmithingTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 25, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
+        tasks.add(new SmithingIngotTask(IngotType.IRON, 25, 99, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
+
+        return tasks;
     }
 
     private static List<WatTask> createMiningTasks() {
@@ -78,5 +90,12 @@ public class TaskManager {
     }
 
     public static List<WatTask> getAllTasks() { return allTasks; }
-    public static List<WatTask> getTasksBySkill(Skill skill) { return tasksBySkill.get(skill); }
+    public static List<WatTask> getTasksBySkill(Skill skill) {
+        if(tasksBySkill.containsKey(skill)) {
+            return tasksBySkill.get(skill);
+        }
+        else {
+            return new ArrayList<WatTask>();
+        }
+    }
 }

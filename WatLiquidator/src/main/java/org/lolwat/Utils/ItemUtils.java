@@ -2,15 +2,15 @@ package org.lolwat.Utils;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.utilities.Logger;
-import org.lolwat.Enums.RockType;
+import org.lolwat.Enums.IngotType;
+import org.lolwat.Enums.OreType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ItemUtils {
-    public static String getRockNameForType(RockType type) {
+    public static String getRockNameForType(OreType type) {
         switch(type) {
             default: return "";
             case COPPER: return "Copper rocks";
@@ -21,6 +21,47 @@ public class ItemUtils {
             case ADAMANTITE: return "Adamantite rocks";
             case RUNITE: return "Runite rocks";
         }
+    }
+
+    public static HashMap<String, Integer> getMaterialsForBar(IngotType type, boolean fullInventory) {
+        HashMap<String, Integer> ret = new HashMap<>();
+        switch(type) {
+            default: return ret;
+            case BRONZE: {
+                ret.put("Copper ore", fullInventory ? 14 : 1);
+                ret.put("Tin ore", fullInventory ? 14 : 1);
+                break;
+            }
+            case IRON: {
+                ret.put("Iron ore", fullInventory? 28 : 1);
+                break;
+            }
+            case STEEL: {
+                ret.put("Iron ore", fullInventory ? 9 : 1);
+                ret.put("Coal", fullInventory ? 18 : 2);
+                break;
+            }
+            case GOLD: {
+                ret.put("Gold ore", fullInventory ? 28 : 1);
+                break;
+            }
+            case MITHRIL: {
+                ret.put("Mithril ore", fullInventory ? 5 : 1);
+                ret.put("Coal", fullInventory ? 20 : 4);
+                break;
+            }
+            case ADAMANT: {
+                ret.put("Adamantite ore", fullInventory ? 4 : 1);
+                ret.put("Coal", fullInventory ? 24 : 6);
+                break;
+            }
+            case RUNE: {
+                ret.put("Runite ore", fullInventory ? 3 : 1);
+                ret.put("Coal", fullInventory ? 24 : 8);
+                break;
+            }
+        }
+        return ret;
     }
 
     public static HashMap<Integer, String> pickaxeTypes = new HashMap<Integer, String>() {
