@@ -3,10 +3,13 @@ package org.lolwat.Tasks.Manager;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.Enums.IngotType;
+import org.lolwat.Enums.TreeType;
 import org.lolwat.Tasks.Types.Mining.MiningTask;
 import org.lolwat.Tasks.Types.Smithing.SmithingIngotTask;
 import org.lolwat.Tasks.WatTask;
+import org.lolwat.Tasks.Woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +28,7 @@ public class TaskManager {
 
         allTasks.addAll(createMiningTasks());
         allTasks.addAll(createSmithingTasks());
+        allTasks.addAll(createWoodcuttingTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -37,11 +41,31 @@ public class TaskManager {
         }
     }
 
+    private static List<WatTask> createWoodcuttingTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        // regular logs
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }})); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }})); //grand exchange south wall
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }})); //lumbridge
+
+        // oak logs
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }})); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }})); //varrock west
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }})); //lumbridge
+
+        // willow logs
+        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 70, new HashMap<String, Integer>() { { put("Willow logs", -2000); put("Oak logs", -1); put("Logs", -1); }})); //lumbridge
+
+        return tasks;
+    }
+
     private static List<WatTask> createSmithingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 40, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
-        tasks.add(new SmithingIngotTask(IngotType.IRON, 25, 99, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
+        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 15, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
+        tasks.add(new SmithingIngotTask(IngotType.IRON, 30, 99, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
+        tasks.add(new SmithingIngotTask(IngotType.GOLD, 40, 99, new HashMap<String, Integer>() { { put("Gold bar", -200); }} ));
 
         return tasks;
     }
@@ -83,7 +107,7 @@ public class TaskManager {
                 new HashMap<String, Integer>() {{ put("Iron ore", -1000); }}, instance));
 
         // Mining Guild Coal
-        tasks.add(new MiningTask(70, 99, new Tile(3033, 9738), "Coal rocks",
+        tasks.add(new MiningTask(70, 100, new Tile(3033, 9738), "Coal rocks",
                 new HashMap<String, Integer>() {{ put("Coal", -1000); }}, instance));
 
         return tasks;

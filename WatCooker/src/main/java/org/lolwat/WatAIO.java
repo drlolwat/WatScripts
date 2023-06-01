@@ -41,6 +41,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     public WatTask currentTask;
     public boolean fatalError = false;
     public static HashMap<Skill, Integer> skillTargets;
+    public static HashMap<String, Integer> levelUps;
 
     @Override
     public void onStart() {
@@ -65,14 +66,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.RUNECRAFTING, 99);
                 //put(Skill.HITPOINTS, 99);
                 //put(Skill.COOKING, 99);
-                //put(Skill.WOODCUTTING, 99);
+                put(Skill.WOODCUTTING, 99);
                 //put(Skill.FISHING, 99);
                 //put(Skill.FIREMAKING, 99);
                 //put(Skill.CRAFTING, 99);
                 put(Skill.SMITHING, 99);
-                //put(Skill.MINING, 99);
+                put(Skill.MINING, 99);
             }};
 
+        levelUps = new HashMap<>();
 
         TaskManager.setupAllTasks(this);
         allTasks = TaskManager.getAllTasks();
@@ -163,6 +165,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     }
 
     @Override
+    public void onLevelUp(ExperienceEvent ev) {
+        if(levelUps.containsKey(ev.getSkill().getName())) {
+            levelUps.put(ev.getSkill().getName(), levelUps.get(ev.getSkill().getName()) + 1);
+        } else {
+            levelUps.put(ev.getSkill().getName(), 1);
+        }
+    }
+
+    @Override
     public void onPaint(Graphics g) {
         // Enable anti-aliasing for smoother text
         Graphics2D g2d = (Graphics2D) g;
@@ -182,7 +193,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
         int rowHeight = 30; // The height of each row, adjust this as needed
         int rowsCount = 3 + 2; // 3 rows of skills + 2 rows of additional text
-        int boxHeight = (rowsCount * rowHeight) - 38; // remove 28px for padding
+        int boxHeight = (rowsCount * rowHeight) - 30; // remove 28px for padding
 
         // Draw the background
         g.setColor(new Color(42, 42, 42, 220));
@@ -202,11 +213,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         // Draw two rows of additional information
         g.setColor(new Color(220, 220, 220));
         g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"", ""}};
+        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"placeholder", "lorem ipsum"}};
         int rowOffset = 16;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 2; col++) {
-                g.drawString(additionalInfo[row][col], 140 + col * 150, rowOffset + row * 20);
+                g.drawString(additionalInfo[row][col], 100 + col * 150, rowOffset + row * 20);
             }
         }
 
@@ -216,13 +227,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         for (int i = 0; i < freeSkillsCount; i++) {
             Skill sk = Skill.forId(i);
             if(SkillUtils.isFreeToPlay(sk)) {
-                int column = count % 7;
-                int row = count / 7;
+                int column = count % 6;
+                int row = count / 6;
 
-                int x = 15 + column * 65; // Adjust the x-offset for 7 columns
+                int x = 10 + column * 100; // Adjust the x-offset for 7 columns
                 int y = yOffset + row * 20;
 
-                g.drawString(sk.getName().substring(0, 3) + ": " + Skills.getRealLevel(sk), x, y);
+                g.drawString(sk.getName().substring(0, 3) + ": " + Skills.getRealLevel(sk) + (levelUps.containsKey(sk.getName()) ? "+" + levelUps.get(sk.getName()) : ""), x, y);
                 count++;
             }
         }

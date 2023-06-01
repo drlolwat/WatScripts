@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Beginnings of smithing">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Smithing task will now buy missing ores">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Enums/TreeType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Woodcutting/WoodcuttingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Manager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Manager/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/GrandExchangeTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Smithing/SmithingIngotTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Smithing/SmithingIngotTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/ItemUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/ItemUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
@@ -284,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685579980326</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Smithing task will now buy missing ores">
+      <created>1685586526394</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1685586526394</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -299,7 +305,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial" />
     <MESSAGE value="Lol" />
     <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that" />
     <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested" />
@@ -324,6 +329,7 @@
     <MESSAGE value="Mule will now flag as dead after 5 failed connections.&#10;Will deposit gold back if mule connection is dead.&#10;Will not re-try muling until script restart" />
     <MESSAGE value="Added Copper and Tin East Varrock tasks.&#10;Added functionality to get tasks by their skill, for chaining (we need to mine ore to smith, for example)" />
     <MESSAGE value="Beginnings of smithing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Beginnings of smithing" />
+    <MESSAGE value="Smithing task will now buy missing ores" />
+    <option name="LAST_COMMIT_MESSAGE" value="Smithing task will now buy missing ores" />
   </component>
 </project>
