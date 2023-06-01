@@ -27,18 +27,9 @@ public class BankingTask implements WatTask {
     private final boolean buyMissingItems;
     private final HashMap<String, Integer> grandExchangeToBuy;
     private final HashMap<String, Integer> sellItemsToCheck;
+    private final int buyMultiplier;
 
-    public BankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing) {
-        name = taskName;
-        requiredItems = required;
-        depositAllFirst = depositAll;
-        buyMissingItems = buyMissing;
-        postTask = post;
-        grandExchangeToBuy = new HashMap<>();
-        sellItemsToCheck = new HashMap<>();
-    }
-
-    public BankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing, HashMap<String, Integer> sellItems) {
+    public BankingTask(String taskName, HashMap<String, Integer> required, boolean depositAll, WatTask post, boolean buyMissing, HashMap<String, Integer> sellItems, int buyMulti) {
         name = taskName;
         requiredItems = required;
         depositAllFirst = depositAll;
@@ -46,6 +37,7 @@ public class BankingTask implements WatTask {
         postTask = post;
         grandExchangeToBuy = new HashMap<>();
         sellItemsToCheck = sellItems;
+        buyMultiplier = buyMulti;
     }
 
     @Override
@@ -145,6 +137,8 @@ public class BankingTask implements WatTask {
                 if (grandExchangeToBuy.containsKey(item.getKey()))
                     continue;
 
+                int amountNeeded = item.getValue() * buyMultiplier;
+
                 Logger.log("Checking Inventory for item: " + item.getKey());
                 // Do we have the item in our inventory, and do we have enough of it?
                 if (!Inventory.contains(item.getKey()) || (Inventory.contains(item.getKey()) && Inventory.get(item.getKey()).getAmount() < item.getValue())) {
@@ -173,23 +167,25 @@ public class BankingTask implements WatTask {
                         } else {
                             // We don't own the right amount of it
                             if (buyMissingItems) {
-                                Logger.log("We need " + item.getValue() + " more of " + item.getKey() + ", adding to G.E buy list");
-                                grandExchangeToBuy.put(item.getKey(), item.getValue());
+                                Logger.log("We need " + item.getValue() * buyMultiplier + " more of " + item.getKey() + ", adding to G.E buy list");
+                                grandExchangeToBuy.put(item.getKey(), (item.getValue() * buyMultiplier));
                             } else {
                                 Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we only have " + bankItem.getAmount());
                                 instance.fatalError = true;
-                                return; ////// MOVED REUTNR FROM AFTER BRACE
+                                instance.removeTaskAndReset();
+                                return;
                             }
                         }
                     } else {
                         // We don't own any of it
                         if (buyMissingItems) {
-                            Logger.log("We need " + item.getValue() + " more of " + item.getKey() + ", adding to G.E buy list");
-                            grandExchangeToBuy.put(item.getKey(), item.getValue());
+                            Logger.log("We need " + item.getValue() * buyMultiplier + " more of " + item.getKey() + ", adding to G.E buy list");
+                            grandExchangeToBuy.put(item.getKey(), (item.getValue() * buyMultiplier));
                         } else {
                             Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we own none");
                             instance.fatalError = true;
-                            return; ///// MOVED RETURN FROM AFTER BRACE
+                            instance.removeTaskAndReset();
+                            return;
                         }
                     }
                 }
