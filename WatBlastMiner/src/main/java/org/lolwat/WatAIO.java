@@ -79,6 +79,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         Logger.log("Set up " + allTasks.size() + " total tasks");
     }
 
+    public void removeTaskAndReset() {
+        if(currentTask != null) {
+            allTasks.remove(currentTask);
+            currentTask = null;
+        }
+        evaluate();
+    }
+
     private void evaluate() {
         Logger.log("Assessing tasks to see what is available for us to perform");
 
@@ -101,6 +109,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             skillSelectedAt = now;
             skillRunTime = 2700; // 45 mins for now.
         }
+
+        Collections.shuffle(allTasks);
 
         for(WatTask task : allTasks) {
             if(task.trainsSkill().equals(skillSelected) && task.canPerformTask() &&
@@ -192,11 +202,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         // Draw two rows of additional information
         g.setColor(new Color(220, 220, 220));
         g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Placeholder3", "Placeholder4"}};
+        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"", ""}};
         int rowOffset = 16;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 2; col++) {
-                g.drawString(additionalInfo[row][col], 170 + col * 150, rowOffset + row * 20);
+                g.drawString(additionalInfo[row][col], 140 + col * 150, rowOffset + row * 20);
             }
         }
 
