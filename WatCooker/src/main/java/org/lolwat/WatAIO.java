@@ -37,7 +37,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     private int skillRunTime;
     public static int MULE_SAFETY_NET = 25000;
     public static int MULE_TRIGGER = 125000;
-    public boolean MULE_DEAD = false;
+    public boolean MULE_DEAD = true;
     public WatTask currentTask;
     public boolean fatalError = false;
     public static HashMap<Skill, Integer> skillTargets;
@@ -69,8 +69,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.FISHING, 99);
                 //put(Skill.FIREMAKING, 99);
                 //put(Skill.CRAFTING, 99);
-                //put(Skill.SMITHING, 99);
-                put(Skill.MINING, 99);
+                put(Skill.SMITHING, 99);
+                //put(Skill.MINING, 99);
             }};
 
 
@@ -82,10 +82,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     private void evaluate() {
         Logger.log("Assessing tasks to see what is available for us to perform");
 
-        // lets remove skills we meet the goals of.
+        // lets remove skills we meet the goals of and that have no tasks
         List<Skill> toRemove = new ArrayList<>();
         for(Skill skill : skillTargets.keySet()) {
-            if(Skills.getRealLevel(skill) >= skillTargets.get(skill))
+            if(Skills.getRealLevel(skill) >= skillTargets.get(skill) || TaskManager.getTasksBySkill(skill).size() == 0)
                 toRemove.add(skill);
         }
 
