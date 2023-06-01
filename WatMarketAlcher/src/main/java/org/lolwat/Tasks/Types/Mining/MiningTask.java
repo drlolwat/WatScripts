@@ -128,7 +128,7 @@ public class MiningTask implements WatTask {
 
         if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new BankingTask("Grabbing Pickaxe", bankItems, true, this, true, null);
+            instance.currentTask = new BankingTask("Grabbing Pickaxe", bankItems, true, this, true, null, 1);
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -139,7 +139,7 @@ public class MiningTask implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask("Banking Ore", bankItems, true, this, true, sellingItems);
+                instance.currentTask = new BankingTask("Banking Ore", bankItems, true, this, true, sellingItems, 1);
                 lastSuccessfulRock = 0;
                 return;
             }
