@@ -1,6 +1,7 @@
 package org.lolwat.Tasks.Types.Smithing;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -24,12 +25,14 @@ import org.lolwat.WatAIO;
 import java.util.*;
 
 public class SmithingIngotTask implements WatTask {
-    private List<Tile> furnaceLocations = Arrays.asList(new Tile(3109, 3499));
+    private List<Tile> furnaceLocations = Arrays.asList(new Tile(3107, 3499));
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private Tile selectedLocation;
     private IngotType smithingType;
     private int avoidAtLevel;
     private HashMap<String, Integer> toSell;
+    private long cooldown;
+    private final int totalLoads;
 
     public SmithingIngotTask(IngotType type, int smithingLevel, int pAvoidAtLevel, HashMap<String, Integer> sellList) {
         setRequirements(new HashMap<Skill, Integer>() {{
@@ -40,14 +43,19 @@ public class SmithingIngotTask implements WatTask {
         smithingType = type;
         avoidAtLevel = pAvoidAtLevel;
         toSell = sellList;
+        cooldown = 0;
+        totalLoads = new Random().nextInt(30);
     }
 
     @Override
     public void execute(WatAIO instance) {
-        for(java.util.Map.Entry<String, Integer> m : ItemUtils.getMaterialsForBar(smithingType, false).entrySet()) {
+        for(java.util.Map.Entry<String, Integer> m : ItemUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask("Grabbing ore", ItemUtils.getMaterialsForBar(smithingType, true), true, this, false, toSell);
+                instance.currentTask = new BankingTask("Grabbing ore",
+                        ItemUtils.getMaterialsForBar(smithingType, true, 1),
+                        true, this, true, toSell, totalLoads);
+
                 return;
             }
         }
@@ -58,9 +66,10 @@ public class SmithingIngotTask implements WatTask {
                 return;
             }
 
-            instance.currentTask = new TraversalTask(selectedLocation, true, this);
+            instance.currentTask = new TraversalTask(selectedLocation, false, this);
             return;
         }
+
 
         if(GameObjects.closest("Furnace") != null && !Players.getLocal().isAnimating()) {
             if(GameObjects.closest("Furnace").interact()) {
@@ -68,6 +77,7 @@ public class SmithingIngotTask implements WatTask {
 
                 if(Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
                     Widgets.getWidget(270).getChild(WidgetUtils.getIngotWidgetId(smithingType)).interact();
+                    Sleep.sleepUntil(() -> cooldown > 10, 45000);
                 }
             }
         }
@@ -79,7 +89,7 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Smithing";
+        return "Smithing " + smithingType.toString().toLowerCase() + " bars";
     }
 
     @Override
@@ -105,7 +115,7 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
+        cooldown = 0;
     }
 
     @Override
