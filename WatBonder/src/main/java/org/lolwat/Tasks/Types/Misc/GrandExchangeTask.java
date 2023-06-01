@@ -33,6 +33,7 @@ public class GrandExchangeTask implements WatTask {
         postTask = post;
         isSelling = selling;
     }
+
     @Override
     public String getName() {
         return name;
@@ -155,6 +156,12 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleep(100, 300);
                             GrandExchange.setPrice(itemCost);
                             Sleep.sleep(100, 300);
+
+                            if(item.getValue() > 1) {
+                                GrandExchange.setQuantity(item.getValue());
+                                Sleep.sleep(100, 300);
+                            }
+
                             GrandExchange.confirm();
 
                             // Sleep until the item is available..
@@ -192,10 +199,7 @@ public class GrandExchangeTask implements WatTask {
             instance.currentTask = postTask;
         }
         else {
-            if(Walking.shouldWalk(7)) {
-                Logger.log("Walking to Grand Exchange");
-                Walking.walk(BankLocation.GRAND_EXCHANGE);
-            }
+            instance.currentTask = new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
         }
     }
 

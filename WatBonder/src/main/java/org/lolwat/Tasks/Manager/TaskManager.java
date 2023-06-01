@@ -40,7 +40,7 @@ public class TaskManager {
     private static List<WatTask> createSmithingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 25, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
+        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 40, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
         tasks.add(new SmithingIngotTask(IngotType.IRON, 25, 99, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
 
         return tasks;
