@@ -1,11 +1,12 @@
 package org.lolwat.Enums;
 
-public enum RockType {
+public enum OreType {
     COPPER,
     TIN,
     IRON,
     COAL,
     MITHRIL,
     ADAMANTITE,
-    RUNITE
+    RUNITE,
+    GOLD,
 }

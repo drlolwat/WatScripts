@@ -1,7 +1,7 @@
 package org.lolwat.Utils;
 
 import org.dreambot.api.methods.skills.Skill;
-import org.lolwat.Enums.RockType;
+import org.lolwat.Enums.OreType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +29,7 @@ public class SkillUtils {
         return f2pSkills.contains(skill);
     }
 
-    public static Integer getMinimumLevelForRock(RockType type) {
+    public static Integer getMinimumLevelForRock(OreType type) {
         switch(type) {
             default: return 1;
             case IRON: return 15;
