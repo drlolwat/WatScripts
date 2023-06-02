@@ -4,14 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Quality of life, bug fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Enums/IngotType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Enums/IngotType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Mouse/BezierMouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Mouse/BezierMouse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Manager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Manager/TaskManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Fishing/FishingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Fishing/FishingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Woodcutting/WoodcuttingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/SkillUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/SkillUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Smithing/SmithingIngotTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Smithing/SmithingIngotTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/ItemUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/ItemUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/WidgetUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/WidgetUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -305,7 +308,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685680321274</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Quality of life, bug fixes">
+      <created>1685683966744</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1685683966744</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -320,7 +330,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested" />
     <MESSAGE value="Pickaxe upgrading should be good now" />
     <MESSAGE value="&lt;= 15cb now only use the south rocks." />
     <MESSAGE value="Cleaned project" />
@@ -345,6 +354,7 @@
     <MESSAGE value="Smithing task will now buy missing ores" />
     <MESSAGE value="Gold task, woodcutting" />
     <MESSAGE value="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods" />
+    <MESSAGE value="Quality of life, bug fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Quality of life, bug fixes" />
   </component>
 </project>

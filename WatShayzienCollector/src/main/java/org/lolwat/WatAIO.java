@@ -1,6 +1,8 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.input.Camera;
+import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -20,6 +22,7 @@ import org.lolwat.Tasks.Manager.TaskManager;
 import org.lolwat.Tasks.Types.Mining.MiningTask;
 import org.lolwat.Tasks.Types.Misc.HopperTask;
 import org.lolwat.Tasks.WatTask;
+import org.lolwat.Utils.NumUtils;
 import org.lolwat.Utils.SkillUtils;
 
 import java.awt.*;
@@ -42,12 +45,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     public boolean fatalError = false;
     public static HashMap<Skill, Integer> skillTargets;
     public static HashMap<String, Integer> levelUps;
+    public String netWorth = "";
 
     @Override
     public void onStart() {
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
+        Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
 
         Logger.log("WatAIO is starting, creating WatTask instances");
 
@@ -64,7 +69,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.PRAYER, 99);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                //put(Skill.HITPOINTS, 99);
                 //put(Skill.COOKING, 99);
                 put(Skill.WOODCUTTING, 99);
                 put(Skill.FISHING, 99);
@@ -79,6 +83,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         TaskManager.setupAllTasks(this);
         allTasks = TaskManager.getAllTasks();
         Logger.log("Set up " + allTasks.size() + " total tasks");
+        netWorth = NumUtils.simplifyNumber(0.0);
     }
 
     public void removeTaskAndReset() {
@@ -217,7 +222,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         // Draw two rows of additional information
         g.setColor(new Color(220, 220, 220));
         g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"placeholder", "lorem ipsum"}};
+        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + netWorth, "Time left:"}};
         int rowOffset = 16;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 2; col++) {
