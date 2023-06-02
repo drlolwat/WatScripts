@@ -75,8 +75,8 @@ public class SkillUtils {
             default: break;
             case LOBSTER: map.put("Coins", 25); break;
             case HERRING:
-            case PIKE: map.put("Fishing bait", 1000); break;
-            case SALMON: map.put("Feather", 1000); break;
+            case PIKE: map.put("Fishing bait", -1000); break;
+            case SALMON: map.put("Feather", -1000); break;
         }
 
         return map;
