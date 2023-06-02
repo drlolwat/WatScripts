@@ -1,4 +1,4 @@
-package org.lolwat.Tasks.Woodcutting;
+package org.lolwat.Tasks.Types.Woodcutting;
 
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
