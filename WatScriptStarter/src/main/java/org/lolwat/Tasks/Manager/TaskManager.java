@@ -81,8 +81,8 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 15, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
-        tasks.add(new SmithingIngotTask(IngotType.IRON, 30, 99, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
-        //tasks.add(new SmithingIngotTask(IngotType.GOLD, 40, 99, new HashMap<String, Integer>(){} )); // very not profitable
+        tasks.add(new SmithingIngotTask(IngotType.IRON, 15, 20, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
+        tasks.add(new SmithingIngotTask(IngotType.SILVER, 20, 99, new HashMap<String, Integer>(){ { put("Silver bar", -200); }} )); // profitable
 
         return tasks;
     }
