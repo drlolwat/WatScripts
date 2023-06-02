@@ -149,6 +149,11 @@ public class GrandExchangeTask implements WatTask {
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
                             int itemCost = (int) (LivePrices.get(item.getKey()) * 1.3);
+
+                            if(itemCost <= 7) {
+                                itemCost = 10;
+                            }
+
                             if(Inventory.contains("Coins") && itemCost > Inventory.get("Coins").getAmount()) {
                                 itemCost = Inventory.get("Coins").getAmount();
                             }
