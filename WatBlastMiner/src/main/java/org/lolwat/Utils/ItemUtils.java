@@ -46,6 +46,10 @@ public class ItemUtils {
                 ret.put("Gold ore", fullInventory ? 28 * inventoryLoads : 1);
                 break;
             }
+            case SILVER: {
+                ret.put("Silver ore", fullInventory ? 28 * inventoryLoads : 1);
+                break;
+            }
             case MITHRIL: {
                 ret.put("Mithril ore", fullInventory ? 5 * inventoryLoads : 1);
                 ret.put("Coal", fullInventory ? 20 * inventoryLoads : 4);

@@ -1,5 +1,6 @@
 package org.lolwat.Tasks.Types.Smithing;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -44,7 +45,7 @@ public class SmithingIngotTask implements WatTask {
         avoidAtLevel = pAvoidAtLevel;
         toSell = sellList;
         cooldown = 0;
-        totalLoads = new Random().nextInt(30);
+        totalLoads = Calculations.random(10, 15);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class SmithingIngotTask implements WatTask {
 
                 if(Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
                     Widgets.getWidget(270).getChild(WidgetUtils.getIngotWidgetId(smithingType)).interact();
-                    Sleep.sleepUntil(() -> cooldown > 5 || Dialogues.canContinue(), 30000);
+                    Sleep.sleepUntil(() -> cooldown > 5 || Dialogues.canContinue() || !Inventory.contains(n -> n.getName().contains("ore")), 30000);
                 }
             }
         }
@@ -109,7 +110,7 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public int loopTime() {
-        return 2000;
+        return 650;
     }
 
     @Override

@@ -8,4 +8,5 @@ public enum IngotType {
     ADAMANT,
     RUNE,
     GOLD,
+    SILVER,
 }
