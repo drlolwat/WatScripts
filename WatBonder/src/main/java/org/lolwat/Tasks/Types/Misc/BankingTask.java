@@ -167,8 +167,8 @@ public class BankingTask implements WatTask {
                         } else {
                             // We don't own the right amount of it
                             if (buyMissingItems) {
-                                Logger.log("We need " + item.getValue() * buyMultiplier + " more of " + item.getKey() + ", adding to G.E buy list");
-                                grandExchangeToBuy.put(item.getKey(), (item.getValue() * buyMultiplier));
+                                Logger.log("We need " + ((item.getValue() * buyMultiplier) - bankItem.getAmount()) + " more of " + item.getKey() + ", adding to G.E buy list");
+                                grandExchangeToBuy.put(item.getKey(), (item.getValue() * buyMultiplier) - bankItem.getAmount());
                             } else {
                                 Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we only have " + bankItem.getAmount());
                                 instance.fatalError = true;
@@ -179,7 +179,7 @@ public class BankingTask implements WatTask {
                     } else {
                         // We don't own any of it
                         if (buyMissingItems) {
-                            Logger.log("We need " + item.getValue() * buyMultiplier + " more of " + item.getKey() + ", adding to G.E buy list");
+                            Logger.log("We need " + item.getValue() * buyMultiplier + " of " + item.getKey() + ", adding to G.E buy list");
                             grandExchangeToBuy.put(item.getKey(), (item.getValue() * buyMultiplier));
                         } else {
                             Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we own none");
@@ -201,7 +201,11 @@ public class BankingTask implements WatTask {
                 for (Map.Entry<String, Integer> buyItem : grandExchangeToBuy.entrySet()) {
                     Logger.log(buyItem.getKey() + " Quantity of: " + buyItem.getValue());
                     // Calculate the amount of money we are going to need to buy everything at market price or so + 10%
-                    totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue()) * 1.3;
+                    if(LivePrices.get(buyItem.getKey()) >= 8) {
+                        totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue()) * 1.3;
+                    } else {
+                        totalValue += 10 * buyItem.getValue();
+                    }
                 }
 
                 // Holy shit! Probably gonna be a lot.
