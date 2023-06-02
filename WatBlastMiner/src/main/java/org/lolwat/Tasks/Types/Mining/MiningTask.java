@@ -1,5 +1,6 @@
 package org.lolwat.Tasks.Types.Mining;
 
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.input.Camera;

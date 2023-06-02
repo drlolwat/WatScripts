@@ -48,12 +48,12 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // lumbridge
-        //tasks.add(new FishingTask(FishType.SHRIMP, 1, 20, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -250); put("Raw anchovies", -250); }}));
-        //tasks.add(new FishingTask(FishType.HERRING, 1, 99, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -250); put("Raw sardine", -250); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
+        tasks.add(new FishingTask(FishType.SHRIMP, 1, 10, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -250); put("Raw anchovies", -250); }}));
+        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -250); put("Raw sardine", -250); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
 
         // barbarian village
-        //tasks.add(new FishingTask(FishType.PIKE, 25, 50, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -250); }}));
-        tasks.add(new FishingTask(FishType.SALMON, 25, 50, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -250); }}));
+        tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -250); }}));
+        tasks.add(new FishingTask(FishType.SALMON, 35, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -250); put("Raw trout", -250); }}));
 
         return tasks;
     }
@@ -62,17 +62,17 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // regular logs
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }})); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }})); //grand exchange south wall
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }})); //lumbridge
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //grand exchange south wall
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //lumbridge
 
         // oak logs
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }})); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }})); //varrock west
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }})); //lumbridge
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //varrock west
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //lumbridge
 
         // willow logs
-        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 70, new HashMap<String, Integer>() { { put("Willow logs", -2000); put("Oak logs", -1); put("Logs", -1); }})); //lumbridge
+        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 70, new HashMap<String, Integer>(){}, false)); //lumbridge
 
         return tasks;
     }
@@ -136,7 +136,7 @@ public class TaskManager {
             return tasksBySkill.get(skill);
         }
         else {
-            return new ArrayList<WatTask>();
+            return new ArrayList<>();
         }
     }
 }
