@@ -66,12 +66,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.RUNECRAFTING, 99);
                 //put(Skill.HITPOINTS, 99);
                 //put(Skill.COOKING, 99);
-                put(Skill.WOODCUTTING, 99);
-                //put(Skill.FISHING, 99);
+                //put(Skill.WOODCUTTING, 99);
+                put(Skill.FISHING, 99);
                 //put(Skill.FIREMAKING, 99);
                 //put(Skill.CRAFTING, 99);
-                put(Skill.SMITHING, 99);
-                put(Skill.MINING, 99);
+                //put(Skill.SMITHING, 99);
+                //put(Skill.MINING, 99);
             }};
 
         levelUps = new HashMap<>();
@@ -109,7 +109,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         if(skillSelected == null || (now - skillSelectedAt) >= skillRunTime) {
             skillSelected = skills.get(new Random().nextInt(skills.size()));
             skillSelectedAt = now;
-            skillRunTime = 2700; // 45 mins for now.
+            skillRunTime = 7200; // 2 hours
         }
 
         Collections.shuffle(allTasks);
