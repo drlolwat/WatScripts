@@ -93,16 +93,16 @@ public class FishingTask implements WatTask {
                 return;
             }
 
-            if(currentSpot == null || !getNpcOnTile(currentSpot).exists()) {
+            if(currentSpot == null || getNpcOnTile(currentSpot) == null) {
                 currentSpot = NPCs.closest(n -> n != null && n.hasAction(SkillUtils.getMenuItemByFishType(fishType))).getTile();
             }
 
-            if(currentSpot != null && getNpcOnTile(currentSpot).exists()) {
+            if(currentSpot != null && getNpcOnTile(currentSpot) != null) {
                 if(getNpcOnTile(currentSpot).interact(SkillUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
                     Mouse.moveOutsideScreen();
                     lastCatch = Instant.now().getEpochSecond();
-                    Sleep.sleepUntil(() -> !getNpcOnTile(currentSpot).exists() || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating(), 45000); // future check for no bait
+                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating() || !hasRequiredItems(), 45000); // future check for no bait
                 }
             }
         }
@@ -110,6 +110,15 @@ public class FishingTask implements WatTask {
 
     private NPC getNpcOnTile(Tile tile) {
         return NPCs.closest(n -> n.getName().contains("Fishing") && n.getTile().equals(tile));
+    }
+
+    private boolean hasRequiredItems() {
+        for(String it : SkillUtils.getExtraFishingItems(fishType).keySet()) {
+            if(!Inventory.contains(it)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
