@@ -70,14 +70,13 @@ public class SmithingIngotTask implements WatTask {
             return;
         }
 
-
         if(GameObjects.closest("Furnace") != null && !Players.getLocal().isAnimating()) {
             if(GameObjects.closest("Furnace").interact()) {
                 Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
 
                 if(Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
                     Widgets.getWidget(270).getChild(WidgetUtils.getIngotWidgetId(smithingType)).interact();
-                    Sleep.sleepUntil(() -> cooldown > 10, 30000);
+                    Sleep.sleepUntil(() -> cooldown > 5 || Dialogues.canContinue(), 30000);
                 }
             }
         }

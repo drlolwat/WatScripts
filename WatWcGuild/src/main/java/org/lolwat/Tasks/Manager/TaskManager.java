@@ -2,8 +2,10 @@ package org.lolwat.Tasks.Manager;
 
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.Enums.FishType;
 import org.lolwat.Enums.IngotType;
 import org.lolwat.Enums.TreeType;
+import org.lolwat.Tasks.Types.Fishing.FishingTask;
 import org.lolwat.Tasks.Types.Mining.MiningTask;
 import org.lolwat.Tasks.Types.Smithing.SmithingIngotTask;
 import org.lolwat.Tasks.WatTask;
@@ -29,6 +31,7 @@ public class TaskManager {
         allTasks.addAll(createMiningTasks());
         allTasks.addAll(createSmithingTasks());
         allTasks.addAll(createWoodcuttingTasks());
+        allTasks.addAll(createFishingTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -39,6 +42,20 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+    }
+
+    private static List<WatTask> createFishingTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        // lumbridge
+        //tasks.add(new FishingTask(FishType.SHRIMP, 1, 20, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -250); put("Raw anchovies", -250); }}));
+        //tasks.add(new FishingTask(FishType.HERRING, 1, 99, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -250); put("Raw sardine", -250); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
+
+        // barbarian village
+        //tasks.add(new FishingTask(FishType.PIKE, 25, 50, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -250); }}));
+        tasks.add(new FishingTask(FishType.SALMON, 25, 50, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -250); }}));
+
+        return tasks;
     }
 
     private static List<WatTask> createWoodcuttingTasks() {
@@ -65,7 +82,7 @@ public class TaskManager {
 
         tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 15, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
         tasks.add(new SmithingIngotTask(IngotType.IRON, 30, 99, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
-        tasks.add(new SmithingIngotTask(IngotType.GOLD, 40, 99, new HashMap<String, Integer>() { { put("Gold bar", -200); }} ));
+        //tasks.add(new SmithingIngotTask(IngotType.GOLD, 40, 99, new HashMap<String, Integer>(){} )); // very not profitable
 
         return tasks;
     }
