@@ -13,6 +13,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.Enums.TreeType;
 import org.lolwat.Tasks.Types.Misc.BankingTask;
 import org.lolwat.Tasks.Types.Misc.HopperTask;
@@ -32,14 +33,16 @@ public class WoodcuttingTask implements WatTask {
     private final int avoidAfterLevel;
     private final HashMap<String, Integer> sellList;
     private long lastGotLog;
+    private boolean dropping;
 
-    public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList) {
+    public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
         treeType = type;
         startLocation = startingLocation;
         avoidAfterLevel = maxLevel;
         minimumLevel = minLevel;
         sellList = sellingList;
         lastGotLog = 0;
+        dropping = drop;
     }
 
     @Override
@@ -63,10 +66,19 @@ public class WoodcuttingTask implements WatTask {
 
             // its all very similar to mining isn't it
             if (Inventory.isFull()) {
-                Logger.log("My inventory is full, to the bank!");
-                lastGotLog = 0;
-                instance.currentTask = new BankingTask("Banking logs", bankItems, true, this, true, sellList, 1);
-                return;
+                if(!dropping) {
+                    Logger.log("My inventory is full, to the bank!");
+                    lastGotLog = 0;
+                    instance.currentTask = new BankingTask("Banking logs", bankItems, true, this, true, sellList, 1);
+                    return;
+                } else {
+                    for(Item it : Inventory.all()) {
+                        if(it.getName().equals(ItemUtils.getLogName(treeType))) {
+                            Inventory.drop(it.getName());
+                            Sleep.sleep(800, 1200);
+                        }
+                    }
+                }
             }
 
             if (!Map.isTileOnMap(startLocation)) {
