@@ -1,5 +1,6 @@
 package org.lolwat.Tasks.Types.Fishing;
 
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -96,13 +97,13 @@ public class FishingTask implements WatTask {
                 currentSpot = NPCs.closest(n -> n != null && n.hasAction(SkillUtils.getMenuItemByFishType(fishType)));
             }
 
-            if(lastCatch > 0 && (Instant.now().getEpochSecond() - lastCatch) >= 20) { // 20 seconds since catch, find us a new spot?
-                currentSpot = NPCs.closest(n -> n != null && n.hasAction(SkillUtils.getMenuItemByFishType(fishType)) && !n.equals(currentSpot));
-            }
-
-            if(currentSpot != null && currentSpot.interact(SkillUtils.getMenuItemByFishType(fishType))) {
-                Sleep.sleep(1200, 2000);
-                Sleep.sleepUntil(() -> !currentSpot.exists() || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating(), 30000); // future check for no bait
+            if(currentSpot != null && currentSpot.exists()) {
+                if(currentSpot.interact(SkillUtils.getMenuItemByFishType(fishType))) {
+                    Sleep.sleep(1200, 2000);
+                    Mouse.moveOutsideScreen();
+                    lastCatch = Instant.now().getEpochSecond();
+                    Sleep.sleepUntil(() -> !currentSpot.exists() || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating() || (Instant.now().getEpochSecond() - lastCatch) >= 45, 45000); // future check for no bait
+                }
             }
         }
     }
