@@ -14,6 +14,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.Tasks.WatTask;
+import org.lolwat.Utils.NumUtils;
 import org.lolwat.WatAIO;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class BankingTask implements WatTask {
     private final String name;
     private final WatTask postTask;
-    private final HashMap<String, Integer> requiredItems;
+    private HashMap<String, Integer> requiredItems;
     private final boolean depositAllFirst;
     private final boolean buyMissingItems;
     private final HashMap<String, Integer> grandExchangeToBuy;
@@ -65,6 +66,10 @@ public class BankingTask implements WatTask {
             // If it's still not open, we'll restart the loop which will redo the above.
             if (!Bank.isOpen()) {
                 return;
+            }
+
+            if(Bank.contains("Coins")) {
+                instance.netWorth = NumUtils.simplifyNumber(Bank.get("Coins").getAmount());
             }
 
             // Does the bank request want us to deposit everything
@@ -131,7 +136,8 @@ public class BankingTask implements WatTask {
                 Bank.setWithdrawMode(BankMode.ITEM);
             }
 
-            // Loop through our required items
+            // Loop through our required items, backing it up first because i fucked the design up
+            HashMap<String, Integer> itemsBackup = requiredItems;
             Logger.log("==== Making sure we have required items ====");
             for (Map.Entry<String, Integer> item : requiredItems.entrySet()) {
                 if (grandExchangeToBuy.containsKey(item.getKey()))
@@ -218,6 +224,7 @@ public class BankingTask implements WatTask {
                         Bank.withdraw(bankCoins.getID(), totalValue);
                         Bank.close();
                         // Send them to the Grand Exchange and have them do another task after (null means it will evaluate when complete)
+                        requiredItems = itemsBackup; // TESTING!!!
                         instance.currentTask = new GrandExchangeTask("Buying missing items", false, grandExchangeToBuy, this); // RETURNING THIS AS POST TASK INSTEAD OF NULL
                     }
                     else {
