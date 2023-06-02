@@ -32,7 +32,7 @@ public class FishingTask implements WatTask {
     private int minimumLevel;
     private int maximumLevel;
     private long lastCatch;
-    private NPC currentSpot;
+    private Tile currentSpot;
 
     public FishingTask(FishType type, int minLevel, int maxLevel, Tile startingLocation, HashMap<String, Integer> sellItems) {
         fishType = type;
@@ -93,19 +93,23 @@ public class FishingTask implements WatTask {
                 return;
             }
 
-            if(currentSpot == null || !currentSpot.exists()) {
-                currentSpot = NPCs.closest(n -> n != null && n.hasAction(SkillUtils.getMenuItemByFishType(fishType)));
+            if(currentSpot == null || !getNpcOnTile(currentSpot).exists()) {
+                currentSpot = NPCs.closest(n -> n != null && n.hasAction(SkillUtils.getMenuItemByFishType(fishType))).getTile();
             }
 
-            if(currentSpot != null && currentSpot.exists()) {
-                if(currentSpot.interact(SkillUtils.getMenuItemByFishType(fishType))) {
+            if(currentSpot != null && getNpcOnTile(currentSpot).exists()) {
+                if(getNpcOnTile(currentSpot).interact(SkillUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
                     Mouse.moveOutsideScreen();
                     lastCatch = Instant.now().getEpochSecond();
-                    Sleep.sleepUntil(() -> !currentSpot.exists() || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating() || (Instant.now().getEpochSecond() - lastCatch) >= 45, 45000); // future check for no bait
+                    Sleep.sleepUntil(() -> !getNpcOnTile(currentSpot).exists() || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating(), 45000); // future check for no bait
                 }
             }
         }
+    }
+
+    private NPC getNpcOnTile(Tile tile) {
+        return NPCs.closest(n -> n.getName().contains("Fishing") && n.getTile().equals(tile));
     }
 
     @Override
