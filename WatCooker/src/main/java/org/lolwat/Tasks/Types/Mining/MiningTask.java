@@ -8,7 +8,6 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -40,9 +39,10 @@ public class MiningTask implements WatTask {
     private boolean usingAlternateRocks = false;
     private long lastSuccessfulRock = 0;
     private boolean gotRock;
-    private GameObject rock;
+    private Tile rockTile;
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private Integer maxMiningLevel = 0;
+    private Tile lastTile; // lets try and hover the previous rock for speed
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, WatAIO core) {
         setRequirements(new HashMap<Skill, Integer>() {{
@@ -202,7 +202,7 @@ public class MiningTask implements WatTask {
             }
 
 
-            if (!gotRock || (lastSuccessfulRock <= 0 || (Instant.now().getEpochSecond() - lastSuccessfulRock) > 10) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null)) {
+            if (!gotRock || (lastSuccessfulRock <= 0 || (Instant.now().getEpochSecond() - lastSuccessfulRock) > 10) || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile.getTile()).getModelColors() == null)) {
                 if (Players.getLocal().isMoving()) {
                     Sleep.sleep(1000, 1500);
                 }
@@ -211,7 +211,7 @@ public class MiningTask implements WatTask {
                     for (Tile tile : currentlyUsing) {
                         GameObject obj = GameObjects.getTopObjectOnTile(tile);
                         if (obj.getModelColors() != null) {
-                            rock = obj;
+                            rockTile = obj.getTile();
 
                             if (!obj.isOnScreen()) {
                                 Camera.rotateToEntity(obj);
@@ -225,7 +225,7 @@ public class MiningTask implements WatTask {
                 } else {
                     GameObject obj = GameObjects.closest(rockName);
                     if (obj.getModelColors() != null) {
-                        rock = obj;
+                        rockTile = obj.getTile();
 
                         if (!obj.isOnScreen()) {
                             Camera.rotateToEntity(obj); // lol
@@ -234,9 +234,13 @@ public class MiningTask implements WatTask {
                         obj.interact();
                         gotRock = true;
                     }
+
+                    if(lastTile != null) {
+                        Mouse.move(lastTile);
+                    }
                 }
 
-                Sleep.sleepUntil(() -> (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || (rock != null && GameObjects.getTopObjectOnTile(rock.getTile()).getModelColors() == null), 8000);
+                Sleep.sleepUntil(() -> (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile).getModelColors() == null), 8000);
             }
         }
     }
@@ -254,6 +258,7 @@ public class MiningTask implements WatTask {
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         gotRock = false;
+        lastTile = rockTile;
         lastSuccessfulRock = Instant.now().getEpochSecond();
     }
 
