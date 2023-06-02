@@ -137,8 +137,6 @@ public class BankingTask implements WatTask {
                 if (grandExchangeToBuy.containsKey(item.getKey()))
                     continue;
 
-                int amountNeeded = item.getValue() * buyMultiplier;
-
                 Logger.log("Checking Inventory for item: " + item.getKey());
                 // Do we have the item in our inventory, and do we have enough of it?
                 if (!Inventory.contains(item.getKey()) || (Inventory.contains(item.getKey()) && Inventory.get(item.getKey()).getAmount() < item.getValue())) {
@@ -161,9 +159,13 @@ public class BankingTask implements WatTask {
                     if (Bank.contains(item.getKey())) {
                         // We own the item, great, do we own the right amount
                         Item bankItem = Bank.get(item.getKey());
-                        if (bankItem.getAmount() >= item.getValue()) {
-                            // We own the right amount already
-                            Bank.withdraw(item.getKey(), item.getValue());
+                        if (bankItem.getAmount() >= item.getValue() || item.getValue() < 0) {
+                            // We own the right amount already or just want to withdraw everything we have
+                            if(item.getValue() > 0) {
+                                Bank.withdraw(item.getKey(), item.getValue());
+                            } else {
+                                Bank.withdrawAll(item.getKey());
+                            }
                         } else {
                             // We don't own the right amount of it
                             if (buyMissingItems) {
@@ -183,7 +185,6 @@ public class BankingTask implements WatTask {
                             grandExchangeToBuy.put(item.getKey(), (item.getValue() * buyMultiplier));
                         } else {
                             Logger.error("We need " + item.getValue() + " of " + item.getKey() + " but we own none");
-                            instance.fatalError = true;
                             instance.removeTaskAndReset();
                             return;
                         }
@@ -221,7 +222,7 @@ public class BankingTask implements WatTask {
                     }
                     else {
                         Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
-                        instance.fatalError = true;
+                        instance.removeTaskAndReset();
                     }
                 }
             } else {

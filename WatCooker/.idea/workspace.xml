@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Gold task, woodcutting">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Enums/FishType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Fishing/FishingTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Manager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Manager/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Fishing/FishingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Fishing/FishingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/GrandExchangeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Smithing/SmithingIngotTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Smithing/SmithingIngotTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Woodcutting/WoodcuttingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/SkillUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Utils/SkillUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
     </list>
@@ -299,7 +298,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685642016257</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods">
+      <created>1685680321274</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1685680321274</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -314,7 +320,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that" />
     <MESSAGE value="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested" />
     <MESSAGE value="Pickaxe upgrading should be good now" />
     <MESSAGE value="&lt;= 15cb now only use the south rocks." />
@@ -339,6 +344,7 @@
     <MESSAGE value="Beginnings of smithing" />
     <MESSAGE value="Smithing task will now buy missing ores" />
     <MESSAGE value="Gold task, woodcutting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gold task, woodcutting" />
+    <MESSAGE value="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods" />
   </component>
 </project>
