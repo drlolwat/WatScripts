@@ -9,9 +9,8 @@ import org.lolwat.Tasks.Types.Fishing.FishingTask;
 import org.lolwat.Tasks.Types.Mining.MiningTask;
 import org.lolwat.Tasks.Types.Smithing.SmithingIngotTask;
 import org.lolwat.Tasks.WatTask;
-import org.lolwat.Tasks.Woodcutting.WoodcuttingTask;
+import org.lolwat.Tasks.Types.Woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
