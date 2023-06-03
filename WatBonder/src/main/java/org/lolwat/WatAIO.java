@@ -3,7 +3,7 @@ package org.lolwat;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
-import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -17,13 +17,13 @@ import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
-import org.lolwat.Mouse.BezierMouse;
-import org.lolwat.Tasks.Manager.TaskManager;
-import org.lolwat.Tasks.Types.Mining.MiningTask;
-import org.lolwat.Tasks.Types.Misc.HopperTask;
-import org.lolwat.Tasks.WatTask;
-import org.lolwat.Utils.NumUtils;
-import org.lolwat.Utils.SkillUtils;
+import org.lolwat.tasks.types.misc.MulingTask;
+import org.lolwat.utils.mouse.BezierMouse;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.tasks.types.misc.HopperTask;
+import org.lolwat.tasks.WatTask;
+import org.lolwat.utils.NumUtils;
+import org.lolwat.utils.SkillUtils;
 
 import java.awt.*;
 import java.time.Instant;
@@ -70,12 +70,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 //put(Skill.COOKING, 99);
-                put(Skill.WOODCUTTING, 99);
-                put(Skill.FISHING, 99);
+                //put(Skill.WOODCUTTING, 99);
+                //put(Skill.FISHING, 99);
                 //put(Skill.FIREMAKING, 99);
-                //put(Skill.CRAFTING, 99);
-                put(Skill.SMITHING, 99);
-                put(Skill.MINING, 99);
+                put(Skill.CRAFTING, 99);
+                //put(Skill.SMITHING, 99);
+                //put(Skill.MINING, 99);
             }};
 
         levelUps = new HashMap<>();
@@ -95,6 +95,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     }
 
     private void evaluate() {
+        if(currentTask != null && currentTask instanceof MulingTask) {
+            return;
+        }
+
         Logger.log("Assessing tasks to see what is available for us to perform");
 
         // lets remove skills we meet the goals of and that have no tasks
@@ -236,8 +240,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         for (int i = 0; i < freeSkillsCount; i++) {
             Skill sk = Skill.forId(i);
             if(SkillUtils.isFreeToPlay(sk)) {
-                int column = count % 6;
-                int row = count / 6;
+                int column = count % 5;
+                int row = count / 5;
 
                 int x = 10 + column * 100; // Adjust the x-offset for 7 columns
                 int y = yOffset + row * 20;
