@@ -42,6 +42,13 @@ public class ItemUtils {
         return ret;
     }
 
+    public static HashMap<String, Integer> getMaterialsForFiremaking(TreeType type, boolean fullInventory, int inventoryLoads) {
+        HashMap<String, Integer> ret = new HashMap<>();
+        ret.put("Tinderbox", 1);
+        ret.put(ItemUtils.getLogName(type), fullInventory ? 27 * inventoryLoads : 1);
+        return ret;
+    }
+
     public static HashMap<String, Integer> getMaterialsForBar(IngotType type, boolean fullInventory, int inventoryLoads) {
         HashMap<String, Integer> ret = new HashMap<>();
         switch(type) {
