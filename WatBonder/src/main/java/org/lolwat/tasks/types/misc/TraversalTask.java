@@ -2,6 +2,7 @@ package org.lolwat.tasks.types.misc;
 
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
@@ -18,6 +19,8 @@ public class TraversalTask implements WatTask {
     boolean mustBeOnTile;
     Tile target;
     double lastWalk;
+    boolean usingArea;
+    Area area;
 
     @Override
     public String getName() {
@@ -29,27 +32,44 @@ public class TraversalTask implements WatTask {
         mustBeOnTile = tileOnly;
         postTask = post;
         lastWalk = 0;
+        usingArea = false;
+    }
+
+    public TraversalTask(Area using, WatTask post) {
+        area = using;
+        postTask = post;
+        usingArea = true;
+        lastWalk = 0;
     }
 
     @Override
     public void execute(WatAIO instance) {
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
 
-        if(completedTile && Map.isTileOnMap(target)) {
-            if(!Map.isTileOnScreen(target)) {
-                Camera.rotateToTile(target);
-                Sleep.sleepUntil(() -> Map.isTileOnScreen(target), 3000);
-            }
+        if(!usingArea) {
+            if (completedTile && Map.isTileOnMap(target)) {
+                if (!Map.isTileOnScreen(target)) {
+                    Camera.rotateToTile(target);
+                    Sleep.sleepUntil(() -> Map.isTileOnScreen(target), 3000);
+                }
 
-            Logger.log("Reached target: X:" + target.getX() + ", Y:" + target.getY());
-            instance.currentTask = postTask;
-        }
-        else {
-            if(Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
-                Walking.walk(target);
-                lastWalk = Instant.now().getEpochSecond();
+                Logger.log("Reached target: X:" + target.getX() + ", Y:" + target.getY());
+                instance.currentTask = postTask;
+                return;
+            }
+        } else {
+            if(area.contains(Players.getLocal())) {
+                Logger.log("Reached target area");
+                instance.currentTask = postTask;
+                return;
             }
         }
+
+        if (Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
+            Walking.walk(usingArea ? area.getRandomTile() : target);
+            lastWalk = Instant.now().getEpochSecond();
+        }
+
     }
 
     @Override
