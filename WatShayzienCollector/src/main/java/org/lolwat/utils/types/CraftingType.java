@@ -7,5 +7,7 @@ public enum CraftingType {
     ROPE,
     CROSSBOWSTRING_S,
     CROSSBOWSTRING_TR,
-    MAGICSTRING
+    MAGICSTRING,
+    GOLDRING,
+    GOLDAMULET,
 }
