@@ -145,7 +145,7 @@ public class GrandExchangeTask implements WatTask {
 
                     Sleep.sleep(400, 800);
 
-                    while(item.getValue() > 0) {
+                    while(item.getValue() != 0) {
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
                             int itemCost = (int) (LivePrices.get(item.getKey()) * 1.3);
@@ -162,8 +162,8 @@ public class GrandExchangeTask implements WatTask {
                             GrandExchange.setPrice(itemCost);
                             Sleep.sleep(100, 300);
 
-                            if(item.getValue() > 1) {
-                                GrandExchange.setQuantity(item.getValue());
+                            if(item.getValue() != 1) {
+                                GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
                                 Sleep.sleep(100, 300);
                             }
 
