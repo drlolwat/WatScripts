@@ -137,7 +137,6 @@ public class BankingTask implements WatTask {
             }
 
             // Loop through our required items, backing it up first because i fucked the design up
-            HashMap<String, Integer> itemsBackup = requiredItems;
             Logger.log("==== Making sure we have required items ====");
             for (Map.Entry<String, Integer> item : requiredItems.entrySet()) {
                 if (grandExchangeToBuy.containsKey(item.getKey()))
@@ -224,7 +223,6 @@ public class BankingTask implements WatTask {
                         Bank.withdraw(bankCoins.getID(), totalValue);
                         Bank.close();
                         // Send them to the Grand Exchange and have them do another task after (null means it will evaluate when complete)
-                        requiredItems = itemsBackup; // TESTING!!!
                         instance.currentTask = new GrandExchangeTask("Buying missing items", false, grandExchangeToBuy, this); // RETURNING THIS AS POST TASK INSTEAD OF NULL
                     }
                     else {
