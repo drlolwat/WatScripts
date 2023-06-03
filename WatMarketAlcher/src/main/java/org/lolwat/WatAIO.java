@@ -71,12 +71,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 //put(Skill.COOKING, 99);
-                //put(Skill.WOODCUTTING, 99);
-                //put(Skill.FISHING, 99);
+                put(Skill.WOODCUTTING, 99);
+                put(Skill.FISHING, 99);
                 put(Skill.FIREMAKING, 99);
-                //put(Skill.CRAFTING, 99);
-                //put(Skill.SMITHING, 99);
-                //put(Skill.MINING, 99);
+                put(Skill.CRAFTING, 99);
+                put(Skill.SMITHING, 99);
+                put(Skill.MINING, 99);
             }};
 
         levelUps = new HashMap<>();

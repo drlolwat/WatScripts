@@ -102,6 +102,11 @@ public class TaskManager {
         // willow logs
         tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 70, new HashMap<String, Integer>(){ { put("Willow logs", -2000); put("Oak logs", -1); put("Logs", -1); }}, false)); //lumbridge
 
+        // yew logs
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //edge
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //g.e
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3035, 3318), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //fally
+
         return tasks;
     }
 
