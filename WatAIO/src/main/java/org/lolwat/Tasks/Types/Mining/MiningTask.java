@@ -213,8 +213,9 @@ public class MiningTask implements WatTask {
                         if (obj.getModelColors() != null) {
                             rockTile = obj.getTile();
 
-                            if (!obj.isOnScreen()) {
-                                Camera.rotateToEntity(obj);
+                            if (!Map.isTileOnScreen(rockTile)) {
+                                Camera.rotateToTile(rockTile);
+                                Sleep.sleep(100, 300);
                             }
 
                             obj.interact();
