@@ -66,7 +66,10 @@ public class TraversalTask implements WatTask {
         }
 
         if (Walking.getDestinationDistance() <= 5 || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
-            Walking.walk(usingArea ? area.getRandomTile() : target);
+            if(target == null && usingArea)
+                target = area.getRandomTile();
+
+            Walking.walk(target);
             lastWalk = Instant.now().getEpochSecond();
         }
 

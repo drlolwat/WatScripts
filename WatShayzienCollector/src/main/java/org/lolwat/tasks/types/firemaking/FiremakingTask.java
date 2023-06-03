@@ -36,11 +36,10 @@ public class FiremakingTask implements WatTask {
     private final int avoidAtLevel;
     private final HashMap<String, Integer> toSell;
     private final int inventoryLoads;
-    private List<Area> areas = Arrays.asList(new Area(3225, 3430, 3265, 3428),
-            new Area(3171, 3430, 3208, 3428),
-            new Area(3171, 3430, 3208, 3428),
-            new Area(3155, 3504, 3174, 3501),
-            new Area(3171, 3430, 3208, 3428));
+    private List<Area> areas = Arrays.asList(new Area(3176, 3479, 3148, 3474),
+            new Area(3146, 3506, 3181, 3502));
+
+    private boolean ready = true;
 
     public FiremakingTask(TreeType type, int firemakingLevel, int pAvoidAtLevel, int totalInventories, HashMap<String, Integer> sellList) {
         minLevel = firemakingLevel;
@@ -73,12 +72,15 @@ public class FiremakingTask implements WatTask {
         }
 
         if(getFireOnPlayer()) {
-            instance.currentTask = new TraversalTask(selectedLocation, this);
+            //selectedLocation = areas.get(new Random().nextInt(areas.size()));
+            //Sleep.sleep(800, 1200);
+            instance.currentTask = new TraversalTask(selectedLocation.getRandomTile(), true, this);
             return;
         }
 
         if(Inventory.contains("Tinderbox") && Inventory.get("Tinderbox").useOn(ItemUtils.getLogName(logType)) && !getFireOnPlayer()) {
-            Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() || getFireOnPlayer() || Dialogues.canContinue(), 4500);
+            ready = false;
+            Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 4500);
         }
     }
 
@@ -109,7 +111,7 @@ public class FiremakingTask implements WatTask {
 
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
+        ready = true;
     }
 
     @Override
