@@ -226,8 +226,15 @@ public class BankingTask implements WatTask {
                         instance.currentTask = new GrandExchangeTask("Buying missing items", false, grandExchangeToBuy, this); // RETURNING THIS AS POST TASK INSTEAD OF NULL
                     }
                     else {
-                        Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
-                        instance.removeTaskAndReset();
+                        if(!instance.MULE_DEAD) {
+                            Bank.depositAllItems();
+                            Sleep.sleep(100, 200);
+                            Logger.info("Setting up a reverse mule to get 100k gp");
+                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }});
+                        } else {
+                            Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
+                            instance.currentTask = null;
+                        }
                     }
                 }
             } else {
@@ -246,9 +253,10 @@ public class BankingTask implements WatTask {
                     if ((invMoney + bankMoney) >= WatAIO.MULE_TRIGGER) {
                         int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
                         if (toWithdraw > 0) {
+                            Bank.depositAllExcept("Coins");
+                            Sleep.sleep(100, 500);
                             Bank.withdraw("Coins", toWithdraw);
                             Sleep.sleep(100, 500);
-                            Bank.depositAllExcept("Coins");
                             Bank.close();
                             instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld());
                             return;
