@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="small QOL">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fixed grand exchange infinite loop&#10;(hopeful) fix for buying items we already own&#10;(hopeful) fix for arriving to mining task and not starting to collect">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Mining/MiningTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/Tasks/Types/Misc/MulingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +322,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685725940857</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Fixed grand exchange infinite loop&#10;(hopeful) fix for buying items we already own&#10;(hopeful) fix for arriving to mining task and not starting to collect">
+      <created>1685751656115</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1685751656115</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -337,7 +344,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Cleaned project" />
     <MESSAGE value="Concept" />
     <MESSAGE value="DynamicBankingTask started, need to work on DynamicGrandExchangeTask" />
     <MESSAGE value="DynamicBankingTask taking into account multi quantity for LivePrices" />
@@ -362,6 +368,7 @@
     <MESSAGE value="Quality of life, bug fixes" />
     <MESSAGE value="Mouse slight speedup&#10;fishing fix&#10;added silver bar smithing" />
     <MESSAGE value="small QOL" />
-    <option name="LAST_COMMIT_MESSAGE" value="small QOL" />
+    <MESSAGE value="Fixed grand exchange infinite loop&#10;(hopeful) fix for buying items we already own&#10;(hopeful) fix for arriving to mining task and not starting to collect" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed grand exchange infinite loop&#10;(hopeful) fix for buying items we already own&#10;(hopeful) fix for arriving to mining task and not starting to collect" />
   </component>
 </project>
