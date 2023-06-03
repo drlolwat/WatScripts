@@ -38,9 +38,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
     private Skill skillSelected;
     private long skillSelectedAt;
     private int skillRunTime;
-    public static int MULE_SAFETY_NET = 25000;
+    public static int MULE_SAFETY_NET = 75000;
     public static int MULE_TRIGGER = 125000;
-    public boolean MULE_DEAD = true;
+    public boolean MULE_DEAD = false;
     public WatTask currentTask;
     public boolean fatalError = false;
     public static HashMap<Skill, Integer> skillTargets;
