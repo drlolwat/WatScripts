@@ -29,4 +29,20 @@ public class WidgetUtils {
             case MAGICSTRING: return 20;
         }
     }
+
+    public static int getJewelryParentId(CraftingType type) {
+        switch(type) {
+            default:
+            case GOLDAMULET:
+            case GOLDRING: return 446;
+        }
+    }
+
+    public static int getJewelryChildId(CraftingType type) {
+        switch(type) {
+            default:
+            case GOLDRING: return 8;
+            case GOLDAMULET: return 37;
+        }
+    }
 }

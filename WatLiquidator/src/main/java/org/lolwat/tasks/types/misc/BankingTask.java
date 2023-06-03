@@ -58,15 +58,10 @@ public class BankingTask implements WatTask {
             // Open the bank if we don't have it open
             if (!Bank.isOpen()) {
                 Bank.open();
-            }
-
-            // Sleep until the bank is open, or 7.5 seconds, whichever comes first
-            Sleep.sleepUntil(Bank::isOpen, 1000);
-
-            // If it's still not open, we'll restart the loop which will redo the above.
-            if (!Bank.isOpen()) {
                 return;
             }
+
+            Sleep.sleepUntil(Bank::isOpen, 10000);
 
             if(Bank.contains("Coins")) {
                 instance.netWorth = NumUtils.simplifyNumber(Bank.get("Coins").getAmount());
@@ -84,6 +79,11 @@ public class BankingTask implements WatTask {
                 if(!Equipment.isEmpty()) {
                     Bank.depositAllEquipment();
                 }
+            }
+
+            if(Inventory.contains("Coins")) {
+                Bank.deposit("Coins");
+                Sleep.sleep(300, 600);
             }
 
             //TODO deposit items if we don't have enough space to meet the request
