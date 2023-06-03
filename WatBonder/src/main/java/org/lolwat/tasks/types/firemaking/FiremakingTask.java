@@ -72,8 +72,6 @@ public class FiremakingTask implements WatTask {
         }
 
         if(getFireOnPlayer()) {
-            //selectedLocation = areas.get(new Random().nextInt(areas.size()));
-            //Sleep.sleep(800, 1200);
             instance.currentTask = new TraversalTask(selectedLocation.getRandomTile(), true, this);
             return;
         }
