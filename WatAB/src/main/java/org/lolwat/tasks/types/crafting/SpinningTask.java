@@ -62,7 +62,7 @@ public class SpinningTask implements WatTask {
             }
         }
 
-        if(!Players.getLocal().getTile().equals(selectedLocation)) {
+        if(!Map.isTileOnMap(selectedLocation) || !Players.getLocal().canReach(selectedLocation)) {
             if(Map.isTileOnMap(selectedLocation) && !Map.isTileOnScreen(selectedLocation)) {
                 Camera.rotateToTile(selectedLocation);
                 return;
