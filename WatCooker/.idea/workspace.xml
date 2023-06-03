@@ -7,7 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Jewelry changes, firemaking first testing">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Firemaking changes&#10;Traversal now supports areas">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" afterDir="false" />
@@ -374,7 +374,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685824826072</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Firemaking changes&#10;Traversal now supports areas">
+      <created>1685825198796</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1685825198796</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -389,7 +396,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updates here and there" />
     <MESSAGE value="Muling, added a small list of things that the script will always sell, in order to maintain a small stock of gold at the start" />
     <MESSAGE value="bug fixes" />
     <MESSAGE value="falador" />
@@ -414,6 +420,7 @@
     <MESSAGE value="fixes, re-enable all skills" />
     <MESSAGE value="Jewelry update" />
     <MESSAGE value="Jewelry changes, firemaking first testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Jewelry changes, firemaking first testing" />
+    <MESSAGE value="Firemaking changes&#10;Traversal now supports areas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Firemaking changes&#10;Traversal now supports areas" />
   </component>
 </project>
