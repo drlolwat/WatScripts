@@ -68,17 +68,17 @@ public class FiremakingTask implements WatTask {
         }
 
         if(!selectedLocation.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(selectedLocation.getTile(), false, this);
+            instance.currentTask = new TraversalTask(selectedLocation, this);
             return;
         }
 
         if(getFireOnPlayer()) {
-            instance.currentTask = new TraversalTask(selectedLocation.getTile(), false, this);
+            instance.currentTask = new TraversalTask(selectedLocation, this);
             return;
         }
 
         if(Inventory.contains("Tinderbox") && Inventory.get("Tinderbox").useOn(ItemUtils.getLogName(logType)) && !getFireOnPlayer()) {
-            Sleep.sleepUntil(() -> Players.getLocal().isAnimating() || getFireOnPlayer() || Dialogues.canContinue(), 4500);
+            Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() || getFireOnPlayer() || Dialogues.canContinue(), 4500);
         }
     }
 
