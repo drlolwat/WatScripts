@@ -2,6 +2,7 @@ package org.lolwat.managers;
 
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.utils.types.CraftingType;
 import org.lolwat.utils.types.FishType;
@@ -50,7 +51,11 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // wool, only uses lumbridge castle at the moment
-        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 99, 20, new HashMap<String, Integer>() { { put("Ball of wool", -200); }}));
+        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 20, new HashMap<String, Integer>() { { put("Ball of wool", -200); }}));
+
+        // jewelry
+        tasks.add(new JewelryTask(CraftingType.GOLDRING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
+        tasks.add(new JewelryTask(CraftingType.GOLDAMULET, 15, 99, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); }}));
 
         return tasks;
     }
@@ -83,7 +88,7 @@ public class TaskManager {
         tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //lumbridge
 
         // willow logs
-        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 70, new HashMap<String, Integer>(){}, false)); //lumbridge
+        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 70, new HashMap<String, Integer>(){ { put("Willow logs", -2000); put("Oak logs", -1); put("Logs", -1); }}, false)); //lumbridge
 
         return tasks;
     }

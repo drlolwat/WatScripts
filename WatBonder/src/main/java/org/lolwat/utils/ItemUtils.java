@@ -23,6 +23,25 @@ public class ItemUtils {
         }
     }
 
+    public static HashMap<String, Integer> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
+        HashMap<String, Integer> ret = new HashMap<>();
+
+        switch(type) {
+            case GOLDRING: {
+                ret.put("Ring mould", 1);
+                ret.put("Gold bar", fullInventory ? 27 * inventoryLoads : 1);
+                break;
+            }
+
+            case GOLDAMULET: {
+                ret.put("Amulet mould", 1);
+                ret.put("Gold bar", fullInventory ? 27 * inventoryLoads : 1);
+            }
+        }
+
+        return ret;
+    }
+
     public static HashMap<String, Integer> getMaterialsForBar(IngotType type, boolean fullInventory, int inventoryLoads) {
         HashMap<String, Integer> ret = new HashMap<>();
         switch(type) {
@@ -165,6 +184,14 @@ public class ItemUtils {
             case GOLDWOOL: return "Golden fleece";
             case BOWSTRING: return "Flax";
             case ROPE: return "Hair";
+        }
+    }
+
+    public static String getMouldNameForCraftingItem(CraftingType type) {
+        switch(type) {
+            default: return "";
+            case GOLDRING: return "Ring";
+            case GOLDAMULET: return "Amulet";
         }
     }
 }
