@@ -1,6 +1,7 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.settings.PlayerSettings;
@@ -70,12 +71,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 //put(Skill.COOKING, 99);
-                //put(Skill.WOODCUTTING, 99);
-                //put(Skill.FISHING, 99);
+                put(Skill.WOODCUTTING, 99);
+                put(Skill.FISHING, 99);
                 //put(Skill.FIREMAKING, 99);
                 put(Skill.CRAFTING, 99);
-                //put(Skill.SMITHING, 99);
-                //put(Skill.MINING, 99);
+                put(Skill.SMITHING, 99);
+                put(Skill.MINING, 99);
             }};
 
         levelUps = new HashMap<>();
@@ -188,6 +189,26 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
     @Override
     public void onPaint(Graphics g) {
+        // calculate task time
+        String taskTime = "";
+        if (currentTask != null && skillSelectedAt > 0) {
+            long currentTime = Instant.now().getEpochSecond();
+            long elapsedTime = currentTime - skillSelectedAt;
+            long remainingTime = skillRunTime - elapsedTime;
+
+            if (remainingTime > 0) {
+                if (remainingTime >= 120) {
+                    int minutes = (int) (remainingTime / 60);
+                    taskTime = minutes + " minutes";
+                } else {
+                    taskTime = remainingTime + " seconds";
+                }
+            } else {
+                taskTime = "0s";
+            }
+        }
+
+
         // Enable anti-aliasing for smoother text
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -226,7 +247,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         // Draw two rows of additional information
         g.setColor(new Color(220, 220, 220));
         g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + netWorth, "Time left:"}};
+        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + netWorth, "Time left: " + taskTime}};
         int rowOffset = 16;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 2; col++) {
