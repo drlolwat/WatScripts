@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MulingTask implements WatTask {
     String name;
@@ -29,12 +31,25 @@ public class MulingTask implements WatTask {
     int originalWorld;
     boolean completed = false;
     int retries = 0;
+    boolean reverse;
+    HashMap<String, Integer> reverseRequest;
 
     public MulingTask(String taskName, int currentWorld) {
         name = taskName;
         active = false;
         target = "";
         originalWorld = currentWorld;
+        reverse = false;
+        reverseRequest = new HashMap<>();
+    }
+
+    public MulingTask(String taskName, int currentWorld, HashMap<String, Integer> request) {
+        name = taskName;
+        active = false;
+        target = "";
+        originalWorld = currentWorld;
+        reverse = true;
+        reverseRequest = request;
     }
 
     @Override
@@ -82,11 +97,22 @@ public class MulingTask implements WatTask {
                 return;
             }
 
+            StringBuilder message = new StringBuilder("READY-REGULAR|" + Players.getLocal().getName());
+            if(reverse) {
+                message = new StringBuilder("READY-REVERSE|" + Players.getLocal().getName() + "|");
+                for(Map.Entry<String, Integer> kvp : reverseRequest.entrySet()) {
+                    message.append(kvp.getKey()).append(":").append(kvp.getValue());
+                    message.append(";");
+                }
+            }
+
+            // REVERSE MULING REQUEST GOES:
+            // READY-REVERSE|Username|Coins:100000
+
             Logger.log("Sending mule connection");
             try (Socket socket = new Socket("localhost", 8081)) {
                 // Send a message to the server
-                String message = "READY|" + Players.getLocal().getName();
-                byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
+                byte[] messageBytes = message.toString().getBytes(StandardCharsets.UTF_8);
                 OutputStream outputStream = socket.getOutputStream();
                 outputStream.write(messageBytes);
                 outputStream.flush();
@@ -138,7 +164,7 @@ public class MulingTask implements WatTask {
 
                 // are we on the first window
                 if (Trade.isOpen(1)) {
-                    if (Inventory.contains("Coins") && Inventory.get("Coins") != null) {
+                    if (Inventory.contains("Coins") && Inventory.get("Coins") != null && !reverse) {
                         //instance.goldMuled += Inventory.get("Coins").getAmount();
                         Trade.addItem("Coins", Inventory.get("Coins").getAmount());
                     }
