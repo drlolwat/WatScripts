@@ -4,6 +4,7 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
+import org.lolwat.tasks.types.firemaking.FiremakingTask;
 import org.lolwat.utils.types.CraftingType;
 import org.lolwat.utils.types.FishType;
 import org.lolwat.utils.types.IngotType;
@@ -35,6 +36,7 @@ public class TaskManager {
         allTasks.addAll(createWoodcuttingTasks());
         allTasks.addAll(createFishingTasks());
         allTasks.addAll(createCraftingTasks());
+        allTasks.addAll(createFiremakingTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -47,6 +49,16 @@ public class TaskManager {
         }
     }
 
+    private static List<WatTask> createFiremakingTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new FiremakingTask(TreeType.TREE, 1, 15, 20, new HashMap<>()));
+        tasks.add(new FiremakingTask(TreeType.OAK, 15, 31, 20, new HashMap<>()));
+        tasks.add(new FiremakingTask(TreeType.WILLOW, 31, 99, 20, new HashMap<>()));
+
+        return tasks;
+    }
+
     private static List<WatTask> createCraftingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
@@ -55,7 +67,7 @@ public class TaskManager {
 
         // jewelry
         tasks.add(new JewelryTask(CraftingType.GOLDRING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
-        tasks.add(new JewelryTask(CraftingType.GOLDAMULET, 15, 99, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.GOLDAMULET, 15, 99, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
 
         return tasks;
     }

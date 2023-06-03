@@ -24,7 +24,7 @@ import org.lolwat.WatAIO;
 import java.util.*;
 
 public class SmithingIngotTask implements WatTask {
-    private final List<Tile> furnaceLocations = Collections.singletonList(new Tile(3107, 3499));
+    private final List<Tile> furnaceLocations = Arrays.asList(new Tile(3107, 3499), new Tile(3276, 3186));
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private final Tile selectedLocation;
     private final IngotType smithingType;

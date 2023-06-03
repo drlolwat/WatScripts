@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.crafting;
 
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -73,7 +74,9 @@ public class JewelryTask implements WatTask {
             if (GameObjects.closest("Furnace").interact()) {
                 Sleep.sleepUntil(() -> Widgets.getWidget(WidgetUtils.getJewelryParentId(craftingType)) != null && Widgets.getWidget(WidgetUtils.getJewelryParentId(craftingType)).isVisible(), 10000);
                 if(Widgets.getWidget(WidgetUtils.getJewelryParentId(craftingType)).getChild(WidgetUtils.getJewelryChildId(craftingType)).interact()) {
-                    Sleep.sleepUntil(() -> !Inventory.contains("Gold bar") || Dialogues.canContinue(), 35000);
+                    Sleep.sleep(500, 900);
+                    Mouse.moveOutsideScreen();
+                    Sleep.sleepUntil(() -> !Inventory.contains("Gold bar") || Dialogues.canContinue(), 45000);
                 }
             }
         }
