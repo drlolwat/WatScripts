@@ -1,10 +1,13 @@
 package org.lolwat.Tasks.Types.Misc;
 
+import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
 import org.lolwat.Tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -30,7 +33,11 @@ public class TraversalTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(Players.getLocal().getTile().equals(target) || (!mustBeOnTile && target.distance() <= 5)) {
+        if(Players.getLocal().getTile().equals(target) || Map.isTileOnMap(target)) {
+            if(!Map.isTileOnScreen(target)) {
+                Camera.rotateToTile(target);
+                Sleep.sleepUntil(() -> Map.isTileOnScreen(target), 3000);
+            }
             Logger.log("Reached target: X:" + target.getX() + ", Y:" + target.getY());
             instance.currentTask = postTask;
         }
