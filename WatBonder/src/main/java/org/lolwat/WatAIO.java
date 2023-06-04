@@ -1,19 +1,12 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
-import org.dreambot.api.methods.input.Keyboard;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
-import org.dreambot.api.methods.walking.web.node.AbstractWebNode;
-import org.dreambot.api.methods.walking.web.node.impl.BasicWebNode;
-import org.dreambot.api.methods.widget.Widget;
-import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
@@ -24,7 +17,6 @@ import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
-import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.tasks.types.misc.MulingTask;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
@@ -38,7 +30,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.List;
 
-@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC, image = "")
+@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener {
     private Timer timer;
     private List<WatTask> allTasks;
@@ -109,7 +101,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
         Logger.log("Assessing tasks to see what is available for us to perform");
 
-        // lets remove skills we meet the goals of and that have no tasks
+        // let's remove skills we meet the goals of and that have no tasks
         List<Skill> toRemove = new ArrayList<>();
         for(Skill skill : skillTargets.keySet()) {
             if(Skills.getRealLevel(skill) >= skillTargets.get(skill) || TaskManager.getTasksBySkill(skill).size() == 0)
@@ -225,12 +217,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         }
 
 
-        // Enable anti-aliasing for smoother text
+        // Enable antialiasing for smoother text
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-        // Set the font metrics for sizing the chatbox
-        FontMetrics fm = g2d.getFontMetrics();
 
         // Calculate the number of free-to-play skills
         int freeSkillsCount = 0;
