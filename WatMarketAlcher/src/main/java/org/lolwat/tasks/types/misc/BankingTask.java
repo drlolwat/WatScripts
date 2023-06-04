@@ -14,7 +14,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.NumUtils;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.WatAIO;
 
 import java.util.HashMap;
@@ -230,7 +230,7 @@ public class BankingTask implements WatTask {
                             Bank.depositAllItems();
                             Sleep.sleep(100, 200);
                             Logger.info("Setting up a reverse mule to get 100k gp");
-                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }});
+                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }}, this);
                         } else {
                             Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
                             instance.currentTask = null;
@@ -258,7 +258,7 @@ public class BankingTask implements WatTask {
                             Bank.withdraw("Coins", toWithdraw);
                             Sleep.sleep(100, 500);
                             Bank.close();
-                            instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld());
+                            instance.currentTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), this);
                             return;
                         }
                     }
