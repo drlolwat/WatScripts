@@ -11,6 +11,8 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.types.smithing.IngotType;
@@ -56,6 +58,11 @@ public class SmithingIngotTask implements WatTask {
 
                 return;
             }
+        }
+
+        if(!Tabs.isOpen(Tab.INVENTORY)) {
+            Tabs.open(Tab.INVENTORY);
+            Sleep.sleep(200, 300);
         }
 
         if(!Map.isTileOnScreen(selectedLocation)) {

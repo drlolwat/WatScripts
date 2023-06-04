@@ -2,6 +2,7 @@ package org.lolwat.managers;
 
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.tasks.types.cooking.CookingFishTask;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.tasks.types.firemaking.FiremakingTask;
@@ -40,6 +41,7 @@ public class TaskManager {
         allTasks.addAll(createCraftingTasks());
         allTasks.addAll(createFiremakingTasks());
         allTasks.addAll(createPrayerTasks());
+        allTasks.addAll(createCookingTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -50,6 +52,72 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+    }
+
+    private static List<WatTask> createCookingTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new CookingFishTask(FishType.SHRIMPS, 1, 5, 15, new HashMap<String, Integer>() {{
+            put("Shrimp", -100);
+        }}));
+
+        tasks.add(new CookingFishTask(FishType.HERRING, 5, 15, 15, new HashMap<String, Integer>() {{
+            put("Shrimp", -1);
+            put("Raw shrimps", -1);
+            put("Herring", -200);
+        }}));
+
+        tasks.add(new CookingFishTask(FishType.TROUT, 15, 50, 15, new HashMap<String, Integer>() {
+            {
+                put("Shrimp", -1);
+                put("Raw shrimps", -1);
+                put("Herring", -1);
+                put("Raw herring", -1);
+                put("Trout", -200);
+            }
+        }));
+
+        tasks.add(new CookingFishTask(FishType.PIKE, 20, 50, 15, new HashMap<String, Integer>() {
+            {
+                put("Shrimp", -1);
+                put("Raw shrimps", -1);
+                put("Herring", -1);
+                put("Raw herring", -1);
+                put("Pike", -200);
+            }
+        }));
+
+        tasks.add(new CookingFishTask(FishType.SALMON, 25, 55, 15, new HashMap<String, Integer>() {
+            {
+                put("Shrimp", -1);
+                put("Raw shrimps", -1);
+                put("Herring", -1);
+                put("Raw herring", -1);
+                put("Salmon", -200);
+            }
+        }));
+
+        tasks.add(new CookingFishTask(FishType.TUNA, 35, 70, 15, new HashMap<String, Integer>() {
+            {
+                put("Shrimp", -1);
+                put("Raw shrimps", -1);
+                put("Herring", -1);
+                put("Raw herring", -1);
+                put("Tuna", -200);
+            }
+        }));
+
+        tasks.add(new CookingFishTask(FishType.LOBSTER, 45, 99, 15, new HashMap<String, Integer>() {
+            {
+                put("Shrimp", -1);
+                put("Raw shrimps", -1);
+                put("Herring", -1);
+                put("Raw herring", -1);
+                put("Lobster", -200);
+            }
+        }));
+
+        return tasks;
     }
 
     private static List<WatTask> createPrayerTasks() {
@@ -87,7 +155,7 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // lumbridge
-        tasks.add(new FishingTask(FishType.SHRIMP, 1, 10, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -250); put("Raw anchovies", -250); }}));
+        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 10, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -250); put("Raw anchovies", -250); }}));
         tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -250); put("Raw sardine", -250); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
 
         // barbarian village
