@@ -62,9 +62,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                //put(Skill.ATTACK, 99);
-                //put(Skill.STRENGTH, 99);
-                //put(Skill.DEFENCE, 99);
+                put(Skill.ATTACK, 99);
+                put(Skill.STRENGTH, 99);
+                put(Skill.DEFENCE, 99);
                 //put(Skill.RANGED, 99);
                 put(Skill.PRAYER, 43);
                 //put(Skill.MAGIC, 99);
@@ -134,7 +134,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
                 for (WatTask task : allTasks) {
                     if (task.trainsSkill().equals(skillSelected) && task.canPerformTask() &&
-                            Skills.getRealLevel(skillSelected) <= task.avoidAfterLevel()) {
+                            Skills.getRealLevel(skillSelected) <= task.avoidAfterLevel() && Skills.getRealLevel(skillSelected) < skillTargets.get(skillSelected)) {
                         currentTask = task;
                         Logger.log("I have selected " + currentTask.getName() + " for " + (skillRunTime / 60) + " minutes");
                         return;
@@ -179,13 +179,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             if(skillSelected != null && Skills.getRealLevel(skillSelected) >= currentTask.avoidAfterLevel()) {
                 Logger.log("We are now avoiding this task due to level, picking new task..");
                 evaluate();
-                return 1;
+                return 1000;
             }
 
             if(skillSelected != null && Skills.getRealLevel(skillSelected) >= skillTargets.get(skillSelected)) {
-                Logger.log("We are now avoiding this task due to level, picking new task..");
+                Logger.log("We are now avoiding this task due to (target) level, picking new task..");
                 evaluate();
-                return 1;
+                return 1000;
             }
         }
 
@@ -235,7 +235,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 taskTime = "0s";
             }
         }
-
 
         // Enable antialiasing for smoother text
         Graphics2D g2d = (Graphics2D) g;
