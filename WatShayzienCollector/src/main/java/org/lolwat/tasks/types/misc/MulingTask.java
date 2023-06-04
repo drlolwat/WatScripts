@@ -33,23 +33,26 @@ public class MulingTask implements WatTask {
     int retries = 0;
     boolean reverse;
     HashMap<String, Integer> reverseRequest;
+    private WatTask postTask;
 
-    public MulingTask(String taskName, int currentWorld) {
+    public MulingTask(String taskName, int currentWorld, WatTask post) {
         name = taskName;
         active = false;
         target = "";
         originalWorld = currentWorld;
         reverse = false;
         reverseRequest = new HashMap<>();
+        postTask = post;
     }
 
-    public MulingTask(String taskName, int currentWorld, HashMap<String, Integer> request) {
+    public MulingTask(String taskName, int currentWorld, HashMap<String, Integer> request, WatTask post) {
         name = taskName;
         active = false;
         target = "";
         originalWorld = currentWorld;
         reverse = true;
         reverseRequest = request;
+        postTask = post;
     }
 
     @Override
@@ -70,7 +73,7 @@ public class MulingTask implements WatTask {
         }
 
         if(completed) {
-            instance.currentTask = new HopperTask(originalWorld, null);
+            instance.currentTask = new HopperTask(originalWorld, postTask);
             return;
         }
 
