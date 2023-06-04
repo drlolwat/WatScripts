@@ -146,7 +146,7 @@ public class GrandExchangeTask implements WatTask {
                     while(item.getValue() != 0) {
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
-                            int itemCost = (int) (LivePrices.get(item.getKey()) * 1.3);
+                            /*int itemCost = (int) (LivePrices.get(item.getKey()) * 1.3);
 
                             if(itemCost <= 7) {
                                 itemCost = 10;
@@ -154,7 +154,10 @@ public class GrandExchangeTask implements WatTask {
 
                             if(Inventory.contains("Coins") && itemCost > Inventory.get("Coins").getAmount()) {
                                 itemCost = Inventory.get("Coins").getAmount();
-                            }
+                            }*/
+
+                            // test item cost of max coin stack
+                            int itemCost = Inventory.get("Coins") != null ? Inventory.get("Coins").getAmount() : LivePrices.get(item.getKey());
 
                             Sleep.sleep(100, 300);
                             GrandExchange.setPrice(itemCost);
@@ -166,13 +169,13 @@ public class GrandExchangeTask implements WatTask {
                             }
 
                             GrandExchange.confirm();
+                            item.setValue(0);
 
                             // Sleep until the item is available..
-                            Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 10000);
+                            Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 20000);
 
                             if (GrandExchange.isReadyToCollect(slot)) {
                                 GrandExchange.collect();
-                                item.setValue(0);
                             }
 
                             Sleep.sleep(50, 125);
