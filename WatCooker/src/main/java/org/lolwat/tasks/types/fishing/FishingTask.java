@@ -2,6 +2,7 @@ package org.lolwat.tasks.types.fishing;
 
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -99,11 +100,11 @@ public class FishingTask implements WatTask {
             }
 
             if(currentSpot != null && getNpcOnTile(currentSpot) != null) {
-                if(getNpcOnTile(currentSpot).interact(FishingUtils.getMenuItemByFishType(fishType))) {
+                if(getNpcOnTile(currentSpot) != null && getNpcOnTile(currentSpot).interact(FishingUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
                     Mouse.moveOutsideScreen();
                     lastCatch = Instant.now().getEpochSecond();
-                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || Inventory.isFull() || Dialogues.canContinue() || !Players.getLocal().isAnimating() || !hasRequiredItems(), 45000); // future check for no bait
+                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 45000); // future check for no bait
                 }
             }
         }
