@@ -86,16 +86,15 @@ public class WoodcuttingTask implements WatTask {
                 return;
             }
 
-            if(lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
-                instance.currentTask = new HopperTask(0, this);
-                lastGotLog = 0;
-                return;
-            }
-
             GameObject tree = GameObjects.closest(WoodcuttingUtils.getTreeName(treeType));
             if(tree != null && tree.interact()) {
                 Mouse.moveOutsideScreen();
                 Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 30000);
+            } else { // hop if no trees are around and it's been 30 seconds since our last log
+                if(lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
+                    instance.currentTask = new HopperTask(0, this);
+                    lastGotLog = 0;
+                }
             }
         }
     }
