@@ -1,4 +1,4 @@
-package org.lolwat.utils;
+package org.lolwat.misc.utils;
 
 public class NumUtils {
     public static String simplifyNumber(double number) {
