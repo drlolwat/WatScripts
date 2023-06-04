@@ -8,7 +8,7 @@ public class FishingUtils {
     public static String getToolByFishType(FishType type) {
         switch(type) {
             default: return null; //return net later
-            case SHRIMP: return "Small fishing net";
+            case SHRIMPS: return "Small fishing net";
             case HERRING:
             case PIKE: return "Fishing rod";
             case TUNA:
@@ -21,7 +21,7 @@ public class FishingUtils {
     public static String getMenuItemByFishType(FishType type) {
         switch(type) {
             default: return null;
-            case SHRIMP: return "Net";
+            case SHRIMPS: return "Net";
             case HERRING:
             case PIKE: return "Bait";
             case TUNA:
