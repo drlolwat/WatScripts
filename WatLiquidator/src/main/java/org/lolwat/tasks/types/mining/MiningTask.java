@@ -161,10 +161,14 @@ public class MiningTask implements WatTask {
                     }
 
                     if (Players.getLocal().getLevel() >= 15) {
-                        if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 20) {
+                        if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 20) { // TODO move them to the alternate spot correctly
                             currentlyUsing = alternateRockList.get(new Random().nextInt(alternateRockList.size()));
                             usingAlternateRocks = true;
                             lastSuccessfulRock = Instant.now().getEpochSecond();
+                        } else if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 45) { // TODO move them to the alternate spot correctly
+                            usingAlternateRocks = false; // TODO
+                            lastSuccessfulRock = 0; // TODO
+                            instance.currentTask = new HopperTask(0, this); //TODO REMOVE THIS WHEN WE SEND EM TO THE ALT SPOT GOOD
                         }
                     } else {
                         if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 20) {
