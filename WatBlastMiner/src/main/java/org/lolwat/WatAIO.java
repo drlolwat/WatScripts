@@ -101,39 +101,53 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
 
         Logger.log("Assessing tasks to see what is available for us to perform");
 
-        // let's remove skills we meet the goals of and that have no tasks
-        List<Skill> toRemove = new ArrayList<>();
-        for(Skill skill : skillTargets.keySet()) {
-            if(Skills.getRealLevel(skill) >= skillTargets.get(skill) || TaskManager.getTasksBySkill(skill).size() == 0)
-                toRemove.add(skill);
-        }
+        if(allTasks.size() > 0) {
+            // let's remove skills we meet the goals of and that have no tasks
+            List<Skill> toRemove = new ArrayList<>();
+            for (Skill skill : skillTargets.keySet()) {
+                if (Skills.getRealLevel(skill) >= skillTargets.get(skill) || TaskManager.getTasksBySkill(skill).size() == 0) {
+                    toRemove.add(skill);
 
-        for(Skill rem : toRemove) {
-            skillTargets.remove(rem);
-        }
+                    //TODO check instanceof for prayer burying task and sell the leftover bones
+                }
+            }
 
-        long now = Instant.now().getEpochSecond();
-        List<Skill> skills = new ArrayList<>(skillTargets.keySet());
+            for (Skill rem : toRemove) {
+                skillTargets.remove(rem);
+            }
 
-        if(skillSelected == null || (now - skillSelectedAt) >= skillRunTime) {
-            skillSelected = skills.get(new Random().nextInt(skills.size()));
-            skillSelectedAt = now;
-            skillRunTime = Calculations.random(1200, 6750); // in seconds
+            if(skillTargets.size() > 0) {
+                long now = Instant.now().getEpochSecond();
+                List<Skill> skills = new ArrayList<>(skillTargets.keySet());
 
-            if(skillRunTime < 1800) {
-                skillRunTime = 1800;
+                if (skillSelected == null || (now - skillSelectedAt) >= skillRunTime) {
+                    skillSelected = skills.get(new Random().nextInt(skills.size()));
+                    skillSelectedAt = now;
+                    skillRunTime = Calculations.random(1200, 6750); // in seconds
+
+                    if (skillRunTime < 1800) {
+                        skillRunTime = 1800;
+                    }
+                }
+
+                Collections.shuffle(allTasks);
+
+                for (WatTask task : allTasks) {
+                    if (task.trainsSkill().equals(skillSelected) && task.canPerformTask() &&
+                            Skills.getRealLevel(skillSelected) <= task.avoidAfterLevel()) {
+                        currentTask = task;
+                        Logger.log("I have selected " + currentTask.getName() + " for " + (skillRunTime / 60) + " minutes");
+                        return;
+                    }
+                }
+            } else {
+                Logger.error("No tasks are available for the skills we have");
+                fatalError = true;
             }
         }
-
-        Collections.shuffle(allTasks);
-
-        for(WatTask task : allTasks) {
-            if(task.trainsSkill().equals(skillSelected) && task.canPerformTask() &&
-                    Skills.getRealLevel(skillSelected) <= task.avoidAfterLevel()) {
-                currentTask = task;
-                Logger.log("I have selected " + currentTask.getName() + " for " + (skillRunTime / 60) + " minutes");
-                return;
-            }
+        else {
+            Logger.error("No tasks are available for the skills we have");
+            fatalError = true;
         }
     }
 
@@ -163,6 +177,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             }
 
             if(skillSelected != null && Skills.getRealLevel(skillSelected) >= currentTask.avoidAfterLevel()) {
+                Logger.log("We are now avoiding this task due to level, picking new task..");
+                evaluate();
+                return 1;
+            }
+
+            if(skillSelected != null && Skills.getRealLevel(skillSelected) >= skillTargets.get(skillSelected)) {
                 Logger.log("We are now avoiding this task due to level, picking new task..");
                 evaluate();
                 return 1;
