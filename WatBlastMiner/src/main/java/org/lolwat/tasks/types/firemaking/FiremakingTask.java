@@ -30,8 +30,12 @@ public class FiremakingTask implements WatTask {
     private final int avoidAtLevel;
     private final HashMap<String, Integer> toSell;
     private final int inventoryLoads;
-    private List<Area> areas = Arrays.asList(new Area(3176, 3479, 3148, 3474),
-            new Area(3146, 3506, 3181, 3502));
+    private List<Area> areas = Arrays.asList(
+            new Area(3176, 3479, 3148, 3474),
+            new Area(3146, 3506, 3181, 3502),
+            new Area(3077, 3496, 3080, 3492),
+            new Area(3236, 3409, 3240, 3413),
+            new Area(3388, 3266, 3330, 3264));
 
     private boolean ready = true;
 
