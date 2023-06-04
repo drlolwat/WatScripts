@@ -16,6 +16,7 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.WatAIO;
+import org.lolwat.tasks.types.combat.MeleeCombatTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +78,9 @@ public class BankingTask implements WatTask {
                 }
 
                 if(!Equipment.isEmpty()) {
-                    Bank.depositAllEquipment();
+                    if(postTask != null && !(postTask instanceof MeleeCombatTask)) {
+                        Bank.depositAllEquipment();
+                    }
                 }
             }
 
@@ -220,7 +223,7 @@ public class BankingTask implements WatTask {
                     Item bankCoins = Bank.get("Coins");
                     if(bankCoins != null && bankCoins.getAmount() >= totalValue) {
                         Bank.depositAllItems();
-                        Bank.withdraw(bankCoins.getID(), totalValue);
+                        Bank.withdrawAll(bankCoins.getID()); //Bank.withdraw(bankCoins.getID(), totalValue);
                         Bank.close();
                         // Send them to the Grand Exchange and have them do another task after (null means it will evaluate when complete)
                         instance.currentTask = new GrandExchangeTask("Buying missing items", false, grandExchangeToBuy, this); // RETURNING THIS AS POST TASK INSTEAD OF NULL
