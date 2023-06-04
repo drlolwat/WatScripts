@@ -1,4 +1,4 @@
-package org.lolwat.utils.types;
+package org.lolwat.misc.types.mixed;
 
 public enum OreType {
     COPPER,

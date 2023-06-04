@@ -1,4 +1,4 @@
-package org.lolwat.utils.mouse;
+package org.lolwat.misc.mouse;
 
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.input.mouse.algorithm.MouseMovementAlgorithm;
