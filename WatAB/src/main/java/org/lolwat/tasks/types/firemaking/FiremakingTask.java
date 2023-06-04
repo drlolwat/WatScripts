@@ -6,6 +6,7 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -20,8 +21,10 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.mixed.TreeType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class FiremakingTask implements WatTask {
     private Area selectedLocation;
@@ -31,11 +34,8 @@ public class FiremakingTask implements WatTask {
     private final HashMap<String, Integer> toSell;
     private final int inventoryLoads;
     private List<Area> areas = Arrays.asList(
-            new Area(3176, 3479, 3148, 3474),
-            new Area(3146, 3506, 3181, 3502),
-            new Area(3077, 3496, 3080, 3492),
-            new Area(3236, 3409, 3240, 3413),
-            new Area(3388, 3266, 3330, 3264));
+            new Area(3149, 3475, 3176, 3478),
+            new Area(3180, 3501, 3148, 3507));
 
     private boolean ready = true;
 
@@ -64,7 +64,7 @@ public class FiremakingTask implements WatTask {
             }
         }
 
-        if(!selectedLocation.contains(Players.getLocal())) {
+        if(!selectedLocation.contains(Players.getLocal()) && !Map.isTileOnMap(selectedLocation.getTile())) {
             instance.currentTask = new TraversalTask(selectedLocation, this);
             return;
         }
