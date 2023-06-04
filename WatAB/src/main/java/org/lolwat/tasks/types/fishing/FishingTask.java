@@ -14,11 +14,11 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
-import org.lolwat.utils.types.FishType;
+import org.lolwat.misc.types.mixed.FishType;
+import org.lolwat.misc.utils.fishing.FishingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.SkillUtils;
 import org.lolwat.WatAIO;
 
 import java.time.Instant;
@@ -53,11 +53,11 @@ public class FishingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        String tool = SkillUtils.getToolByFishType(fishType);
+        String tool = FishingUtils.getToolByFishType(fishType);
         HashMap<String, Integer> requiredItems = new HashMap<String, Integer>() {{ put(tool, 1); }};
 
-        if(SkillUtils.getExtraFishingItems(fishType).size() > 0) {
-            requiredItems.putAll(SkillUtils.getExtraFishingItems(fishType));
+        if(FishingUtils.getExtraFishingItems(fishType).size() > 0) {
+            requiredItems.putAll(FishingUtils.getExtraFishingItems(fishType));
         }
 
         boolean hasItems = true;
@@ -93,11 +93,13 @@ public class FishingTask implements WatTask {
             }
 
             if(currentSpot == null || getNpcOnTile(currentSpot) == null) {
-                currentSpot = NPCs.closest(n -> n != null && n.hasAction(SkillUtils.getMenuItemByFishType(fishType))).getTile();
+                currentSpot = NPCs.closest(n -> n != null && n.getTile() != null && n.hasAction(FishingUtils.getMenuItemByFishType(fishType))).getTile();
+                if(currentSpot == null)
+                    return;
             }
 
             if(currentSpot != null && getNpcOnTile(currentSpot) != null) {
-                if(getNpcOnTile(currentSpot).interact(SkillUtils.getMenuItemByFishType(fishType))) {
+                if(getNpcOnTile(currentSpot).interact(FishingUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
                     Mouse.moveOutsideScreen();
                     lastCatch = Instant.now().getEpochSecond();
@@ -112,7 +114,7 @@ public class FishingTask implements WatTask {
     }
 
     private boolean hasRequiredItems() {
-        for(String it : SkillUtils.getExtraFishingItems(fishType).keySet()) {
+        for(String it : FishingUtils.getExtraFishingItems(fishType).keySet()) {
             if(!Inventory.contains(it)) {
                 return false;
             }

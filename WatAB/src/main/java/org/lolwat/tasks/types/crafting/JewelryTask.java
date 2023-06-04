@@ -13,16 +13,12 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.widget.Widgets;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.utils.types.CraftingType;
-import org.lolwat.utils.types.IngotType;
+import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.ItemUtils;
-import org.lolwat.utils.WidgetUtils;
 import org.lolwat.WatAIO;
 
 import java.util.*;
@@ -50,10 +46,10 @@ public class JewelryTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        for(java.util.Map.Entry<String, Integer> m : ItemUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
+        for(java.util.Map.Entry<String, Integer> m : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
                 instance.currentTask = new BankingTask("Grabbing materials",
-                        ItemUtils.getMaterialsForJewelry(craftingType, true, 1),
+                        CraftingUtils.getMaterialsForJewelry(craftingType, true, 1),
                         true, this, true, toSell, totalLoads);
 
                 return;
@@ -72,8 +68,8 @@ public class JewelryTask implements WatTask {
 
         if (GameObjects.closest("Furnace") != null && !Players.getLocal().isAnimating()) {
             if (GameObjects.closest("Furnace").interact()) {
-                Sleep.sleepUntil(() -> Widgets.getWidget(WidgetUtils.getJewelryParentId(craftingType)) != null && Widgets.getWidget(WidgetUtils.getJewelryParentId(craftingType)).isVisible(), 10000);
-                if(Widgets.getWidget(WidgetUtils.getJewelryParentId(craftingType)).getChild(WidgetUtils.getJewelryChildId(craftingType)).interact()) {
+                Sleep.sleepUntil(() -> Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)) != null && Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)).isVisible(), 10000);
+                if(Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)).getChild(CraftingUtils.getJewelryChildId(craftingType)).interact()) {
                     Sleep.sleep(500, 900);
                     Mouse.moveOutsideScreen();
                     Sleep.sleepUntil(() -> !Inventory.contains("Gold bar") || Dialogues.canContinue(), 45000);

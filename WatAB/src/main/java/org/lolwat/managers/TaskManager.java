@@ -5,10 +5,12 @@ import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.tasks.types.firemaking.FiremakingTask;
-import org.lolwat.utils.types.CraftingType;
-import org.lolwat.utils.types.FishType;
-import org.lolwat.utils.types.IngotType;
-import org.lolwat.utils.types.TreeType;
+import org.lolwat.tasks.types.prayer.BuryBonesTask;
+import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.misc.types.mixed.FishType;
+import org.lolwat.misc.types.prayer.BoneType;
+import org.lolwat.misc.types.smithing.IngotType;
+import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.tasks.types.fishing.FishingTask;
 import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.types.smithing.SmithingIngotTask;
@@ -37,6 +39,7 @@ public class TaskManager {
         allTasks.addAll(createFishingTasks());
         allTasks.addAll(createCraftingTasks());
         allTasks.addAll(createFiremakingTasks());
+        allTasks.addAll(createPrayerTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -47,6 +50,14 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+    }
+
+    private static List<WatTask> createPrayerTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new BuryBonesTask(BoneType.BIGBONES, 20));
+
+        return tasks;
     }
 
     private static List<WatTask> createFiremakingTasks() {
