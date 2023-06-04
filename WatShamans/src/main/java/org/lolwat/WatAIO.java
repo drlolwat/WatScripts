@@ -69,7 +69,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 put(Skill.PRAYER, 43);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                //put(Skill.COOKING, 99);
+                put(Skill.COOKING, 99);
                 put(Skill.WOODCUTTING, 99);
                 put(Skill.FISHING, 99);
                 put(Skill.FIREMAKING, 99);
