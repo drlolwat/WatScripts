@@ -7,15 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Cleanup">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/cooking/CookingUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/cooking/CookingFishTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fixed task evaluation not correctly ending tasks and removing them etc">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/types/mixed/FishType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/types/mixed/FishType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/fishing/FishingUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/fishing/FishingUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/smithing/SmithingIngotTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/smithing/SmithingIngotTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,20 +88,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Initial">
-      <created>1679199221084</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1679199221084</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Lol">
-      <created>1679506137673</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1679506137673</updated>
     </task>
     <task id="LOCAL-00003" summary="Fixed walking, mostly, even without no-click&#10;Mule now supports any world, so added support for that&#10;Perhaps fix of buying rune pickaxes, untested">
       <created>1681886653691</created>
@@ -437,7 +418,21 @@
       <option name="project" value="LOCAL" />
       <updated>1685855855249</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Cleanup&#10;Cooking skill, fish only">
+      <created>1685862809418</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1685862809418</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Fixed task evaluation not correctly ending tasks and removing them etc">
+      <created>1685864360781</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1685864360781</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -452,8 +447,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="AIO base" />
-    <MESSAGE value="paint" />
     <MESSAGE value="Renaming of Dynamic tasks.&#10;Moved mining into a central task.&#10;Added Varrock East to the Mining Task" />
     <MESSAGE value="Mule will now flag as dead after 5 failed connections.&#10;Will deposit gold back if mule connection is dead.&#10;Will not re-try muling until script restart" />
     <MESSAGE value="Added Copper and Tin East Varrock tasks.&#10;Added functionality to get tasks by their skill, for chaining (we need to mine ore to smith, for example)" />
@@ -477,6 +470,8 @@
     <MESSAGE value="Refactoring" />
     <MESSAGE value="Tasks will now upgrade to the next version properly when their goal is reached&#10;Selling on G.E now uses LivePrices correctly to ensure instant selling" />
     <MESSAGE value="Cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup" />
+    <MESSAGE value="Cleanup&#10;Cooking skill, fish only" />
+    <MESSAGE value="Fixed task evaluation not correctly ending tasks and removing them etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed task evaluation not correctly ending tasks and removing them etc" />
   </component>
 </project>
