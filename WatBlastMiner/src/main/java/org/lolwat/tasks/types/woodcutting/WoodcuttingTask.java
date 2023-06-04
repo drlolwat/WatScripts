@@ -14,12 +14,12 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.utils.types.TreeType;
+import org.lolwat.misc.types.mixed.TreeType;
+import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.HopperTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.ItemUtils;
 import org.lolwat.WatAIO;
 
 import java.time.Instant;
@@ -47,7 +47,7 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        String hatchet = ItemUtils.getBestHatchetForLevel();
+        String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
 
         HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
             {
@@ -73,7 +73,7 @@ public class WoodcuttingTask implements WatTask {
                     return;
                 } else {
                     for(Item it : Inventory.all()) {
-                        if(it.getName().equals(ItemUtils.getLogName(treeType))) {
+                        if(it.getName().equals(WoodcuttingUtils.getLogName(treeType))) {
                             Inventory.drop(it.getName());
                             Sleep.sleep(800, 1200);
                         }
@@ -92,7 +92,7 @@ public class WoodcuttingTask implements WatTask {
                 return;
             }
 
-            GameObject tree = GameObjects.closest(ItemUtils.getTreeName(treeType));
+            GameObject tree = GameObjects.closest(WoodcuttingUtils.getTreeName(treeType));
             if(tree != null && tree.interact()) {
                 Mouse.moveOutsideScreen();
                 Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 30000);

@@ -3,29 +3,23 @@ package org.lolwat.tasks.types.firemaking;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
-import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.lolwat.misc.utils.firemaking.FiremakingUtils;
+import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.utils.ItemUtils;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.WidgetUtils;
 import org.lolwat.WatAIO;
-import org.lolwat.utils.types.TreeType;
+import org.lolwat.misc.types.mixed.TreeType;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -56,10 +50,10 @@ public class FiremakingTask implements WatTask {
             Tabs.open(Tab.INVENTORY);
         }
 
-        for(java.util.Map.Entry<String, Integer> m : ItemUtils.getMaterialsForFiremaking(logType, false, 1).entrySet()) {
+        for(java.util.Map.Entry<String, Integer> m : FiremakingUtils.getMaterialsForFiremaking(logType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
                 instance.currentTask = new BankingTask("Grabbing materials",
-                        ItemUtils.getMaterialsForFiremaking(logType, true, 1),
+                        FiremakingUtils.getMaterialsForFiremaking(logType, true, 1),
                         true, this, true, toSell, inventoryLoads);
 
                 return;
@@ -76,7 +70,7 @@ public class FiremakingTask implements WatTask {
             return;
         }
 
-        if(Inventory.contains("Tinderbox") && Inventory.get("Tinderbox").useOn(ItemUtils.getLogName(logType)) && !getFireOnPlayer()) {
+        if(Inventory.contains("Tinderbox") && Inventory.get("Tinderbox").useOn(WoodcuttingUtils.getLogName(logType)) && !getFireOnPlayer()) {
             ready = false;
             Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 4500);
         }
