@@ -15,12 +15,11 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.utils.ItemUtils;
-import org.lolwat.utils.types.CraftingType;
+import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.WidgetUtils;
 import org.lolwat.WatAIO;
 
 import java.util.*;
@@ -48,7 +47,7 @@ public class SpinningTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        String name = ItemUtils.getCraftingItemName(spinningType);
+        String name = CraftingUtils.getCraftingItemName(spinningType);
         HashMap<String, Integer> requiredItems = new HashMap<String, Integer>() { { put(name, 28); }};
 
         if(!Tabs.isOpen(Tab.INVENTORY)) {
@@ -77,8 +76,8 @@ public class SpinningTask implements WatTask {
                 Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
 
                 if(Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
-                    Widgets.getWidget(270).getChild(WidgetUtils.getSpinnerWidgetId(spinningType)).interact();
-                    Sleep.sleepUntil(() -> Dialogues.canContinue() || !Inventory.contains(n -> n.getName().contains(ItemUtils.getCraftingItemName(spinningType))), 30000);
+                    Widgets.getWidget(270).getChild(CraftingUtils.getSpinnerWidgetId(spinningType)).interact();
+                    Sleep.sleepUntil(() -> Dialogues.canContinue() || !Inventory.contains(n -> n.getName().contains(CraftingUtils.getCraftingItemName(spinningType))), 30000);
                 }
             }
         }
