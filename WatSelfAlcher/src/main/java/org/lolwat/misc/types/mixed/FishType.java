@@ -1,11 +1,12 @@
 package org.lolwat.misc.types.mixed;
 
 public enum FishType {
-    SHRIMP,
+    SHRIMPS,
     HERRING,
     PIKE,
     TUNA,
     SALMON,
     LOBSTER,
-    SWORDFISH
+    SWORDFISH,
+    TROUT
 }
