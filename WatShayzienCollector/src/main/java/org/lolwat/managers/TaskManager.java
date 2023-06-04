@@ -1,7 +1,9 @@
 package org.lolwat.managers;
 
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.tasks.types.combat.MeleeCombatTask;
 import org.lolwat.tasks.types.cooking.CookingFishTask;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
@@ -42,6 +44,7 @@ public class TaskManager {
         allTasks.addAll(createFiremakingTasks());
         allTasks.addAll(createPrayerTasks());
         allTasks.addAll(createCookingTasks());
+        allTasks.addAll(createMeleeTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -52,6 +55,77 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+    }
+
+    private static List<WatTask> createMeleeTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        //dynamically make the same tasks for all 3 melee skills
+        List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
+        for (Skill sk : s) {
+            // lumbridge chickens north
+            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
+                    new Tile(3170, 3289, 0),
+                    new Tile(3183, 3289, 0),
+                    new Tile(3185, 3291, 0),
+                    new Tile(3185, 3295, 0),
+                    new Tile(3186, 3296, 0),
+                    new Tile(3186, 3298, 0),
+                    new Tile(3185, 3299, 0),
+                    new Tile(3185, 3301, 0),
+                    new Tile(3183, 3302, 0),
+                    new Tile(3182, 3302, 0),
+                    new Tile(3182, 3303, 0),
+                    new Tile(3181, 3303, 0),
+                    new Tile(3179, 3303, 0),
+                    new Tile(3179, 3307, 0),
+                    new Tile(3174, 3307, 0),
+                    new Tile(3172, 3302, 0),
+                    new Tile(3170, 3300, 0),
+                    new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer> () {
+            }));
+
+            // lumbridge cows north
+            tasks.add(new MeleeCombatTask(sk, 10, 30, new Area(
+                    new Tile(3193, 3300, 0),
+                    new Tile(3193, 3286, 0),
+                    new Tile(3197, 3282, 0),
+                    new Tile(3201, 3283, 0),
+                    new Tile(3205, 3283, 0),
+                    new Tile(3207, 3284, 0),
+                    new Tile(3211, 3284, 0),
+                    new Tile(3212, 3285, 0),
+                    new Tile(3212, 3289, 0),
+                    new Tile(3213, 3290, 0),
+                    new Tile(3213, 3292, 0),
+                    new Tile(3211, 3295, 0),
+                    new Tile(3210, 3297, 0),
+                    new Tile(3210, 3301, 0),
+                    new Tile(3209, 3302, 0),
+                    new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() { { put("Salmon", 12); }}));
+
+            // varrock guards, palace upstairs north
+            tasks.add(new MeleeCombatTask(sk, 30, 99, new Area(
+                    new Tile(3207, 3490, 1),
+                    new Tile(3200, 3490, 1),
+                    new Tile(3200, 3499, 1),
+                    new Tile(3202, 3501, 1),
+                    new Tile(3205, 3501, 1),
+                    new Tile(3207, 3499, 1)), "Guard", new HashMap<String, Integer>() { { put("Salmon", 20); }}));
+
+            // varrock guards, palace courtyard
+            tasks.add(new MeleeCombatTask(sk, 30, 99, new Area(
+                    new Tile(3202, 3468, 0),
+                    new Tile(3202, 3461, 0),
+                    new Tile(3204, 3459, 0),
+                    new Tile(3222, 3459, 0),
+                    new Tile(3224, 3461, 0),
+                    new Tile(3224, 3469, 0),
+                    new Tile(3217, 3471, 0),
+                    new Tile(3207, 3471, 0)), "Guard", new HashMap<String, Integer>() {{ put("Salmon", 20); }}));
+        }
+
+        return tasks;
     }
 
     private static List<WatTask> createCookingTasks() {
