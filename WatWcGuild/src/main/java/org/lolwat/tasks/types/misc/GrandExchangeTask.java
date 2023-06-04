@@ -123,17 +123,16 @@ public class GrandExchangeTask implements WatTask {
                     if(Inventory.contains(item.getKey())) {
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
-                        WidgetChild fivePercent = GrandExchange.getDecreasePriceFivePercentButton();
 
-                        if(fivePercent != null) {
-                            fivePercent.interact();
-                            fivePercent.interact();
+                        if(GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 1.2))) {
+                            Sleep.sleep(100, 200);
+                            GrandExchange.confirm();
+                            Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
+                            GrandExchange.collect();
                         }
-
-                        Sleep.sleep(100, 200);
-                        GrandExchange.confirm();
-                        Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
-                        GrandExchange.collect();
+                        else {
+                            return;
+                        }
                     }
                     else {
                         Logger.log("Item was not in inventory: " + item.getKey());

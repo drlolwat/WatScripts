@@ -1,14 +1,19 @@
 package org.lolwat;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.input.Mouse;
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
+import org.dreambot.api.methods.input.Keyboard;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.AbstractWebNode;
 import org.dreambot.api.methods.walking.web.node.impl.BasicWebNode;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
@@ -19,6 +24,7 @@ import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.tasks.types.misc.MulingTask;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
@@ -120,7 +126,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
         if(skillSelected == null || (now - skillSelectedAt) >= skillRunTime) {
             skillSelected = skills.get(new Random().nextInt(skills.size()));
             skillSelectedAt = now;
-            skillRunTime = new Random().nextInt(7200); // in seconds
+            skillRunTime = Calculations.random(1200, 6750); // in seconds
 
             if(skillRunTime < 1800) {
                 skillRunTime = 1800;
@@ -159,13 +165,22 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
             return 1;
         }
 
-        if((currentTask != null && !(currentTask instanceof HopperTask)) && WorldHopper.isWorldHopperOpen()) {
-            WorldHopper.closeWorldHopper();
+        if(currentTask != null) {
+            if(!(currentTask instanceof HopperTask) && WorldHopper.isWorldHopperOpen()) {
+                WorldHopper.closeWorldHopper();
+            }
+
+            if(skillSelected != null && Skills.getRealLevel(skillSelected) >= currentTask.avoidAfterLevel()) {
+                Logger.log("We are now avoiding this task due to level, picking new task..");
+                evaluate();
+                return 1;
+            }
         }
 
+        // double check here
         if(currentTask != null) {
             currentTask.execute(this);
-            // We have to check below, because sometimes we rid ourselves of the task before the loop will complete.
+            // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
             return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
         }
 
