@@ -13,12 +13,11 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.utils.types.IngotType;
+import org.lolwat.misc.types.smithing.IngotType;
+import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.ItemUtils;
-import org.lolwat.utils.WidgetUtils;
 import org.lolwat.WatAIO;
 
 import java.util.*;
@@ -48,11 +47,11 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        for(java.util.Map.Entry<String, Integer> m : ItemUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
+        for(java.util.Map.Entry<String, Integer> m : SmithingUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
                 instance.currentTask = new BankingTask("Grabbing ore",
-                        ItemUtils.getMaterialsForBar(smithingType, true, 1),
+                        SmithingUtils.getMaterialsForBar(smithingType, true, 1),
                         true, this, true, toSell, totalLoads);
 
                 return;
@@ -74,7 +73,7 @@ public class SmithingIngotTask implements WatTask {
                 Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
 
                 if(Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible()) {
-                    Widgets.getWidget(270).getChild(WidgetUtils.getIngotWidgetId(smithingType)).interact();
+                    Widgets.getWidget(270).getChild(SmithingUtils.getIngotWidgetId(smithingType)).interact();
                     Sleep.sleepUntil(() -> cooldown > 5 || Dialogues.canContinue() || !Inventory.contains(n -> n.getName().contains("ore")), 30000);
                 }
             }

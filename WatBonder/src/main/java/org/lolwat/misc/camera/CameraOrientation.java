@@ -1,4 +1,4 @@
-package org.lolwat.utils.camera;
+package org.lolwat.misc.camera;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;

@@ -17,11 +17,11 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
+import org.lolwat.misc.utils.mining.MiningUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.HopperTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.utils.ItemUtils;
 import org.lolwat.WatAIO;
 
 import java.time.Instant;
@@ -115,7 +115,7 @@ public class MiningTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        String pickaxe = ItemUtils.getBestPickaxeForLevel();
+        String pickaxe = MiningUtils.getBestPickaxeForLevel();
 
         HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
             {
