@@ -17,6 +17,8 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.WatAIO;
 import org.lolwat.tasks.types.combat.MeleeCombatTask;
+import org.lolwat.tasks.types.crafting.JewelryTask;
+import org.lolwat.tasks.types.smithing.SmithingItemTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +75,15 @@ public class BankingTask implements WatTask {
                 // Deposit everything except the items we require from the request
                 for(Item it : Inventory.all()) {
                     if(it != null && requiredItems != null && !requiredItems.containsKey(it.getName())) {
+                        if(postTask != null) {
+                            // lets not get rid of hammers/moulds etc if the pre/post task needs em
+                            if(postTask instanceof SmithingItemTask || postTask instanceof JewelryTask) {
+                                if(it.getName().equalsIgnoreCase("hammer") || it.getName().contains("mould")) {
+                                    continue;
+                                }
+                            }
+                        }
+
                         Bank.depositAll(it);
                     }
                 }
