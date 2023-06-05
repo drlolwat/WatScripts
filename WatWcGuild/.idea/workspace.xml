@@ -7,20 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="DUCKTAPE FOR MINING TASK HOPPER!&#10;Firemaking task duel arena location added">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/types/combat/DefensiveItemType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/types/mixed/AttackType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/range/RangeUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Melee combat training&#10;Armor/weapon utils&#10;Other QOL">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/fishing/FishingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/fishing/FishingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,13 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Pickaxe upgrading should be good now">
-      <created>1681890915841</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1681890915841</updated>
     </task>
     <task id="LOCAL-00005" summary="&lt;= 15cb now only use the south rocks.">
       <created>1681957646906</created>
@@ -443,7 +426,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685865284433</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Melee combat training&#10;Armor/weapon utils&#10;Other QOL">
+      <created>1685922987138</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1685922987138</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -458,8 +448,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Mule will now flag as dead after 5 failed connections.&#10;Will deposit gold back if mule connection is dead.&#10;Will not re-try muling until script restart" />
-    <MESSAGE value="Added Copper and Tin East Varrock tasks.&#10;Added functionality to get tasks by their skill, for chaining (we need to mine ore to smith, for example)" />
     <MESSAGE value="Beginnings of smithing" />
     <MESSAGE value="Smithing task will now buy missing ores" />
     <MESSAGE value="Gold task, woodcutting" />
@@ -483,6 +471,8 @@
     <MESSAGE value="Cleanup&#10;Cooking skill, fish only" />
     <MESSAGE value="Fixed task evaluation not correctly ending tasks and removing them etc" />
     <MESSAGE value="DUCKTAPE FOR MINING TASK HOPPER!&#10;Firemaking task duel arena location added" />
-    <option name="LAST_COMMIT_MESSAGE" value="DUCKTAPE FOR MINING TASK HOPPER!&#10;Firemaking task duel arena location added" />
+    <MESSAGE value="Melee combat training&#10;Armor/weapon utils" />
+    <MESSAGE value="Melee combat training&#10;Armor/weapon utils&#10;Other QOL" />
+    <option name="LAST_COMMIT_MESSAGE" value="Melee combat training&#10;Armor/weapon utils&#10;Other QOL" />
   </component>
 </project>
