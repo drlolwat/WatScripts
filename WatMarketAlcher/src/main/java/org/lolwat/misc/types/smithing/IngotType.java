@@ -5,8 +5,8 @@ public enum IngotType {
     IRON,
     STEEL,
     MITHRIL,
-    ADAMANT,
-    RUNE,
+    ADAMANTITE,
+    RUNITE,
     GOLD,
     SILVER,
 }
