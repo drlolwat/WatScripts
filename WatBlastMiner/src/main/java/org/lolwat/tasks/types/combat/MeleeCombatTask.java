@@ -17,7 +17,6 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
-import org.lolwat.misc.types.mixed.AttackType;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -101,7 +100,14 @@ public class MeleeCombatTask implements WatTask {
             }
         }
 
-        if (!zone.contains(Players.getLocal())) {
+        if (needsEat && Combat.getHealthPercent() <= 50) {
+            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
+            if(i != null && i.interact()) {
+                Sleep.sleep(60, 120);
+            }
+        }
+
+        if (!zone.contains(Players.getLocal()) && !Players.getLocal().isInCombat()) {
             instance.currentTask = new TraversalTask(zone, this);
             return;
         }
@@ -117,6 +123,15 @@ public class MeleeCombatTask implements WatTask {
             Combat.setCombatStyle(CombatStyle.STRENGTH);
         }
 
+        if(!Combat.isAutoRetaliateOn()) {
+            if(!Tabs.isOpen(Tab.COMBAT)) {
+                Tabs.open(Tab.COMBAT);
+                Sleep.sleep(120, 240);
+            }
+            Combat.toggleAutoRetaliate(true);
+            Sleep.sleep(60, 120);
+        }
+
         Sleep.sleep(300, 500);
 
         if (!Tabs.isOpen(Tab.INVENTORY)) {
@@ -124,19 +139,12 @@ public class MeleeCombatTask implements WatTask {
             Sleep.sleep(300, 500);
         }
 
-        if (needsEat && Combat.getHealthPercent() <= 50) {
-            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-            if(i != null && i.interact()) {
-                Sleep.sleep(60, 120);
-            }
-        }
-
         if(Dialogues.canContinue()) {
             Dialogues.continueDialogue();
         }
 
         if (!Players.getLocal().isInCombat()) {
-            NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible());
+            NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact()) {
                 //Sleep.sleepUntil(() -> !closestFriend.exists() || closestFriend.isHealthBarVisible(), 5000);
             }
