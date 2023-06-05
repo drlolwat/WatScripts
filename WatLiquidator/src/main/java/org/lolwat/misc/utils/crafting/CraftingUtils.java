@@ -18,14 +18,12 @@ public class CraftingUtils {
         HashMap<String, Integer> ret = new HashMap<>();
 
         switch(type) {
-            case GOLDRING: {
-                ret.put("Ring mould", 1);
+            case RING: {
                 ret.put("Gold bar", fullInventory ? 27 * inventoryLoads : 1);
                 break;
             }
 
-            case GOLDAMULET: {
-                ret.put("Amulet mould", 1);
+            case AMULET: {
                 ret.put("Gold bar", fullInventory ? 27 * inventoryLoads : 1);
             }
         }
@@ -49,16 +47,16 @@ public class CraftingUtils {
     public static int getJewelryParentId(CraftingType type) {
         switch(type) {
             default:
-            case GOLDAMULET:
-            case GOLDRING: return 446;
+            case AMULET:
+            case RING: return 446;
         }
     }
 
     public static int getJewelryChildId(CraftingType type) {
         switch(type) {
             default:
-            case GOLDRING: return 8;
-            case GOLDAMULET: return 37;
+            case RING: return 8;
+            case AMULET: return 37;
         }
     }
 }
