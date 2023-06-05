@@ -8,6 +8,6 @@ public enum CraftingType {
     CROSSBOWSTRING_S,
     CROSSBOWSTRING_TR,
     MAGICSTRING,
-    GOLDRING,
-    GOLDAMULET,
+    RING,
+    AMULET,
 }
