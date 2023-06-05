@@ -15,6 +15,7 @@ import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
@@ -54,6 +55,12 @@ public class JewelryTask implements WatTask {
 
                 return;
             }
+        }
+
+        String extra = StringUtils.capitalize(craftingType.toString().toLowerCase()) + " mould";
+        if(!Inventory.contains(extra)) {
+            instance.currentTask = new BankingTask("Grabbing mould", new HashMap<String, Integer>() { { put(extra, 1); }}, false, this, true, null, 1);
+            return;
         }
 
         if (!Map.isTileOnScreen(selectedLocation)) {
