@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
@@ -86,11 +87,15 @@ public class WoodcuttingTask implements WatTask {
                 return;
             }
 
+            if(Players.getLocal().isAnimating())
+                return;
+
             GameObject tree = GameObjects.closest(WoodcuttingUtils.getTreeName(treeType));
             if(tree != null && tree.interact()) {
                 Mouse.moveOutsideScreen();
-                Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 30000);
+                Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 60000);
             } else { // hop if no trees are around and it's been 30 seconds since our last log
+                Sleep.sleep(5000, 10000);
                 if(lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
                     instance.currentTask = new HopperTask(0, this);
                     lastGotLog = 0;
