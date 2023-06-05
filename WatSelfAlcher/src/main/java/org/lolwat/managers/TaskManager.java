@@ -64,7 +64,7 @@ public class TaskManager {
         List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
         for (Skill sk : s) {
             // lumbridge chickens north
-            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
+            tasks.add(new MeleeCombatTask(sk, 1, 20, new Area(
                     new Tile(3170, 3289, 0),
                     new Tile(3183, 3289, 0),
                     new Tile(3185, 3291, 0),
@@ -82,11 +82,11 @@ public class TaskManager {
                     new Tile(3174, 3307, 0),
                     new Tile(3172, 3302, 0),
                     new Tile(3170, 3300, 0),
-                    new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer> () {
+                    new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
             }));
 
             // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 10, 30, new Area(
+            tasks.add(new MeleeCombatTask(sk, 10, 20, new Area(
                     new Tile(3193, 3300, 0),
                     new Tile(3193, 3286, 0),
                     new Tile(3197, 3282, 0),
@@ -102,7 +102,25 @@ public class TaskManager {
                     new Tile(3210, 3297, 0),
                     new Tile(3210, 3301, 0),
                     new Tile(3209, 3302, 0),
-                    new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() { { put("Salmon", 12); }}));
+                    new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
+                {
+                    put("Salmon", 12);
+                }
+            }));
+
+            // al kharid warriors east
+            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3299, 3177, 3303, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+                {
+                    put("Salmon", 28);
+                }
+            }));
+
+            // al kharid warrior west
+            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3282, 3177, 3286, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+                {
+                    put("Salmon", 28);
+                }
+            }));
 
             // varrock guards, palace upstairs north
             tasks.add(new MeleeCombatTask(sk, 30, 99, new Area(
@@ -111,7 +129,11 @@ public class TaskManager {
                     new Tile(3200, 3499, 1),
                     new Tile(3202, 3501, 1),
                     new Tile(3205, 3501, 1),
-                    new Tile(3207, 3499, 1)), "Guard", new HashMap<String, Integer>() { { put("Salmon", 20); }}));
+                    new Tile(3207, 3499, 1)), "Guard", new HashMap<String, Integer>() {
+                {
+                    put("Salmon", 20);
+                }
+            }));
 
             // varrock guards, palace courtyard
             tasks.add(new MeleeCombatTask(sk, 30, 99, new Area(
@@ -122,7 +144,21 @@ public class TaskManager {
                     new Tile(3224, 3461, 0),
                     new Tile(3224, 3469, 0),
                     new Tile(3217, 3471, 0),
-                    new Tile(3207, 3471, 0)), "Guard", new HashMap<String, Integer>() {{ put("Salmon", 20); }}));
+                    new Tile(3207, 3471, 0)), "Guard", new HashMap<String, Integer>() {{
+                put("Salmon", 20);
+            }}));
+
+            // hill giants (plateau)
+            tasks.add(new MeleeCombatTask(sk, 40, 99, new Area(
+                    new Tile(3367, 3157, 0),
+                    new Tile(3367, 3142, 0),
+                    new Tile(3381, 3142, 0),
+                    new Tile(3388, 3150, 0),
+                    new Tile(3390, 3150, 0),
+                    new Tile(3384, 3158, 0),
+                    new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
+                put("Salmon", 28);
+            }}));
         }
 
         return tasks;
