@@ -16,8 +16,8 @@ import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.tasks.types.fishing.FishingTask;
 import org.lolwat.tasks.types.mining.MiningTask;
-import org.lolwat.tasks.types.smithing.SmithingIngotTask;
 import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.smithing.SmithingItemTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
 
@@ -255,8 +255,8 @@ public class TaskManager {
         tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 20, new HashMap<String, Integer>() { { put("Ball of wool", -200); }}));
 
         // jewelry
-        tasks.add(new JewelryTask(CraftingType.GOLDRING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
-        tasks.add(new JewelryTask(CraftingType.GOLDAMULET, 15, 99, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
+        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 99, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
 
         return tasks;
     }
@@ -302,9 +302,113 @@ public class TaskManager {
     private static List<WatTask> createSmithingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 15, new HashMap<String, Integer>() { { put("Bronze bar", -200); }}));
-        tasks.add(new SmithingIngotTask(IngotType.IRON, 15, 20, new HashMap<String, Integer>() { { put("Iron bar", -200); }}));
-        tasks.add(new SmithingIngotTask(IngotType.SILVER, 20, 99, new HashMap<String, Integer>(){ { put("Silver bar", -200); }} )); // profitable
+        /*
+        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 15, new HashMap<String, Integer>() {
+            {
+                put("Bronze bar", -200);
+            }
+        }));
+        tasks.add(new SmithingIngotTask(IngotType.IRON, 15, 20, new HashMap<String, Integer>() {
+            {
+                put("Iron bar", -200);
+            }
+        }));
+        tasks.add(new SmithingIngotTask(IngotType.SILVER, 20, 99, new HashMap<String, Integer>() {
+            {
+                put("Silver bar", -200);
+            }
+        })); // profitable*/
+
+        // actual items, followed wiki for most efficient leveling
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 1, 5, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -100);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 5, 9, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -100);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 9, 18, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -30);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 18, 33, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -1);
+                put("Bronze platebody", -30);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.IRON, 33, 48, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -1);
+                put("Bronze platebody", -2);
+                put("Iron platebody", -30);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.STEEL, 48, 68, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -1);
+                put("Bronze platebody", -2);
+                put("Iron platebody", -2);
+                put("Steel platebody", -30);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.MITHRIL, 68, 88, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -1);
+                put("Bronze platebody", -2);
+                put("Iron platebody", -2);
+                put("Steel platebody", -2);
+                put("Mithril platebody", -30);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.ADAMANTITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -1);
+                put("Bronze platebody", -2);
+                put("Iron platebody", -2);
+                put("Steel platebody", -2);
+                put("Mithril platebody", -2);
+                put("Adamant platebody", -30);
+            }
+        }));
+
+        tasks.add(new SmithingItemTask(IngotType.RUNITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
+            {
+                put("Bronze axe", -1);
+                put("Bronze scimitar", -1);
+                put("Bronze warhammer", -1);
+                put("Bronze platebody", -2);
+                put("Iron platebody", -2);
+                put("Steel platebody", -2);
+                put("Mithril platebody", -2);
+                put("Adamant platebody", -2);
+                put("Rune platelegs", -30);
+            }
+        }));
 
         return tasks;
     }
