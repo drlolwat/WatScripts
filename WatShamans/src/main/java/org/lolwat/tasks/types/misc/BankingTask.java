@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.world.Worlds;
@@ -56,8 +57,9 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        BankLocation loc = BankLocation.getNearest();
         // Are we near a banker?
-        if(NPCs.closest("Banker") != null) {
+        if(loc.getArea(10).contains(Players.getLocal())) {
             // Open the bank if we don't have it open
             if (!Bank.isOpen()) {
                 Bank.open();
@@ -211,7 +213,7 @@ public class BankingTask implements WatTask {
                 }
             }
 
-            requiredItems.clear();
+            //requiredItems.clear();
 
             Logger.log("==== Finished checking for required items ====");
 
@@ -279,12 +281,12 @@ public class BankingTask implements WatTask {
                 }
 
                 // We are done banking operations, and we are NOT setting up a Grand Exchange Task.
+                requiredItems.clear();
                 Bank.close();
                 instance.currentTask = postTask;
             }
         }
         else {
-            BankLocation loc = BankLocation.getNearest();
             if(loc != null) {
                 if(Walking.shouldWalk()) {
                     Walking.walk(loc);
