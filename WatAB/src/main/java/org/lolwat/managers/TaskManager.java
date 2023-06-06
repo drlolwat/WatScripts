@@ -109,14 +109,14 @@ public class TaskManager {
             }));
 
             // al kharid warriors east
-            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3299, 3177, 3303, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
                     put("Salmon", 28);
                 }
             }));
 
             // al kharid warrior west
-            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3282, 3177, 3286, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
                     put("Salmon", 28);
                 }
@@ -294,7 +294,6 @@ public class TaskManager {
         // yew logs
         tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //edge
         tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //g.e
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3035, 3318), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //fally
 
         return tasks;
     }

@@ -102,7 +102,7 @@ public class MeleeCombatTask implements WatTask {
 
         if (needsEat && Combat.getHealthPercent() <= 50) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-            if(i != null && i.interact()) {
+            if (i != null && i.interact()) {
                 Sleep.sleep(60, 120);
             }
         }
