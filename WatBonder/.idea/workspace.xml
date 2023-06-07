@@ -7,12 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Smithing from 1-99 using bars and a hammer. Gets pretty expensive after lv 48.&#10;Fixes for hammer+mould problems, checking it separately now and ignoring it in the Bank task if it's part of a crafting/smithing request">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/cooking/CookingFishTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/cooking/CookingFishTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/fishing/FishingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/fishing/FishingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/smithing/SmithingItemTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/smithing/SmithingItemTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,13 +91,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Concept">
-      <created>1682308506401</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1682308506401</updated>
     </task>
     <task id="LOCAL-00009" summary="DynamicBankingTask started, need to work on DynamicGrandExchangeTask">
       <created>1682319700310</created>
@@ -434,7 +428,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685944601240</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="fixes">
+      <created>1686072403378</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1686072403378</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -449,7 +450,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods" />
     <MESSAGE value="Quality of life, bug fixes" />
     <MESSAGE value="Mouse slight speedup&#10;fishing fix&#10;added silver bar smithing" />
     <MESSAGE value="small QOL" />
@@ -474,6 +474,7 @@
     <MESSAGE value="Revert test changes to G.E.&#10;Enable willows until level 99&#10;Check for animation in wc task to (hopefully) stop the re-clicking" />
     <MESSAGE value="More melee combat tasks (Hill giants)&#10;Change up on the requirements for melee tasks for less difficulty in xp gains" />
     <MESSAGE value="Smithing from 1-99 using bars and a hammer. Gets pretty expensive after lv 48.&#10;Fixes for hammer+mould problems, checking it separately now and ignoring it in the Bank task if it's part of a crafting/smithing request" />
-    <option name="LAST_COMMIT_MESSAGE" value="Smithing from 1-99 using bars and a hammer. Gets pretty expensive after lv 48.&#10;Fixes for hammer+mould problems, checking it separately now and ignoring it in the Bank task if it's part of a crafting/smithing request" />
+    <MESSAGE value="fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
   </component>
 </project>
