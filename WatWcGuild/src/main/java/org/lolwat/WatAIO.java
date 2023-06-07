@@ -176,7 +176,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 WorldHopper.closeWorldHopper();
             }
 
-            if(skillSelected != null && Skills.getRealLevel(skillSelected) >= currentTask.avoidAfterLevel()) {
+            if(skillSelected != null && Skills.getRealLevel(skillSelected) > currentTask.avoidAfterLevel()) {
                 Logger.log("We are now avoiding this task due to level, picking new task..");
                 evaluate();
                 return 1000;
