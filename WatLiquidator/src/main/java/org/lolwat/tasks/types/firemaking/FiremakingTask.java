@@ -74,9 +74,17 @@ public class FiremakingTask implements WatTask {
             return;
         }
 
+        /*
         if(Inventory.contains("Tinderbox") && Inventory.get("Tinderbox").useOn(WoodcuttingUtils.getLogName(logType)) && !getFireOnPlayer()) {
             ready = false;
             Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 4500);
+        }*/
+
+        if(Inventory.contains("Tinderbox") && Inventory.interact("Tinderbox")) {
+            if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.interact(WoodcuttingUtils.getLogName(logType))) {
+                ready = false;
+                Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 4500);
+            }
         }
     }
 
