@@ -49,7 +49,7 @@ public class SmithingItemTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.SMITHING) > minimumLevel;
+        return Skills.getRealLevel(Skill.SMITHING) >= minimumLevel;
     }
 
     @Override
