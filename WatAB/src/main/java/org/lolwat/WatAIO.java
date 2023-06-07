@@ -4,6 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -13,10 +14,13 @@ import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
+import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
+import org.dreambot.api.wrappers.widgets.message.Message;
+import org.dreambot.api.wrappers.widgets.message.MessageType;
 import org.lolwat.tasks.types.misc.MulingTask;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
@@ -31,7 +35,7 @@ import java.util.*;
 import java.util.List;
 
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC)
-public class WatAIO extends AbstractScript implements ExperienceListener {
+public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener {
     private Timer timer;
     private List<WatTask> allTasks;
     private boolean firstStart = true;
@@ -294,6 +298,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener {
                 g.drawString(sk.getName().substring(0, 3) + ": " + Skills.getRealLevel(sk) + (levelUps.containsKey(sk.getName()) ? "+" + levelUps.get(sk.getName()) : ""), x, y);
                 count++;
             }
+        }
+    }
+
+    @Override
+    public void onMessage(Message m) {
+        if(m.toString().equalsIgnoreCase("you will be logged out in approximately 10 minutes. make sure you move to a safe area or log out now.")) {
+            // we should go somewhere and log out
         }
     }
 }
