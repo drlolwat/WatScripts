@@ -77,7 +77,7 @@ public class CookingFishTask implements WatTask {
             return;
         }
 
-        if(GameObjects.closest(x -> x.getName().toLowerCase().contains("range")).interact()) {
+        if(GameObjects.closest(x -> x != null && x.getName().toLowerCase().contains("range")).interact()) {
             Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
             if(Widgets.getWidget(270).getChild(14) != null && Widgets.getWidget(270).getChild(14).interact()) {
                 Sleep.sleepUntil(() -> !Inventory.contains("Raw " + fishType.toString().toLowerCase()) || Dialogues.canContinue(), 60000);
