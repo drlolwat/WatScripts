@@ -64,7 +64,7 @@ public class FiremakingTask implements WatTask {
             }
         }
 
-        if(!selectedLocation.contains(Players.getLocal()) && !Map.isTileOnMap(selectedLocation.getTile())) {
+        if(!selectedLocation.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(selectedLocation, this);
             return;
         }
