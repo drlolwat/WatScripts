@@ -83,7 +83,7 @@ public class FiremakingTask implements WatTask {
         if(Inventory.contains("Tinderbox") && Inventory.interact("Tinderbox")) {
             if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.interact(WoodcuttingUtils.getLogName(logType))) {
                 ready = false;
-                Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 4500);
+                Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 10000);
             }
         }
     }
