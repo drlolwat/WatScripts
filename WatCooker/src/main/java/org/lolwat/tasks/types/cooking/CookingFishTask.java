@@ -27,8 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 public class CookingFishTask implements WatTask {
-    private List<Area> areas = Arrays.asList(new Area(3077, 3496, 3080, 3492),
-            new Area(3236, 3409, 3240, 3413));
+    private List<Area> areas = Arrays.asList(new Area(3236, 3409, 3240, 3413));
     private FishType fishType;
     private Area usingArea;
     private int inventoryCount;
@@ -57,9 +56,9 @@ public class CookingFishTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        for(java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
+        for (java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
-            if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
+            if (!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
                 instance.currentTask = new BankingTask("Grabbing fish",
                         CookingUtils.getRequiredItems(fishType, true, 1),
                         true, this, true, selling, inventoryCount);
@@ -68,25 +67,23 @@ public class CookingFishTask implements WatTask {
             }
         }
 
-        if(!Tabs.isOpen(Tab.INVENTORY)) {
+        if (!Tabs.isOpen(Tab.INVENTORY)) {
             Tabs.open(Tab.INVENTORY);
         }
 
-        if(!usingArea.contains(Players.getLocal())) {
+        if (!usingArea.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(usingArea, this);
             return;
         }
 
-        List<String> objs = Arrays.asList("range", "stove", "fire");
 
-        for(String n : objs) {
-            if (GameObjects.closest(x -> x != null && x.getName().toLowerCase().contains(n)).interact()) {
-                Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
-                if (Widgets.getWidget(270).getChild(14) != null && Widgets.getWidget(270).getChild(14).interact()) {
-                    Sleep.sleepUntil(() -> !Inventory.contains("Raw " + fishType.toString().toLowerCase()) || Dialogues.canContinue(), 60000);
-                }
+        if (GameObjects.closest(x -> x != null && x.getName().toLowerCase().contains("range")).interact()) {
+            Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
+            if (Widgets.getWidget(270).getChild(14) != null && Widgets.getWidget(270).getChild(14).interact()) {
+                Sleep.sleepUntil(() -> !Inventory.contains("Raw " + fishType.toString().toLowerCase()) || Dialogues.canContinue(), 60000);
             }
         }
+
     }
 
     @Override
