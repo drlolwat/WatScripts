@@ -42,14 +42,18 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private Skill skillSelected;
     private long skillSelectedAt;
     private int skillRunTime;
-    public static int MULE_SAFETY_NET = 75000;
-    public static int MULE_TRIGGER = 125000;
-    public boolean MULE_DEAD = false;
     public WatTask currentTask;
     public boolean fatalError = false;
     public static HashMap<Skill, Integer> skillTargets;
     public static HashMap<String, Integer> levelUps;
     public String netWorth = "";
+
+    public static int MULE_SAFETY_NET = 75000;
+    public static int MULE_TRIGGER = 125000;
+    public boolean MULE_DEAD = false;
+
+    public static boolean QUESTS_ENABLED = false;
+    public static int QP_TRADEUNLOCKED = 10;
 
     @Override
     public void onStart() {
@@ -69,8 +73,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 put(Skill.ATTACK, 99);
                 put(Skill.STRENGTH, 99);
                 put(Skill.DEFENCE, 99);
-                //put(Skill.RANGED, 99);
-                put(Skill.PRAYER, 43);
+                put(Skill.RANGED, 99);
+                //put(Skill.PRAYER, 43);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 put(Skill.COOKING, 99);
@@ -78,8 +82,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 put(Skill.FISHING, 99);
                 put(Skill.FIREMAKING, 99);
                 put(Skill.CRAFTING, 99);
-                put(Skill.SMITHING, 50);
-                put(Skill.MINING, 99);
+                //put(Skill.SMITHING, 50);
+                //put(Skill.MINING, 99);
             }};
 
         levelUps = new HashMap<>();
