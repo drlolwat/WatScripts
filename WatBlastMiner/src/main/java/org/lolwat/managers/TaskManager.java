@@ -4,6 +4,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.tasks.types.combat.MeleeCombatTask;
+import org.lolwat.tasks.types.combat.RangedCombatTask;
 import org.lolwat.tasks.types.cooking.CookingFishTask;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
@@ -45,6 +46,7 @@ public class TaskManager {
         allTasks.addAll(createPrayerTasks());
         allTasks.addAll(createCookingTasks());
         allTasks.addAll(createMeleeTasks());
+        allTasks.addAll(createRangedTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -55,6 +57,79 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+    }
+
+    private static List<WatTask> createRangedTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new RangedCombatTask(1, 10, new Area(
+                new Tile(3170, 3289, 0),
+                new Tile(3183, 3289, 0),
+                new Tile(3185, 3291, 0),
+                new Tile(3185, 3295, 0),
+                new Tile(3186, 3296, 0),
+                new Tile(3186, 3298, 0),
+                new Tile(3185, 3299, 0),
+                new Tile(3185, 3301, 0),
+                new Tile(3183, 3302, 0),
+                new Tile(3182, 3302, 0),
+                new Tile(3182, 3303, 0),
+                new Tile(3181, 3303, 0),
+                new Tile(3179, 3303, 0),
+                new Tile(3179, 3307, 0),
+                new Tile(3174, 3307, 0),
+                new Tile(3172, 3302, 0),
+                new Tile(3170, 3300, 0),
+                new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
+        }));
+
+        tasks.add(new RangedCombatTask(5, 30, new Area(
+                new Tile(3193, 3300, 0),
+                new Tile(3193, 3286, 0),
+                new Tile(3197, 3282, 0),
+                new Tile(3201, 3283, 0),
+                new Tile(3205, 3283, 0),
+                new Tile(3207, 3284, 0),
+                new Tile(3211, 3284, 0),
+                new Tile(3212, 3285, 0),
+                new Tile(3212, 3289, 0),
+                new Tile(3213, 3290, 0),
+                new Tile(3213, 3292, 0),
+                new Tile(3211, 3295, 0),
+                new Tile(3210, 3297, 0),
+                new Tile(3210, 3301, 0),
+                new Tile(3209, 3302, 0),
+                new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Salmon", 12);
+            }
+        }));
+
+        tasks.add(new RangedCombatTask(30, 50, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+            {
+                put("Salmon", 28);
+            }
+        }));
+
+        // al kharid warrior west
+        tasks.add(new RangedCombatTask(30, 50, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+            {
+                put("Salmon", 28);
+            }
+        }));
+
+        tasks.add(new RangedCombatTask(50, 99, new Area(
+                new Tile(3367, 3157, 0),
+                new Tile(3367, 3142, 0),
+                new Tile(3381, 3142, 0),
+                new Tile(3388, 3150, 0),
+                new Tile(3390, 3150, 0),
+                new Tile(3384, 3158, 0),
+                new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
+            put("Salmon", 28);
+        }}));
+
+        return tasks;
     }
 
     private static List<WatTask> createMeleeTasks() {
