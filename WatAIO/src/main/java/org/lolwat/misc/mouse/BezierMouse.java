@@ -41,10 +41,10 @@ public class BezierMouse implements MouseMovementAlgorithm {
 
     private void moveCursor(Point startPos, Point endPos) {
         Point controlPoint = randomPoint(startPos, endPos);
-        int steps = Calculations.random(5, 25);
+        int steps = Calculations.random(5, 15);
 
         if(distance(startPos, endPos) <= 30) {
-            steps = Calculations.random(6, 20);
+            steps = Calculations.random(5, 8);
         }
 
         try {
