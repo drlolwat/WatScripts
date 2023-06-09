@@ -57,7 +57,6 @@ public class CookingFishTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         for (java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
-            // do we have enough to create at least 1 bar of this type?
             if (!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
                 instance.currentTask = new BankingTask("Grabbing fish",
                         CookingUtils.getRequiredItems(fishType, true, 1),
@@ -75,7 +74,6 @@ public class CookingFishTask implements WatTask {
             instance.currentTask = new TraversalTask(usingArea, this);
             return;
         }
-
 
         if (GameObjects.closest(x -> x != null && x.getName().toLowerCase().contains("range")).interact()) {
             Sleep.sleepUntil(() -> Widgets.getWidget(270) != null && Widgets.getWidget(270).isVisible(), 10000);
