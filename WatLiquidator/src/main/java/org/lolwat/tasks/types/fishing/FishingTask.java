@@ -104,7 +104,7 @@ public class FishingTask implements WatTask {
                     Sleep.sleep(1200, 2000);
                     Mouse.moveOutsideScreen();
                     lastCatch = Instant.now().getEpochSecond();
-                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 45000); // future check for no bait
+                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 45000);
                 }
             }
         }
