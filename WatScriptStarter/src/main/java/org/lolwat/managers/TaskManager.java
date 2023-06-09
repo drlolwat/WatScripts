@@ -21,6 +21,7 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.smithing.SmithingItemTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
+import org.w3c.dom.ranges.Range;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,6 +130,41 @@ public class TaskManager {
             put("Salmon", 28);
         }}));
 
+        // need a knife for these, need to make support
+        // web location is just after 3210,9902
+        /*tasks.add(new RangedCombatTask(50, 99, new Area(
+                new Tile(3165, 9882, 0),
+                new Tile(3162, 9879, 0),
+                new Tile(3162, 9877, 0),
+                new Tile(3163, 9876, 0),
+                new Tile(3164, 9876, 0),
+                new Tile(3165, 9876, 0),
+                new Tile(3170, 9881, 0),
+                new Tile(3173, 9881, 0),
+                new Tile(3173, 9886, 0),
+                new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
+            put("Salmon", 28);
+        }}));
+
+        tasks.add(new RangedCombatTask(50, 99, new Area(
+                new Tile(3154, 9908, 0),
+                new Tile(3154, 9902, 0),
+                new Tile(3156, 9902, 0),
+                new Tile(3158, 9898, 0),
+                new Tile(3159, 9898, 0),
+                new Tile(3162, 9901, 0),
+                new Tile(3163, 9901, 0),
+                new Tile(3166, 9904, 0),
+                new Tile(3165, 9906, 0),
+                new Tile(3159, 9907, 0),
+                new Tile(3158, 9909, 0),
+                new Tile(3154, 9909, 0),
+                new Tile(3156, 9900, 0),
+                new Tile(3159, 9898, 0),
+                new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
+            put("Salmon", 28);
+        }}));*/
+
         return tasks;
     }
 
@@ -232,6 +268,39 @@ public class TaskManager {
                     new Tile(3390, 3150, 0),
                     new Tile(3384, 3158, 0),
                     new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
+                put("Salmon", 28);
+            }}));
+
+            tasks.add(new MeleeCombatTask(sk, 50, 99, new Area(
+                    new Tile(3165, 9882, 0),
+                    new Tile(3162, 9879, 0),
+                    new Tile(3162, 9877, 0),
+                    new Tile(3163, 9876, 0),
+                    new Tile(3164, 9876, 0),
+                    new Tile(3165, 9876, 0),
+                    new Tile(3170, 9881, 0),
+                    new Tile(3173, 9881, 0),
+                    new Tile(3173, 9886, 0),
+                    new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
+                put("Salmon", 28);
+            }}));
+
+            tasks.add(new MeleeCombatTask(sk,50, 99, new Area(
+                    new Tile(3154, 9908, 0),
+                    new Tile(3154, 9902, 0),
+                    new Tile(3156, 9902, 0),
+                    new Tile(3158, 9898, 0),
+                    new Tile(3159, 9898, 0),
+                    new Tile(3162, 9901, 0),
+                    new Tile(3163, 9901, 0),
+                    new Tile(3166, 9904, 0),
+                    new Tile(3165, 9906, 0),
+                    new Tile(3159, 9907, 0),
+                    new Tile(3158, 9909, 0),
+                    new Tile(3154, 9909, 0),
+                    new Tile(3156, 9900, 0),
+                    new Tile(3159, 9898, 0),
+                    new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
                 put("Salmon", 28);
             }}));
         }
