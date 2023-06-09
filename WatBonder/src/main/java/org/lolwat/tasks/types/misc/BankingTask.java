@@ -287,11 +287,7 @@ public class BankingTask implements WatTask {
             }
         }
         else {
-            if(loc != null) {
-                if(Walking.shouldWalk()) {
-                    Walking.walk(loc);
-                }
-            }
+            instance.currentTask = new TraversalTask(loc.getArea(10), this);
         }
     }
 
