@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.prayer;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
@@ -74,5 +75,10 @@ public class BuryBonesTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }
