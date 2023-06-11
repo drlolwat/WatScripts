@@ -163,7 +163,7 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleep(100, 300);
                             //GrandExchange.setPrice(itemCost);
 
-                            for(int i = 0; i < 3; i++) {
+                            for(int i = 0; i < 4; i++) {
                                 if(GrandExchange.getIncreasePriceFivePercentButton() != null) {
                                     GrandExchange.getIncreasePriceFivePercentButton().interact();
                                 }
