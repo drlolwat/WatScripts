@@ -129,4 +129,9 @@ public class JewelryTask implements WatTask {
     public Integer avoidAfterLevel() {
         return avoidAtLevel;
     }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
+    }
 }

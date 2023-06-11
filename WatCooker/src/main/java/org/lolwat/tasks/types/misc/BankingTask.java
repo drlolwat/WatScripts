@@ -8,6 +8,7 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.world.Worlds;
@@ -69,7 +70,11 @@ public class BankingTask implements WatTask {
             Sleep.sleepUntil(Bank::isOpen, 10000);
 
             if(Bank.contains("Coins")) {
-                instance.netWorth = NumUtils.simplifyNumber(Bank.get("Coins").getAmount());
+                instance.netWorth = Bank.get("Coins").getAmount();
+            }
+
+            for(Item i : Bank.all()) {
+                instance.netWorth += LivePrices.get(i);
             }
 
             // Does the bank request want us to deposit everything
@@ -312,5 +317,10 @@ public class BankingTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }
