@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
@@ -72,5 +73,10 @@ public class HopperTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }

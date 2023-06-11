@@ -7,6 +7,7 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -74,12 +75,6 @@ public class FiremakingTask implements WatTask {
             return;
         }
 
-        /*
-        if(Inventory.contains("Tinderbox") && Inventory.get("Tinderbox").useOn(WoodcuttingUtils.getLogName(logType)) && !getFireOnPlayer()) {
-            ready = false;
-            Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 4500);
-        }*/
-
         if(Dialogues.canContinue()) {
             Dialogues.continueDialogue();
             Sleep.sleep(100, 400);
@@ -131,5 +126,10 @@ public class FiremakingTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return avoidAtLevel;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }
