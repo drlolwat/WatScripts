@@ -7,11 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="beginnings of quests">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="goblin diplomacy">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/DoricsQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/DoricsQuest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/ImpCatcherQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/ImpCatcherQuest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/SheepShearerQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/SheepShearerQuest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,13 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00019" summary="bug fixes">
-      <created>1682753688133</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1682753688133</updated>
     </task>
     <task id="LOCAL-00020" summary="falador">
       <created>1682800374958</created>
@@ -433,7 +426,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686442079376</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="goblin diplomacy">
+      <created>1686517153892</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1686517153892</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -448,7 +448,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Reverse muling" />
     <MESSAGE value="Traversal fix" />
     <MESSAGE value="Major restructure/refactor&#10;Spinning task coded and tested" />
     <MESSAGE value="fixes, re-enable all skills" />
@@ -473,7 +472,8 @@
     <MESSAGE value="remove edgeville cooking for now" />
     <MESSAGE value="moss giants in melee&#10;slashing web in traversal" />
     <MESSAGE value="beginnings of quests" />
-    <option name="LAST_COMMIT_MESSAGE" value="beginnings of quests" />
+    <MESSAGE value="goblin diplomacy" />
+    <option name="LAST_COMMIT_MESSAGE" value="goblin diplomacy" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
