@@ -73,6 +73,7 @@ public class TaskManager {
         tasks.put(FreeQuest.SHEEP_SHEARER, new SheepShearerQuest());
         tasks.put(FreeQuest.COOKS_ASSISTANT, new CooksAssistantQuest());
         tasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
+        tasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
 
         return tasks;
     }
