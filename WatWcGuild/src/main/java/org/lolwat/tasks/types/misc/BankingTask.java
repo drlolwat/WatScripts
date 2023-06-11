@@ -223,7 +223,7 @@ public class BankingTask implements WatTask {
             Logger.log("==== Finished checking for required items ====");
 
             if (grandExchangeToBuy.size() > 0 && buyMissingItems) {
-                Logger.log("We need to create a DynamicGrandExchangeTask to buy " + grandExchangeToBuy.size() + " items: ");
+                Logger.log("We need to create a G.E task to buy " + grandExchangeToBuy.size() + " items: ");
                 int totalValue = 0;
                 for (Map.Entry<String, Integer> buyItem : grandExchangeToBuy.entrySet()) {
                     Logger.log(buyItem.getKey() + " Quantity of: " + buyItem.getValue());
