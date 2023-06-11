@@ -276,4 +276,9 @@ public class MiningTask implements WatTask {
     public Integer avoidAfterLevel() {
         return maxMiningLevel;
     }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
+    }
 }
