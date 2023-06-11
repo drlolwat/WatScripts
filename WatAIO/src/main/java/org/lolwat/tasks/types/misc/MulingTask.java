@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -209,5 +210,10 @@ public class MulingTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }
