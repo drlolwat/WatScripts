@@ -40,7 +40,7 @@ public class DoricsQuest implements WatTask {
         for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
             if (!Inventory.contains(kv.getKey()) ||
                     (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
-                    (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).getAmount() < kv.getValue())) {
+                    (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
                 instance.currentTask = new BankingTask("Grabbing quest mats", needed, true, this, true, null, 1);
                 return;
             }
