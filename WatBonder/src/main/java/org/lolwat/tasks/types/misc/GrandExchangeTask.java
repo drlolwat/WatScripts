@@ -9,6 +9,7 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -232,5 +233,10 @@ public class GrandExchangeTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }
