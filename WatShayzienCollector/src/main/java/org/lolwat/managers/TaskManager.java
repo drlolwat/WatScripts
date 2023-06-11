@@ -2,6 +2,8 @@ package org.lolwat.managers;
 
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.book.FreeQuest;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.tasks.types.combat.MeleeCombatTask;
 import org.lolwat.tasks.types.combat.RangedCombatTask;
@@ -18,10 +20,10 @@ import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.tasks.types.fishing.FishingTask;
 import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.quests.*;
 import org.lolwat.tasks.types.smithing.SmithingItemTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
-import org.w3c.dom.ranges.Range;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,11 +33,13 @@ import java.util.List;
 public class TaskManager {
     private static List<WatTask> allTasks;
     private static HashMap<Skill, List<WatTask>> tasksBySkill;
+    private static HashMap<Quest, WatTask> questTasks;
     private static WatAIO instance;
 
     public static void setupAllTasks(WatAIO core) {
         allTasks = new ArrayList<>();
         tasksBySkill = new HashMap<>();
+        questTasks = new HashMap<>();
         instance = core;
 
         allTasks.addAll(createMiningTasks());
@@ -58,6 +62,19 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
+
+        questTasks.putAll(createQuestTasks());
+    }
+
+    private static HashMap<Quest, WatTask> createQuestTasks() {
+        HashMap<Quest, WatTask> tasks = new HashMap<>();
+
+        tasks.put(FreeQuest.IMP_CATCHER, new ImpCatcherQuest());
+        tasks.put(FreeQuest.SHEEP_SHEARER, new SheepShearerQuest());
+        tasks.put(FreeQuest.COOKS_ASSISTANT, new CooksAssistantQuest());
+        tasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
+
+        return tasks;
     }
 
     private static List<WatTask> createRangedTasks() {
@@ -599,6 +616,7 @@ public class TaskManager {
         return tasks;
     }
 
+    public static HashMap<Quest, WatTask> getQuests() { return questTasks; }
     public static List<WatTask> getAllTasks() { return allTasks; }
     public static List<WatTask> getTasksBySkill(Skill skill) {
         if(tasksBySkill.containsKey(skill)) {

@@ -9,6 +9,7 @@ import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -146,5 +147,10 @@ public class FishingTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return maximumLevel;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
     }
 }
