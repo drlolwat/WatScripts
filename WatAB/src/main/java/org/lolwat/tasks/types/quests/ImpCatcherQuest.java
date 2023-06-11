@@ -47,7 +47,7 @@ public class ImpCatcherQuest implements WatTask {
     public void execute(WatAIO instance) {
         //check for items
         for (String i : needed.keySet()) {
-            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted())) {
+            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
                 instance.currentTask = new BankingTask("Grabbing beads", needed, true, this, true, null, 1);
                 return;
             }
