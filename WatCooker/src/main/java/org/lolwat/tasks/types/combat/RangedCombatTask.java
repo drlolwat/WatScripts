@@ -36,7 +36,7 @@ public class RangedCombatTask implements WatTask {
     private Area zone;
     private String name;
     private boolean needsEat;
-    private HashMap<String, Integer> food;
+    private final HashMap<String, Integer> food;
 
     public RangedCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {
         minLevel = minimumLevel;
@@ -47,6 +47,9 @@ public class RangedCombatTask implements WatTask {
         if(foodToTake != null && foodToTake.size() > 0) {
             needsEat = true;
             food = foodToTake;
+        } else {
+            needsEat = false;
+            food = new HashMap<>();
         }
     }
 
@@ -66,10 +69,15 @@ public class RangedCombatTask implements WatTask {
         HashMap<String, Integer> requiredItems = RangedUtils.getRequiredItems();
         // check for required armor/weapons
         requiredItems.put(RangedUtils.bestArrow(), -1000);
+
+        if(food.size() > 0) {
+            requiredItems.putAll(food);
+        }
+
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
-                    if (Inventory.interact(item.getKey())) {
+                    if (Inventory.get(item.getKey()).hasAction("Eat") || Inventory.interact(item.getKey())) {
                         toRemove.add(item.getKey());
                     }
                 }
@@ -92,7 +100,7 @@ public class RangedCombatTask implements WatTask {
             return;
         }
 
-        if(food != null && food.size() > 0) {
+        if(food.size() > 0) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
                     instance.currentTask = new BankingTask("Getting food", food, true, this, true, new HashMap<String, Integer>(), 1);
