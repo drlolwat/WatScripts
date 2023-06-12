@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.firemaking;
 
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -82,8 +83,10 @@ public class FiremakingTask implements WatTask {
 
         if(Inventory.contains("Tinderbox") && Inventory.interact("Tinderbox")) {
             if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.interact(WoodcuttingUtils.getLogName(logType))) {
+                Sleep.sleep(200, 500);
+                Mouse.move(Inventory.get("Tinderbox").getDestination());
                 ready = false;
-                Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 10000);
+                Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(Players.getLocal().getTile()) || ready, 15000);
             }
         }
     }
