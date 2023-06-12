@@ -95,7 +95,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         TaskManager.setupAllTasks(this);
         allTasks = TaskManager.getAllTasks();
         allQuests = TaskManager.getQuests();
-        Logger.log("Set up " + allTasks.size() + " total tasks");
+        Logger.log("Set up " + allTasks.size() + " total tasks and " + allQuests.size() + " total quests");
         netWorth = 0;
     }
 
