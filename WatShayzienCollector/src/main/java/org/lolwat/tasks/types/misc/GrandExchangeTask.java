@@ -148,38 +148,21 @@ public class GrandExchangeTask implements WatTask {
                     while(item.getValue() != 0) {
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
+                            Sleep.sleep(100, 220);
                             int itemCost = (int) (LivePrices.get(item.getKey()) * 1.3);
 
-                            if(itemCost <= 7) {
-                                itemCost = 10;
-                            }
-
-                            if(Inventory.contains("Coins") && itemCost > Inventory.get("Coins").getAmount()) {
-                                itemCost = Inventory.get("Coins").getAmount() / item.getValue();
-                            }
-
-                            // test item cost of max coin stack
-                            //int itemCost = Inventory.get("Coins") != null ? Inventory.get("Coins").getAmount() : LivePrices.get(item.getKey());
-
                             Sleep.sleep(100, 300);
-                            //GrandExchange.setPrice(itemCost);
 
-                            if(itemCost >= 1000) {
-                                for (int i = 0; i < 4; i++) {
-                                    if (GrandExchange.getIncreasePriceFivePercentButton() != null) {
-                                        GrandExchange.getIncreasePriceFivePercentButton().interact();
-                                    }
-                                    Sleep.sleep(100, 320);
+                            for (int i = 0; i < Calculations.random(2, 6); i++) {
+                                if (GrandExchange.getIncreasePriceFivePercentButton() != null) {
+                                    GrandExchange.getIncreasePriceFivePercentButton().interact();
                                 }
-                            } else {
-                                if(GrandExchange.setPrice((1000 + Calculations.random(10, 200)))) {
-                                    Sleep.sleep(100, 500);
-                                }
+                                Sleep.sleep(100, 320);
                             }
 
                             Sleep.sleep(100, 300);
 
-                            if(item.getValue() != 1) {
+                            if (item.getValue() != 1) {
                                 GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
                                 Sleep.sleep(100, 300);
                             }
