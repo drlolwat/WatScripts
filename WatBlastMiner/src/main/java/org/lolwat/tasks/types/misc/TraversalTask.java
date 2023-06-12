@@ -41,6 +41,8 @@ public class TraversalTask implements WatTask {
         postTask = post;
         lastWalk = 0;
         usingArea = false;
+
+        Logger.log("Traversing to coords from task " + post.getName());
     }
 
     public TraversalTask(Area using, WatTask post) {
@@ -48,6 +50,8 @@ public class TraversalTask implements WatTask {
         postTask = post;
         usingArea = true;
         lastWalk = 0;
+
+        Logger.log("Traversing to area from task " + post.getName());
     }
 
     @Override
