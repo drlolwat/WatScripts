@@ -250,7 +250,7 @@ public class BankingTask implements WatTask {
                         if(!instance.MULE_DEAD) {
                             Bank.depositAllItems();
                             Sleep.sleep(100, 200);
-                            Logger.info("Setting up a reverse mule to get 100k gp");
+                            Logger.log("Setting up a reverse mule to get 100k gp");
                             instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }}, this);
                         } else {
                             Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
