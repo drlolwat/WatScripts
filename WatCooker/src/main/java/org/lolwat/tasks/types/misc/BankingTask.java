@@ -266,7 +266,7 @@ public class BankingTask implements WatTask {
                     }
                 }
             } else {
-                if(!instance.MULE_DEAD) {
+                if(!instance.MULE_DEAD && (Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 150)) {
                     int invMoney = 0;
                     int bankMoney = 0;
 
