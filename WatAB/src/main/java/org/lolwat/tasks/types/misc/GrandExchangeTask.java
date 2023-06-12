@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -163,11 +164,17 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleep(100, 300);
                             //GrandExchange.setPrice(itemCost);
 
-                            for(int i = 0; i < 4; i++) {
-                                if(GrandExchange.getIncreasePriceFivePercentButton() != null) {
-                                    GrandExchange.getIncreasePriceFivePercentButton().interact();
+                            if(itemCost >= 1000) {
+                                for (int i = 0; i < 4; i++) {
+                                    if (GrandExchange.getIncreasePriceFivePercentButton() != null) {
+                                        GrandExchange.getIncreasePriceFivePercentButton().interact();
+                                    }
+                                    Sleep.sleep(100, 320);
                                 }
-                                Sleep.sleep(100, 320);
+                            } else {
+                                if(GrandExchange.setPrice((1000 + Calculations.random(10, 200)))) {
+                                    Sleep.sleep(100, 500);
+                                }
                             }
 
                             Sleep.sleep(100, 300);
