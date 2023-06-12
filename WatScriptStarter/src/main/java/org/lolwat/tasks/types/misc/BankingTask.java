@@ -8,8 +8,10 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
@@ -111,45 +113,50 @@ public class BankingTask implements WatTask {
 
             // Let's check for the items and quantity that we want to trigger for selling, if provided
             if(sellItemsToCheck != null && sellItemsToCheck.size() > 0) {
-                Logger.log("==== Checking for sell-able items ====");
-                HashMap<String, Integer> items = new HashMap<>();
-                for(Map.Entry<String, Integer> item : sellItemsToCheck.entrySet()) {
-                    if(Bank.contains(item.getKey())) {
-                        Item it = Bank.get(item.getKey());
-                        if(it != null && ((item.getValue() > 0 && it.getAmount() >= item.getValue()) || (item.getValue() < 0 && it.getAmount() >= -item.getValue()))) {
-                            Logger.log("Sell target met for: " + item.getKey() + "(" + item.getValue() + ")");
-                            items.put(it.getName(), item.getValue() < 0 ? it.getAmount() : item.getValue());
+                if (Skills.getTotalLevel() >= 150 && Quests.getQuestPoints() >= 10) {
+                    Logger.log("==== Checking for sell-able items ====");
+                    HashMap<String, Integer> items = new HashMap<>();
+                    for (Map.Entry<String, Integer> item : sellItemsToCheck.entrySet()) {
+                        if (Bank.contains(item.getKey())) {
+                            Item it = Bank.get(item.getKey());
+                            if (it != null && ((item.getValue() > 0 && it.getAmount() >= item.getValue()) || (item.getValue() < 0 && it.getAmount() >= -item.getValue()))) {
+                                Logger.log("Sell target met for: " + item.getKey() + "(" + item.getValue() + ")");
+                                items.put(it.getName(), item.getValue() < 0 ? it.getAmount() : item.getValue());
+                            }
                         }
                     }
-                }
 
-                if(items.size() > 0) {
-                    for(Map.Entry<String, Integer> it : items.entrySet()) {
-                        if(!Inventory.isFull() && Bank.contains(it.getKey())) {
-                            if(Bank.getWithdrawMode() != BankMode.NOTE) {
-                                Bank.setWithdrawMode(BankMode.NOTE);
-                            }
-
-                            Logger.log("Withdrawing " + it.getKey());
-                            // we have to double check here lol just in case, for notes
-                            Item bankItem = Bank.get(it.getKey());
-                            if(bankItem != null) {
-                                if (bankItem.getAmount() == it.getValue()) {
-                                    // If the item amount in the bank matches it.getValue(), withdraw all
-                                    Bank.withdrawAll(it.getKey());
-                                } else {
-                                    // Otherwise, withdraw the specific quantity
-                                    Bank.withdraw(it.getKey(), it.getValue());
+                    if (items.size() > 0) {
+                        for (Map.Entry<String, Integer> it : items.entrySet()) {
+                            if (!Inventory.isFull() && Bank.contains(it.getKey())) {
+                                if (Bank.getWithdrawMode() != BankMode.NOTE) {
+                                    Bank.setWithdrawMode(BankMode.NOTE);
                                 }
-                                Sleep.sleep(100, 500);
+
+                                Logger.log("Withdrawing " + it.getKey());
+                                // we have to double check here lol just in case, for notes
+                                Item bankItem = Bank.get(it.getKey());
+                                if (bankItem != null) {
+                                    if (bankItem.getAmount() == it.getValue()) {
+                                        // If the item amount in the bank matches it.getValue(), withdraw all
+                                        Bank.withdrawAll(it.getKey());
+                                    } else {
+                                        // Otherwise, withdraw the specific quantity
+                                        Bank.withdraw(it.getKey(), it.getValue());
+                                    }
+                                    Sleep.sleep(100, 500);
+                                }
                             }
                         }
-                    }
 
-                    Bank.close();
-                    instance.sleep(1000, 3000);
-                    instance.currentTask = new GrandExchangeTask("Selling items", true, items, this);
-                    return;
+                        Bank.close();
+                        instance.sleep(1000, 3000);
+                        instance.currentTask = new GrandExchangeTask("Selling items", true, items, this);
+                        return;
+                    }
+                } else {
+                    // likely not trade unlocked
+                    Logger.log("i have items to sell, but i am not trade unlocked");
                 }
             }
 

@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.combat;
 
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -48,6 +49,9 @@ public class MeleeCombatTask implements WatTask {
         if(foodToTake != null && foodToTake.size() > 0) {
             needsEat = true;
             food = foodToTake;
+        } else {
+            needsEat = false;
+            food = new HashMap<>();
         }
     }
 
@@ -65,11 +69,15 @@ public class MeleeCombatTask implements WatTask {
     public void execute(WatAIO instance) {
         List<String> toRemove = new ArrayList<>();
         HashMap<String, Integer> requiredItems = MeleeUtils.getRequiredItems();
-        // check for required armor/weapons
+
+        if(food.size() > 0) {
+            requiredItems.putAll(food);
+        }
+
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
-                    if (Inventory.interact(item.getKey())) {
+                    if (Inventory.get(item.getKey()).hasAction("Eat") || Inventory.interact(item.getKey())) {
                         toRemove.add(item.getKey());
                     }
                 }
@@ -92,7 +100,7 @@ public class MeleeCombatTask implements WatTask {
             return;
         }
 
-        if(food != null && food.size() > 0) {
+        if(food.size() > 0) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
                     instance.currentTask = new BankingTask("Getting food", food, true, this, true, new HashMap<String, Integer>(), 1);
@@ -146,8 +154,8 @@ public class MeleeCombatTask implements WatTask {
 
         if (!Players.getLocal().isInCombat()) {
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
-            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact()) {
-                //Sleep.sleepUntil(() -> !closestFriend.exists() || closestFriend.isHealthBarVisible(), 5000);
+            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible()) {
+                closestFriend.interact();
             }
         }
     }
