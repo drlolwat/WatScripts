@@ -7,12 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="romeo and juliet, other fixes">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/RangedCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/RangedCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,13 +87,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00024" summary="AIO base">
-      <created>1685481672293</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1685481672293</updated>
     </task>
     <task id="LOCAL-00025" summary="paint">
       <created>1685490044319</created>
@@ -434,7 +424,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686552256924</updated>
     </task>
-    <option name="localTasksCounter" value="73" />
+    <task id="LOCAL-00073" summary="fixes">
+      <created>1686556403136</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1686556403136</updated>
+    </task>
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -465,7 +462,6 @@
     <MESSAGE value="Revert test changes to G.E.&#10;Enable willows until level 99&#10;Check for animation in wc task to (hopefully) stop the re-clicking" />
     <MESSAGE value="More melee combat tasks (Hill giants)&#10;Change up on the requirements for melee tasks for less difficulty in xp gains" />
     <MESSAGE value="Smithing from 1-99 using bars and a hammer. Gets pretty expensive after lv 48.&#10;Fixes for hammer+mould problems, checking it separately now and ignoring it in the Bank task if it's part of a crafting/smithing request" />
-    <MESSAGE value="fixes" />
     <MESSAGE value="updates" />
     <MESSAGE value="remove edgeville cooking for now" />
     <MESSAGE value="moss giants in melee&#10;slashing web in traversal" />
@@ -474,7 +470,8 @@
     <MESSAGE value="quest itemcheck fix" />
     <MESSAGE value="make G.E use 5% button" />
     <MESSAGE value="romeo and juliet, other fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="romeo and juliet, other fixes" />
+    <MESSAGE value="fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
