@@ -1,13 +1,13 @@
 package org.lolwat;
 
-import javafx.concurrent.Task;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
-import org.dreambot.api.methods.quest.book.FreeQuest;
-import org.dreambot.api.methods.quest.book.PaidQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -31,6 +31,7 @@ import org.lolwat.tasks.types.misc.HopperTask;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.SkillUtils;
+import org.lolwat.tasks.types.misc.TutorialTask;
 
 import java.awt.*;
 import java.time.Instant;
@@ -58,6 +59,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     public static boolean QUESTS_ENABLED = false;
     public static int QP_TRADEUNLOCKED = 10;
+
+    private Area tutorialIsland = new Area(
+            new Tile(3056, 3134, 0),
+            new Tile(3055, 3053, 0),
+            new Tile(3146, 3052, 0),
+            new Tile(3159, 3072, 0),
+            new Tile(3157, 3125, 0),
+            new Tile(3126, 3142, 0));
 
     @Override
     public void onStart() {
@@ -109,6 +118,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void evaluate() {
         if(currentTask != null && currentTask instanceof MulingTask) {
+            return;
+        }
+
+        if(tutorialIsland.contains(Players.getLocal())) {
+            currentTask = new TutorialTask();
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(1200, 6750); // in seconds
+            Logger.log("We have picked: " + currentTask.getName());
             return;
         }
 

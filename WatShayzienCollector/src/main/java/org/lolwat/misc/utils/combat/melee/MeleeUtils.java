@@ -61,7 +61,7 @@ public class MeleeUtils {
             return "Black";
         }
         else if(defLevel >= 5) {
-            return "Steel";
+            return "Iron";
         }
         else {
             return "Iron";
