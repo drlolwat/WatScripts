@@ -121,20 +121,20 @@ public class TaskManager {
                 new Tile(3209, 3302, 0),
                 new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
             {
-                put("Salmon", 12);
+                put("Trout", 12);
             }
         }));
 
         tasks.add(new RangedCombatTask(30, 50, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
             {
-                put("Salmon", 28);
+                put("Trout", 28);
             }
         }));
 
         // al kharid warrior west
         tasks.add(new RangedCombatTask(30, 50, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
             {
-                put("Salmon", 28);
+                put("Trout", 28);
             }
         }));
 
@@ -146,7 +146,7 @@ public class TaskManager {
                 new Tile(3390, 3150, 0),
                 new Tile(3384, 3158, 0),
                 new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
-            put("Salmon", 28);
+            put("Trout", 28);
         }}));
 
         // need a knife for these, need to make support
@@ -234,21 +234,21 @@ public class TaskManager {
                     new Tile(3209, 3302, 0),
                     new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
                 {
-                    put("Salmon", 12);
+                    put("Trout", 12);
                 }
             }));
 
             // al kharid warriors east
             tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
-                    put("Salmon", 28);
+                    put("Trout", 28);
                 }
             }));
 
             // al kharid warrior west
             tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
-                    put("Salmon", 28);
+                    put("Trout", 28);
                 }
             }));
 
@@ -261,7 +261,7 @@ public class TaskManager {
                     new Tile(3205, 3501, 1),
                     new Tile(3207, 3499, 1)), "Guard", new HashMap<String, Integer>() {
                 {
-                    put("Salmon", 20);
+                    put("Trout", 20);
                 }
             }));
 
@@ -275,7 +275,7 @@ public class TaskManager {
                     new Tile(3224, 3469, 0),
                     new Tile(3217, 3471, 0),
                     new Tile(3207, 3471, 0)), "Guard", new HashMap<String, Integer>() {{
-                put("Salmon", 20);
+                put("Trout", 20);
             }}));
 
             // hill giants (plateau)
@@ -287,7 +287,7 @@ public class TaskManager {
                     new Tile(3390, 3150, 0),
                     new Tile(3384, 3158, 0),
                     new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
-                put("Salmon", 28);
+                put("Trout", 28);
             }}));
 
             tasks.add(new MeleeCombatTask(sk, 50, 99, new Area(
@@ -301,7 +301,7 @@ public class TaskManager {
                     new Tile(3173, 9881, 0),
                     new Tile(3173, 9886, 0),
                     new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
-                put("Salmon", 28);
+                put("Trout", 28);
             }}));
 
             tasks.add(new MeleeCombatTask(sk,50, 99, new Area(
@@ -320,7 +320,7 @@ public class TaskManager {
                     new Tile(3156, 9900, 0),
                     new Tile(3159, 9898, 0),
                     new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
-                put("Salmon", 28);
+                put("Trout", 28);
             }}));
         }
 
