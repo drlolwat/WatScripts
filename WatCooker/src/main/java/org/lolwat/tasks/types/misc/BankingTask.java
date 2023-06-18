@@ -236,7 +236,7 @@ public class BankingTask implements WatTask {
                     Logger.log(buyItem.getKey() + " Quantity of: " + buyItem.getValue());
                     // Calculate the amount of money we are going to need to buy everything at market price or so + 10%
                     if(LivePrices.get(buyItem.getKey()) >= 8) {
-                        totalValue += (LivePrices.get(buyItem.getKey()) * buyItem.getValue()) * 1.3;
+                        totalValue += (LivePrices.get(buyItem.getKey()) * (buyItem.getValue() > 1 ? buyItem.getValue() : -buyItem.getValue())) * 1.3;
                     } else {
                         totalValue += 10 * buyItem.getValue();
                     }
@@ -263,6 +263,17 @@ public class BankingTask implements WatTask {
                             Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
                             instance.currentTask = null;
                         }
+                    }
+                }
+                else {
+                    if(!instance.MULE_DEAD) {
+                        Bank.depositAllItems();
+                        Sleep.sleep(100, 200);
+                        Logger.log("Setting up a reverse mule to get 100k gp");
+                        instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }}, this);
+                    } else {
+                        Logger.error("We don't have enough GP to fulfill the G.E orders.");
+                        instance.currentTask = null;
                     }
                 }
             } else {
