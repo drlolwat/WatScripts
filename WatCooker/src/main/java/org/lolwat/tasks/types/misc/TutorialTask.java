@@ -9,6 +9,7 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
+import org.dreambot.api.methods.input.Keyboard;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -36,6 +37,12 @@ import org.lolwat.WatAIO;
 import org.lolwat.tasks.WatTask;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import static org.dreambot.api.utilities.Logger.log;
@@ -43,8 +50,6 @@ import static org.dreambot.api.utilities.Sleep.sleep;
 
 public class TutorialTask implements WatTask {
     private final int TAB_CONFIG = 1021;
-    private final int PERC_COMP = 406;
-    private final int ATT_SPEED = 843;
     private final int POLL_OPEN = 310;
     private final int TUT_PROG = 281;
     private final int APPEAR_PAR = 679;
@@ -79,15 +84,17 @@ public class TutorialTask implements WatTask {
         if (!started) {
             return State.CREATE_ACC;
         }
+
         if (PlayerSettings.getConfig(TAB_CONFIG) != 2560 && PlayerSettings.getConfig(TAB_CONFIG) != 2048) {
             return State.OPEN_TAB;
         }
+
         return State.DO_TUT;
     }
 
     public TutorialTask() {
-        accMade = true;
-        started = true;
+        accMade = false;
+        started = false;
         t = new Timer();
     }
 
@@ -104,13 +111,59 @@ public class TutorialTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Tutorial Island";
+        return "Tutorial Island (" + PlayerSettings.getConfig(TUT_PROG) + ")";
     }
 
     @Override
     public boolean canPerformTask() {
         return true;
     }
+
+    private String getUsername() {
+        String name = "";
+        try {
+            // Specify the URL of the file
+            URL url = new URL("https://botbuddy.net/_api_/getname.php");
+
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Set the request method
+            connection.setRequestMethod("GET");
+
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+
+            // Check if the request was successful (status code 200)
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Create a BufferedReader to read the response
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+                // Read the response line by line
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Print each line of the response
+                    name = line;
+                }
+                // Close the BufferedReader
+                reader.close();
+            } else {
+                System.out.println("HTTP request failed with response code: " + responseCode);
+            }
+
+            // Disconnect the connection
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return name;
+    }
+
+    private final int NAME_WIDGET = 558; // ??
+    private final int NAME_TEXT_CHILDID = 12;
+    private final int NAME_LOOKUP_CHILDID = 18; // Actions: "Look up name". If no actions, name is not available
+    private final int NAME_SETNAME_CHILDID = 19; // Actions: "Set name"
 
     @Override
     public void execute(WatAIO instance) {
@@ -128,48 +181,80 @@ public class TutorialTask implements WatTask {
         switch (state) {
             case CREATE_ACC:
                 if (!accMade) {
+                    if(Widgets.getWidget(NAME_WIDGET) != null && Widgets.getWidget(NAME_WIDGET).isVisible()) {
+                        WidgetChild nameText = Widgets.getWidget(NAME_WIDGET).getChild(NAME_TEXT_CHILDID);
+                        WidgetChild lookupButton = Widgets.getWidget(NAME_WIDGET).getChild(NAME_LOOKUP_CHILDID);
+
+                        if(nameText != null && nameText.isVisible()) {
+                            if(nameText.getText().equals("*")) {
+                                nameText.interact();
+                                Sleep.sleep(100, 200);
+                                String name = getUsername();
+                                Logger.log("picked name:" + name);
+                                Keyboard.type(name, true);
+                                Sleep.sleep(100, 200);
+                                if (lookupButton != null && lookupButton.isVisible() && lookupButton.hasAction("Look up name")) {
+                                    lookupButton.interact("Look up name");
+                                    Sleep.sleep(500, 1200);
+                                }
+                            }
+                            else {
+                                if(nameText.interact()) {
+                                    while(!nameText.getText().isEmpty() || !nameText.getText().equals("*")) {
+                                        Keyboard.typeSpecialKey(KeyEvent.VK_BACK_SPACE);
+                                    }
+                                }
+                            }
+                        }
+
+                        WidgetChild confirmName = Widgets.getWidget(NAME_WIDGET).getChild(NAME_SETNAME_CHILDID);
+                        if(confirmName != null && confirmName.isVisible() && confirmName.hasAction("Set name")) {
+                            if(confirmName.interact("Set name")) {
+                                Sleep.sleep(500, 1200);
+                                accMade = true;
+                            }
+                        }
+                    }
                     return;
                 } else {
                     t = new Timer();
-                    log("appearance");
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
                         for (int i = 0; i < appChildren.length; i++) {
                             if (Client.seededRandom() >= 1) {
                                 if (Client.seededRandom() > 1) {
                                     for (int ii = 0; ii < 5; ii++) {
-                                        Logger.log(appChildren[i][0]);
                                         WidgetChild c = par.getChild(appChildren[i][0]);
                                         if(c != null) {
                                             c.interact();
-                                            sleep(100, 150);
+                                            sleep(300, 400);
                                         }
                                     }
                                 } else {
                                     for (int ii = 0; ii < 5; ii++) {
-                                        Logger.log(appChildren[i][0]);
                                         WidgetChild c = par.getChild(appChildren[i][1]);
                                         if(c != null) {
                                             c.interact();
-                                            sleep(100, 150);
+                                            sleep(300, 400);
                                         }
                                     }
                                 }
                                 sleep(200, 300);
                             }
                         }
-                        par.getChild(ACCEPT).interact();
-                        Sleep.sleepUntil(() -> {
-                            WidgetChild wc = par.getChild(ACCEPT);
-                            return wc == null || !wc.isVisible();
-                        }, 1200);
-                        //started = true;
+                        WidgetChild acc = Widgets.getWidget(APPEAR_PAR).getChild(ACCEPT);
+                        if(acc != null && acc.isVisible() && acc.hasAction("Confirm")) {
+                            if(acc.interact()) {
+                                Sleep.sleepUntil(() -> !acc.isVisible(), 6750);
+                                started = true;
+                            }
+                        }
                     }
                 }
                 break;
             case DO_TUT:
                 int conf = PlayerSettings.getConfig(TUT_PROG);
-                Logger.log(conf);
+                //Logger.log(conf);
                 switch (conf) {
                     case 1: {
 
@@ -853,6 +938,7 @@ public class TutorialTask implements WatTask {
                         break;
                     case 1000:
                         log("Tutorial Island complete");
+                        Sleep.sleep(3000, 5000);
                         instance.currentTask = null;
                         return;
                 }
@@ -943,7 +1029,7 @@ public class TutorialTask implements WatTask {
                 }
             }
         } else {
-            log("Clicking continue");
+            //log("Clicking continue");
             Dialogues.clickContinue();
             sleep(600, 900);
         }
