@@ -7,14 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Grand exchange bug fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Tutorial island without appearance or naming automation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,13 +87,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00029" summary="Beginnings of smithing">
-      <created>1685579980326</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1685579980326</updated>
     </task>
     <task id="LOCAL-00030" summary="Smithing task will now buy missing ores">
       <created>1685586526394</created>
@@ -436,7 +424,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686591034576</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Tutorial island without appearance or naming automation">
+      <created>1687126777813</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1687126777813</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -451,7 +446,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Yew logs&#10;Enable all tasks (again)" />
     <MESSAGE value="Refactoring" />
     <MESSAGE value="Tasks will now upgrade to the next version properly when their goal is reached&#10;Selling on G.E now uses LivePrices correctly to ensure instant selling" />
     <MESSAGE value="Cleanup" />
@@ -476,7 +470,8 @@
     <MESSAGE value="add quest total to log" />
     <MESSAGE value="add basic trade unlocked stuff to banking task" />
     <MESSAGE value="Grand exchange bug fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Grand exchange bug fix" />
+    <MESSAGE value="Tutorial island without appearance or naming automation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tutorial island without appearance or naming automation" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
