@@ -60,6 +60,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public static boolean QUESTS_ENABLED = false;
     public static int QP_TRADEUNLOCKED = 10;
 
+    public static List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
+
     private Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
@@ -83,19 +85,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                put(Skill.ATTACK, 99);
-                put(Skill.STRENGTH, 99);
-                put(Skill.DEFENCE, 99);
-                put(Skill.RANGED, 99);
-                //put(Skill.PRAYER, 43);
+                put(Skill.ATTACK, 70);
+                put(Skill.STRENGTH, 70);
+                put(Skill.DEFENCE, 70);
+                put(Skill.RANGED, 70);
+                //put(Skill.PRAYER, 15);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 99);
-                put(Skill.WOODCUTTING, 99);
-                put(Skill.FISHING, 99);
+                put(Skill.COOKING, 50);
+                put(Skill.WOODCUTTING, 50);
+                put(Skill.FISHING, 60);
                 put(Skill.FIREMAKING, 50);
-                put(Skill.CRAFTING, 99);
-                put(Skill.SMITHING, 50);
+                put(Skill.CRAFTING, 50);
+                put(Skill.SMITHING, 10);
                 put(Skill.MINING, 99);
             }};
 
