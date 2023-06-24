@@ -281,8 +281,14 @@ public class BankingTask implements WatTask {
                         Logger.log("Setting up a reverse mule to get 100k gp");
                         instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }}, this);
                     } else {
+                        HashMap<String, Integer> m = new HashMap<>();
+                        for(String n : WatAIO.EMERG_SELL) {
+                            m.put(n, -1);
+                        }
+                        instance.currentTask = new GrandExchangeTask("Emergency sell", true, m, this);
+                        /*
                         Logger.error("We don't have enough GP to fulfill the G.E orders.");
-                        instance.currentTask = null;
+                        instance.currentTask = null;*/
                     }
                 }
             } else {
