@@ -7,10 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="tutorial island, appearance needs work">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="emerg sell">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,13 +87,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Gold task, woodcutting">
-      <created>1685642016257</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1685642016257</updated>
     </task>
     <task id="LOCAL-00032" summary="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods">
       <created>1685680321274</created>
@@ -433,7 +424,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687149952440</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="emerg sell">
+      <created>1687632386853</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1687632386853</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -448,7 +446,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tasks will now upgrade to the next version properly when their goal is reached&#10;Selling on G.E now uses LivePrices correctly to ensure instant selling" />
     <MESSAGE value="Cleanup" />
     <MESSAGE value="Cleanup&#10;Cooking skill, fish only" />
     <MESSAGE value="Fixed task evaluation not correctly ending tasks and removing them etc" />
@@ -473,7 +470,8 @@
     <MESSAGE value="Grand exchange bug fix" />
     <MESSAGE value="Tutorial island without appearance or naming automation" />
     <MESSAGE value="tutorial island, appearance needs work" />
-    <option name="LAST_COMMIT_MESSAGE" value="tutorial island, appearance needs work" />
+    <MESSAGE value="emerg sell" />
+    <option name="LAST_COMMIT_MESSAGE" value="emerg sell" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
