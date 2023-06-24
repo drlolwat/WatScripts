@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Tutorial island without appearance or naming automation">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="tutorial island, appearance needs work">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,13 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
-    </task>
-    <task id="LOCAL-00030" summary="Smithing task will now buy missing ores">
-      <created>1685586526394</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1685586526394</updated>
     </task>
     <task id="LOCAL-00031" summary="Gold task, woodcutting">
       <created>1685642016257</created>
@@ -431,7 +426,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687126777813</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="tutorial island, appearance needs work">
+      <created>1687149952440</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1687149952440</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -446,7 +448,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Refactoring" />
     <MESSAGE value="Tasks will now upgrade to the next version properly when their goal is reached&#10;Selling on G.E now uses LivePrices correctly to ensure instant selling" />
     <MESSAGE value="Cleanup" />
     <MESSAGE value="Cleanup&#10;Cooking skill, fish only" />
@@ -471,7 +472,8 @@
     <MESSAGE value="add basic trade unlocked stuff to banking task" />
     <MESSAGE value="Grand exchange bug fix" />
     <MESSAGE value="Tutorial island without appearance or naming automation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tutorial island without appearance or naming automation" />
+    <MESSAGE value="tutorial island, appearance needs work" />
+    <option name="LAST_COMMIT_MESSAGE" value="tutorial island, appearance needs work" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
