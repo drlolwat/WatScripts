@@ -264,6 +264,17 @@ public class BankingTask implements WatTask {
                             Logger.log("Setting up a reverse mule to get 100k gp");
                             instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }}, this);
                         } else {
+                            // TODO A FUNCTION
+                            if(Inventory.size() > 0) {
+                                Bank.depositAllItems();
+                                Sleep.sleep(100, 200);
+                            }
+
+                            if(!Bank.getWithdrawMode().equals(BankMode.NOTE)) {
+                                Bank.setWithdrawMode(BankMode.NOTE);
+                                Sleep.sleep(100, 200);
+                            }
+
                             HashMap<String, Integer> m = new HashMap<>();
                             for(String n : WatAIO.EMERG_SELL) {
                                 if(!Inventory.contains(n) && Bank.contains(n)) {
@@ -271,6 +282,11 @@ public class BankingTask implements WatTask {
                                     Sleep.sleep(200, 400);
                                     m.put(n, -1);
                                 }
+                            }
+
+                            if(!Bank.getWithdrawMode().equals(BankMode.ITEM)) {
+                                Bank.setWithdrawMode(BankMode.ITEM);
+                                Sleep.sleep(100, 200);
                             }
 
                             instance.currentTask = new GrandExchangeTask("Emergency sell", true, m, this);
@@ -287,6 +303,16 @@ public class BankingTask implements WatTask {
                         Logger.log("Setting up a reverse mule to get 100k gp");
                         instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() { { put("Coins", 100000); }}, this);
                     } else {
+                        if(Inventory.size() > 0) {
+                            Bank.depositAllItems();
+                            Sleep.sleep(100, 200);
+                        }
+
+                        if(!Bank.getWithdrawMode().equals(BankMode.NOTE)) {
+                            Bank.setWithdrawMode(BankMode.NOTE);
+                            Sleep.sleep(100, 200);
+                        }
+
                         HashMap<String, Integer> m = new HashMap<>();
                         for(String n : WatAIO.EMERG_SELL) {
                             if(!Inventory.contains(n) && Bank.contains(n)) {
@@ -294,6 +320,11 @@ public class BankingTask implements WatTask {
                                 Sleep.sleep(200, 400);
                                 m.put(n, -1);
                             }
+                        }
+
+                        if(!Bank.getWithdrawMode().equals(BankMode.ITEM)) {
+                            Bank.setWithdrawMode(BankMode.ITEM);
+                            Sleep.sleep(100, 200);
                         }
 
                         instance.currentTask = new GrandExchangeTask("Emergency sell", true, m, this);
