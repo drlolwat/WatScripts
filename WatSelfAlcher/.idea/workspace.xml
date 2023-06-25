@@ -88,13 +88,6 @@
       <option name="presentableId" value="Default" />
       <updated>1678572631502</updated>
     </task>
-    <task id="LOCAL-00032" summary="Fix banking task buying the correct amount when it already owns a partial qty of an item.&#10;Fishing task completed and several locations added&#10;Grand exchange task updated to set the buy price to 10gp for items &lt;= 7gp&#10;Bank task set to withdraw the correct amount for items &lt;= 7gp (&gt;=8gp)&#10;Fishing helper methods">
-      <created>1685680321274</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1685680321274</updated>
-    </task>
     <task id="LOCAL-00033" summary="Quality of life, bug fixes">
       <created>1685683966744</created>
       <option name="number" value="00033" />
@@ -431,7 +424,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687632386853</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="emerg sell">
+      <created>1687635011064</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1687635011064</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
