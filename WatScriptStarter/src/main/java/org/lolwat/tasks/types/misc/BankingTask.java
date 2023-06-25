@@ -266,9 +266,15 @@ public class BankingTask implements WatTask {
                         } else {
                             HashMap<String, Integer> m = new HashMap<>();
                             for(String n : WatAIO.EMERG_SELL) {
-                                m.put(n, -1);
+                                if(!Inventory.contains(n) && Bank.contains(n)) {
+                                    Bank.withdrawAll(n);
+                                    Sleep.sleep(200, 400);
+                                    m.put(n, -1);
+                                }
                             }
+
                             instance.currentTask = new GrandExchangeTask("Emergency sell", true, m, this);
+
                             //Logger.error("We don't have enough GP to fulfill the G.E orders. Need: " + totalValue + ", have: " + (bankCoins != null ? bankCoins.getAmount() : 0));
                             //instance.currentTask = null;
                         }
@@ -283,8 +289,13 @@ public class BankingTask implements WatTask {
                     } else {
                         HashMap<String, Integer> m = new HashMap<>();
                         for(String n : WatAIO.EMERG_SELL) {
-                            m.put(n, -1);
+                            if(!Inventory.contains(n) && Bank.contains(n)) {
+                                Bank.withdrawAll(n);
+                                Sleep.sleep(200, 400);
+                                m.put(n, -1);
+                            }
                         }
+
                         instance.currentTask = new GrandExchangeTask("Emergency sell", true, m, this);
                         /*
                         Logger.error("We don't have enough GP to fulfill the G.E orders.");
