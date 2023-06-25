@@ -24,6 +24,7 @@ import org.lolwat.tasks.types.combat.MeleeCombatTask;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.smithing.SmithingItemTask;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -276,6 +277,7 @@ public class BankingTask implements WatTask {
                             }
 
                             HashMap<String, Integer> m = new HashMap<>();
+                            Collections.shuffle(WatAIO.EMERG_SELL);
                             for(String n : WatAIO.EMERG_SELL) {
                                 if(!Inventory.contains(n) && Bank.contains(n)) {
                                     Bank.withdrawAll(n);
@@ -314,6 +316,7 @@ public class BankingTask implements WatTask {
                         }
 
                         HashMap<String, Integer> m = new HashMap<>();
+                        Collections.shuffle(WatAIO.EMERG_SELL);
                         for(String n : WatAIO.EMERG_SELL) {
                             if(!Inventory.contains(n) && Bank.contains(n)) {
                                 Bank.withdrawAll(n);
