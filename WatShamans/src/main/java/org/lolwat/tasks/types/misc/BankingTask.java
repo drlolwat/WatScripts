@@ -104,7 +104,7 @@ public class BankingTask implements WatTask {
         Logger.log("EQUIPMENTCHECKER: STARTING");
         if (equipmentRequired.size() > 0) {
             for (Map.Entry<String, Integer> entry : equipmentRequired.entrySet()) {
-                int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
+                int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
                 if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getKey()) >= amountRequired) {
                     Logger.log("EQUIPMENTCHECKER: ITEM ALREADY EQUIPPED");
                     continue;
@@ -112,6 +112,7 @@ public class BankingTask implements WatTask {
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
                     if (Inventory.interact(entry.getKey(), "Wear") || Inventory.interact(entry.getKey(), "Wield")) {
+                        Sleep.sleep(100, 300);
                         Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY, EQUIPPING");
                         continue;
                     }
@@ -123,8 +124,8 @@ public class BankingTask implements WatTask {
                         Sleep.sleep(100, 200);
                     }
 
-                    if (Bank.withdraw(entry.getKey())) {
-                        if (Inventory.contains(entry.getKey()) && Inventory.interact(entry.getKey(), "Equip")) {
+                    if (Bank.withdraw(entry.getKey(), amountRequired)) {
+                        if (Inventory.contains(entry.getKey()) && Inventory.interact(entry.getKey(), "Equip") || Inventory.interact("Wield")) {
                             Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM, EQUIPPING");
                         }
                     }
@@ -140,7 +141,7 @@ public class BankingTask implements WatTask {
         Logger.log("INVENTORYCHECKER: STARTING");
         if (inventoryRequired.size() > 0) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1; //TODO make it so arrows etc can be more than 1
+                int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue(); //TODO make it so arrows etc can be more than 1
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
                     Logger.log("INVENTORYCHECKER: ITEM ALREADY IN INVENTORY, MINIMUM QUANTITY MET");
