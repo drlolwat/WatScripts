@@ -55,7 +55,6 @@ public class TutorialTask implements WatTask {
     private final int APPEAR_PAR = 679;
     private final int[][] appChildren = {{12, 13}, {16, 17}, {20, 21}, {24, 25}, {28, 29}, {32, 33}, {36, 37}, {43, 44}, {47, 48}, {51, 52}, {55, 56}, {59, 60}};
     private final int ACCEPT = 68;
-
     private final String RUNESCAPE_GUIDE = "Gielinor Guide";
     private final String SURVIVAL_EXPERT = "Survival Expert";
     private final String COOK_GUIDE = "Master Chef";
@@ -204,6 +203,7 @@ public class TutorialTask implements WatTask {
                                         Keyboard.typeSpecialKey(KeyEvent.VK_BACK_SPACE);
                                     }
                                 }
+                                return;
                             }
                         }
 
