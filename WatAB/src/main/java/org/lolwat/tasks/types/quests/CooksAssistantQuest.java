@@ -5,12 +5,10 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.WatTask;
@@ -39,7 +37,7 @@ public class CooksAssistantQuest implements WatTask {
         //check for items
         for (String i : needed.keySet()) {
             if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
-                instance.currentTask = new BankingTask("Grabbing quest mats", needed, true, this, true, null, 1);
+                instance.currentTask = new BankingTask(null, needed, null, 1, this);
                 return;
             }
         }
