@@ -13,14 +13,12 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.utils.cooking.CookingUtils;
-import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
+import org.lolwat.tasks.types.misc.BankingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -59,9 +57,8 @@ public class CookingFishTask implements WatTask {
     public void execute(WatAIO instance) {
         for (java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
             if (!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask("Grabbing fish",
-                        CookingUtils.getRequiredItems(fishType, true, 1),
-                        true, this, true, selling, inventoryCount);
+                instance.currentTask = new BankingTask(null, CookingUtils.getRequiredItems(fishType, true, 1),
+                        selling, inventoryCount, this);
 
                 return;
             }
