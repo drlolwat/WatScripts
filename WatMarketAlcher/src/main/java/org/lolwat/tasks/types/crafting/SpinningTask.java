@@ -16,8 +16,8 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
-import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -56,7 +56,7 @@ public class SpinningTask implements WatTask {
 
         for(String it : requiredItems.keySet()) {
             if(!Inventory.contains(it)) {
-                instance.currentTask = new BankingTask("Grabbing " + spinningType.toString().toLowerCase(), requiredItems, true, this, true, toSell, inventoryLoads);
+                instance.currentTask = new BankingTask(null, requiredItems, toSell, inventoryLoads, this);
                 return;
             }
         }
