@@ -59,7 +59,7 @@ public class WoodcuttingTask implements WatTask {
 
         if(!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) {
             Logger.log("I don't own the best hatchet available for me: " + hatchet);
-            instance.currentTask = new BankingTask("Grabbing Hatchet", bankItems, true, this, true, null, 1);
+            instance.currentTask = new BankingTask(null, bankItems, sellList, 1, this);
         }
         else {
             if (!Tab.INVENTORY.isOpen()) {
@@ -71,7 +71,7 @@ public class WoodcuttingTask implements WatTask {
                 if(!dropping) {
                     Logger.log("My inventory is full, to the bank!");
                     lastGotLog = 0;
-                    instance.currentTask = new BankingTask("Banking logs", bankItems, true, this, true, sellList, 1);
+                    instance.currentTask = new BankingTask(null, bankItems, sellList, 1, this);
                     return;
                 } else {
                     for(Item it : Inventory.all()) {

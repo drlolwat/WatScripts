@@ -10,7 +10,6 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.WatTask;
@@ -48,7 +47,7 @@ public class ImpCatcherQuest implements WatTask {
         //check for items
         for (String i : needed.keySet()) {
             if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
-                instance.currentTask = new BankingTask("Grabbing beads", needed, true, this, true, null, 1);
+                instance.currentTask = new BankingTask(null, needed, null, 1, this);
                 return;
             }
         }

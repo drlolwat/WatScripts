@@ -10,7 +10,6 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -72,7 +71,7 @@ public class RomeoJulietQuest implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(Inventory.isFull()) {
-            instance.currentTask = new BankingTask("Depositing all", new HashMap<>(), true, this, false, null, 1);
+            instance.currentTask = new BankingTask(null, null, null, 1, this);
             return;
         }
 
@@ -184,7 +183,7 @@ public class RomeoJulietQuest implements WatTask {
                 HashMap<String, Integer> req = new HashMap<String, Integer>() { { put("Cadava berries", 1); } };
                 if(!Inventory.contains("Cadava potion")) {
                     if (!Inventory.contains("Cadava berries") || (Inventory.contains("Cadava berries") && Inventory.get("Cadava berries").isNoted())) {
-                        instance.currentTask = new BankingTask("Grabbing berries", req, true, this, true, null, 1);
+                        instance.currentTask = new BankingTask(null, req, null, 1,this);
                         return;
                     }
 

@@ -1,6 +1,5 @@
 package org.lolwat.tasks.types.combat;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -77,6 +76,10 @@ public class MeleeCombatTask implements WatTask {
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
+                    if(Inventory.get(item.getKey()).isNoted()) {
+                        continue;
+                    }
+
                     if (Inventory.get(item.getKey()).hasAction("Eat") || Inventory.interact(item.getKey())) {
                         toRemove.add(item.getKey());
                     }
@@ -96,14 +99,14 @@ public class MeleeCombatTask implements WatTask {
                 Logger.log("- " + s);
             }
 
-            instance.currentTask = new BankingTask("Getting melee items", requiredItems, true, this, true, new HashMap<String, Integer>(), 1);
+            instance.currentTask = new BankingTask(requiredItems, food, null, 1,this);
             return;
         }
 
         if(food.size() > 0) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask("Getting food", food, true, this, true, new HashMap<String, Integer>(), 1);
+                    instance.currentTask = new BankingTask(requiredItems, food, null, 1, this);
                     return;
                 }
             }
