@@ -2,11 +2,9 @@ package org.lolwat.tasks.types.fishing;
 
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -71,7 +69,7 @@ public class FishingTask implements WatTask {
         }
 
         if(!hasItems) {
-            instance.currentTask = new BankingTask("Grabbing tool", requiredItems, true, this, true, sellingItems, 1);
+            instance.currentTask = new BankingTask(null, requiredItems, sellingItems, 1, this);
         }
         else {
             if (!Tab.INVENTORY.isOpen()) {
@@ -80,7 +78,7 @@ public class FishingTask implements WatTask {
 
             if(Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask("Banking fish", requiredItems, true, this, false, sellingItems, 1);
+                instance.currentTask = new BankingTask(null, requiredItems, sellingItems, 1, this);
                 return;
             }
 
