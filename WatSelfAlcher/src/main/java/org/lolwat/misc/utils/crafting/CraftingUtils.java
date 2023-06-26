@@ -1,6 +1,7 @@
 package org.lolwat.misc.utils.crafting;
 
 import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.misc.utils.StringUtils;
 
 import java.util.HashMap;
 
@@ -16,6 +17,8 @@ public class CraftingUtils {
 
     public static HashMap<String, Integer> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
         HashMap<String, Integer> ret = new HashMap<>();
+        String extra = StringUtils.capitalize(type.toString().toLowerCase()) + " mould";
+        ret.put(extra, 1);
 
         switch(type) {
             case RING: {
