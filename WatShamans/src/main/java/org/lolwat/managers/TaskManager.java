@@ -194,7 +194,7 @@ public class TaskManager {
         List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
         for (Skill sk : s) {
             // lumbridge chickens north
-            tasks.add(new MeleeCombatTask(sk, 1, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
                     new Tile(3170, 3289, 0),
                     new Tile(3183, 3289, 0),
                     new Tile(3185, 3291, 0),
@@ -216,7 +216,7 @@ public class TaskManager {
             }));
 
             // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 10, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
                     new Tile(3193, 3300, 0),
                     new Tile(3193, 3286, 0),
                     new Tile(3197, 3282, 0),

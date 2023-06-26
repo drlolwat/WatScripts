@@ -10,15 +10,12 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.helpers.Smithing;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.smithing.SmithingType;
 import org.lolwat.misc.utils.StringUtils;
-import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -59,17 +56,12 @@ public class SmithingItemTask implements WatTask {
         // check to see if we have enough bars
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.materialsForSmithing(itemType, ingotType,false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.count(m.getKey()) < m.getValue()) {
-                instance.currentTask = new BankingTask("Grabbing bars",
+                instance.currentTask = new BankingTask(null,
                         SmithingUtils.materialsForSmithing(itemType, ingotType, true, 1),
-                        true, this, true, byproducts, maximumInventories);
+                        byproducts, maximumInventories, this);
 
                 return;
             }
-        }
-
-        if(!Inventory.contains("Hammer")) {
-            instance.currentTask = new BankingTask("Grabbing hammer", new HashMap<String, Integer>() { { put("Hammer", 1); }}, false, this, true, new HashMap<>(), 1);
-            return;
         }
 
         if(!selectedArea.contains(Players.getLocal())) {
