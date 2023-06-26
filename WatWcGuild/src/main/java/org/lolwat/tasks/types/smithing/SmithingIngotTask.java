@@ -52,9 +52,9 @@ public class SmithingIngotTask implements WatTask {
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask("Grabbing ore",
+                instance.currentTask = new BankingTask(null,
                         SmithingUtils.getMaterialsForBar(smithingType, true, 1),
-                        true, this, true, toSell, totalLoads);
+                        toSell, totalLoads, this);
 
                 return;
             }
