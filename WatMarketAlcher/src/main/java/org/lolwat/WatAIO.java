@@ -85,8 +85,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             {
                 //put(Skill.ATTACK, 70);
                 //put(Skill.STRENGTH, 70);
-                //put(Skill.DEFENCE, 70);
-                put(Skill.RANGED, 70);
+                put(Skill.DEFENCE, 70);
+                //put(Skill.RANGED, 70);
                 //put(Skill.PRAYER, 15);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
