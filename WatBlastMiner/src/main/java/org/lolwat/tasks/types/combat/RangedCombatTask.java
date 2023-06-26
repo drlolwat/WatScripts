@@ -18,7 +18,6 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
-import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.misc.utils.combat.ranged.RangedUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -96,14 +95,14 @@ public class RangedCombatTask implements WatTask {
                 Logger.log("- " + s);
             }
 
-            instance.currentTask = new BankingTask("Getting ranged items", requiredItems, true, this, true, new HashMap<String, Integer>(), 1);
+            instance.currentTask = new BankingTask(requiredItems, food, null, 1,this);
             return;
         }
 
         if(food.size() > 0) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask("Getting food", food, true, this, true, new HashMap<String, Integer>(), 1);
+                    instance.currentTask = new BankingTask(requiredItems, food, null, 2,this);
                     return;
                 }
             }

@@ -1,6 +1,5 @@
 package org.lolwat.tasks.types.misc;
 
-import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -15,7 +14,6 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -203,9 +201,10 @@ public class GrandExchangeTask implements WatTask {
             }
 
             Sleep.sleepUntil(Bank::isOpen, 7500);
-            Bank.depositAllItems();
-            Bank.close();
 
+            Bank.depositAllItems();
+
+            Sleep.sleep(300, 800);
             instance.currentTask = postTask;
         }
         else {
