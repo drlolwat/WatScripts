@@ -57,6 +57,7 @@ public class SmithingUtils {
     public static HashMap<String, Integer> materialsForSmithing(SmithingType type, IngotType barType, boolean fullInventory, int inventoryLoads) {
         String barName = StringUtils.capitalize(barType.toString().toLowerCase()) + " bar";
         HashMap<String, Integer> ret = new HashMap<>();
+        ret.put("Hammer", 1);
         switch(type) {
             default:
             case AXE: {

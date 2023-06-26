@@ -49,18 +49,12 @@ public class JewelryTask implements WatTask {
     public void execute(WatAIO instance) {
         for(java.util.Map.Entry<String, Integer> m : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask("Grabbing materials",
+                instance.currentTask = new BankingTask(null,
                         CraftingUtils.getMaterialsForJewelry(craftingType, true, 1),
-                        true, this, true, toSell, totalLoads);
+                        toSell, totalLoads, this);
 
                 return;
             }
-        }
-
-        String extra = StringUtils.capitalize(craftingType.toString().toLowerCase()) + " mould";
-        if(!Inventory.contains(extra)) {
-            instance.currentTask = new BankingTask("Grabbing mould", new HashMap<String, Integer>() { { put(extra, 1); }}, false, this, true, null, 1);
-            return;
         }
 
         if (!Map.isTileOnScreen(selectedLocation)) {
