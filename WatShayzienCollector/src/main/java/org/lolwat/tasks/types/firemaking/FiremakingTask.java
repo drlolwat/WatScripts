@@ -7,7 +7,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -58,9 +57,9 @@ public class FiremakingTask implements WatTask {
 
         for(java.util.Map.Entry<String, Integer> m : FiremakingUtils.getMaterialsForFiremaking(logType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask("Grabbing materials",
+                instance.currentTask = new BankingTask(null,
                         FiremakingUtils.getMaterialsForFiremaking(logType, true, 1),
-                        true, this, true, toSell, inventoryLoads);
+                        toSell, inventoryLoads, this);
 
                 return;
             }
