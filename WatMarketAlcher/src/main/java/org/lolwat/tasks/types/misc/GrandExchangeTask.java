@@ -14,10 +14,12 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class GrandExchangeTask implements WatTask {
     private final String name;
@@ -108,16 +110,6 @@ public class GrandExchangeTask implements WatTask {
                     GrandExchange.collect();
                 }
 
-                /*
-                if (GrandExchange.contains(item.getKey())) {
-                    if(retries >= 3) {
-                        Logger.error("Stuck buying/selling item: " + item.getKey() + ", maybe try buying/selling it manually?");
-                        instance.fatalError = true;
-                    }
-                    retries++;
-                    return;
-                }*/
-
                 if (isSelling) {
                     Logger.log("Selling: " + item.getKey());
                     if(Inventory.contains(item.getKey())) {
@@ -202,7 +194,18 @@ public class GrandExchangeTask implements WatTask {
 
             Sleep.sleepUntil(Bank::isOpen, 7500);
 
-            Bank.depositAllItems();
+            if(postTask != null && !(postTask instanceof BankingTask)) {
+                Bank.depositAllItems();
+            }
+            else {
+                for(Item i : Inventory.all()) {
+                    if (i == null) continue;
+                    if(i.isNoted()) {
+                        Bank.depositAll(i);
+                        Sleep.sleep(100, 200);
+                    }
+                }
+            }
 
             Sleep.sleep(300, 800);
             instance.currentTask = postTask;
