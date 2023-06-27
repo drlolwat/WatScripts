@@ -63,7 +63,7 @@ public class BankingTask implements WatTask {
         depositNonRequired();
 
         Logger.log("SELLCHECKER: STARTING");
-        if (sellingItems.size() > 0) {
+        if (sellingItems.size() > 0 && WatAIO.TRADE_UNLOCKED) {
             boolean performSelling = false;
             if (Inventory.isFull()) {
                 Bank.depositAllItems();
@@ -94,6 +94,8 @@ public class BankingTask implements WatTask {
                 instance.currentTask = new GrandExchangeTask("Selling proceeds", true, sellingItems, this);
                 return;
             }
+        } else {
+            Logger.log("Not tradeunlocked, or nothing to sell");
         }
 
         Logger.log("SELLCHECKER: DONE");
