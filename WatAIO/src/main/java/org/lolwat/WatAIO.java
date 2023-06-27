@@ -220,12 +220,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             TRADE_UNLOCKED = true;
         }
+
+        if (!Tabs.isOpen(Tab.INVENTORY)) {
+            Tabs.open(Tab.INVENTORY);
+            Sleep.sleep(100, 200);
+        }
     }
 
     private void evaluateGoals() {
         boolean goalsMet = true;
         for(Map.Entry<Skill, Integer> tgt : skillTargets.entrySet()) {
-            if(Skills.getRealLevel(tgt.getKey()) >= tgt.getValue()) {
+            if(Skills.getRealLevel(tgt.getKey()) < tgt.getValue()) {
                 goalsMet = false;
             }
         }
