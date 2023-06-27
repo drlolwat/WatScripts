@@ -2,6 +2,7 @@ package org.lolwat;
 
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.interactive.Players;
@@ -11,11 +12,16 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
@@ -23,7 +29,9 @@ import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.dreambot.api.wrappers.widgets.message.Message;
+import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.types.misc.MulingTask;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
@@ -49,18 +57,24 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private int skillRunTime;
     public WatTask currentTask;
     public boolean fatalError = false;
-    public static HashMap<Skill, Integer> skillTargets;
-    public static HashMap<String, Integer> levelUps;
-    public Integer netWorth = 0;
+    private static HashMap<Skill, Integer> skillTargets;
+    private static HashMap<String, Integer> levelUps;
+    private boolean hasCheckedTime = false;
+    private double checkedTimeAt = 0;
+    private int hoursPlayed = 0;
+
+    public Integer NET_WORTH = 0;
     public static int MULE_SAFETY_NET = 75000;
     public static int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;
     public static boolean QUESTS_ENABLED = false;
-    public static int QP_TRADEUNLOCKED = 10;
     public static List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "mould");
     public static List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
+    public static boolean TRADE_UNLOCKED = false;
 
-    private Area tutorialIsland = new Area(
+    // TODO CONFIGURATION CLASS
+    public static boolean STOP_ON_TRADEUNLOCK = false;
+    private static Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
             new Tile(3146, 3052, 0),
@@ -83,19 +97,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                //put(Skill.ATTACK, 70);
-                //put(Skill.STRENGTH, 70);
+                put(Skill.ATTACK, 70);
+                put(Skill.STRENGTH, 70);
                 put(Skill.DEFENCE, 70);
-                //put(Skill.RANGED, 70);
-                //put(Skill.PRAYER, 15);
+                put(Skill.RANGED, 70);
+                put(Skill.PRAYER, 15);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                //put(Skill.COOKING, 50);
-                //put(Skill.WOODCUTTING, 50);
-                //put(Skill.FISHING, 60);
-                //put(Skill.FIREMAKING, 50);
-                //put(Skill.CRAFTING, 50);
-                //put(Skill.SMITHING, 10);
+                put(Skill.COOKING, 50);
+                put(Skill.WOODCUTTING, 50);
+                put(Skill.FISHING, 60);
+                put(Skill.FIREMAKING, 50);
+                put(Skill.CRAFTING, 50);
+                put(Skill.SMITHING, 10);
                 //put(Skill.MINING, 99);
             }};
 
@@ -105,15 +119,121 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         allTasks = TaskManager.getAllTasks();
         allQuests = TaskManager.getQuests();
         Logger.log("Set up " + allTasks.size() + " total tasks and " + allQuests.size() + " total quests");
-        netWorth = 0;
+        NET_WORTH = 0;
     }
 
-    public void removeTaskAndReset() {
-        if(currentTask != null) {
-            allTasks.remove(currentTask);
-            currentTask = null;
+    private void checkTradeStatus() {
+        if(!hasCheckedTime) {
+            if (!Tabs.isOpen(Tab.QUEST)) {
+                Tabs.open(Tab.QUEST);
+                Sleep.sleep(100, 200);
+            }
+
+            List<String> dialogue = Collections.singletonList("Yes, and don't ask me again.");
+
+            Widget w = Widgets.getWidget(712);
+            if (w == null || !w.isVisible()) {
+                Widget x = Widgets.getWidget(629);
+                if (x != null && x.isVisible() && x.getChild(3).interact()) {
+                    Logger.log("Opened character area");
+                    Sleep.sleep(800, 1500);
+                }
+            }
+
+            w = Widgets.getWidget(712);
+
+            if (w == null || !w.isVisible()) {
+                Logger.error("Problem getting trade unlock status");
+                return;
+            }
+
+            WidgetChild c = w.getChild(2).getChild(100);
+            if (c != null && c.isVisible()) {
+                if (c.getText().contains("Click")) {
+                    if (c.interact()) {
+                        if (Dialogues.inDialogue()) {
+                            DialogueUtils.solve(dialogue);
+                        }
+                        Sleep.sleep(800, 1500);
+                    }
+                }
+
+                Widget newW = Widgets.getWidget(712);
+
+                if (newW == null) {
+                    Logger.error("really odd error");
+                    return;
+                }
+
+                WidgetChild newC = newW.getChild(2).getChild(100);
+
+                if (newC == null) {
+                    Logger.error("really odd error 2");
+                    return;
+                }
+
+                Sleep.sleep(400, 900);
+
+                int minutesPlayed = 0;
+
+                String[] splitArr = newC.getText().split(">", 2)[1].split("<", 2)[0].split(",");
+                HashMap<String, Integer> timeWordsKey = new HashMap<>();
+                timeWordsKey.put("day", 24 * 60);
+                timeWordsKey.put("hour", 60);
+                timeWordsKey.put("minute", 1);
+                for (String time : splitArr) {
+                    for (String timeWord : timeWordsKey.keySet()) {
+                        if (time.contains(timeWord)) {
+                            time = time.split(" " + timeWord, 2)[0];
+                            if (time.charAt(0) == ' ') {
+                                time = time.substring(1);
+                            }
+                            minutesPlayed += Integer.parseInt(time) * timeWordsKey.get(timeWord);
+                        }
+                    }
+                }
+
+                hoursPlayed = minutesPlayed / 60;
+            }
+
+            checkedTimeAt = Instant.now().getEpochSecond();
+            hasCheckedTime = true;
+            Sleep.sleep(400, 700);
+        } else {
+            // time passed since checking
+            double secondsSince = Instant.now().getEpochSecond() - checkedTimeAt;
+            int hoursSince = (int) (secondsSince / 60) / 60;
+
+            if(hoursSince >= 1) {
+                hoursPlayed += hoursSince;
+                checkedTimeAt = Instant.now().getEpochSecond();
+            }
         }
-        evaluate();
+
+        Logger.log("I have played for " + hoursPlayed + " hour(s)");
+        if (hoursPlayed >= 22 && Quests.getQuestPoints() >= 10) {
+            if(STOP_ON_TRADEUNLOCK) {
+                Logger.log("WAIO: Trade unrestricted, stopping");
+                ScriptManager.getScriptManager().stop();
+                return;
+            }
+
+            TRADE_UNLOCKED = true;
+        }
+    }
+
+    private void evaluateGoals() {
+        boolean goalsMet = true;
+        for(Map.Entry<Skill, Integer> tgt : skillTargets.entrySet()) {
+            if(Skills.getRealLevel(tgt.getKey()) >= tgt.getValue()) {
+                goalsMet = false;
+            }
+        }
+
+        if(goalsMet) {
+            Logger.log("WAIO: Reached target ttl and qp"); // TODO make my own, add to BB
+            ScriptManager.getScriptManager().stop();
+        }
     }
 
     private void evaluate() {
@@ -125,9 +245,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             currentTask = new TutorialTask();
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
-            Logger.log("We have picked: " + currentTask.getName());
+            Logger.log("We are performing Tutorial Island");
             return;
         }
+
+        Logger.log("Checking current trade status");
+        checkTradeStatus();
+
+        Logger.log("Evaluating goals for stop conditions");
+        evaluateGoals();
 
         Logger.log("Assessing tasks to see what is available for us to perform");
         List<WatTask> removal = new ArrayList<>();
@@ -333,7 +459,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // Draw two rows of additional information
         g.setColor(new Color(220, 220, 220));
         g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + NumUtils.simplifyNumber(netWorth), "Time left: " + taskTime}};
+        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + NumUtils.simplifyNumber(NET_WORTH), "Time left: " + taskTime}};
         int rowOffset = 16;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 2; col++) {
