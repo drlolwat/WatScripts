@@ -59,11 +59,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public boolean fatalError = false;
     private static HashMap<Skill, Integer> skillTargets;
     private static HashMap<String, Integer> levelUps;
-    private boolean hasCheckedTime = false;
-    private double checkedTimeAt = 0;
-    private int hoursPlayed = 0;
-
-    public Integer NET_WORTH = 0;
+    public static double CHECKED_HOURS_AT = 0;
+    public static int HOURS_PLAYED = 0;
+    public int NET_WORTH = 0;
     public static int MULE_SAFETY_NET = 75000;
     public static int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;
@@ -101,7 +99,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 put(Skill.STRENGTH, 70);
                 put(Skill.DEFENCE, 70);
                 put(Skill.RANGED, 70);
-                put(Skill.PRAYER, 15);
+                //put(Skill.PRAYER, 15);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 put(Skill.COOKING, 50);
@@ -123,13 +121,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void checkTradeStatus() {
-        if(!hasCheckedTime) {
+        if(CHECKED_HOURS_AT == 0) {
             if (!Tabs.isOpen(Tab.QUEST)) {
                 Tabs.open(Tab.QUEST);
                 Sleep.sleep(100, 200);
             }
 
-            List<String> dialogue = Collections.singletonList("Yes, and don't ask me again.");
+            List<String> dialogue = Collections.singletonList("Yes and don't ask me again");
 
             Widget w = Widgets.getWidget(712);
             if (w == null || !w.isVisible()) {
@@ -193,25 +191,24 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     }
                 }
 
-                hoursPlayed = minutesPlayed / 60;
+                HOURS_PLAYED = minutesPlayed / 60;
             }
 
-            checkedTimeAt = Instant.now().getEpochSecond();
-            hasCheckedTime = true;
+            CHECKED_HOURS_AT = Instant.now().getEpochSecond();
             Sleep.sleep(400, 700);
         } else {
             // time passed since checking
-            double secondsSince = Instant.now().getEpochSecond() - checkedTimeAt;
+            double secondsSince = Instant.now().getEpochSecond() - CHECKED_HOURS_AT;
             int hoursSince = (int) (secondsSince / 60) / 60;
 
             if(hoursSince >= 1) {
-                hoursPlayed += hoursSince;
-                checkedTimeAt = Instant.now().getEpochSecond();
+                HOURS_PLAYED += hoursSince;
+                CHECKED_HOURS_AT = Instant.now().getEpochSecond();
             }
         }
 
-        Logger.log("I have played for " + hoursPlayed + " hour(s)");
-        if (hoursPlayed >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
+        Logger.log("I have played for " + HOURS_PLAYED + " hour(s)");
+        if (HOURS_PLAYED >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
             if(STOP_ON_TRADEUNLOCK) {
                 Logger.log("WAIO: Trade unrestricted, stopping");
                 ScriptManager.getScriptManager().stop();
