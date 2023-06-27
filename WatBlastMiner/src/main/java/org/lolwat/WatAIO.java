@@ -211,7 +211,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         Logger.log("I have played for " + hoursPlayed + " hour(s)");
-        if (hoursPlayed >= 22 && Quests.getQuestPoints() >= 10) {
+        if (hoursPlayed >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
             if(STOP_ON_TRADEUNLOCK) {
                 Logger.log("WAIO: Trade unrestricted, stopping");
                 ScriptManager.getScriptManager().stop();
