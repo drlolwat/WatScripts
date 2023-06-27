@@ -157,7 +157,7 @@ public class GrandExchangeTask implements WatTask {
 
                             Sleep.sleep(100, 300);
 
-                            if (item.getValue() != 1) {
+                            if (item.getValue() != 1 && !WatAIO.SINGULAR_ITEMS.contains(item.getKey())) {
                                 GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
                                 Sleep.sleep(100, 300);
                             }
