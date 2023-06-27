@@ -144,6 +144,8 @@ public class BankingTask implements WatTask {
         if (inventoryRequired.size() > 0) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
                 int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue(); //TODO make it so arrows etc can be more than 1
+                if(WatAIO.SINGULAR_ITEMS.contains(entry.getKey()))
+                    amountRequired = 1;
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
                     Logger.log("INVENTORYCHECKER: ITEM ALREADY IN INVENTORY, MINIMUM QUANTITY MET");
