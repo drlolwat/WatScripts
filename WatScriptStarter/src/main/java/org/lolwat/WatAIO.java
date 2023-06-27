@@ -66,7 +66,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public static int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;
     public static boolean QUESTS_ENABLED = false;
-    public static List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "mould");
+    public static List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
     public static List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
     public static boolean TRADE_UNLOCKED = false;
 
@@ -95,20 +95,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                put(Skill.ATTACK, 70);
-                put(Skill.STRENGTH, 70);
-                put(Skill.DEFENCE, 70);
-                put(Skill.RANGED, 70);
-                //put(Skill.PRAYER, 15);
+                put(Skill.ATTACK, 40);
+                put(Skill.STRENGTH, 40);
+                put(Skill.DEFENCE, 40);
+                put(Skill.RANGED, 40);
+                put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 put(Skill.COOKING, 50);
                 put(Skill.WOODCUTTING, 50);
-                put(Skill.FISHING, 60);
+                put(Skill.FISHING, 50);
                 put(Skill.FIREMAKING, 50);
-                put(Skill.CRAFTING, 50);
-                put(Skill.SMITHING, 10);
-                //put(Skill.MINING, 99);
+                put(Skill.CRAFTING, 1);
+                put(Skill.SMITHING, 1);
+                put(Skill.MINING, 45);
             }};
 
         levelUps = new HashMap<>();
