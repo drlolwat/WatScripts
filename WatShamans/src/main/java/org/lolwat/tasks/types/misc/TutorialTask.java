@@ -189,8 +189,8 @@ public class TutorialTask implements WatTask {
                                 nameText.interact();
                                 Sleep.sleep(100, 200);
                                 String name = getUsername();
-                                Logger.log("picked name:" + name);
-                                Keyboard.type(name, true);
+                                Logger.log("Selected name:" + name);
+                                Keyboard.type(name, false);
                                 Sleep.sleep(100, 200);
                                 if (lookupButton != null && lookupButton.isVisible() && lookupButton.hasAction("Look up name")) {
                                     lookupButton.interact("Look up name");
@@ -199,11 +199,10 @@ public class TutorialTask implements WatTask {
                             }
                             else {
                                 if(nameText.interact()) {
-                                    while(!nameText.getText().isEmpty() || !nameText.getText().equals("*")) {
+                                    while(!nameText.getText().equals("*")) {
                                         Keyboard.typeSpecialKey(KeyEvent.VK_BACK_SPACE);
                                     }
                                 }
-                                return;
                             }
                         }
 
@@ -215,33 +214,26 @@ public class TutorialTask implements WatTask {
                             }
                         }
                     }
+
                     return;
                 } else {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        for (int i = 0; i < appChildren.length; i++) {
-                            if (Client.seededRandom() >= 1) {
-                                if (Client.seededRandom() > 1) {
-                                    for (int ii = 0; ii < 5; ii++) {
-                                        WidgetChild c = par.getChild(appChildren[i][0]);
-                                        if(c != null) {
-                                            c.interact();
-                                            sleep(300, 400);
-                                        }
-                                    }
-                                } else {
-                                    for (int ii = 0; ii < 5; ii++) {
-                                        WidgetChild c = par.getChild(appChildren[i][1]);
-                                        if(c != null) {
-                                            c.interact();
-                                            sleep(300, 400);
-                                        }
-                                    }
+                        for (int[] appChild : appChildren) {
+                            int randomIndex = Calculations.random(0, 1); // Generate a random index, 0 or 1
+
+                            for (int ii = 0; ii < 5; ii++) {
+                                WidgetChild c = par.getChild(appChild[randomIndex]);
+                                if (c != null) {
+                                    c.interact();
+                                    sleep(300, 400);
                                 }
-                                sleep(200, 300);
                             }
+
+                            sleep(200, 300);
                         }
+
                         WidgetChild acc = Widgets.getWidget(APPEAR_PAR).getChild(ACCEPT);
                         if(acc != null && acc.isVisible() && acc.hasAction("Confirm")) {
                             if(acc.interact()) {
