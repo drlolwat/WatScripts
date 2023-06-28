@@ -103,7 +103,7 @@ public class TaskManager {
                 new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
         }));
 
-        tasks.add(new RangedCombatTask(7, 25, new Area(
+        tasks.add(new RangedCombatTask(5, 30, new Area(
                 new Tile(3193, 3300, 0),
                 new Tile(3193, 3286, 0),
                 new Tile(3197, 3282, 0),
@@ -125,14 +125,14 @@ public class TaskManager {
             }
         }));
 
-        tasks.add(new RangedCombatTask(20, 55, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+        tasks.add(new RangedCombatTask(30, 50, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
             {
                 put("Trout", 28);
             }
         }));
 
         // al kharid warrior west
-        tasks.add(new RangedCombatTask(20, 55, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+        tasks.add(new RangedCombatTask(30, 50, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
             {
                 put("Trout", 28);
             }
@@ -216,7 +216,7 @@ public class TaskManager {
             }));
 
             // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 8, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
                     new Tile(3193, 3300, 0),
                     new Tile(3193, 3286, 0),
                     new Tile(3197, 3282, 0),
@@ -253,7 +253,7 @@ public class TaskManager {
             }));
 
             // varrock guards, palace upstairs north
-            tasks.add(new MeleeCombatTask(sk, 30, 99, new Area(
+            tasks.add(new MeleeCombatTask(sk, 35, 126, new Area(
                     new Tile(3207, 3490, 1),
                     new Tile(3200, 3490, 1),
                     new Tile(3200, 3499, 1),
@@ -266,7 +266,7 @@ public class TaskManager {
             }));
 
             // varrock guards, palace courtyard
-            tasks.add(new MeleeCombatTask(sk, 30, 99, new Area(
+            tasks.add(new MeleeCombatTask(sk, 35, 126, new Area(
                     new Tile(3202, 3468, 0),
                     new Tile(3202, 3461, 0),
                     new Tile(3204, 3459, 0),
