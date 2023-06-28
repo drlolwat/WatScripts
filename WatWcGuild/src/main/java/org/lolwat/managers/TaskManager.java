@@ -103,7 +103,7 @@ public class TaskManager {
                 new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
         }));
 
-        tasks.add(new RangedCombatTask(5, 30, new Area(
+        tasks.add(new RangedCombatTask(7, 25, new Area(
                 new Tile(3193, 3300, 0),
                 new Tile(3193, 3286, 0),
                 new Tile(3197, 3282, 0),
@@ -125,14 +125,14 @@ public class TaskManager {
             }
         }));
 
-        tasks.add(new RangedCombatTask(30, 50, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+        tasks.add(new RangedCombatTask(20, 55, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
             {
                 put("Trout", 28);
             }
         }));
 
         // al kharid warrior west
-        tasks.add(new RangedCombatTask(30, 50, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+        tasks.add(new RangedCombatTask(20, 55, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
             {
                 put("Trout", 28);
             }
@@ -216,7 +216,7 @@ public class TaskManager {
             }));
 
             // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 8, 20, new Area(
                     new Tile(3193, 3300, 0),
                     new Tile(3193, 3286, 0),
                     new Tile(3197, 3282, 0),
@@ -279,7 +279,7 @@ public class TaskManager {
             }}));
 
             // hill giants (plateau)
-            tasks.add(new MeleeCombatTask(sk, 40, 99, new Area(
+            tasks.add(new MeleeCombatTask(sk, 40, 126, new Area(
                     new Tile(3367, 3157, 0),
                     new Tile(3367, 3142, 0),
                     new Tile(3381, 3142, 0),
@@ -290,7 +290,7 @@ public class TaskManager {
                 put("Trout", 28);
             }}));
 
-            tasks.add(new MeleeCombatTask(sk, 50, 99, new Area(
+            tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
                     new Tile(3165, 9882, 0),
                     new Tile(3162, 9879, 0),
                     new Tile(3162, 9877, 0),
@@ -304,7 +304,7 @@ public class TaskManager {
                 put("Trout", 28);
             }}));
 
-            tasks.add(new MeleeCombatTask(sk,50, 99, new Area(
+            tasks.add(new MeleeCombatTask(sk,50, 126, new Area(
                     new Tile(3154, 9908, 0),
                     new Tile(3154, 9902, 0),
                     new Tile(3156, 9902, 0),
