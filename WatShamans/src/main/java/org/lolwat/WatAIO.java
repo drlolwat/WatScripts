@@ -33,15 +33,12 @@ import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.tasks.types.misc.LogoutTask;
-import org.lolwat.tasks.types.misc.MulingTask;
+import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.tasks.types.misc.HopperTask;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.SkillUtils;
-import org.lolwat.tasks.types.misc.TutorialTask;
 
 import java.awt.*;
 import java.time.Instant;
@@ -84,6 +81,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onStart() {
+        Tasker.c();
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
@@ -213,7 +211,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if (HOURS_PLAYED >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
             if(STOP_ON_TRADEUNLOCK) {
                 Logger.log("WAIO: Trade unrestricted, stopping");
-                currentTask = new LogoutTask(true);
+                currentTask = new LogoutTask(true, null);
                 skillSelectedAt = Instant.now().getEpochSecond();
                 skillRunTime = Calculations.random(1200, 6750); // in seconds
                 Logger.log("We are going to the bank to log out");
@@ -239,7 +237,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if(goalsMet) {
             Logger.log("WAIO: Reached target ttl and qp"); // TODO make my own, add to BB
-            currentTask = new LogoutTask(true);
+            currentTask = new LogoutTask(true, null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             Logger.log("We are going to the bank to log out");
@@ -499,12 +497,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onMessage(Message m) {
-        if(m.toString().equalsIgnoreCase("you will be logged out in approximately 10 minutes. make sure you move to a safe area or log out now.")) {
-            // we should go somewhere and log out
+        boolean tenOrThirty = Calculations.random(1, 3) == 1;
+        if(m.toString().contains("You will be logged out in approximately " + (tenOrThirty ? "10" : "30") + " minutes. Make sure you move to a safe area or log out now.")) {
+            if(currentTask != null) {
+                currentTask = new LogoutTask(false, currentTask);
+            }
         }
     }
 
     public void disableLoginManager() {
         getRandomManager().disableSolver(RandomEvent.LOGIN);
+    }
+
+    public void enableLoginManager() {
+        getRandomManager().enableSolver(RandomEvent.LOGIN);
     }
 }
