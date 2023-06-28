@@ -14,6 +14,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
 import java.util.*;
@@ -102,6 +103,7 @@ public class BankingTask implements WatTask {
         checkAndSet(BankMode.ITEM);
 
         HashMap<String, Integer> buyingRequired = new HashMap<>();
+        List<String> toEquip = new ArrayList<>();
 
         Logger.log("EQUIPMENTCHECKER: STARTING");
         if (equipmentRequired.size() > 0) {
@@ -113,22 +115,23 @@ public class BankingTask implements WatTask {
                 }
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    if (Inventory.interact(entry.getKey(), "Wear") || Inventory.interact(entry.getKey(), "Wield")) {
-                        Sleep.sleep(100, 300);
-                        Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY, EQUIPPING");
-                        continue;
-                    }
+                    Sleep.sleep(200, 400);
+                    toEquip.add(entry.getKey());
+                    Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY ALREADY");
+                    continue;
                 }
 
-                if (Bank.contains(entry.getKey()) && Bank.get(entry.getKey()).getAmount() >= amountRequired) {
-                    if (Inventory.isFull()) { // deposit only if we need the space
+                if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
+                    if (Inventory.all().size() >= 28) { // deposit only if we need the space
                         depositNonRequired();
                         Sleep.sleep(100, 200);
                     }
 
                     if (Bank.withdraw(entry.getKey(), amountRequired)) {
-                        if (Inventory.contains(entry.getKey()) && Inventory.interact(entry.getKey(), "Equip") || Inventory.interact("Wield")) {
-                            Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM, EQUIPPING");
+                        Sleep.sleep(400, 800);
+                        if (Inventory.contains(entry.getKey())) {
+                            Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM");
+                            toEquip.add(entry.getKey());
                         }
                     }
                 } else {
@@ -139,6 +142,16 @@ public class BankingTask implements WatTask {
             }
         }
         Logger.log("EQUIPMENTCHECKER: DONE");
+
+        Sleep.sleep(500, 1000);
+            for(String s : equipmentRequired.keySet()) {
+                if (Inventory.contains(s)) {
+                    GenericUtils.equipItem(s);
+                } else {
+                    Logger.error("Bank task tried to equip gear not in the inventory");
+                }
+            }
+
 
         Logger.log("INVENTORYCHECKER: STARTING");
         if (inventoryRequired.size() > 0) {
@@ -240,11 +253,11 @@ public class BankingTask implements WatTask {
                     if (!instance.MULE_DEAD) {
                         Bank.depositAllItems();
                         Sleep.sleep(100, 200);
-                        Logger.log("Setting up a reverse mule to get " + (finalPrice * 2) + " gp");
+                        Logger.log("Setting up a reverse mule to get " + finalPrice + " gp");
                         int totalPrice = finalPrice;
                         instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                             {
-                                put("Coins", (totalPrice * 2));
+                                put("Coins", totalPrice);
                             }
                         }, this);
                         return;
@@ -263,13 +276,41 @@ public class BankingTask implements WatTask {
 
         Logger.log("BUYCHECKER: DONE");
 
-        Logger.log("FINALCHECKS: STARTING");
-        if (Inventory.contains("Coins")) {
-            Bank.depositAll("Coins");
-            Sleep.sleep(100, 200);
+        boolean depositExtras = true;
+        if(!WatAIO.MULE_DEAD && WatAIO.TRADE_UNLOCKED) {
+            int invMoney = 0;
+            int bankMoney = 0;
+
+            if(Inventory.contains("Coins")) {
+                invMoney = Inventory.get("Coins").getAmount();
+            }
+
+            if(Bank.contains("Coins")) {
+                bankMoney = Bank.get("Coins").getAmount();
+            }
+
+            if((invMoney + bankMoney) >= WatAIO.MULE_TRIGGER) {
+                int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
+                if(toWithdraw > 0) {
+                    Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
+                    Bank.withdraw("Coins", toWithdraw);
+                    Sleep.sleep(200, 400);
+                    postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
+                    depositExtras = false;
+                }
+            }
         }
 
-        depositNonRequired();
+        Logger.log("FINALCHECKS: STARTING");
+
+        if(depositExtras) {
+            if (Inventory.contains("Coins")) {
+                Bank.depositAll("Coins");
+                Sleep.sleep(100, 200);
+            }
+
+            depositNonRequired();
+        }
 
         Logger.log("FINALCHECKS: DONE");
 
@@ -280,7 +321,7 @@ public class BankingTask implements WatTask {
     }
 
     private void depositNonRequired() {
-        if(Inventory.isEmpty()) {
+        if(Inventory.all().size() == 0) {
             return;
         }
 
@@ -312,7 +353,12 @@ public class BankingTask implements WatTask {
                 }
             }
             else {
-                Bank.depositAllItems();
+                if(Inventory.isEmpty())
+                    return;
+
+                if(Inventory.all().size() > 0) {
+                    Bank.depositAllItems();
+                }
             }
         }
     }
