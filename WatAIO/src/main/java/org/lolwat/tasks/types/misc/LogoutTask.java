@@ -16,8 +16,11 @@ import org.lolwat.tasks.WatTask;
 
 public class LogoutTask implements WatTask {
     boolean endingScript;
-    public LogoutTask(boolean endScript) {
+    WatTask postScript;
+
+    public LogoutTask(boolean endScript, WatTask post) {
         endingScript = endScript;
+        postScript = post;
     }
     @Override
     public String getName() {
@@ -46,6 +49,13 @@ public class LogoutTask implements WatTask {
                 instance.disableLoginManager();
                 Sleep.sleep(100, 200);
                 Tabs.logout();
+            }
+
+            if(postScript != null) {
+                instance.enableLoginManager();
+                Sleep.sleep(100, 200);
+                instance.currentTask = postScript;
+                return;
             }
 
             if(endingScript) {
