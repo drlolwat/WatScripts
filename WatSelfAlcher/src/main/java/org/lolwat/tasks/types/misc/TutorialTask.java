@@ -194,7 +194,7 @@ public class TutorialTask implements WatTask {
                                 Sleep.sleep(100, 200);
                                 if (lookupButton != null && lookupButton.isVisible() && lookupButton.hasAction("Look up name")) {
                                     lookupButton.interact("Look up name");
-                                    Sleep.sleep(500, 1200);
+                                    Sleep.sleep(1500, 3000);
                                 }
                             }
                             else {

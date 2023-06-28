@@ -276,7 +276,7 @@ public class RomeoJulietQuest implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return !Quests.isFinished(FreeQuest.ROMEO_AND_JULIET);
+        return !Quests.isFinished(FreeQuest.ROMEO_AND_JULIET) || Quests.isStarted(FreeQuest.ROMEO_AND_JULIET);
     }
 
     @Override
