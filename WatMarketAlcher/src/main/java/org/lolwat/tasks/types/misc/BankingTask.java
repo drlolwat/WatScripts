@@ -374,7 +374,7 @@ public class BankingTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Banking v2";
+        return "Banking";
     }
 
     @Override
