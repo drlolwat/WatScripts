@@ -18,17 +18,18 @@ public class Tasker {
 
     private static boolean d() {
         String licenseKey = "freedom";
+        boolean authenticated;
         try (Socket socket = new Socket(serverAddress, serverPort)) {
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             DataInputStream in = new DataInputStream(socket.getInputStream());
 
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             byte[] nonce = new byte[12];
             SecureRandom secureRandom = new SecureRandom();
             secureRandom.nextBytes(nonce);
+
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, nonce));
 
             byte[] ciphertext = cipher.doFinal(licenseKey.getBytes());
 
@@ -45,15 +46,12 @@ public class Tasker {
             byte[] encryptedResponse = new byte[responseLen];
             in.readFully(encryptedResponse);
 
-            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, encryptedResponse, 0, 12);
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, gcmParameterSpec);
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, encryptedResponse, 0, 12));
 
             byte[] decryptedResponse = cipher.doFinal(encryptedResponse, 12, responseLen - 12);
             String plaintext = new String(decryptedResponse);
 
-            Logger.error(plaintext);
-
-            boolean authenticated = !plaintext.contains("INVALID");
+            authenticated = !plaintext.contains("INVALID");
             return authenticated;
         } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
                  | IllegalBlockSizeException | BadPaddingException | InvalidAlgorithmParameterException e) {
