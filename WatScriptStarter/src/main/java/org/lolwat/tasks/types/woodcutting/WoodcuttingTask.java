@@ -6,6 +6,7 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 public class WoodcuttingTask implements WatTask {
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private final TreeType treeType;
-    private final Tile startLocation;
+    private final Area area;
     private final int minimumLevel;
     private final int avoidAfterLevel;
     private final HashMap<String, Integer> sellList;
@@ -39,7 +40,17 @@ public class WoodcuttingTask implements WatTask {
 
     public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
         treeType = type;
-        startLocation = startingLocation;
+        area = startingLocation.getArea(15);
+        avoidAfterLevel = maxLevel;
+        minimumLevel = minLevel;
+        sellList = sellingList;
+        lastGotLog = 0;
+        dropping = drop;
+    }
+
+    public WoodcuttingTask(TreeType type, Area startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
+        treeType = type;
+        area = startingLocation;
         avoidAfterLevel = maxLevel;
         minimumLevel = minLevel;
         sellList = sellingList;
@@ -50,7 +61,6 @@ public class WoodcuttingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
-
         HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
             {
                 put(hatchet, 1);
@@ -83,15 +93,15 @@ public class WoodcuttingTask implements WatTask {
                 }
             }
 
-            if (!Map.isTileOnMap(startLocation)) {
-                instance.currentTask = new TraversalTask(startLocation, false, this);
+            if (!area.contains(Players.getLocal())) {
+                instance.currentTask = new TraversalTask(area, this);
                 return;
             }
 
             if(Players.getLocal().isAnimating())
                 return;
 
-            GameObject tree = GameObjects.closest(WoodcuttingUtils.getTreeName(treeType));
+            GameObject tree = GameObjects.closest(x -> x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) && area.contains(x));
             if(tree != null && tree.interact()) {
                 Mouse.moveOutsideScreen();
                 Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 60000);
