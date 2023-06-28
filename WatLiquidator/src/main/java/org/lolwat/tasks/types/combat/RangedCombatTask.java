@@ -69,10 +69,6 @@ public class RangedCombatTask implements WatTask {
         // check for required armor/weapons
         requiredItems.put(RangedUtils.bestArrow(), -1000);
 
-        if(food.size() > 0) {
-            requiredItems.putAll(food);
-        }
-
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
