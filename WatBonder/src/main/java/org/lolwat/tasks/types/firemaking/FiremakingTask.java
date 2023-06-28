@@ -71,7 +71,7 @@ public class FiremakingTask implements WatTask {
         }
 
         if(getFireOnPlayer()) {
-            instance.currentTask = new TraversalTask(selectedLocation.getRandomTile(), true, this);
+            instance.currentTask = new TraversalTask(selectedLocation.getRandomTile().getArea(3), this);
             return;
         }
 
