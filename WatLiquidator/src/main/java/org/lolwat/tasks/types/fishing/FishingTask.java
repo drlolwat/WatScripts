@@ -5,6 +5,8 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -14,6 +16,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.interactive.Player;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.utils.fishing.FishingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -26,7 +29,7 @@ import java.util.HashMap;
 
 public class FishingTask implements WatTask {
     private final FishType fishType;
-    private final Tile startTile;
+    private final Area area;
     private final HashMap<String, Integer> sellingItems;
     private final int minimumLevel;
     private final int maximumLevel;
@@ -35,7 +38,7 @@ public class FishingTask implements WatTask {
 
     public FishingTask(FishType type, int minLevel, int maxLevel, Tile startingLocation, HashMap<String, Integer> sellItems) {
         fishType = type;
-        startTile = startingLocation;
+        area = startingLocation.getArea(10);
         sellingItems = sellItems;
         minimumLevel = minLevel;
         maximumLevel = maxLevel;
@@ -82,13 +85,8 @@ public class FishingTask implements WatTask {
                 return;
             }
 
-            if(!Map.isTileOnMap(startTile)) {
-                instance.currentTask = new TraversalTask(startTile, false, this);
-                return;
-            }
-
-            if(Map.isTileOnMap(startTile) && !Map.isTileOnScreen(startTile)) {
-                Camera.rotateToTile(startTile);
+            if(!area.contains(Players.getLocal())) {
+                instance.currentTask = new TraversalTask(area, this);
                 return;
             }
 
@@ -103,7 +101,7 @@ public class FishingTask implements WatTask {
                     Sleep.sleep(1200, 2000);
                     Mouse.moveOutsideScreen();
                     lastCatch = Instant.now().getEpochSecond();
-                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 45000);
+                    Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || !getNpcOnTile(currentSpot).exists() || (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 60000);
                 }
             }
         }
