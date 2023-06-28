@@ -69,10 +69,6 @@ public class MeleeCombatTask implements WatTask {
         List<String> toRemove = new ArrayList<>();
         HashMap<String, Integer> requiredItems = MeleeUtils.getRequiredItems();
 
-        if(food.size() > 0) {
-            requiredItems.putAll(food);
-        }
-
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
