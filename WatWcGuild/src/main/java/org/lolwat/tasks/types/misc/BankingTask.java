@@ -64,7 +64,7 @@ public class BankingTask implements WatTask {
         depositNonRequired();
 
         Logger.log("SELLCHECKER: STARTING");
-        if (sellingItems.size() > 0 && WatAIO.TRADE_UNLOCKED) {
+        if (sellingItems.size() > 0 && instance.TRADE_UNLOCKED) {
             boolean performSelling = false;
             if (Inventory.isFull()) {
                 Bank.depositAllItems();
@@ -157,7 +157,7 @@ public class BankingTask implements WatTask {
         if (inventoryRequired.size() > 0) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
                 int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue(); //TODO make it so arrows etc can be more than 1
-                if(WatAIO.SINGULAR_ITEMS.contains(entry.getKey()))
+                if(instance.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
@@ -185,7 +185,7 @@ public class BankingTask implements WatTask {
                 } else {
                     // needing to buy it.
                     int amountToBuy = (entry.getValue() > 0 ? entry.getValue() : -entry.getValue()) * inventoriesWorth;
-                    for (String s : WatAIO.SINGULAR_ITEMS) {
+                    for (String s : instance.SINGULAR_ITEMS) {
                         if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
                             amountToBuy = 1;
                             break;
@@ -227,7 +227,7 @@ public class BankingTask implements WatTask {
             } else {
                 boolean canSell = false;
 
-                for (String s : WatAIO.EMERG_SELL) {
+                for (String s : instance.EMERG_SELL) {
                     if (Bank.contains(s)) {
                         canSell = true;
                     }
@@ -241,8 +241,8 @@ public class BankingTask implements WatTask {
                         Sleep.sleep(100, 200);
                     }
 
-                    Collections.shuffle(WatAIO.EMERG_SELL);
-                    for (String n : WatAIO.EMERG_SELL) {
+                    Collections.shuffle(instance.EMERG_SELL);
+                    for (String n : instance.EMERG_SELL) {
                         if (!Inventory.contains(n) && Bank.contains(n)) {
                             Bank.withdrawAll(n);
                             Sleep.sleep(200, 400);
@@ -277,7 +277,7 @@ public class BankingTask implements WatTask {
         Logger.log("BUYCHECKER: DONE");
 
         boolean depositExtras = true;
-        if(!WatAIO.MULE_DEAD && WatAIO.TRADE_UNLOCKED) {
+        if(!instance.MULE_DEAD && instance.TRADE_UNLOCKED) {
             int invMoney = 0;
             int bankMoney = 0;
 
@@ -289,8 +289,8 @@ public class BankingTask implements WatTask {
                 bankMoney = Bank.get("Coins").getAmount();
             }
 
-            if((invMoney + bankMoney) >= WatAIO.MULE_TRIGGER) {
-                int toWithdraw = (bankMoney - invMoney) - WatAIO.MULE_SAFETY_NET;
+            if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
+                int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
                 if(toWithdraw > 0) {
                     Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
                     Bank.withdraw("Coins", toWithdraw);
