@@ -56,18 +56,18 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private int skillRunTime;
     public WatTask currentTask;
     public boolean fatalError = false;
-    private static HashMap<Skill, Integer> skillTargets;
-    private static HashMap<String, Integer> levelUps;
-    public static double CHECKED_HOURS_AT = 0;
-    public static int HOURS_PLAYED = 0;
+    private HashMap<Skill, Integer> skillTargets;
+    private HashMap<String, Integer> levelUps;
+    public double CHECKED_HOURS_AT = 0;
+    public int HOURS_PLAYED = 0;
     public int NET_WORTH = 0;
-    public static int MULE_SAFETY_NET = 75000;
-    public static int MULE_TRIGGER = 125000;
-    public static boolean MULE_DEAD = false;
-    public static boolean QUESTS_ENABLED = true;
-    public static List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
-    public static List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
-    public static boolean TRADE_UNLOCKED = false;
+    public int MULE_SAFETY_NET = 75000;
+    public int MULE_TRIGGER = 125000;
+    public boolean MULE_DEAD = false;
+    public boolean QUESTS_ENABLED = true;
+    public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
+    public List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
+    public boolean TRADE_UNLOCKED = false;
 
     // TODO CONFIGURATION CLASS
     public static boolean STOP_ON_TRADEUNLOCK = true;
