@@ -59,7 +59,7 @@ public class RangedCombatTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.RANGED) >= minLevel;
+        return Players.getLocal().getLevel() >= minLevel;
     }
 
     @Override
