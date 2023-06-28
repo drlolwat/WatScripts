@@ -18,6 +18,7 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
+import org.dreambot.api.randoms.LoginSolver;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -32,6 +33,7 @@ import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.misc.utils.DialogueUtils;
+import org.lolwat.tasks.types.misc.LogoutTask;
 import org.lolwat.tasks.types.misc.MulingTask;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
@@ -64,14 +66,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public int NET_WORTH = 0;
     public static int MULE_SAFETY_NET = 75000;
     public static int MULE_TRIGGER = 125000;
-    public boolean MULE_DEAD = false;
-    public static boolean QUESTS_ENABLED = false;
+    public static boolean MULE_DEAD = false;
+    public static boolean QUESTS_ENABLED = true;
     public static List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
     public static List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
     public static boolean TRADE_UNLOCKED = false;
 
     // TODO CONFIGURATION CLASS
-    public static boolean STOP_ON_TRADEUNLOCK = false;
+    public static boolean STOP_ON_TRADEUNLOCK = true;
     private static Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
@@ -95,20 +97,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                put(Skill.ATTACK, 40);
-                put(Skill.STRENGTH, 40);
-                put(Skill.DEFENCE, 40);
-                put(Skill.RANGED, 40);
-                put(Skill.PRAYER, 1);
+                //put(Skill.ATTACK, 40);
+                //put(Skill.STRENGTH, 40);
+                //put(Skill.DEFENCE, 40);
+                //put(Skill.RANGED, 40);
+                //put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 50);
+                //put(Skill.COOKING, 50);
                 put(Skill.WOODCUTTING, 50);
-                put(Skill.FISHING, 50);
-                put(Skill.FIREMAKING, 50);
-                put(Skill.CRAFTING, 1);
-                put(Skill.SMITHING, 1);
-                put(Skill.MINING, 45);
+                //put(Skill.FISHING, 50);
+                //put(Skill.FIREMAKING, 50);
+                //put(Skill.CRAFTING, 1);
+                //put(Skill.SMITHING, 1);
+                //put(Skill.MINING, 45);
             }};
 
         levelUps = new HashMap<>();
@@ -211,7 +213,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if (HOURS_PLAYED >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
             if(STOP_ON_TRADEUNLOCK) {
                 Logger.log("WAIO: Trade unrestricted, stopping");
-                ScriptManager.getScriptManager().stop();
+                currentTask = new LogoutTask(true);
+                skillSelectedAt = Instant.now().getEpochSecond();
+                skillRunTime = Calculations.random(1200, 6750); // in seconds
+                Logger.log("We are going to the bank to log out");
                 return;
             }
 
@@ -234,7 +239,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if(goalsMet) {
             Logger.log("WAIO: Reached target ttl and qp"); // TODO make my own, add to BB
-            ScriptManager.getScriptManager().stop();
+            currentTask = new LogoutTask(true);
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(1200, 6750); // in seconds
+            Logger.log("We are going to the bank to log out");
         }
     }
 
@@ -260,24 +268,26 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Logger.log("Assessing tasks to see what is available for us to perform");
         List<WatTask> removal = new ArrayList<>();
 
-        if((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100) || skillTargets.size() == 0) {
-            if(allQuests.size() > 0) {
-                for(java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
-                    if(Quests.isFinished(t.getKey())) {
-                        removal.add(t.getValue());
+        if(QUESTS_ENABLED) {
+            if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100) || skillTargets.size() == 0) {
+                if (allQuests.size() > 0) {
+                    for (java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
+                        if (Quests.isFinished(t.getKey())) {
+                            removal.add(t.getValue());
+                        }
+
+                        if (t.getValue().canPerformTask()) {
+                            currentTask = t.getValue();
+                            skillSelectedAt = Instant.now().getEpochSecond();
+                            skillRunTime = Calculations.random(1200, 6750); // in seconds
+                            Logger.log("We have picked: " + t.getValue().getName());
+                            return;
+                        }
                     }
 
-                    if(t.getValue().canPerformTask()) {
-                        currentTask = t.getValue();
-                        skillSelectedAt = Instant.now().getEpochSecond();
-                        skillRunTime = Calculations.random(1200, 6750); // in seconds
-                        Logger.log("We have picked: " + t.getValue().getName());
-                        return;
+                    for (WatTask task : removal) {
+                        allQuests.remove(task.completesQuest());
                     }
-                }
-
-                for(WatTask task : removal) {
-                    allQuests.remove(task.completesQuest());
                 }
             }
         }
@@ -492,5 +502,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if(m.toString().equalsIgnoreCase("you will be logged out in approximately 10 minutes. make sure you move to a safe area or log out now.")) {
             // we should go somewhere and log out
         }
+    }
+
+    public void disableLoginManager() {
+        getRandomManager().disableSolver(RandomEvent.LOGIN);
     }
 }
