@@ -250,7 +250,7 @@ public class TutorialTask implements WatTask {
                                 continue;
                             }
 
-                            for(int i = 0; i < 5; i++) {
+                            for(int i = 0; i < Calculations.random(2, 8); i++) {
                                 if (c != null && c.isVisible() && c.interact()) {
                                     Sleep.sleep(300, 600);
                                 }
