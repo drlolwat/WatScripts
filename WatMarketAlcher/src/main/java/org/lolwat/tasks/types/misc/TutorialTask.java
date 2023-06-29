@@ -34,6 +34,7 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
 import java.awt.*;
@@ -43,6 +44,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.dreambot.api.utilities.Logger.log;
@@ -53,7 +56,25 @@ public class TutorialTask implements WatTask {
     private final int POLL_OPEN = 310;
     private final int TUT_PROG = 281;
     private final int APPEAR_PAR = 679;
-    private final int[][] appChildren = {{12, 13}, {16, 17}, {20, 21}, {24, 25}, {28, 29}, {32, 33}, {36, 37}, {43, 44}, {47, 48}, {51, 52}, {55, 56}, {59, 60}};
+    //private final int[][] appChildren = {{12, 13}, {16, 17}, {20, 21}, {24, 25}, {28, 29}, {32, 33}, {36, 37}, {43, 44}, {47, 48}, {51, 52}, {55, 56}, {59, 60}};
+
+    private final HashMap<Integer, Integer> appChildren = new HashMap<Integer, Integer>() {
+        {
+            put(12, 13);
+            put(16, 17);
+            put(20, 21);
+            put(24, 25);
+            put(28, 29);
+            put(32, 33);
+            put(36, 37);
+            put(43, 44);
+            put(47, 48);
+            put(51, 52);
+            put(55, 56);
+            put(59, 60);
+        }
+    };
+
     private final int ACCEPT = 68;
     private final String RUNESCAPE_GUIDE = "Gielinor Guide";
     private final String SURVIVAL_EXPERT = "Survival Expert";
@@ -194,7 +215,7 @@ public class TutorialTask implements WatTask {
                                 Sleep.sleep(100, 200);
                                 if (lookupButton != null && lookupButton.isVisible() && lookupButton.hasAction("Look up name")) {
                                     lookupButton.interact("Look up name");
-                                    Sleep.sleep(1500, 3000);
+                                    Sleep.sleep(3000, 4000);
                                 }
                             }
                             else {
@@ -220,8 +241,10 @@ public class TutorialTask implements WatTask {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        for (int[] appChild : appChildren) {
-                            int randomIndex = Calculations.random(0, 1); // Generate a random index, 0 or 1
+                        GenericUtils.shuffleHashMap(appChildren);
+                        for (java.util.Map.Entry<Integer, Integer> entry : appChildren.entrySet()) {
+                            boolean leftOrRight = Calculations.random(0, 2) == 1;
+                            /*int randomIndex = Calculations.random(0, 1); // Generate a random index, 0 or 1
 
                             for (int ii = 0; ii < 5; ii++) {
                                 WidgetChild c = par.getChild(appChild[randomIndex]);
@@ -231,7 +254,12 @@ public class TutorialTask implements WatTask {
                                 }
                             }
 
-                            sleep(200, 300);
+                            sleep(200, 300);*/
+
+                            WidgetChild c = par.getChild(leftOrRight ? entry.getKey() : entry.getValue());
+                            if(c != null && c.interact()) {
+                                Sleep.sleep(300, 500);
+                            }
                         }
 
                         WidgetChild acc = Widgets.getWidget(APPEAR_PAR).getChild(ACCEPT);
