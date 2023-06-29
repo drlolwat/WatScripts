@@ -241,17 +241,7 @@ public class TutorialTask implements WatTask {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        //GenericUtils.shuffleHashMap(appChildren);
-                        /*for (java.util.Map.Entry<Integer, Integer> entry : appChildren.entrySet()) {
-                            boolean leftOrRight = Calculations.random(0, 2) == 1;
-                            for(int i = 0; i < 5; i++) {
-                                WidgetChild c = Widgets.getWidget(APPEAR_PAR).getChild(leftOrRight ? entry.getKey() : entry.getValue());
-                                if (c != null && c.interact()) {
-                                    Sleep.sleep(400, 1000);
-                                }
-                            }
-                        }*/
-
+                        Logger.log("total options: " + Widgets.getAll(x -> x.hasAction("Select")).size());
                         for(WidgetChild c : Widgets.getAll(x -> x.hasAction("Select"))) {
                             for(int i = 0; i < 5; i++) {
                                 if (c != null && c.isVisible() && c.interact()) {
