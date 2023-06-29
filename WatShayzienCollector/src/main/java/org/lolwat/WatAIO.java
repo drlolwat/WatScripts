@@ -81,7 +81,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onStart() {
-        Tasker.c();
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
