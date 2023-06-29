@@ -241,7 +241,7 @@ public class TutorialTask implements WatTask {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        boolean oddEven = true;
+                        boolean oddEven = Calculations.random(1, 2) == 1;
                         for(WidgetChild c : Widgets.getAll(x -> x.hasAction("Select"))) {
                             if(oddEven) {
                                 oddEven = false;
