@@ -96,18 +96,18 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         skillTargets = new HashMap<Skill, Integer>(){
             {
                 put(Skill.ATTACK, 40);
-                put(Skill.STRENGTH, 40);
-                put(Skill.DEFENCE, 40);
-                put(Skill.RANGED, 40);
-                put(Skill.PRAYER, 1);
+                put(Skill.STRENGTH, 11);
+                put(Skill.DEFENCE, 26);
+                put(Skill.RANGED, 22);
+                //put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
                 put(Skill.COOKING, 50);
                 put(Skill.WOODCUTTING, 50);
                 put(Skill.FISHING, 50);
                 put(Skill.FIREMAKING, 50);
-                put(Skill.CRAFTING, 1);
-                put(Skill.SMITHING, 1);
+                //put(Skill.CRAFTING, 1);
+                //put(Skill.SMITHING, 1);
                 put(Skill.MINING, 45);
             }};
 
@@ -245,11 +245,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void evaluate() {
-        if(currentTask != null && currentTask instanceof MulingTask) {
+        if (currentTask != null && currentTask instanceof MulingTask) {
             return;
         }
 
-        if(tutorialIsland.contains(Players.getLocal())) {
+        if (tutorialIsland.contains(Players.getLocal())) {
             currentTask = new TutorialTask();
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
@@ -266,12 +266,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Logger.log("Assessing tasks to see what is available for us to perform");
         List<WatTask> removal = new ArrayList<>();
 
-        if(QUESTS_ENABLED) {
-            if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100) || skillTargets.size() == 0) {
-                if (allQuests.size() > 0) {
+        if (QUESTS_ENABLED) {
+            if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100) || (skillTargets != null && skillTargets.size() == 0)) {
+                if (allQuests != null && allQuests.size() > 0) {
                     for (java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
                         if (Quests.isFinished(t.getKey())) {
                             removal.add(t.getValue());
+                            continue;
                         }
 
                         if (t.getValue().canPerformTask()) {
@@ -290,22 +291,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        if(allTasks.size() > 0) {
-            // let's remove skills we meet the goals of and that have no tasks
-            List<Skill> toRemove = new ArrayList<>();
-            for (Skill skill : skillTargets.keySet()) {
-                if (Skills.getRealLevel(skill) >= skillTargets.get(skill) || TaskManager.getTasksBySkill(skill).size() == 0) {
-                    toRemove.add(skill);
-
-                    //TODO check instanceof for prayer burying task and sell the leftover bones
-                }
-            }
-
-            for (Skill rem : toRemove) {
-                skillTargets.remove(rem);
-            }
-
-            if(skillTargets.size() > 0) {
+        if ((allTasks != null && allTasks.size() > 0) && skillTargets != null) {
+            if (skillTargets.size() > 0) {
                 long now = Instant.now().getEpochSecond();
                 List<Skill> skills = new ArrayList<>(skillTargets.keySet());
 
@@ -320,7 +307,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 }
 
                 Collections.shuffle(allTasks);
-
                 for (WatTask task : allTasks) {
                     if (task.trainsSkill().equals(skillSelected) && task.canPerformTask() &&
                             Skills.getRealLevel(skillSelected) <= task.avoidAfterLevel() && Skills.getRealLevel(skillSelected) < skillTargets.get(skillSelected)) {
@@ -330,11 +316,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     }
                 }
             } else {
-                Logger.error("No tasks are available for the skills we have");
+                Logger.error("No skill targets are available");
                 fatalError = true;
             }
-        }
-        else {
+        } else {
             Logger.error("No tasks are available for the skills we have");
             fatalError = true;
         }
@@ -342,65 +327,72 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public int onLoop() {
-        if(fatalError) {
-            return 1;
-        }
-
-        if(!Client.isLoggedIn()) {
-            return 1;
-        }
-
-        if(firstStart) {
-            Sleep.sleep(5000);
-            firstStart = false;
-        }
-
-        if(currentTask == null || (skillSelectedAt > 0 && (Instant.now().getEpochSecond() - skillSelectedAt) >= skillRunTime)) {
-            evaluate();
-            return 1;
-        }
-
-        if(currentTask != null) {
-            if(!(currentTask instanceof HopperTask) && WorldHopper.isWorldHopperOpen()) {
-                WorldHopper.closeWorldHopper();
+        try {
+            if (fatalError) {
+                return 1;
             }
 
-            if(currentTask.completesQuest() == null) {
-                if(skillSelected == null || skillTargets.get(skillSelected) == null) {
-                    Logger.log("We are now avoiding this task due to a bug, picking new task..");
-                    evaluate();
-                    return 1000;
+            if (!Client.isLoggedIn()) {
+                return 1;
+            }
+
+            if (firstStart) {
+                Sleep.sleep(5000);
+                firstStart = false;
+            }
+
+            if (currentTask == null || (skillSelectedAt > 0 && (Instant.now().getEpochSecond() - skillSelectedAt) >= skillRunTime)) {
+                evaluate();
+                return 1;
+            }
+
+            if (currentTask != null) {
+                if (!(currentTask instanceof HopperTask) && WorldHopper.isWorldHopperOpen()) {
+                    WorldHopper.closeWorldHopper();
                 }
 
-                if (skillSelected != null && Skills.getRealLevel(skillSelected) > currentTask.avoidAfterLevel()) {
-                    Logger.log("We are now avoiding this task due to level, picking new task..");
-                    evaluate();
-                    return 1000;
-                }
+                if (currentTask.completesQuest() == null) {
+                    /*
+                    if (skillSelected == null || skillTargets.get(skillSelected) == null) {
+                        Logger.log("We are now avoiding this task (" + currentTask.getName() + ") due to a bug, picking new task..");
+                        evaluate();
+                        return 1000;
+                    }*/
+                    if(currentTask.trainsSkill() != null) {
+                        if (skillSelected != null && Skills.getRealLevel(skillSelected) > currentTask.avoidAfterLevel()) {
+                            Logger.log("We are now avoiding this task " + currentTask.getName() + " due to level, picking new task..");
+                            evaluate();
+                            return 1000;
+                        }
 
-                if (skillSelected != null && Skills.getRealLevel(skillSelected) >= skillTargets.get(skillSelected)) {
-                    Logger.log("We are now avoiding this task due to (target) level, picking new task..");
-                    evaluate();
-                    return 1000;
+                        if (skillSelected != null && Skills.getRealLevel(skillSelected) >= skillTargets.get(skillSelected)) {
+                            Logger.log("We are now avoiding this task " + currentTask.getName() + " due to (target) level, picking new task..");
+                            evaluate();
+                            return 1000;
+                        }
+                    }
+                } else {
+                    if (Quests.isFinished(currentTask.completesQuest())) {
+                        Logger.log("We are now avoiding this quest, it's completed or bugged, picking new task..");
+                        evaluate();
+                        return 1000;
+                    }
                 }
             }
-            else {
-                if(Quests.isFinished(currentTask.completesQuest())) {
-                    Logger.log("We are now avoiding this quest, it's completed or bugged, picking new task..");
-                    evaluate();
-                    return 1000;
-                }
+
+            // double check here
+            if (currentTask != null) {
+                currentTask.execute(this);
+                // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
+                return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
             }
-        }
 
-        // double check here
-        if(currentTask != null) {
-            currentTask.execute(this);
-            // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
-            return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
+            return 1000;
+        } catch (Exception e) {
+            Logger.error(e.toString());
+            e.printStackTrace();
+            return 1000;
         }
-
-        return 1000;
     }
 
     @Override
