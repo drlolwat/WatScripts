@@ -61,6 +61,8 @@ public class LogoutTask implements WatTask {
             if(endingScript) {
                 ScriptManager.getScriptManager().stop();
             }
+        } else {
+            instance.currentTask = new TraversalTask(loc, this);
         }
     }
 

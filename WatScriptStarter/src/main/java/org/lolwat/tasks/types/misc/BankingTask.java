@@ -144,20 +144,17 @@ public class BankingTask implements WatTask {
         Logger.log("EQUIPMENTCHECKER: DONE");
 
         Sleep.sleep(500, 1000);
-            for(String s : equipmentRequired.keySet()) {
-                if (Inventory.contains(s)) {
-                    GenericUtils.equipItem(s);
-                } else {
-                    Logger.error("Bank task tried to equip gear not in the inventory");
-                }
+        for(String s : equipmentRequired.keySet()) {
+            if (Inventory.contains(s)) {
+                GenericUtils.equipItem(s);
             }
-
+        }
 
         Logger.log("INVENTORYCHECKER: STARTING");
         if (inventoryRequired.size() > 0) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
                 int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue(); //TODO make it so arrows etc can be more than 1
-                if(instance.SINGULAR_ITEMS.contains(entry.getKey()))
+                if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
