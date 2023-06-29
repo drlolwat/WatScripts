@@ -258,7 +258,7 @@ public class TutorialTask implements WatTask {
 
                             WidgetChild c = par.getChild(leftOrRight ? entry.getKey() : entry.getValue());
                             if(c != null && c.interact()) {
-                                Sleep.sleep(300, 500);
+                                Sleep.sleep(800, 1600);
                             }
                         }
 
