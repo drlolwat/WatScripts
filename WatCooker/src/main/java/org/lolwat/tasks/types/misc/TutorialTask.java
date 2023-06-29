@@ -241,17 +241,13 @@ public class TutorialTask implements WatTask {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        Sleep.sleep(300, 700);
                         //GenericUtils.shuffleHashMap(appChildren);
                         for (java.util.Map.Entry<Integer, Integer> entry : appChildren.entrySet()) {
-                            //boolean leftOrRight = Calculations.random(0, 2) == 1;
-                            for(int i = 0; i < 35; i++) {
-                                WidgetChild c = par.getChild(entry.getKey());
+                            boolean leftOrRight = Calculations.random(0, 2) == 1;
+                            for(int i = 0; i < 5; i++) {
+                                WidgetChild c = Widgets.getWidget(APPEAR_PAR).getChild(leftOrRight ? entry.getKey() : entry.getValue());
                                 if (c != null && c.interact()) {
-                                    Sleep.sleep(800, 1600);
-                                } else {
-                                    Logger.error("widget was not available");
-                                    Sleep.sleep(800, 1600);
+                                    Sleep.sleep(400, 1000);
                                 }
                             }
                         }
