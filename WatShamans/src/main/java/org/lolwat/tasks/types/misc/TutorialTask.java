@@ -241,24 +241,16 @@ public class TutorialTask implements WatTask {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        GenericUtils.shuffleHashMap(appChildren);
+                        //GenericUtils.shuffleHashMap(appChildren);
                         for (java.util.Map.Entry<Integer, Integer> entry : appChildren.entrySet()) {
                             boolean leftOrRight = Calculations.random(0, 2) == 1;
-                            /*int randomIndex = Calculations.random(0, 1); // Generate a random index, 0 or 1
-
-                            for (int ii = 0; ii < 5; ii++) {
-                                WidgetChild c = par.getChild(appChild[randomIndex]);
-                                if (c != null) {
-                                    c.interact();
-                                    sleep(300, 400);
+                            for(int i = 0; i < 35; i++) {
+                                WidgetChild c = par.getChild(leftOrRight ? entry.getKey() : entry.getValue());
+                                if (c != null && c.interact()) {
+                                    Sleep.sleep(800, 1600);
+                                } else {
+                                    Logger.error("widget was not available");
                                 }
-                            }
-
-                            sleep(200, 300);*/
-
-                            WidgetChild c = par.getChild(leftOrRight ? entry.getKey() : entry.getValue());
-                            if(c != null && c.interact()) {
-                                Sleep.sleep(800, 1600);
                             }
                         }
 
@@ -1012,7 +1004,12 @@ public class TutorialTask implements WatTask {
                 }
             }
         }
+
         if (Inventory.contains("Logs")) {
+            Tile avoid = new Tile(3098, 3088, 0);
+            if(Players.getLocal().getTile().equals(avoid)) {
+                Walking.walk(3104, 3097);
+            }
             if (!Inventory.isItemSelected()) {
                 Inventory.interact("Tinderbox", "Use");
                 Sleep.sleepUntil(Inventory::isItemSelected, Calculations.random(800, 1200));
