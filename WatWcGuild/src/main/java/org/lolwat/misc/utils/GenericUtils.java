@@ -11,11 +11,11 @@ public class GenericUtils {
         if(i != null) {
             if(i.hasAction("Wear") && i.interact("Wear")) {
                 Logger.log("EQUIPMENTCHECKER: EQUIPPED WEARABLE");
-                Sleep.sleep(200, 400);
+                Sleep.sleep(100, 300);
             }
             else if(i.hasAction("Wield") && i.interact("Wield")) {
                 Logger.log("EQUIPMENTCHECKER: EQUIPPED WEAPON/AMMO");
-                Sleep.sleep(200, 400);
+                Sleep.sleep(100, 300);
             }
         } else {
             Logger.error("item to equip was null");
