@@ -1072,7 +1072,7 @@ public class TutorialTask implements WatTask {
 
     @Override
     public Integer avoidAfterLevel() {
-        return 3;
+        return 101;
     }
 
     @Override
