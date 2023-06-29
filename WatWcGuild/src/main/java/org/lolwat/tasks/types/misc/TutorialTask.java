@@ -241,8 +241,15 @@ public class TutorialTask implements WatTask {
                     t = new Timer();
                     final Widget par = Widgets.getWidget(APPEAR_PAR);
                     if (par != null && par.isVisible()) {
-                        Logger.log("total options: " + Widgets.getAll(x -> x.hasAction("Select")).size());
+                        boolean oddEven = true;
                         for(WidgetChild c : Widgets.getAll(x -> x.hasAction("Select"))) {
+                            if(oddEven) {
+                                oddEven = false;
+                            } else {
+                                oddEven = true;
+                                continue;
+                            }
+
                             for(int i = 0; i < 5; i++) {
                                 if (c != null && c.isVisible() && c.interact()) {
                                     Sleep.sleep(300, 600);
