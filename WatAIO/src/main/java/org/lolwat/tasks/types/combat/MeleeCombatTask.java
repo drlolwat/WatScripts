@@ -62,7 +62,7 @@ public class MeleeCombatTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(trainingSkill) >= minLevel;
+        return Skills.getRealLevel(trainingSkill) >= minLevel && Skills.getRealLevel(trainingSkill) < maxLevel;
     }
 
     @Override
