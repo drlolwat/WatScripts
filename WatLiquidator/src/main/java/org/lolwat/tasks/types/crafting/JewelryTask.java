@@ -29,15 +29,13 @@ public class JewelryTask implements WatTask {
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private final Tile selectedLocation;
     private final CraftingType craftingType;
+    private final int minLevel;
     private final int avoidAtLevel;
     private final HashMap<String, Integer> toSell;
     private final int totalLoads;
 
     public JewelryTask(CraftingType type, int craftingLevel, int pAvoidAtLevel, HashMap<String, Integer> sellList) {
-        setRequirements(new HashMap<Skill, Integer>() {{
-            put(Skill.CRAFTING, craftingLevel);
-        }}, new ArrayList<>());
-
+        minLevel = craftingLevel;
         selectedLocation = furnaceLocations.get(new Random().nextInt(furnaceLocations.size()));
         craftingType = type;
         avoidAtLevel = pAvoidAtLevel;
@@ -79,10 +77,6 @@ public class JewelryTask implements WatTask {
         }
     }
 
-    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
-        levelRequirements.putAll(skills);
-    }
-
     @Override
     public String getName() {
         return "Making jewelry";
@@ -90,13 +84,7 @@ public class JewelryTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        for (java.util.Map.Entry<Skill, Integer> map : levelRequirements.entrySet()) {
-            if (map.getValue() > Skills.getRealLevel(map.getKey())) {
-                return false;
-            }
-        }
-
-        return true;
+        return Skills.getRealLevel(Skill.CRAFTING) >= minLevel && Skills.getRealLevel(Skill.CRAFTING) < avoidAtLevel;
     }
 
     @Override
