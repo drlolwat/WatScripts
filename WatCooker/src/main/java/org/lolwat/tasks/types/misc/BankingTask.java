@@ -313,6 +313,7 @@ public class BankingTask implements WatTask {
             depositNonRequired();
         }
 
+        // calculate net worth
         instance.NET_WORTH = 0;
         for(Item i : Bank.all()) {
             if(i == null)
