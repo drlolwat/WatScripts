@@ -244,7 +244,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
     }
 
-    private void evaluate() {
+    private void evaluate(Skill sk) {
         if (currentTask != null && currentTask instanceof MulingTask) {
             return;
         }
@@ -266,7 +266,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Logger.log("Assessing tasks to see what is available for us to perform");
         List<WatTask> removal = new ArrayList<>();
 
-        if (QUESTS_ENABLED) {
+        if (QUESTS_ENABLED && sk == null) {
             if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100)) {
                 if (allQuests != null && allQuests.size() > 0) {
                     for (java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
@@ -296,15 +296,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 long now = Instant.now().getEpochSecond();
                 List<Skill> skills = new ArrayList<>(skillTargets.keySet());
 
-                Collections.shuffle(skills);
-                for(Skill s : skills) {
-                    if(Skills.getRealLevel(s) < skillTargets.get(s)) {
-                        skillSelected = s;
-                        Logger.log(s.toString());
-                        break;
-                    } else {
-                        skillSelected = null;
+                if(sk == null) {
+                    Collections.shuffle(skills);
+                    for (Skill s : skills) {
+                        if (Skills.getRealLevel(s) < skillTargets.get(s)) {
+                            skillSelected = s;
+                            Logger.log(s.toString());
+                            break;
+                        } else {
+                            skillSelected = null;
+                        }
                     }
+                } else {
+                    skillSelected = sk;
                 }
 
                 if(skillSelected == null) {
@@ -361,7 +365,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             if (skillSelectedAt > 0 && (Instant.now().getEpochSecond() - skillSelectedAt) >= skillRunTime) {
                 Logger.log("Picking a new task due to expiry");
-                evaluate();
+                evaluate(null);
                 return 1000;
             }
 
@@ -369,25 +373,25 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 if (currentTask.trainsSkill() != null) {
                     if (skillSelected != null && Skills.getRealLevel(skillSelected) > currentTask.avoidAfterLevel()) {
                         Logger.log("We are now avoiding this task " + currentTask.getName() + " due to level, picking new task..");
-                        evaluate();
+                        evaluate(skillSelected);
                         return 1000;
                     }
 
                     if (skillSelected != null && Skills.getRealLevel(skillSelected) >= skillTargets.get(skillSelected)) {
                         Logger.log("We are now avoiding this task " + currentTask.getName() + " due to (target) level, picking new task..");
-                        evaluate();
+                        evaluate(null);
                         return 1000;
                     }
                 }
             } else {
                 if (Quests.isFinished(currentTask.completesQuest())) {
                     Logger.log("We are now avoiding this quest, it's completed, picking new task..");
-                    evaluate();
+                    evaluate(null);
                     return 1000;
                 }
             }
         } else {
-            evaluate();
+            evaluate(null);
             return 2500;
         }
 
