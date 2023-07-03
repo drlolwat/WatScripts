@@ -41,15 +41,12 @@ public class MiningTask implements WatTask {
     private long lastSuccessfulRock = 0;
     private boolean gotRock;
     private Tile rockTile;
-    private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
+    private final int minLevel;
     private Integer maxMiningLevel = 0;
     private Tile lastTile; // lets try and hover the previous rock for speed
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, WatAIO core) {
-        setRequirements(new HashMap<Skill, Integer>() {{
-            put(Skill.MINING, miningLevel);
-        }}, new ArrayList<>());
-
+        minLevel = miningLevel;
         defaultSquare = startPosition;
         rockName = pRockName;
         sellingItems = sellableProduct;
@@ -57,10 +54,7 @@ public class MiningTask implements WatTask {
     }
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, List<List<Tile>> rockLists, HashMap<String, Integer> sellableProduct, WatAIO core) {
-        setRequirements(new HashMap<Skill, Integer>() {{
-            put(Skill.MINING, miningLevel);
-        }}, new ArrayList<>());
-
+        minLevel = miningLevel;
         alternateRockList = new ArrayList<>();
 
         if(rockLists.size() > 0) {
@@ -96,17 +90,7 @@ public class MiningTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        for (java.util.Map.Entry<Skill, Integer> map : levelRequirements.entrySet()) {
-            if (map.getValue() > Skills.getRealLevel(map.getKey())) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
-        levelRequirements.putAll(skills);
+        return Skills.getRealLevel(Skill.MINING) >= minLevel && Skills.getRealLevel(Skill.MINING) < maxMiningLevel;
     }
 
     @Override
