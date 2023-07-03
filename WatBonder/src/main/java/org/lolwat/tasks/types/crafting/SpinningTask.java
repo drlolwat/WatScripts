@@ -29,15 +29,13 @@ public class SpinningTask implements WatTask {
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private final Tile selectedLocation;
     private final CraftingType spinningType;
+    private final int minLevel;
     private final int avoidAtLevel;
     private final HashMap<String, Integer> toSell;
     private final int inventoryLoads;
 
     public SpinningTask(CraftingType type, int craftingLevel, int pAvoidAtLevel, int totalInventories, HashMap<String, Integer> sellList) {
-        setRequirements(new HashMap<Skill, Integer>() {{
-            put(Skill.CRAFTING, craftingLevel);
-        }}, new ArrayList<>());
-
+        minLevel = craftingLevel;
         selectedLocation = spinnerLocations.get(new Random().nextInt(spinnerLocations.size()));
         spinningType = type;
         avoidAtLevel = pAvoidAtLevel;
@@ -82,11 +80,6 @@ public class SpinningTask implements WatTask {
             }
         }
     }
-
-    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
-        levelRequirements.putAll(skills);
-    }
-
     @Override
     public String getName() {
         return "Crafting with " + spinningType.toString().toLowerCase();
@@ -94,13 +87,7 @@ public class SpinningTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        for (java.util.Map.Entry<Skill, Integer> map : levelRequirements.entrySet()) {
-            if (map.getValue() > Skills.getRealLevel(map.getKey())) {
-                return false;
-            }
-        }
-
-        return true;
+        return Skills.getRealLevel(Skill.CRAFTING) >= minLevel && Skills.getRealLevel(Skill.CRAFTING) < avoidAtLevel;
     }
 
     @Override
