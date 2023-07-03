@@ -62,7 +62,7 @@ public class MeleeCombatTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Players.getLocal().getLevel() >= minLevel;
+        return Skills.getRealLevel(trainingSkill) >= minLevel;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class MeleeCombatTask implements WatTask {
 
         if (!Players.getLocal().isInCombat()) {
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
-            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact()) {
+            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
                 //closestFriend.interact();
                 Mouse.move();
             }
