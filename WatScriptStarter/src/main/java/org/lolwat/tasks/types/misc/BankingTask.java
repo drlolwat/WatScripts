@@ -313,6 +313,31 @@ public class BankingTask implements WatTask {
             depositNonRequired();
         }
 
+        instance.NET_WORTH = 0;
+        for(Item i : Bank.all()) {
+            if(i == null)
+                continue;
+
+            if(i.getAmount() > 1) {
+                instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+            }
+            else {
+                instance.NET_WORTH += LivePrices.get(i);
+            }
+        }
+
+        for(Item i : Inventory.all()) {
+            if(i == null)
+                continue;
+
+            if(i.getAmount() > 1) {
+                instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+            }
+            else {
+                instance.NET_WORTH += LivePrices.get(i);
+            }
+        }
+
         Logger.log("FINALCHECKS: DONE");
 
         Bank.close();
