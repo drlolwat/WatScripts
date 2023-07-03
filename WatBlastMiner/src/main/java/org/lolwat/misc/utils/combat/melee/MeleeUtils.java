@@ -60,9 +60,6 @@ public class MeleeUtils {
         else if(defLevel >= 10) {
             return "Black";
         }
-        else if(defLevel >= 5) {
-            return "Iron";
-        }
         else {
             return "Iron";
         }
@@ -82,9 +79,6 @@ public class MeleeUtils {
         }
         else if(attackLevel >= 10) {
             return "Black scimitar";
-        }
-        else if(attackLevel >= 5) {
-            return "Steel scimitar";
         }
         else {
             return "Iron scimitar";
