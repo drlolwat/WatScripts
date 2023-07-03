@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.tasks.WatTask;
@@ -19,13 +20,15 @@ public class BuryBonesTask implements WatTask {
     private final BoneType buryingType;
     private final int inventoryLoads;
     private boolean ready;
+    private int stopAt;
 
     @Override
     public String getName() {
         return "Burying ";
     }
 
-    public BuryBonesTask(BoneType type, int maxInventoryLoads) {
+    public BuryBonesTask(BoneType type, int maxLevel, int maxInventoryLoads) {
+        stopAt = maxLevel;
         buryingType = type;
         inventoryLoads = Calculations.random(maxInventoryLoads);
         ready = true;
@@ -64,7 +67,7 @@ public class BuryBonesTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return true;
+        return Skills.getRealLevel(Skill.PRAYER) < stopAt;
     }
 
     @Override

@@ -26,19 +26,16 @@ import java.util.*;
 
 public class SmithingIngotTask implements WatTask {
     private final List<Tile> furnaceLocations = Arrays.asList(new Tile(3107, 3499), new Tile(3276, 3186));
-    private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
     private final Tile selectedLocation;
     private final IngotType smithingType;
+    private final int minLevel;
     private final int avoidAtLevel;
     private final HashMap<String, Integer> toSell;
     private long cooldown;
     private final int totalLoads;
 
     public SmithingIngotTask(IngotType type, int smithingLevel, int pAvoidAtLevel, HashMap<String, Integer> sellList) {
-        setRequirements(new HashMap<Skill, Integer>() {{
-            put(Skill.SMITHING, smithingLevel);
-        }}, new ArrayList<>());
-
+        minLevel = smithingLevel;
         selectedLocation = furnaceLocations.get(new Random().nextInt(furnaceLocations.size()));
         smithingType = type;
         avoidAtLevel = pAvoidAtLevel;
@@ -87,9 +84,6 @@ public class SmithingIngotTask implements WatTask {
         }
     }
 
-    public void setRequirements(HashMap<Skill, Integer> skills, List<Quest> quests) {
-        levelRequirements.putAll(skills);
-    }
 
     @Override
     public String getName() {
@@ -98,13 +92,7 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        for (java.util.Map.Entry<Skill, Integer> map : levelRequirements.entrySet()) {
-            if (map.getValue() > Skills.getRealLevel(map.getKey())) {
-                return false;
-            }
-        }
-
-        return true;
+        return Skills.getRealLevel(Skill.SMITHING) >= minLevel && Skills.getRealLevel(Skill.SMITHING) < avoidAtLevel;
     }
 
     @Override
