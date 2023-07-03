@@ -485,7 +485,7 @@ public class TaskManager {
     private static List<WatTask> createPrayerTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        tasks.add(new BuryBonesTask(BoneType.BIGBONES, 20));
+        tasks.add(new BuryBonesTask(BoneType.BIGBONES, 99,20));
 
         return tasks;
     }
