@@ -61,6 +61,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public double CHECKED_HOURS_AT = 0;
     public int HOURS_PLAYED = 0;
     public int NET_WORTH = 0;
+    public double NET_WORTH_GENERATED = 0;
     public int MULE_SAFETY_NET = 75000;
     public int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;

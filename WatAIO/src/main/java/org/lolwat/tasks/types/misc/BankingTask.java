@@ -17,6 +17,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
+import java.time.Instant;
 import java.util.*;
 
 public class BankingTask implements WatTask {
@@ -314,28 +315,34 @@ public class BankingTask implements WatTask {
         }
 
         // calculate net worth
-        instance.NET_WORTH = 0;
-        for(Item i : Bank.all()) {
-            if(i == null)
-                continue;
+        if(instance.NET_WORTH_GENERATED == 0) {
+            instance.NET_WORTH = 0;
+            for (Item i : Bank.all()) {
+                if (i == null)
+                    continue;
 
-            if(i.getAmount() > 1) {
-                instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                if (i.getAmount() > 1) {
+                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                } else {
+                    instance.NET_WORTH += LivePrices.get(i);
+                }
             }
-            else {
-                instance.NET_WORTH += LivePrices.get(i);
-            }
-        }
 
-        for(Item i : Inventory.all()) {
-            if(i == null)
-                continue;
+            for (Item i : Inventory.all()) {
+                if (i == null)
+                    continue;
 
-            if(i.getAmount() > 1) {
-                instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                if (i.getAmount() > 1) {
+                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                } else {
+                    instance.NET_WORTH += LivePrices.get(i);
+                }
             }
-            else {
-                instance.NET_WORTH += LivePrices.get(i);
+
+            instance.NET_WORTH_GENERATED = Instant.now().getEpochSecond();
+        } else {
+            if((Instant.now().getEpochSecond() - instance.NET_WORTH_GENERATED) >= 3600) {
+                instance.NET_WORTH_GENERATED = 0; // will generate net worth next time.
             }
         }
 
