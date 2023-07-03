@@ -102,7 +102,7 @@ public class FiremakingTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.FIREMAKING) >= minLevel && Skills.getRealLevel(Skill.FIREMAKING) < avoidAtLevel;
+        return Skills.getRealLevel(Skill.FIREMAKING) >= minLevel && Skills.getRealLevel(Skill.FIREMAKING) <= avoidAtLevel;
     }
 
     @Override
