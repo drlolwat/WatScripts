@@ -321,6 +321,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
                 Logger.log("Finding task..");
 
+                Collections.shuffle(allTasks);
                 for (WatTask task : allTasks) {
                     if (task.trainsSkill() == skillSelected && task.canPerformTask()) {
                         currentTask = task;
@@ -380,15 +381,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 }
             } else {
                 if (Quests.isFinished(currentTask.completesQuest())) {
-                    Logger.log("We are now avoiding this quest, it's completed or bugged, picking new task..");
+                    Logger.log("We are now avoiding this quest, it's completed, picking new task..");
                     evaluate();
                     return 1000;
                 }
             }
         } else {
-            //Logger.error("Task was null!");
             evaluate();
             return 2500;
+        }
+
+        if(!Walking.isRunEnabled() && Walking.getRunEnergy() >= 30) {
+            Walking.toggleRun();
+            Sleep.sleep(50, 120);
         }
 
         // double check here
