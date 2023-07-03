@@ -68,7 +68,7 @@ public class BankingTask implements WatTask {
             boolean performSelling = false;
             if (Inventory.isFull()) {
                 Bank.depositAllItems();
-                Sleep.sleep(100, 200);
+                Sleep.sleep(300, 600);
             }
 
             for (Map.Entry<String, Integer> entry : sellingItems.entrySet()) {
@@ -153,7 +153,7 @@ public class BankingTask implements WatTask {
         Logger.log("INVENTORYCHECKER: STARTING");
         if (inventoryRequired.size() > 0) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue(); //TODO make it so arrows etc can be more than 1
+                int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
                 if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
 
@@ -194,7 +194,6 @@ public class BankingTask implements WatTask {
                 }
             }
         }
-
         Logger.log("INVENTORYCHECKER: DONE");
 
         Logger.log("BUYCHECKER: STARTING");
@@ -202,16 +201,21 @@ public class BankingTask implements WatTask {
             checkAndSet(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
+            if(Inventory.all().size() > 0) {
+                Bank.depositAllItems();
+                Sleep.sleep(100, 400);
+            }
+
             int finalPrice = 0;
             for (Map.Entry<String, Integer> entry : buyingRequired.entrySet()) {
                 int itemMultiplier = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                int initialPrice = LivePrices.get(entry.getKey()) * itemMultiplier; // price*itemCount
-                finalPrice += (int) (initialPrice * 1.8); // safety stack?
-            }
+                int initialPrice = LivePrices.get(entry.getKey()); // price*itemCount
+                if(initialPrice < 10) {
+                    initialPrice += 5;
+                }
 
-            if(Inventory.contains("Coins")) {
-                Bank.deposit("Coins");
-                Sleep.sleep(200, 400);
+                int multipliedPrice = initialPrice * itemMultiplier;
+                finalPrice += (int) (multipliedPrice * 1.8); // safety stack?
             }
 
             if ((Bank.contains("Coins") && Bank.count("Coins") >= finalPrice)) {
@@ -322,40 +326,21 @@ public class BankingTask implements WatTask {
             return;
         }
 
+        List<Item> toDeposit = new ArrayList<>();
+
         for(Item i : Inventory.all()) {
             if(i == null)
                 continue;
 
-            boolean depositAll = true;
-            if(inventoryRequired != null) {
-                for (String s : inventoryRequired.keySet()) {
-                    if (Inventory.contains(s)) {
-                        depositAll = false;
-                    }
-                }
+            if(inventoryRequired != null && !inventoryRequired.containsKey(i.getName()) && equipmentRequired != null && !equipmentRequired.containsKey(i.getName())) {
+                toDeposit.add(i);
             }
+        }
 
-            if(equipmentRequired != null) {
-                for (String s : equipmentRequired.keySet()) {
-                    if (Inventory.contains(s)) {
-                        depositAll = false;
-                    }
-                }
-            }
-
-            if(!depositAll) {
-                if ((inventoryRequired != null && !inventoryRequired.containsKey(i.getName())) && (equipmentRequired != null && !equipmentRequired.containsKey(i.getName()))) {
-                    Bank.depositAll(i);
-                    Sleep.sleep(100, 200);
-                }
-            }
-            else {
-                if(Inventory.isEmpty())
-                    return;
-
-                if(Inventory.all().size() > 0) {
-                    Bank.depositAllItems();
-                }
+        if(toDeposit.size() > 0) {
+            for(Item i : toDeposit) {
+                Bank.depositAll(i);
+                Sleep.sleep(50, 120);
             }
         }
     }
