@@ -67,7 +67,7 @@ public class BuryBonesTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.PRAYER) < stopAt;
+        return Skills.getRealLevel(Skill.PRAYER) <= stopAt;
     }
 
     @Override
