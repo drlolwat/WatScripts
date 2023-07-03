@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.mining;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -151,6 +152,10 @@ public class MiningTask implements WatTask {
                 return;
             }
 
+            if(Dialogues.canContinue()) {
+                Dialogues.continueDialogue();
+            }
+
             List<Tile> currentlyUsing = new ArrayList<>();
             if (rockName == null || rockName.isEmpty()) {
                 if (!usingAlternateRocks) {
@@ -245,7 +250,7 @@ public class MiningTask implements WatTask {
                     }
                 }
 
-                Sleep.sleepUntil(() -> (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile).getModelColors() == null), 8000);
+                Sleep.sleepUntil(() -> Dialogues.canContinue() || !gotRock || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile).getModelColors() == null), 16000);
             }
         }
     }

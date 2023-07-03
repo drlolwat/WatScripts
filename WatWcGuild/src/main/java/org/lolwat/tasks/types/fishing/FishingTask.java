@@ -85,6 +85,11 @@ public class FishingTask implements WatTask {
                 return;
             }
 
+            if(Dialogues.canContinue()) {
+                Dialogues.continueDialogue();
+                Sleep.sleep(100, 300);
+            }
+
             if(!area.contains(Players.getLocal())) {
                 instance.currentTask = new TraversalTask(area, this);
                 return;
