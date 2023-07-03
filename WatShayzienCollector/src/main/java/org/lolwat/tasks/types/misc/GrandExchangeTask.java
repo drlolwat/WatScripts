@@ -141,6 +141,10 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleep(100, 220);
                             int itemCost = (int) (LivePrices.get(item.getKey()) * 1.8);
 
+                            if(itemCost < 10) {
+                                itemCost += 5;
+                            }
+
                             Sleep.sleep(100, 300);
 
                             if(itemCost <= 1000 && item.getValue() == 1) {
@@ -198,13 +202,7 @@ public class GrandExchangeTask implements WatTask {
                 Bank.depositAllItems();
             }
             else {
-                for(Item i : Inventory.all()) {
-                    if (i == null) continue;
-                    if(i.isNoted()) {
-                        Bank.depositAll(i);
-                        Sleep.sleep(100, 200);
-                    }
-                }
+                Bank.depositAllItems();
             }
 
             Sleep.sleep(300, 800);
