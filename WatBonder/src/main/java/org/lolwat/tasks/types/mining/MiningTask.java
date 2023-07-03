@@ -246,7 +246,7 @@ public class MiningTask implements WatTask {
                     }
 
                     if(lastTile != null) {
-                        Mouse.move(lastTile);
+                        Mouse.move(lastTile.getRandomized());
                     }
                 }
 
