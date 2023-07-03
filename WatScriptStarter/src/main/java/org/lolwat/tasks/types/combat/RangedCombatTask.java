@@ -148,7 +148,7 @@ public class RangedCombatTask implements WatTask {
 
         if (!Players.getLocal().isInCombat()) {
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
-            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact()) {
+            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
                 Mouse.move();
                 //Sleep.sleepUntil(() -> !closestFriend.exists() || closestFriend.isHealthBarVisible(), 5000);
             }
