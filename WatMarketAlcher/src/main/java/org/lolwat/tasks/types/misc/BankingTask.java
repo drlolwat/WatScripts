@@ -49,7 +49,7 @@ public class BankingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (NPCs.all("Banker").size() == 0) {
-            instance.currentTask = new TraversalTask(BankLocation.getNearest().getArea(5), this);
+            instance.currentTask = new TraversalTask(BankLocation.getNearest().getArea(3), this);
             return;
         }
 
