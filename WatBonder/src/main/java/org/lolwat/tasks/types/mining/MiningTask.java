@@ -90,7 +90,7 @@ public class MiningTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.MINING) >= minLevel && Skills.getRealLevel(Skill.MINING) < maxMiningLevel;
+        return Skills.getRealLevel(Skill.MINING) >= minLevel && Skills.getRealLevel(Skill.MINING) <= maxMiningLevel;
     }
 
     @Override

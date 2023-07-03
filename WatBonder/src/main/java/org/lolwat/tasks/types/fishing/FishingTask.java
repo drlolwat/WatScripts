@@ -51,7 +51,7 @@ public class FishingTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.FISHING) >= minimumLevel && Skills.getRealLevel(Skill.FISHING) < maximumLevel;
+        return Skills.getRealLevel(Skill.FISHING) >= minimumLevel && Skills.getRealLevel(Skill.FISHING) <= maximumLevel;
     }
 
     @Override
