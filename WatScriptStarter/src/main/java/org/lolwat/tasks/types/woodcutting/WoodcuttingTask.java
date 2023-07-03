@@ -122,7 +122,7 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.WOODCUTTING) >= minimumLevel;
+        return Skills.getRealLevel(Skill.WOODCUTTING) >= minimumLevel && Skills.getRealLevel(Skill.WOODCUTTING) < avoidAfterLevel;
     }
 
     @Override
