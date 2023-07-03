@@ -92,7 +92,7 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.SMITHING) >= minLevel && Skills.getRealLevel(Skill.SMITHING) < avoidAtLevel;
+        return Skills.getRealLevel(Skill.SMITHING) >= minLevel && Skills.getRealLevel(Skill.SMITHING) <= avoidAtLevel;
     }
 
     @Override
