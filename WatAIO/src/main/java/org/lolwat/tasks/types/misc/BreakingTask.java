@@ -1,6 +1,7 @@
 package org.lolwat.tasks.types.misc;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -8,13 +9,21 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.tasks.WatTask;
 
+import java.time.Instant;
+
 public class BreakingTask implements WatTask {
+    private double endsAt;
+    public BreakingTask(double expireAt) {
+        endsAt = expireAt;
+    }
+
     @Override
     public String getName() {
-        return "Taking a break";
+        return "Breaking";
     }
 
     @Override
@@ -25,15 +34,16 @@ public class BreakingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(Client.isLoggedIn()) {
-            Area closest = BankLocation.getNearest().getArea(5);
-            if(!closest.contains(Players.getLocal())) {
-                instance.currentTask = new TraversalTask(closest, this);
-                return;
-            }
+            instance.currentTask = new LogoutTask(false, this);
+            return;
+        }
 
-            if(!Tabs.isOpen(Tab.LOGOUT)) {
-                Tabs.open(Tab.LOGOUT);
-                Tabs.logout();
+        if(Instant.now().getEpochSecond() >= endsAt) {
+            if(!Client.isLoggedIn()) {
+                instance.enableLoginManager();
+                Sleep.sleepUntil(Client::isLoggedIn, 10000);
+                instance.TASKS_UNTIL_BREAK = Calculations.random(8, 20);
+                instance.currentTask = null;
             }
         }
     }
