@@ -94,10 +94,20 @@ public class GrandExchangeTask implements WatTask {
 
                 int slot = GrandExchange.getFirstOpenSlot();
                 if(slot == -1) {
-                    Logger.log("Crazy slot issue again with the G.E");
-                    instance.currentTask = null;
-                    instance.fatalError = true;
-                    return;
+                    Logger.log("Cancelling/collecting offers to free G.E spots");
+                    for(GrandExchangeItem i : GrandExchange.getItems()) {
+                        if (i.isReadyToCollect()) {
+                            GrandExchange.collect();
+                            Sleep.sleep(100, 300);
+                        } else {
+                            GrandExchange.cancelOffer(i.getSlot());
+                            Sleep.sleepUntil(i::isReadyToCollect, 1000);
+                            if (i.isReadyToCollect()) {
+                                GrandExchange.collect();
+                                Sleep.sleep(100, 300);
+                            }
+                        }
+                    }
                 }
 
                 if (item.getValue() == 0) {
