@@ -504,7 +504,7 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // wool, only uses lumbridge castle at the moment
-        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 20, new HashMap<String, Integer>() { { put("Ball of wool", -200); }}));
+        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 10, new HashMap<String, Integer>() { { put("Ball of wool", -200); }}));
 
         // jewelry
         tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
