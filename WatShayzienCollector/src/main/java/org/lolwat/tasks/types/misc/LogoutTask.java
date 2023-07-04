@@ -52,7 +52,11 @@ public class LogoutTask implements WatTask {
             }
 
             if(postScript != null) {
-                instance.enableLoginManager();
+
+                if(!(postScript instanceof BreakingTask)) {
+                    instance.enableLoginManager();
+                }
+
                 Sleep.sleep(100, 200);
                 instance.currentTask = postScript;
                 return;
