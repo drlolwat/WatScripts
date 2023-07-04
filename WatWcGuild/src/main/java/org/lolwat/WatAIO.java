@@ -97,20 +97,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                put(Skill.ATTACK, 60);
-                put(Skill.STRENGTH, 60);
-                put(Skill.DEFENCE, 60);
-                put(Skill.RANGED, 60);
+                put(Skill.ATTACK, 20);
+                put(Skill.STRENGTH, 20);
+                put(Skill.DEFENCE, 20);
+                put(Skill.RANGED, 20);
                 put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 99);
-                put(Skill.WOODCUTTING, 40);
+                put(Skill.COOKING, 80);
+                put(Skill.WOODCUTTING, 61);
                 put(Skill.FISHING, 40);
-                put(Skill.FIREMAKING, 40);
-                put(Skill.CRAFTING, 1);
+                put(Skill.FIREMAKING, 20);
+                put(Skill.CRAFTING, 100);
                 put(Skill.SMITHING, 1);
-                put(Skill.MINING, 45);
+                put(Skill.MINING, 80);
             }};
 
         levelUps = new HashMap<>();
