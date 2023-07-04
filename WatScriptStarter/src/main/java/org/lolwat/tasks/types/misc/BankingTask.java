@@ -253,6 +253,10 @@ public class BankingTask implements WatTask {
                     }
                 } else {
                     if (!instance.MULE_DEAD) {
+                        if(Bank.contains("Coins")) {
+                            finalPrice -= Bank.count("Coins");
+                        }
+
                         Bank.depositAllItems();
                         Sleep.sleep(100, 200);
                         Logger.log("Setting up a reverse mule to get " + finalPrice + " gp");
