@@ -235,7 +235,7 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                if (canSell) {
+                if (canSell && instance.TRADE_UNLOCKED) {
                     checkAndSet(BankMode.NOTE);
                     Logger.log("BUYCHECKER: NEED TO SELL");
                     if (Inventory.isFull()) {
