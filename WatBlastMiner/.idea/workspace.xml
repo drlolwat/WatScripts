@@ -7,9 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="fix a task oopsie">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="evaluator will now pick the same skill to train if it is beyond the &quot;Avoid task after&quot; setting, and hasn't reached its target level yet">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/LogoutTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/LogoutTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +86,7 @@
       <workItem from="1687756491344" duration="524000" />
       <workItem from="1687757022229" duration="90000" />
       <workItem from="1687757118619" duration="4382000" />
-      <workItem from="1687761514210" duration="83473000" />
+      <workItem from="1687761514210" duration="87444000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -428,7 +431,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="116" />
+    <option name="localTasksCounter" value="117" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -446,7 +449,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="moss giants in melee&#10;slashing web in traversal" />
     <MESSAGE value="beginnings of quests" />
     <MESSAGE value="goblin diplomacy" />
     <MESSAGE value="quest itemcheck fix" />
@@ -471,7 +473,8 @@
     <MESSAGE value="net worth calculation will only happen once per hour" />
     <MESSAGE value="task evaluator overhaul&#10;mining task is now much more efficient&#10;mining task will pre-select previous rock&#10;combat tasks food qty lowered&#10;combat tasks will (mostly) never bring junk items along&#10;task times now fluctuate based on level of the skill being trained" />
     <MESSAGE value="fix a task oopsie" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix a task oopsie" />
+    <MESSAGE value="evaluator will now pick the same skill to train if it is beyond the &quot;Avoid task after&quot; setting, and hasn't reached its target level yet" />
+    <option name="LAST_COMMIT_MESSAGE" value="evaluator will now pick the same skill to train if it is beyond the &quot;Avoid task after&quot; setting, and hasn't reached its target level yet" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
