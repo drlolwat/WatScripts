@@ -57,10 +57,10 @@ public class MiningTask implements WatTask {
         minLevel = miningLevel;
         alternateRockList = new ArrayList<>();
 
-        if(rockLists.size() > 0) {
+        if (rockLists.size() > 0) {
             defaultRocks = rockLists.get(0);
             for (List<Tile> rockTiles : rockLists) {
-                if(rockTiles.equals(defaultRocks))
+                if (rockTiles.equals(defaultRocks))
                     continue;
 
                 alternateRockList.add(rockTiles);
@@ -73,10 +73,9 @@ public class MiningTask implements WatTask {
             return;
         }
 
-        if(startPosition != null) {
+        if (startPosition != null) {
             defaultSquare = startPosition;
-        }
-        else {
+        } else {
             Logger.error("Mining task had no default location setup");
             core.fatalError = true;
             core.currentTask = null;
@@ -108,11 +107,11 @@ public class MiningTask implements WatTask {
             }
         };
 
-        if(WorldHopper.isWorldHopperOpen()) {
+        if (WorldHopper.isWorldHopperOpen()) {
             WorldHopper.closeWorldHopper();
         }
 
-        if(!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
+        if (!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
             instance.currentTask = new BankingTask(null, bankItems, sellingItems, 1, this);
         } else {
@@ -136,108 +135,41 @@ public class MiningTask implements WatTask {
                 return;
             }
 
-            if(Dialogues.canContinue()) {
+            if (Dialogues.canContinue()) {
                 Dialogues.continueDialogue();
             }
 
-            List<Tile> currentlyUsing = new ArrayList<>();
-            if (rockName == null || rockName.isEmpty()) {
-                if (!usingAlternateRocks) {
-                    currentlyUsing = defaultRocks;
-
-                    if (!Map.isTileOnScreen(defaultSquare)) {
-                        Camera.rotateToTile(defaultSquare);
-                    }
-
-                    if (Players.getLocal().getLevel() >= 15) {
-                        if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 20) { // TODO move them to the alternate spot correctly
-                            currentlyUsing = alternateRockList.get(new Random().nextInt(alternateRockList.size()));
-                            usingAlternateRocks = true;
-                            lastSuccessfulRock = Instant.now().getEpochSecond();
-                        } else if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 45) { // TODO move them to the alternate spot correctly
-                            usingAlternateRocks = false; // TODO
-                            lastSuccessfulRock = 0; // TODO
-                            instance.currentTask = new HopperTask(0, this); //TODO REMOVE THIS WHEN WE SEND EM TO THE ALT SPOT GOOD
-                        }
-                    } else {
-                        if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) > 20) {
-                            usingAlternateRocks = false;
-                            lastSuccessfulRock = 0;
-                            instance.currentTask = new HopperTask(0, this);
-                            return;
-                        }
-                    }
-                } else { // Using the alternate spot
-                    boolean returnBack = true;
-                    for (Player pl : Players.all()) {
-                        if (pl.getTile().equals(defaultSquare)) {
-                            returnBack = false;
-                        }
-                    }
-
-                    if (!Map.isTileOnScreen(defaultSquare)) {
-                        Camera.rotateToTile(defaultSquare);
-                    }
-
-                    if (lastSuccessfulRock > 0 && (Instant.now().getEpochSecond() - lastSuccessfulRock) >= 20) {
-                        lastSuccessfulRock = 0;
-                        instance.currentTask = new HopperTask(0, this);
-                        return;
-                    }
-
-                    if (returnBack) {
-                        currentlyUsing = defaultRocks;
-                        usingAlternateRocks = false;
-                    } else {
-                        currentlyUsing = alternateRockList.get(new Random().nextInt(alternateRockList.size()));
-                    }
-                }
+            if(Players.all().size() > 3) { // 4 including me
+                instance.currentTask = new HopperTask(0, this);
+                return;
             }
-
 
             if (!gotRock || (lastSuccessfulRock <= 0 || (Instant.now().getEpochSecond() - lastSuccessfulRock) > 10) || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile.getTile()).getModelColors() == null)) {
                 if (Players.getLocal().isMoving()) {
                     Sleep.sleep(1000, 1500);
                 }
 
-                if(rockName == null || rockName.isEmpty()) {
-                    for (Tile tile : currentlyUsing) {
-                        GameObject obj = GameObjects.getTopObjectOnTile(tile);
-                        if (obj.getModelColors() != null) {
-                            rockTile = obj.getTile();
+                GameObject obj = GameObjects.closest(rockName);
+                if (obj.getModelColors() != null) {
+                    rockTile = obj.getTile();
 
-                            if (!Map.isTileOnScreen(rockTile)) {
-                                Camera.rotateToTile(rockTile);
-                                Sleep.sleep(100, 300);
-                            }
-
-                            obj.interact();
-                            gotRock = true;
-                            break;
-                        }
-                    }
-                } else {
-                    GameObject obj = GameObjects.closest(rockName);
-                    if (obj.getModelColors() != null) {
-                        rockTile = obj.getTile();
-
-                        if (!obj.isOnScreen()) {
-                            Camera.rotateToEntity(obj); // lol
-                        }
-
-                        obj.interact();
-                        gotRock = true;
+                    if (!obj.isOnScreen()) {
+                        Camera.rotateToEntity(obj); // lol
                     }
 
-                    if(lastTile != null) {
-                        Mouse.move(lastTile.getRandomized());
-                    }
+                    obj.interact();
+                    gotRock = true;
                 }
 
-                Sleep.sleepUntil(() -> Dialogues.canContinue() || !gotRock || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile).getModelColors() == null), 16000);
+                if (lastTile != null) {
+                    Mouse.move(lastTile.getRandomized());
+                }
             }
+
+            Sleep.sleepUntil(() -> Dialogues.canContinue() || !gotRock || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile).getModelColors() == null), 16000);
         }
     }
+
 
     @Override
     public boolean requiresLogin() {

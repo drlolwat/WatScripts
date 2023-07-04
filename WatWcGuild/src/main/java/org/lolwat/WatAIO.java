@@ -65,10 +65,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public int MULE_SAFETY_NET = 75000;
     public int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;
-    public boolean QUESTS_ENABLED = false;
+    public boolean QUESTS_ENABLED = true;
     public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
     public List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
     public boolean TRADE_UNLOCKED = false;
+    public boolean ENABLE_BREAKS = true;
+    public int TASKS_UNTIL_BREAK = 0;
 
     // TODO CONFIGURATION CLASS
     public static boolean STOP_ON_TRADEUNLOCK = false;
@@ -118,6 +120,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         allQuests = TaskManager.getQuests();
         Logger.log("Set up " + allTasks.size() + " total tasks and " + allQuests.size() + " total quests");
         NET_WORTH = 0;
+        TASKS_UNTIL_BREAK = Calculations.random(8, 20);
     }
 
     private void checkTradeStatus() {
@@ -227,6 +230,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
     }
 
+    private boolean evaluateBreak() {
+        if(ENABLE_BREAKS && TASKS_UNTIL_BREAK < 0) { // -1 == finished last task in q
+            Logger.log("Going on break");
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(28800, 57600);
+            currentTask = new BreakingTask((Instant.now().getEpochSecond() + skillRunTime));
+            return true;
+        }
+        return false;
+    }
+
     private void evaluateGoals() {
         boolean goalsMet = true;
         for(Map.Entry<Skill, Integer> tgt : skillTargets.entrySet()) {
@@ -262,6 +276,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Logger.log("Evaluating goals for stop conditions");
         evaluateGoals();
+
+        Logger.log("Evaluating for breaks");
+        if (evaluateBreak()) {
+            return;
+        } else {
+            if(ENABLE_BREAKS) {
+                Logger.log("Going on break after " + TASKS_UNTIL_BREAK + " more completed task(s)");
+            }
+        }
 
         Logger.log("Assessing tasks to see what is available for us to perform");
         List<WatTask> removal = new ArrayList<>();
@@ -307,6 +330,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                             skillSelected = null;
                         }
                     }
+
+                    if(skillSelected != null) {
+                        skillSelectedAt = now;
+                        skillRunTime = Calculations.random(1200, 3750 + (60 * Skills.getRealLevel(skillSelected))); // in seconds
+
+                        if (skillRunTime < 1800) {
+                            skillRunTime = 1800;
+                        }
+                    }
                 } else {
                     skillSelected = sk;
                 }
@@ -316,18 +348,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     return;
                 }
 
-                skillSelectedAt = now;
-                skillRunTime = Calculations.random(1200, 3750 + (60 * Skills.getRealLevel(skillSelected))); // in seconds
-
-                if (skillRunTime < 1800) {
-                    skillRunTime = 1800;
-                }
-
                 Logger.log("Finding task..");
 
                 Collections.shuffle(allTasks);
                 for (WatTask task : allTasks) {
                     if (task.trainsSkill() == skillSelected && task.canPerformTask()) {
+                        if(ENABLE_BREAKS) {
+                            TASKS_UNTIL_BREAK--;
+                        }
                         currentTask = task;
                         Logger.log("I have selected " + currentTask.getName() + " for " + (skillRunTime / 60) + " minutes");
                         return;
