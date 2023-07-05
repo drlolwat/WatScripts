@@ -40,7 +40,7 @@ public class SpinningTask implements WatTask {
         spinningType = type;
         avoidAtLevel = pAvoidAtLevel;
         toSell = sellList;
-        inventoryLoads = Calculations.random(1, totalInventories);
+        inventoryLoads = Calculations.random(3, totalInventories); // to level 5.
     }
 
     @Override
