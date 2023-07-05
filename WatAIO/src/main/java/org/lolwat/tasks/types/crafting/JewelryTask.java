@@ -15,6 +15,7 @@ import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -70,7 +71,7 @@ public class JewelryTask implements WatTask {
                 Sleep.sleepUntil(() -> Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)) != null && Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)).isVisible(), 10000);
                 if(Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)).getChild(CraftingUtils.getJewelryChildId(craftingType)).interact()) {
                     Sleep.sleep(500, 900);
-                    Mouse.moveOutsideScreen();
+                    GenericUtils.moveMouseInOrOut();
                     Sleep.sleepUntil(() -> !Inventory.contains("Gold bar") || Dialogues.canContinue(), 45000);
                 }
             }

@@ -103,7 +103,7 @@ public class WoodcuttingTask implements WatTask {
 
             GameObject tree = GameObjects.closest(x -> x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) && area.contains(x));
             if(tree != null && tree.interact()) {
-                Mouse.moveOutsideScreen();
+                Mouse.move();
                 Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 60000);
             } else { // hop if no trees are around and it's been 30 seconds since our last log
                 Sleep.sleep(5000, 10000);

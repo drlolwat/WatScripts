@@ -18,6 +18,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.lolwat.misc.types.mixed.FishType;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.fishing.FishingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
@@ -104,7 +105,7 @@ public class FishingTask implements WatTask {
             if(currentSpot != null && getNpcOnTile(currentSpot) != null) {
                 if(getNpcOnTile(currentSpot) != null && getNpcOnTile(currentSpot).interact(FishingUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
-                    Mouse.moveOutsideScreen();
+                    GenericUtils.moveMouseInOrOut();
                     lastCatch = Instant.now().getEpochSecond();
                     Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || !getNpcOnTile(currentSpot).exists() || (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 60000);
                 }
