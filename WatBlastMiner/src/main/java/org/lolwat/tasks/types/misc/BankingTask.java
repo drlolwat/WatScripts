@@ -282,7 +282,7 @@ public class BankingTask implements WatTask {
 
         Logger.log("BUYCHECKER: DONE");
 
-        boolean depositExtras = true;
+        boolean depositExtras = false;
         if(!instance.MULE_DEAD && instance.TRADE_UNLOCKED) {
             int invMoney = 0;
             int bankMoney = 0;
@@ -302,7 +302,7 @@ public class BankingTask implements WatTask {
                     Bank.withdraw("Coins", toWithdraw);
                     Sleep.sleep(200, 400);
                     postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
-                    depositExtras = false;
+                    depositExtras = true;
                 }
             }
         }
