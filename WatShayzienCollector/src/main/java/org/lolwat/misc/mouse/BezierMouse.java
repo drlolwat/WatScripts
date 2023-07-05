@@ -51,7 +51,7 @@ public class BezierMouse implements MouseMovementAlgorithm {
             for (int i = 0; i <= steps; i++) {
                 double t = (double) i / steps;
                 Point pointOnCurve = calculateBezierPoint(t, startPos, controlPoint, endPos);
-                Thread.sleep(34);
+                sleep(34);
                 Mouse.hop(pointOnCurve);
             }
         } catch (Exception ignored) { }
@@ -77,5 +77,13 @@ public class BezierMouse implements MouseMovementAlgorithm {
 
     private static double distance(Point a, Point b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

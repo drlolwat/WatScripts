@@ -144,10 +144,6 @@ public class MulingTask implements WatTask {
             retries++;
         }
         else {
-            if(WorldHopper.isWorldHopperOpen()) {
-                WorldHopper.closeWorldHopper();
-            }
-
             if(!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
             }
