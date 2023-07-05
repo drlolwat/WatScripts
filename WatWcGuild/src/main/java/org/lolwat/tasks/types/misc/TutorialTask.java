@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -56,25 +57,6 @@ public class TutorialTask implements WatTask {
     private final int POLL_OPEN = 310;
     private final int TUT_PROG = 281;
     private final int APPEAR_PAR = 679;
-    //private final int[][] appChildren = {{12, 13}, {16, 17}, {20, 21}, {24, 25}, {28, 29}, {32, 33}, {36, 37}, {43, 44}, {47, 48}, {51, 52}, {55, 56}, {59, 60}};
-
-    private final HashMap<Integer, Integer> appChildren = new HashMap<Integer, Integer>() {
-        {
-            put(12, 13);
-            put(16, 17);
-            put(20, 21);
-            put(24, 25);
-            put(28, 29);
-            put(32, 33);
-            put(36, 37);
-            put(43, 44);
-            put(47, 48);
-            put(51, 52);
-            put(55, 56);
-            put(59, 60);
-        }
-    };
-
     private final int ACCEPT = 68;
     private final String RUNESCAPE_GUIDE = "Gielinor Guide";
     private final String SURVIVAL_EXPERT = "Survival Expert";
@@ -243,18 +225,18 @@ public class TutorialTask implements WatTask {
                     if (par != null && par.isVisible()) {
                         boolean oddEven = Calculations.random(1, 2) == 1;
                         for(WidgetChild c : Widgets.getAll(x -> x.hasAction("Select"))) {
-                            if(oddEven) {
+                            if (oddEven) {
                                 oddEven = false;
-                            } else {
-                                oddEven = true;
                                 continue;
                             }
 
-                            for(int i = 0; i < Calculations.random(2, 8); i++) {
+                            for (int i = 0; i < Calculations.random(2, 12); i++) {
                                 if (c != null && c.isVisible() && c.interact()) {
-                                    Sleep.sleep(300, 600);
+                                    Sleep.sleep(200, 400);
                                 }
                             }
+
+                            oddEven = true;
                         }
 
                         WidgetChild acc = Widgets.getWidget(APPEAR_PAR).getChild(ACCEPT);
@@ -955,6 +937,8 @@ public class TutorialTask implements WatTask {
                         log("Tutorial Island complete");
                         Sleep.sleep(3000, 5000);
                         instance.currentTask = null;
+                        instance.HOURS_PLAYED = 0;
+                        instance.CHECKED_HOURS_AT = Instant.now().getEpochSecond();
                         return;
                 }
                 break;
