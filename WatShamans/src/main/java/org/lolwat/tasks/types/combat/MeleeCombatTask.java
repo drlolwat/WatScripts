@@ -19,6 +19,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -155,8 +156,7 @@ public class MeleeCombatTask implements WatTask {
         if (!Players.getLocal().isInCombat()) {
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
-                //closestFriend.interact();
-                Mouse.move();
+                GenericUtils.moveMouseInOrOut();
             }
         }
     }

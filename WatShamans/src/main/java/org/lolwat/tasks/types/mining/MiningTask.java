@@ -139,7 +139,17 @@ public class MiningTask implements WatTask {
                 Dialogues.continueDialogue();
             }
 
-            if(Players.all().size() >= 3) { // 3 including me
+            int pl = 0;
+            for(Player ply : Players.all()) {
+                if(Players.getLocal().equals(ply))
+                    continue;
+
+                if(ply.distance(Players.getLocal()) <= 4) {
+                    pl++;
+                }
+            }
+
+            if(pl >= 3) { // 3 other people
                 instance.currentTask = new HopperTask(0, this);
                 return;
             }
