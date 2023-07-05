@@ -73,7 +73,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public int TASKS_UNTIL_BREAK = 0;
 
     // TODO CONFIGURATION CLASS
-    public static boolean STOP_ON_TRADEUNLOCK = false;
+    public static boolean STOP_ON_TRADEUNLOCK = true;
     private static Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
@@ -104,13 +104,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 80);
-                put(Skill.WOODCUTTING, 61);
+                put(Skill.COOKING, 45);
+                put(Skill.WOODCUTTING, 45);
                 put(Skill.FISHING, 40);
                 put(Skill.FIREMAKING, 20);
-                put(Skill.CRAFTING, 100);
+                put(Skill.CRAFTING, 40);
                 put(Skill.SMITHING, 1);
-                put(Skill.MINING, 80);
+                put(Skill.MINING, 45);
             }};
 
         levelUps = new HashMap<>();
@@ -137,7 +137,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 Widget x = Widgets.getWidget(629);
                 if (x != null && x.isVisible() && x.getChild(3).interact()) {
                     Logger.log("Opened character area");
-                    Sleep.sleep(800, 1500);
+                    Sleep.sleep(1200, 2200);
                 }
             }
 
@@ -387,8 +387,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if (currentTask != null) {
-            if (!(currentTask instanceof HopperTask) && WorldHopper.isWorldHopperOpen()) {
-                WorldHopper.closeWorldHopper();
+            if (!(currentTask instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {
+                Tabs.open(Tab.INVENTORY);
             }
 
             if (skillSelectedAt > 0 && (Instant.now().getEpochSecond() - skillSelectedAt) >= skillRunTime) {
