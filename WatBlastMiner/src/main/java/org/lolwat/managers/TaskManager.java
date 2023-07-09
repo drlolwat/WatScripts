@@ -439,16 +439,6 @@ public class TaskManager {
             }
         }));
 
-        tasks.add(new CookingFishTask(FishType.PIKE, 20, 50, 15, new HashMap<String, Integer>() {
-            {
-                put("Shrimp", -1);
-                put("Raw shrimps", -1);
-                put("Herring", -1);
-                put("Raw herring", -1);
-                put("Pike", -200);
-            }
-        }));
-
         tasks.add(new CookingFishTask(FishType.SALMON, 25, 55, 15, new HashMap<String, Integer>() {
             {
                 put("Shrimp", -1);
