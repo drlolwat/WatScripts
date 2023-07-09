@@ -1,6 +1,5 @@
 package org.lolwat.tasks.types.combat;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;

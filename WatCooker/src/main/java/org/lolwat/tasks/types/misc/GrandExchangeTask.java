@@ -14,12 +14,10 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class GrandExchangeTask implements WatTask {
     private final String name;
