@@ -1,6 +1,5 @@
 package org.lolwat.tasks.types.crafting;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -16,7 +15,6 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
