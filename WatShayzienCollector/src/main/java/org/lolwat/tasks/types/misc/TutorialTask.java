@@ -34,7 +34,6 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
 import java.awt.*;
@@ -45,8 +44,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.dreambot.api.utilities.Logger.log;

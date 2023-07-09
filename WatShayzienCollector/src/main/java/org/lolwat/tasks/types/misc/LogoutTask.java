@@ -8,7 +8,6 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.randoms.RandomManager;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
