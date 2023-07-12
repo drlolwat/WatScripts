@@ -498,7 +498,12 @@ public class TaskManager {
 
         // jewelry
         tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
-        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 99, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 15, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -200); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.EMERALDRING, 27, 32, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald ring", -200); put("Sapphire ring", -1); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.EMERALDAMULET, 29, 40, new HashMap<String, Integer>() { { put("Emerald amulet (u)", -500); put("Emerald ring", -1); put("Sapphire ring", -1); put("Gold amulet (u)", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.RUBYAMULET, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby amulet (u)", -500); put("Emerald amulet (u)", -1); put("Emerald ring", -1); put("Sapphire ring", -1); put("Gold amulet (u)", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.DIAMONDAMULET, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond amulet (u)", -500); put("Ruby amulet (u)", -1); put("Emerald amulet (u)", -1); put("Emerald ring", -1); put("Sapphire ring", -1); put("Gold amulet (u)", -1); }}));
 
         return tasks;
     }
