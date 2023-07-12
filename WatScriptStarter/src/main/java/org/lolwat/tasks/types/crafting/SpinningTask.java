@@ -6,6 +6,7 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
@@ -25,9 +26,13 @@ import org.lolwat.WatAIO;
 import java.util.*;
 
 public class SpinningTask implements WatTask {
-    private final List<Tile> spinnerLocations = Collections.singletonList(new Tile(3209, 3213, 1));
+    private final List<Area> spinnerLocations = Collections.singletonList(new Area(
+            new Tile(3208, 3212, 1), // lumbridge
+            new Tile(3212, 3212, 1),
+            new Tile(3212, 3217, 1),
+            new Tile(3208, 3217, 1)));
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
-    private final Tile selectedLocation;
+    private final Area selectedLocation;
     private final CraftingType spinningType;
     private final int minLevel;
     private final int avoidAtLevel;
@@ -59,13 +64,8 @@ public class SpinningTask implements WatTask {
             }
         }
 
-        if(!Map.isTileOnMap(selectedLocation) || !Players.getLocal().canReach(selectedLocation)) {
-            if(Map.isTileOnMap(selectedLocation) && !Map.isTileOnScreen(selectedLocation)) {
-                Camera.rotateToTile(selectedLocation);
-                return;
-            }
-
-            instance.currentTask = new TraversalTask(selectedLocation, true, this);
+        if(!selectedLocation.contains(Players.getLocal())) {
+            instance.currentTask = new TraversalTask(selectedLocation, this);
             return;
         }
 
