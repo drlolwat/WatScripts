@@ -17,12 +17,9 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
-import org.dreambot.api.methods.worldhopper.WorldHopper;
-import org.dreambot.api.randoms.LoginSolver;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
-import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
@@ -62,18 +59,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public int HOURS_PLAYED = 0;
     public int NET_WORTH = 0;
     public double NET_WORTH_GENERATED = 0;
-    public int MULE_SAFETY_NET = 75000;
-    public int MULE_TRIGGER = 125000;
     public boolean MULE_DEAD = false;
-    public boolean QUESTS_ENABLED = true;
     public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
-    public List<String> EMERG_SELL = Arrays.asList("Iron ore", "Coal", "Logs", "Oak logs", "Trout", "Salmon", "Lobster");
-    public boolean TRADE_UNLOCKED = false;
-    public boolean ENABLE_BREAKS = true;
     public int TASKS_UNTIL_BREAK = 0;
-
-    // TODO CONFIGURATION CLASS
-    public static boolean STOP_ON_TRADEUNLOCK = true;
     private static Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
@@ -82,12 +70,37 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             new Tile(3157, 3125, 0),
             new Tile(3126, 3142, 0));
 
+    // TODO CONFIGURATION CLASS
+    public boolean QUESTS_ENABLED = true;
+    public boolean TRADE_UNLOCKED = false;
+    public boolean ENABLE_BREAKS = true;
+    public List<String> EMERGENCY_SELL = Arrays.asList("Iron ore",
+            "Coal",
+            "Logs",
+            "Oak logs",
+            "Trout",
+            "Salmon",
+            "Lobster",
+            "Gold ring",
+            "Gold amulet (u)",
+            "Sapphire ring",
+            "Emerald ring",
+            "Emerald amulet (u)",
+            "Ruby amulet (u)",
+            "Diamond amulet (u)",
+            "Yew logs",
+            "Tin ore",
+            "Copper ore");
+    public static boolean STOP_ON_TRADEUNLOCK = false;
+    public int MULE_SAFETY_NET = 75000;
+    public int MULE_TRIGGER = 125000;
+
     @Override
     public void onStart() {
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
-        Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
+        //Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
 
         Logger.log("WatAIO is starting, creating WatTask instances");
 
@@ -212,15 +225,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Logger.log("I have played for " + HOURS_PLAYED + " hour(s)");
         if (HOURS_PLAYED >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
-            if(STOP_ON_TRADEUNLOCK) {
-                Logger.log("WAIO: Trade unrestricted, stopping");
-                currentTask = new LogoutTask(true, null);
-                skillSelectedAt = Instant.now().getEpochSecond();
-                skillRunTime = Calculations.random(1200, 6750); // in seconds
-                Logger.log("We are going to the bank to log out");
-                return;
-            }
-
             TRADE_UNLOCKED = true;
         }
 
@@ -241,7 +245,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         return false;
     }
 
-    private void evaluateGoals() {
+    private boolean evaluateGoals() {
         boolean goalsMet = true;
         for(Map.Entry<Skill, Integer> tgt : skillTargets.entrySet()) {
             if(Skills.getRealLevel(tgt.getKey()) < tgt.getValue()) {
@@ -255,7 +259,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             Logger.log("We are going to the bank to log out");
+            Sleep.sleep(1000, 3000);
+            return true;
         }
+
+        return false;
     }
 
     private void evaluate(Skill sk) {
@@ -275,7 +283,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         checkTradeStatus();
 
         Logger.log("Evaluating goals for stop conditions");
-        evaluateGoals();
+
+        if(evaluateGoals()) {
+            return;
+        }
+
+        if(TRADE_UNLOCKED && STOP_ON_TRADEUNLOCK) {
+            Logger.log("WAIO: Trade unrestricted, stopping");
+            currentTask = new LogoutTask(true, null);
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(1200, 6750); // in seconds
+            Logger.log("We are going to the bank to log out");
+            return;
+        }
 
         Logger.log("Evaluating for breaks");
         if (evaluateBreak()) {
