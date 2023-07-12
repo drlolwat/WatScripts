@@ -1,7 +1,6 @@
 package org.lolwat.misc.utils.crafting;
 
 import org.lolwat.misc.types.crafting.CraftingType;
-import org.lolwat.misc.utils.StringUtils;
 
 import java.util.HashMap;
 
@@ -22,7 +21,11 @@ public class CraftingUtils {
 
         if(type.toString().toLowerCase().contains("ring")) {
             mouldType = "Ring";
-        } else {
+        }
+        else if(type.toString().toLowerCase().contains("necklace")) {
+            mouldType = "Necklace";
+        }
+        else {
             mouldType = "Amulet";
         }
 
@@ -39,18 +42,22 @@ public class CraftingUtils {
                 break;
             }
 
-            case DIAMONDAMULET:
-            case EMERALDAMULET:
+            case EMERALDNECKLACE:
             case EMERALDRING: {
                 ret.put("Gold bar", fullInventory ? 13 * inventoryLoads : 1);
                 ret.put("Emerald", fullInventory ? 13 * inventoryLoads : 1);
                 break;
             }
 
-            case RUBYAMULET: {
+            case RUBYNECKLACE: {
                 ret.put("Gold bar", fullInventory ? 13 * inventoryLoads : 1);
                 ret.put("Ruby", fullInventory ? 13 * inventoryLoads : 1);
                 break;
+            }
+
+            case DIAMONDNECKLACE: {
+                ret.put("Gold bar", fullInventory ? 13 * inventoryLoads : 1);
+                ret.put("Diamond", fullInventory ? 13 * inventoryLoads : 1);
             }
 
         }
@@ -79,9 +86,9 @@ public class CraftingUtils {
             default:
             case SAPPHIRERING:
             case EMERALDRING:
-            case EMERALDAMULET:
-            case RUBYAMULET:
-            case DIAMONDAMULET:
+            case EMERALDNECKLACE:
+            case RUBYNECKLACE:
+            case DIAMONDNECKLACE:
             case AMULET:
             case RING: return 446;
         }
@@ -94,9 +101,9 @@ public class CraftingUtils {
             case SAPPHIRERING: return 9;
             case EMERALDRING: return 10;
             case AMULET: return 37;
-            case EMERALDAMULET: return 39;
-            case RUBYAMULET: return 40;
-            case DIAMONDAMULET: return 41;
+            case EMERALDNECKLACE: return 25;
+            case RUBYNECKLACE: return 26;
+            case DIAMONDNECKLACE: return 27;
         }
     }
 }
