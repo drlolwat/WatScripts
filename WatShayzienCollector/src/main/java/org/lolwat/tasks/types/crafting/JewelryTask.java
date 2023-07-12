@@ -39,7 +39,7 @@ public class JewelryTask implements WatTask {
         craftingType = type;
         avoidAtLevel = pAvoidAtLevel;
         toSell = sellList;
-        totalLoads = Calculations.random(10, 15);
+        totalLoads = Calculations.random(25, 35);
     }
 
     @Override
