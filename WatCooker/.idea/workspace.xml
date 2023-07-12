@@ -7,13 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="QOL">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Jeweled amulets, rings. Muling/Reverse fixes. Selling fixes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/crafting/CraftingUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/crafting/CraftingUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/crafting/JewelryTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/crafting/JewelryTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/crafting/SpinningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/crafting/SpinningTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +84,7 @@
       <workItem from="1687757022229" duration="90000" />
       <workItem from="1687757118619" duration="4382000" />
       <workItem from="1687761514210" duration="117684000" />
-      <workItem from="1688836180373" duration="7029000" />
+      <workItem from="1688836180373" duration="7364000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -433,7 +429,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="123" />
+    <option name="localTasksCounter" value="124" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -451,7 +447,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="firemaking QOL" />
     <MESSAGE value="add quest total to log" />
     <MESSAGE value="add basic trade unlocked stuff to banking task" />
     <MESSAGE value="Grand exchange bug fix" />
@@ -476,7 +471,8 @@
     <MESSAGE value="Spinning wool task won't buy so many anymore. Reverse muling will now take Bank GP into account when calculating amount required. Grand Exchange task will now cancel/collect when there are no slots available to be used." />
     <MESSAGE value="Tutorial island improvements, Antiban improvements, misc QOL" />
     <MESSAGE value="QOL" />
-    <option name="LAST_COMMIT_MESSAGE" value="QOL" />
+    <MESSAGE value="Jeweled amulets, rings. Muling/Reverse fixes. Selling fixes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Jeweled amulets, rings. Muling/Reverse fixes. Selling fixes." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
