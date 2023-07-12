@@ -12,7 +12,7 @@ public enum CraftingType {
     AMULET,
     SAPPHIRERING, //lvl 20
     EMERALDRING, // lvl 27
-    EMERALDAMULET, // lvl 29
-    RUBYAMULET, // lvl 40
-    DIAMONDAMULET // lvl 56
+    EMERALDNECKLACE, // lvl 29
+    RUBYNECKLACE, // lvl 40
+    DIAMONDNECKLACE // lvl 56
 }
