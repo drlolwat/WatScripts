@@ -64,7 +64,7 @@ public class BankingTask implements WatTask {
 
         depositNonRequired();
 
-        Logger.log("SELLCHECKER: STARTING");
+        Logger.log("Sell Checker: starting");
         if(!instance.TRADE_UNLOCKED) {
             if (sellingItems.size() > 0) {
                 boolean performSelling = false;
@@ -77,16 +77,16 @@ public class BankingTask implements WatTask {
                     int triggerAmount = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
                     if (Bank.contains(entry.getKey()) && Bank.get(entry.getKey()).getAmount() >= triggerAmount) {
                         checkAndSet(BankMode.NOTE);
-                        Logger.log("SELLCHECKER: FOUND " + Bank.get(entry.getKey()).getName());
+                        Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName());
                         if (entry.getValue() > 0) {
                             int reduceBy = 0;
                             if (Inventory.contains(entry.getKey()))
                                 reduceBy = Inventory.count(entry.getKey());
 
-                            Logger.log("WITHDRAWING " + (entry.getValue() - reduceBy) + " OF " + entry.getKey());
+                            Logger.log("Taking " + (entry.getValue() - reduceBy) + " of " + entry.getKey());
                             Bank.withdraw(entry.getKey(), (entry.getValue() - reduceBy));
                         } else {
-                            Logger.log("WITHDRAWING ALL OF " + entry.getKey());
+                            Logger.log("Taking " + entry.getKey());
                             Bank.withdrawAll(entry.getKey());
                         }
                         performSelling = true;
@@ -94,7 +94,7 @@ public class BankingTask implements WatTask {
                 }
 
                 if (performSelling) {
-                    instance.currentTask = new GrandExchangeTask("Selling proceeds", true, sellingItems, this);
+                    instance.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
                     return;
                 }
             } else {
@@ -305,14 +305,13 @@ public class BankingTask implements WatTask {
 
             if (m.size() > 0) {
                 Logger.log("BUYCHECKER: HANDING OFF TO GRAND EXCHANGE");
-                instance.currentTask = new GrandExchangeTask("Emergency sell", true, m, this);
+                instance.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
                 return;
             }
         }
 
         Logger.log("BUYCHECKER: DONE");
 
-        boolean depositExtras = false;
         if(!instance.MULE_DEAD && instance.TRADE_UNLOCKED) {
             int invMoney = 0;
             int bankMoney = 0;
