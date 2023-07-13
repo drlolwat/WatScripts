@@ -90,17 +90,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Diamond amulet (u)",
             "Yew logs",
             "Tin ore",
-            "Copper ore");
+            "Copper ore",
+            "Emerald necklace",
+            "Ruby necklace",
+            "Diamond necklace");
     public static boolean STOP_ON_TRADEUNLOCK = false;
-    public int MULE_SAFETY_NET = 75000;
-    public int MULE_TRIGGER = 125000;
+    public int MULE_SAFETY_NET = 650000;
+    public int MULE_TRIGGER = 750000;
 
     @Override
     public void onStart() {
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
-        //Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
+        Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
 
         Logger.log("WatAIO is starting, creating WatTask instances");
 
@@ -110,20 +113,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         skillTargets = new HashMap<Skill, Integer>(){
             {
-                put(Skill.ATTACK, 20);
-                put(Skill.STRENGTH, 20);
-                put(Skill.DEFENCE, 20);
-                put(Skill.RANGED, 20);
-                put(Skill.PRAYER, 1);
+                //put(Skill.ATTACK, 20);
+                //put(Skill.STRENGTH, 20);
+                //put(Skill.DEFENCE, 20);
+                //put(Skill.RANGED, 20);
+                //put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 45);
-                put(Skill.WOODCUTTING, 45);
-                put(Skill.FISHING, 40);
-                put(Skill.FIREMAKING, 20);
-                put(Skill.CRAFTING, 40);
-                put(Skill.SMITHING, 1);
-                put(Skill.MINING, 45);
+                //put(Skill.COOKING, 45);
+                //put(Skill.WOODCUTTING, 45);
+                //put(Skill.FISHING, 40);
+                //put(Skill.FIREMAKING, 20);
+                put(Skill.CRAFTING, 99);
+                //put(Skill.SMITHING, 1);
+                //put(Skill.MINING, 45);
             }};
 
         levelUps = new HashMap<>();
@@ -443,7 +446,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return 2500;
         }
 
-        if(!Walking.isRunEnabled() && Walking.getRunEnergy() >= 30) {
+        if(!Walking.isRunEnabled() && Walking.getRunEnergy() >= Calculations.random(75, 100)) {
             Walking.toggleRun();
             Sleep.sleep(50, 120);
         }
