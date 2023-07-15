@@ -7,11 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Necklace instead of amulet. Diamond jewelry fix.">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Crafting DLC test build">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/crafting/JewelryTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/crafting/JewelryTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +89,7 @@
       <workItem from="1687761514210" duration="117684000" />
       <workItem from="1688836180373" duration="9337000" />
       <workItem from="1689178243237" duration="856000" />
-      <workItem from="1689270635846" duration="39000" />
+      <workItem from="1689270635846" duration="6738000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -433,7 +434,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="126" />
+    <option name="localTasksCounter" value="127" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -451,7 +452,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Grand exchange bug fix" />
     <MESSAGE value="Tutorial island without appearance or naming automation" />
     <MESSAGE value="tutorial island, appearance needs work" />
     <MESSAGE value="emerg sell" />
@@ -476,7 +476,8 @@
     <MESSAGE value="Jeweled amulets, rings. Muling/Reverse fixes. Selling fixes." />
     <MESSAGE value="Spinning wheel fixes. SpinningTask uses Areas now." />
     <MESSAGE value="Necklace instead of amulet. Diamond jewelry fix." />
-    <option name="LAST_COMMIT_MESSAGE" value="Necklace instead of amulet. Diamond jewelry fix." />
+    <MESSAGE value="Crafting DLC test build" />
+    <option name="LAST_COMMIT_MESSAGE" value="Crafting DLC test build" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
