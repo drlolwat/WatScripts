@@ -6,6 +6,7 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
@@ -24,9 +25,10 @@ import org.lolwat.WatAIO;
 import java.util.*;
 
 public class JewelryTask implements WatTask {
-    private final List<Tile> furnaceLocations = Collections.singletonList(new Tile(3107, 3499));
-    private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
-    private final Tile selectedLocation;
+    private final List<Area> furnaceLocations = Arrays.asList(new Area(3105, 3501, 3110, 3496), // edge
+            new Area(3272, 3188, 3276, 3184) // al-kharid
+    );
+    private final Area selectedLocation;
     private final CraftingType craftingType;
     private final int minLevel;
     private final int avoidAtLevel;
@@ -39,13 +41,13 @@ public class JewelryTask implements WatTask {
         craftingType = type;
         avoidAtLevel = pAvoidAtLevel;
         toSell = sellList;
-        totalLoads = Calculations.random(25, 35);
+        totalLoads = Calculations.random(20, 28);
     }
 
     @Override
     public void execute(WatAIO instance) {
         for(java.util.Map.Entry<String, Integer> m : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
-            if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
+            if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue() || Inventory.get(m.getKey()).isNoted()) {
                 instance.currentTask = new BankingTask(null,
                         CraftingUtils.getMaterialsForJewelry(craftingType, true, 1),
                         toSell, totalLoads, this);
@@ -54,13 +56,8 @@ public class JewelryTask implements WatTask {
             }
         }
 
-        if (!Map.isTileOnScreen(selectedLocation)) {
-            if (Map.isTileOnMap(selectedLocation) && Map.exactDistance(selectedLocation) <= 6) {
-                Camera.rotateToTile(selectedLocation);
-                return;
-            }
-
-            instance.currentTask = new TraversalTask(selectedLocation, false, this);
+        if (!selectedLocation.contains(Players.getLocal())) {
+            instance.currentTask = new TraversalTask(selectedLocation, this);
             return;
         }
 
