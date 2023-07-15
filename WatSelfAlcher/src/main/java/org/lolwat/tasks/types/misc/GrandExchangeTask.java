@@ -147,7 +147,7 @@ public class GrandExchangeTask implements WatTask {
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
                             Sleep.sleep(100, 220);
-                            int itemCost = (int) (LivePrices.get(item.getKey()) * 1.8);
+                            int itemCost = (int) (LivePrices.get(item.getKey()) * 1.2);
 
                             if(itemCost < 10) {
                                 itemCost += 5;
@@ -206,12 +206,13 @@ public class GrandExchangeTask implements WatTask {
 
             Sleep.sleepUntil(Bank::isOpen, 7500);
 
+            /*
             if(postTask != null && !(postTask instanceof BankingTask)) {
                 Bank.depositAllItems();
             }
             else {
                 Bank.depositAllItems();
-            }
+            }*/
 
             Sleep.sleep(300, 800);
             instance.currentTask = postTask;
