@@ -65,7 +65,7 @@ public class BankingTask implements WatTask {
         depositNonRequired();
 
         Logger.log("Sell Checker: starting");
-        if(!instance.TRADE_UNLOCKED) {
+        if(instance.TRADE_UNLOCKED) {
             if (sellingItems.size() > 0) {
                 boolean performSelling = false;
                 if (Inventory.isFull()) {
@@ -127,12 +127,12 @@ public class BankingTask implements WatTask {
                 }
 
                 if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
-                    if (Inventory.all().size() >= 28) { // deposit only if we need the space
+                    if (Inventory.fullSlotCount() >= 26) { // deposit only if we need the space
                         depositNonRequired();
                         Sleep.sleep(100, 200);
                     }
 
-                    if (Bank.withdraw(entry.getKey(), amountRequired)) {
+                    if (buyingRequired.size() == 0 && Bank.withdraw(entry.getKey(), amountRequired)) {
                         Sleep.sleep(400, 800);
                         if (Inventory.contains(entry.getKey())) {
                             Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM");
@@ -157,14 +157,20 @@ public class BankingTask implements WatTask {
 
         Logger.log("INVENTORYCHECKER: STARTING");
         if (inventoryRequired.size() > 0) {
+            checkAndSet(BankMode.ITEM);
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
                 int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
                 if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    Logger.log("INVENTORYCHECKER: ITEM ALREADY IN INVENTORY, MINIMUM QUANTITY MET");
-                    continue;
+                    if(Inventory.get(entry.getKey()).isNoted()) {
+                        Bank.depositAll(entry.getKey());
+                        Sleep.sleep(100, 300);
+                    } else {
+                        Logger.log("INVENTORYCHECKER: ITEM ALREADY IN INVENTORY, MINIMUM QUANTITY MET");
+                        continue;
+                    }
                 }
 
                 if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
@@ -181,7 +187,7 @@ public class BankingTask implements WatTask {
 
                     toWithdraw -= reduceBy;
 
-                    if (Bank.withdraw(entry.getKey(), toWithdraw)) {
+                    if (buyingRequired.size() == 0 && Bank.withdraw(entry.getKey(), toWithdraw)) {
                         Logger.log("INVENTORYCHECKER: WITHDREW " + toWithdraw + " OF " + entry.getKey());
                     }
                 } else {
@@ -206,7 +212,7 @@ public class BankingTask implements WatTask {
             checkAndSet(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
-            if(Inventory.all().size() > 0) {
+            if(Inventory.fullSlotCount() >= 26) {
                 Bank.depositAllItems();
                 Sleep.sleep(100, 400);
             }
@@ -220,7 +226,7 @@ public class BankingTask implements WatTask {
                 }
 
                 int multipliedPrice = initialPrice * itemMultiplier;
-                finalPrice += (int) (multipliedPrice * 1.8); // safety stack?
+                finalPrice += (int) (multipliedPrice * 1.2); // safety stack?
             }
 
             if ((Bank.contains("Coins") && Bank.count("Coins") >= finalPrice)) {
@@ -328,7 +334,9 @@ public class BankingTask implements WatTask {
                 int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
                 if(toWithdraw > 0) {
                     Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                    Bank.depositAllExcept("Coins");
+                    if(Inventory.isFull() || Inventory.emptySlotCount() < 2) {
+                        Bank.depositAllExcept("Coins");
+                    }
                     Sleep.sleep(100, 200);
                     Bank.withdraw("Coins", toWithdraw);
                     Sleep.sleep(200, 400);
@@ -384,7 +392,7 @@ public class BankingTask implements WatTask {
     }
 
     private void depositNonRequired() {
-        if(Inventory.all().size() == 0) {
+        if(Inventory.isEmpty()) {
             return;
         }
 
