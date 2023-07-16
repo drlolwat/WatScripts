@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.misc;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -12,6 +13,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.Player;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -134,8 +136,10 @@ public class MulingTask implements WatTask {
                         targetWorld = Integer.parseInt(sp[2]);
                     }
 
-                    Logger.log("Good to go, hopping");
-                    instance.currentTask = new HopperTask(targetWorld, this);
+                    if(target != null && !target.isEmpty()) {
+                        Logger.log("Good to go, hopping");
+                        instance.currentTask = new HopperTask(targetWorld, this);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -151,20 +155,29 @@ public class MulingTask implements WatTask {
             if(!target.isEmpty()) {
                 // is the trade window closed
                 if (!Trade.isOpen() && (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5)) {
+                    Player p = Players.closest(target);
                     // are we near the player
-                    if (Players.closest(target) != null) {
-                        if (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
-                            Trade.tradeWithPlayer(target);
-                            lastSentRequest = Instant.now().getEpochSecond();
-                            Sleep.sleepUntil(Trade::isOpen, 5000);
+                    if (p != null) {
+                        Logger.log("Detected mule nearby");
+                        if(!org.dreambot.api.methods.map.Map.isTileOnScreen(p.getTile()) && Camera.rotateToEntity(p)) {
+                            Logger.log("Rotated to see mule");
+                            Sleep.sleep(100, 500);
                         }
+
+                        if (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
+                            if(p.interact("Trade with")) {
+                                lastSentRequest = Instant.now().getEpochSecond();
+                                Sleep.sleepUntil(Trade::isOpen, 5000);
+                            }
+                        }
+                    } else {
+                        Logger.log("Mule was not detected nearby");
                     }
                 }
 
                 // are we on the first window
                 if (Trade.isOpen(1)) {
                     if (Inventory.contains("Coins") && Inventory.get("Coins") != null && !reverse) {
-                        //instance.goldMuled += Inventory.get("Coins").getAmount();
                         Trade.addItem("Coins", Inventory.get("Coins").getAmount());
                     }
                     Sleep.sleep(2000, 3000);
