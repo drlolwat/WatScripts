@@ -50,10 +50,10 @@ public class WoodcuttingUtils {
     public static String getTreeName(TreeType type) {
         switch(type) {
             default: return "Tree";
-            case OAK: return "Oak";
-            case YEW: return "Yew";
-            case MAPLE: return "Maple";
-            case WILLOW: return "Willow";
+            case OAK: return "Oak tree";
+            case YEW: return "Yew tree";
+            case MAPLE: return "Maple tree";
+            case WILLOW: return "Willow tree";
         }
     }
 }
