@@ -37,6 +37,7 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.SkillUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.time.Instant;
 import java.util.*;
