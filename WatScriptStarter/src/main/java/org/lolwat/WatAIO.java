@@ -193,6 +193,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
                 int minutesPlayed = 0;
 
+                //double check
+                if (Dialogues.inDialogue()) {
+                    DialogueUtils.solve(dialogue);
+                }
+                Sleep.sleep(800, 1500);
+
                 String[] splitArr = newC.getText().split(">", 2)[1].split("<", 2)[0].split(",");
                 HashMap<String, Integer> timeWordsKey = new HashMap<>();
                 timeWordsKey.put("day", 24 * 60);
@@ -258,7 +264,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if(goalsMet) {
             Logger.log("WAIO: Reached target ttl and qp"); // TODO make my own, add to BB
-            currentTask = new LogoutTask(true, null);
+            currentTask = new LogoutTask(true, true, null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             Logger.log("We are going to the bank to log out");
@@ -293,7 +299,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if(TRADE_UNLOCKED && STOP_ON_TRADEUNLOCK) {
             Logger.log("WAIO: Trade unrestricted, stopping");
-            currentTask = new LogoutTask(true, null);
+            currentTask = new LogoutTask(true, true,null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             Logger.log("We are going to the bank to log out");
@@ -564,7 +570,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         boolean tenOrThirty = Calculations.random(1, 3) == 1;
         if(m.toString().contains("You will be logged out in approximately " + (tenOrThirty ? "10" : "30") + " minutes. Make sure you move to a safe area or log out now.")) {
             if(currentTask != null) {
-                currentTask = new LogoutTask(false, currentTask);
+                currentTask = new LogoutTask(false, false, currentTask);
             }
         }
     }
