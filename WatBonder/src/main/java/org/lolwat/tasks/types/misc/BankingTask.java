@@ -225,6 +225,10 @@ public class BankingTask implements WatTask {
                     initialPrice += 5;
                 }
 
+                //if(instance.SINGULAR_ITEMS.contains(entry.getKey())) {
+                //    initialPrice = initialPrice * 3;
+                //}
+
                 int multipliedPrice = initialPrice * itemMultiplier;
                 finalPrice += (int) (multipliedPrice * 1.2); // safety stack?
             }
