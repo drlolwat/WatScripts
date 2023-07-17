@@ -13,13 +13,17 @@ import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.tasks.WatTask;
 
+import java.util.HashMap;
+
 public class LogoutTask implements WatTask {
     boolean endingScript;
+    boolean muleWealth;
     WatTask postScript;
 
-    public LogoutTask(boolean endScript, WatTask post) {
+    public LogoutTask(boolean endScript, boolean muleOff, WatTask post) {
         endingScript = endScript;
         postScript = post;
+        muleWealth = muleOff;
     }
     @Override
     public String getName() {
@@ -51,7 +55,6 @@ public class LogoutTask implements WatTask {
             }
 
             if(postScript != null) {
-
                 if(!(postScript instanceof BreakingTask)) {
                     instance.enableLoginManager();
                 }
@@ -62,6 +65,19 @@ public class LogoutTask implements WatTask {
             }
 
             if(endingScript) {
+                if(muleWealth) {
+                    this.muleWealth = false;
+                    instance.MULE_SAFETY_NET = 0;
+                    instance.MULE_TRIGGER = 1;
+                    HashMap<String, Integer> li = new HashMap<>();
+                    for(String s : instance.EMERGENCY_SELL) {
+                        li.put(s, -1);
+                    }
+
+                    instance.currentTask = new BankingTask(null, null, li, 1, this);
+                    return;
+                }
+
                 ScriptManager.getScriptManager().stop();
             }
         } else {

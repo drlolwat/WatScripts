@@ -29,7 +29,7 @@ public class BreakingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(Client.isLoggedIn()) {
-            instance.currentTask = new LogoutTask(false, this);
+            instance.currentTask = new LogoutTask(false, false,this);
             return;
         }
 
