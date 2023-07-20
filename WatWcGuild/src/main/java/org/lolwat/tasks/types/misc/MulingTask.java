@@ -197,7 +197,7 @@ public class MulingTask implements WatTask {
 
     @Override
     public boolean requiresLogin() {
-        return false;
+        return true;
     }
 
     @Override
