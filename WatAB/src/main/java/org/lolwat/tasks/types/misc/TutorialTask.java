@@ -97,17 +97,6 @@ public class TutorialTask implements WatTask {
         t = new Timer();
     }
 
-    private boolean isRoofEnabled() {
-        return false;
-    }
-
-    private int toggleRoof() {
-        if (!isRoofEnabled())
-            return -1;
-
-        return -1;
-    }
-
     @Override
     public String getName() {
         return "Tutorial Island (" + PlayerSettings.getConfig(TUT_PROG) + ")";

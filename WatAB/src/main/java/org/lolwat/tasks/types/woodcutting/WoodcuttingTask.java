@@ -126,7 +126,7 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public boolean requiresLogin() {
-        return false;
+        return true;
     }
 
     @Override
