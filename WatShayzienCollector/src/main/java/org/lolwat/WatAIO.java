@@ -72,9 +72,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             new Tile(3126, 3142, 0));
 
     // TODO CONFIGURATION CLASS
-    public boolean QUESTS_ENABLED = true;
-    public boolean TRADE_UNLOCKED = false;
-    public boolean ENABLE_BREAKS = true;
+    public boolean QUESTS_ENABLED = true; //
+    public boolean TRADE_UNLOCKED = false; // false;
+    public boolean ENABLE_BREAKS = true; //
     public List<String> EMERGENCY_SELL = Arrays.asList("Iron ore",
             "Coal",
             "Logs",
@@ -94,10 +94,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Copper ore",
             "Emerald necklace",
             "Ruby necklace",
-            "Diamond necklace");
+            "Diamond necklace",
+            "Clay",
+            "Soft clay",
+            "Big bones");
     public static boolean STOP_ON_TRADEUNLOCK = true;
     public int MULE_SAFETY_NET = 75000; //650k for jewelry
-    public int MULE_TRIGGER = 125000; //750k for jewelry
+    public int MULE_TRIGGER = 120000; //750k for jewelry
 
     @Override
     public void onStart() {
@@ -121,13 +124,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 put(Skill.PRAYER, 1);
                 //put(Skill.MAGIC, 99);
                 //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 45);
-                put(Skill.WOODCUTTING, 45);
+                put(Skill.COOKING, 1);
+                put(Skill.WOODCUTTING, 40);
                 put(Skill.FISHING, 40);
-                put(Skill.FIREMAKING, 20);
-                put(Skill.CRAFTING, 35);
+                put(Skill.FIREMAKING, 1);
+                put(Skill.CRAFTING, 1);
                 put(Skill.SMITHING, 1);
-                put(Skill.MINING, 45);
+                put(Skill.MINING, 60);
             }};
 
         levelUps = new HashMap<>();
@@ -137,10 +140,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         allQuests = TaskManager.getQuests();
         Logger.log("Set up " + allTasks.size() + " total tasks and " + allQuests.size() + " total quests");
         NET_WORTH = 0;
-        TASKS_UNTIL_BREAK = Calculations.random(8, 20);
+        TASKS_UNTIL_BREAK = Calculations.random(8, 12);
     }
 
     private void checkTradeStatus() {
+        if(TRADE_UNLOCKED) {
+            return;
+        }
+
         if(CHECKED_HOURS_AT == 0) {
             if (!Tabs.isOpen(Tab.QUEST)) {
                 Tabs.open(Tab.QUEST);
@@ -248,7 +255,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if(ENABLE_BREAKS && TASKS_UNTIL_BREAK < 0) { // -1 == finished last task in q
             Logger.log("Going on break");
             skillSelectedAt = Instant.now().getEpochSecond();
-            skillRunTime = Calculations.random(28800, 57600);
+            skillRunTime = Calculations.random(28800, 43200);
             currentTask = new BreakingTask((Instant.now().getEpochSecond() + skillRunTime));
             return true;
         }
@@ -408,7 +415,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if (!Client.isLoggedIn()) {
-            return 1;
+            if(currentTask == null || !(currentTask instanceof BreakingTask)) {
+                if(!getRandomManager().getSolver(RandomEvent.LOGIN.toString()).isEnabled()) {
+                    Logger.log("Login manager was not enabled, enabling it");
+                    enableLoginManager();
+                    return 3000;
+                }
+            }
         }
 
         if (firstStart) {
@@ -449,6 +462,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 }
             }
         } else {
+            Logger.log("Task was null, finding a new one...");
             evaluate(null);
             return 2500;
         }
@@ -460,6 +474,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         // double check here
         if (currentTask != null) {
+            if(!Client.isLoggedIn() && currentTask.requiresLogin()) {
+                Logger.log("Waiting for login...");
+                return 1000;
+            }
+
             currentTask.execute(this);
             // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
             return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
