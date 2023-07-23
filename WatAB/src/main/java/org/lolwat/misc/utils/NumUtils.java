@@ -28,7 +28,7 @@ public class NumUtils {
                 if (livePrice <= 1000) {
                     ret = livePrice * 2;
                 } else {
-                    ret = (int) (livePrice * 1.8);
+                    ret = (int) (livePrice * 1.6);
                 }
             }
         }
