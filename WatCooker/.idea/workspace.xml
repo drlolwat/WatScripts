@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="QOL">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="More QOL...">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +93,7 @@
       <workItem from="1689178243237" duration="856000" />
       <workItem from="1689270635846" duration="18081000" />
       <workItem from="1689578327647" duration="635000" />
-      <workItem from="1689613364766" duration="33984000" />
+      <workItem from="1689613364766" duration="37327000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -436,7 +438,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,7 +456,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="see google" />
     <MESSAGE value="QoL" />
     <MESSAGE value="net worth calculation" />
     <MESSAGE value="net worth calculation will only happen once per hour" />
@@ -479,7 +480,8 @@
     <MESSAGE value="Profile variables" />
     <MESSAGE value="Anti-ban via cloud-based profiles. More dynamic behavior." />
     <MESSAGE value="QOL" />
-    <option name="LAST_COMMIT_MESSAGE" value="QOL" />
+    <MESSAGE value="More QOL..." />
+    <option name="LAST_COMMIT_MESSAGE" value="More QOL..." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
