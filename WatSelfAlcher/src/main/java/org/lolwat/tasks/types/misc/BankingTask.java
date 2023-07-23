@@ -221,13 +221,14 @@ public class BankingTask implements WatTask {
             for (Map.Entry<String, Integer> entry : buyingRequired.entrySet()) {
                 int itemMultiplier = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
                 int initialPrice = LivePrices.get(entry.getKey()); // price*itemCount
-                if(initialPrice < 10) {
-                    initialPrice += 5;
-                }
 
-                //if(instance.SINGULAR_ITEMS.contains(entry.getKey())) {
-                //    initialPrice = initialPrice * 3;
-                //}
+                if(initialPrice <= 1000) {
+                    if(initialPrice <= 10) {
+                        initialPrice += 5;
+                    } else {
+                        initialPrice = initialPrice * 2;
+                    }
+                }
 
                 int multipliedPrice = initialPrice * itemMultiplier;
                 finalPrice += (int) (multipliedPrice * 1.2); // safety stack?

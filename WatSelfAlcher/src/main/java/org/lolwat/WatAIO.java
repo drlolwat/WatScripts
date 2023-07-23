@@ -1,5 +1,9 @@
 package org.lolwat;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -10,6 +14,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.Quest;
+import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -39,6 +44,10 @@ import org.lolwat.misc.utils.SkillUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 import java.util.List;
@@ -99,11 +108,118 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Soft clay",
             "Big bones");
     public static boolean STOP_ON_TRADEUNLOCK = true;
-    public int MULE_SAFETY_NET = 75000; //650k for jewelry
-    public int MULE_TRIGGER = 120000; //750k for jewelry
+    public int MULE_SAFETY_NET;
+    public int MULE_TRIGGER;
+
+    private static boolean IGNORE_CHECK_TRADE;
 
     @Override
+    public void onStart(String... params) {
+        doStart(params[0]);
+    }
+    @Override
     public void onStart() {
+        doStart("default");
+    }
+
+    private JsonObject getDefaultProfile() {
+        JsonObject defaultProfile = new JsonObject();
+        defaultProfile.addProperty("attack", 10);
+        defaultProfile.addProperty("defence", 10);
+        defaultProfile.addProperty("strength", 10);
+        defaultProfile.addProperty("ranged", 10);
+        defaultProfile.addProperty("prayer", 1);
+        defaultProfile.addProperty("magic", 1);
+        defaultProfile.addProperty("cooking", 10);
+        defaultProfile.addProperty("woodcutting", 40);
+        defaultProfile.addProperty("fishing", 40);
+        defaultProfile.addProperty("firemaking", 10);
+        defaultProfile.addProperty("crafting", 10);
+        defaultProfile.addProperty("smithing", 10);
+        defaultProfile.addProperty("mining", 50);
+
+        defaultProfile.addProperty("quests_enabled", true);
+        defaultProfile.addProperty("breaks_enabled", true);
+        defaultProfile.addProperty("ignore_trade_restriction", false);
+        defaultProfile.addProperty("mule_trigger", 125000);
+        defaultProfile.addProperty("mule_safety_net", 75000);
+
+        return defaultProfile;
+    }
+
+    private void loadFromProfile(String p) {
+        String filePath = System.getProperty("user.dir") + "/WatAIO/" + p + ".json";
+
+        try {
+            // Create a Gson object
+            Gson gson = new Gson();
+
+            File file = new File(filePath);
+            if (!file.exists()) {
+                // Create the directories if they don't exist
+                file.getParentFile().mkdirs();
+
+                JsonObject defaultProfile = getDefaultProfile();
+                FileWriter fileWriter = new FileWriter(file);
+                gson.toJson(defaultProfile, fileWriter);
+                fileWriter.close();
+            }
+
+            // Read the JSON content from the file and parse it into a JsonObject
+            JsonObject jsonObject = gson.fromJson(new FileReader(filePath), JsonObject.class);
+
+            // Now you can access the values in the JsonObject
+            int attack = jsonObject.get("attack").getAsInt();
+            int defense = jsonObject.get("defence").getAsInt();
+            int strength = jsonObject.get("strength").getAsInt();
+            int ranged = jsonObject.get("ranged").getAsInt();
+            int prayer = jsonObject.get("prayer").getAsInt();
+            int magic = 0;//jsonObject.get("magic").getAsInt();
+            int cooking = jsonObject.get("cooking").getAsInt();
+            int woodcutting = jsonObject.get("woodcutting").getAsInt();
+            int fishing = jsonObject.get("fishing").getAsInt();
+            int firemaking = jsonObject.get("firemaking").getAsInt();
+            int crafting = jsonObject.get("crafting").getAsInt();
+            int smithing = jsonObject.get("smithing").getAsInt();
+            int mining = jsonObject.get("mining").getAsInt();
+
+            boolean questsEnabled = jsonObject.get("quests_enabled").getAsBoolean();
+            boolean breaksEnabled = jsonObject.get("breaks_enabled").getAsBoolean();
+            boolean ignoreTradeRest = jsonObject.get("ignore_trade_restriction").getAsBoolean();
+            int muleTrigger = jsonObject.get("mule_trigger").getAsInt();
+            int muleSafety = jsonObject.get("mule_safety_net").getAsInt();
+
+            skillTargets = new HashMap<Skill, Integer>(){
+                {
+                    put(Skill.ATTACK, attack);
+                    put(Skill.STRENGTH, strength);
+                    put(Skill.DEFENCE, defense);
+                    put(Skill.RANGED, ranged);
+                    put(Skill.PRAYER, prayer);
+                    put(Skill.MAGIC, magic);
+                    put(Skill.COOKING, cooking);
+                    put(Skill.WOODCUTTING, woodcutting);
+                    put(Skill.FISHING, fishing);
+                    put(Skill.FIREMAKING, firemaking);
+                    put(Skill.CRAFTING, crafting);
+                    put(Skill.SMITHING, smithing);
+                    put(Skill.MINING, mining);
+                }};
+
+            QUESTS_ENABLED = questsEnabled;
+            ENABLE_BREAKS = breaksEnabled;
+            IGNORE_CHECK_TRADE = ignoreTradeRest;
+            MULE_TRIGGER = muleTrigger;
+            MULE_SAFETY_NET = muleSafety;
+
+        } catch (IOException | JsonSyntaxException e) {
+            e.printStackTrace();
+            Logger.error("Encountered an error during setup.");
+        }
+    }
+
+    private void doStart(String profile) {
+        loadFromProfile(profile);
         // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
@@ -114,24 +230,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         timer = new Timer();
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-
-        skillTargets = new HashMap<Skill, Integer>(){
-            {
-                put(Skill.ATTACK, 20);
-                put(Skill.STRENGTH, 20);
-                put(Skill.DEFENCE, 20);
-                put(Skill.RANGED, 20);
-                put(Skill.PRAYER, 1);
-                //put(Skill.MAGIC, 99);
-                //put(Skill.RUNECRAFTING, 99);
-                put(Skill.COOKING, 1);
-                put(Skill.WOODCUTTING, 40);
-                put(Skill.FISHING, 40);
-                put(Skill.FIREMAKING, 1);
-                put(Skill.CRAFTING, 1);
-                put(Skill.SMITHING, 1);
-                put(Skill.MINING, 60);
-            }};
 
         levelUps = new HashMap<>();
 
@@ -144,6 +242,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void checkTradeStatus() {
+        if(IGNORE_CHECK_TRADE) {
+            TRADE_UNLOCKED = true;
+            return;
+        }
+
         if(TRADE_UNLOCKED) {
             return;
         }
@@ -284,11 +387,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void evaluate(Skill sk) {
+        if(!Client.isLoggedIn())
+            return;
+
         if (currentTask != null && currentTask instanceof MulingTask) {
             return;
         }
 
-        if (tutorialIsland.contains(Players.getLocal())) {
+        if (PlayerSettings.getConfig(281) != 1000) {
             currentTask = new TutorialTask();
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
