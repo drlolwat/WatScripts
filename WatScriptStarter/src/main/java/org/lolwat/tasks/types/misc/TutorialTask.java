@@ -70,8 +70,8 @@ public class TutorialTask implements WatTask {
     Tile[] finToPray = new Tile[]{new Tile(3130, 3124, 0), new Tile(3132, 3124, 0), new Tile(3133, 3123, 0), new Tile(3133, 3121, 0), new Tile(3134, 3119, 0), new Tile(3134, 3117, 0), new Tile(3133, 3115, 0), new Tile(3132, 3114, 0), new Tile(3131, 3113, 0), new Tile(3131, 3111, 0), new Tile(3130, 3110, 0), new Tile(3130, 3108, 0)};
     Tile[] prayToMage = new Tile[]{new Tile(3122, 3102, 0), new Tile(3123, 3101, 0), new Tile(3124, 3100, 0), new Tile(3125, 3099, 0), new Tile(3126, 3098, 0), new Tile(3127, 3097, 0), new Tile(3128, 3096, 0), new Tile(3129, 3095, 0), new Tile(3130, 3094, 0), new Tile(3132, 3094, 0), new Tile(3133, 3093, 0), new Tile(3134, 3092, 0), new Tile(3135, 3091, 0), new Tile(3136, 3090, 0), new Tile(3137, 3089, 0), new Tile(3138, 3088, 0), new Tile(3140, 3087, 0), new Tile(3141, 3088, 0)};
 
-    boolean started = false;
-    boolean accMade = false;
+    boolean started;
+    boolean accMade;
     private State state;
     private Timer t;
 
@@ -81,6 +81,11 @@ public class TutorialTask implements WatTask {
 
     private State getState() {
         if (!started) {
+            if(PlayerSettings.getConfig(281) >= 2) {
+                started = true;
+                accMade = true;
+                return State.DO_TUT;
+            }
             return State.CREATE_ACC;
         }
 
@@ -110,36 +115,22 @@ public class TutorialTask implements WatTask {
     private String getUsername() {
         String name = "";
         try {
-            // Specify the URL of the file
             URL url = new URL("https://botbuddy.net/_api_/getname.php");
 
-            // Open a connection to the URL
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            // Set the request method
             connection.setRequestMethod("GET");
-
-            // Get the response code
             int responseCode = connection.getResponseCode();
-
-            // Check if the request was successful (status code 200)
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Create a BufferedReader to read the response
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-                // Read the response line by line
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    // Print each line of the response
                     name = line;
                 }
-                // Close the BufferedReader
                 reader.close();
             } else {
                 System.out.println("HTTP request failed with response code: " + responseCode);
             }
 
-            // Disconnect the connection
             connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
@@ -239,9 +230,7 @@ public class TutorialTask implements WatTask {
                 int conf = PlayerSettings.getConfig(TUT_PROG);
                 //Logger.log(conf);
                 switch (conf) {
-                    case 1: {
-
-                    }
+                    case 1:
                     case 7:
                     case 0:
                     case 2:
@@ -923,8 +912,6 @@ public class TutorialTask implements WatTask {
                         log("Tutorial Island complete");
                         Sleep.sleep(3000, 5000);
                         instance.currentTask = null;
-                        instance.HOURS_PLAYED = 0;
-                        instance.CHECKED_HOURS_AT = Instant.now().getEpochSecond();
                         return;
                 }
                 break;
