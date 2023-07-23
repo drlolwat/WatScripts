@@ -7,11 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Anti-ban via cloud-based profiles. More dynamic behavior.">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="QOL">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +91,7 @@
       <workItem from="1689178243237" duration="856000" />
       <workItem from="1689270635846" duration="18081000" />
       <workItem from="1689578327647" duration="635000" />
-      <workItem from="1689613364766" duration="33532000" />
+      <workItem from="1689613364766" duration="33984000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -438,7 +436,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="137" />
+    <option name="localTasksCounter" value="138" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,13 +473,13 @@
     <MESSAGE value="Muling improvements" />
     <MESSAGE value="Production ready" />
     <MESSAGE value="Woodcutting changes, Sell+Mule after &quot;Account complete&quot;" />
-    <MESSAGE value="QOL" />
     <MESSAGE value="Fix Crafting task level evaluation bug" />
     <MESSAGE value="Script breaks refinement" />
     <MESSAGE value="Profiles, G.E updates" />
     <MESSAGE value="Profile variables" />
     <MESSAGE value="Anti-ban via cloud-based profiles. More dynamic behavior." />
-    <option name="LAST_COMMIT_MESSAGE" value="Anti-ban via cloud-based profiles. More dynamic behavior." />
+    <MESSAGE value="QOL" />
+    <option name="LAST_COMMIT_MESSAGE" value="QOL" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
