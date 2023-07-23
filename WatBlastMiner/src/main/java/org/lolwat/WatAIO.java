@@ -2,14 +2,11 @@ package org.lolwat;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
@@ -20,8 +17,6 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.methods.widget.Widget;
-import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -33,9 +28,7 @@ import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
-import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.dreambot.api.wrappers.widgets.message.Message;
-import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
@@ -43,7 +36,6 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.SkillUtils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -279,7 +271,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void doStart(String profile) {
         loadFromProfile(profile);
-        // Enable our custom mouse
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
