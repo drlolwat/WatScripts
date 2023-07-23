@@ -489,7 +489,7 @@ public class TutorialTask implements WatTask {
                         if (tin != null) {
                             if (tin.interact("Mine")) {
                                 walkingSleep();
-                                Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 270, Calculations.random(3000, 4000));
+                                Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 270, Calculations.random(5000, 6000));
                             }
                         }
                         //tin
@@ -504,7 +504,7 @@ public class TutorialTask implements WatTask {
                         });
                         if (tin != null) {
                             if (tin.interact("Mine")) {
-                                Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 310, Calculations.random(4000, 5000));
+                                Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 310, Calculations.random(5000, 6000));
                             }
                         }
                         //copper
@@ -547,9 +547,18 @@ public class TutorialTask implements WatTask {
                         //open anvil panel
                         break;
                     case 350:
-                        Widgets.getChildWidget(312, 9).interact();
-                        Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 350, 3000);
-                        //smith knife
+                        WidgetChild wc = Widgets.getWidget(312).getChild(9);
+                        if(wc != null && wc.interact()) {
+                            Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 350, 3000);
+                        } else {
+                            Inventory.interact("Bronze bar", "Use");
+                            Sleep.sleep(100, 300);
+                            GameObject anv = GameObjects.closest("Anvil");
+                            if(anv != null && anv.interact()) {
+                                walkingSleep();
+                                Sleep.sleepUntil(() -> PlayerSettings.getConfig(TUT_PROG) != 350, Calculations.random(2000, 3000));
+                            }
+                        }
                         break;
                     case 360:
                         if (Players.getLocal().getTile().distance(new Tile(3094, 9502, 0)) > 5) {
