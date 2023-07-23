@@ -607,7 +607,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // Draw two rows of additional information
         g.setColor(new Color(220, 220, 220));
         g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + Timer.formatTime(timer.elapsed()), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + NumUtils.simplifyNumber(NET_WORTH), "Time left: " + taskTime}};
+        String[][] additionalInfo = {{"Runtime: " + (timer != null ? Timer.formatTime(timer.elapsed()) : ""), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + NumUtils.simplifyNumber(NET_WORTH), "Time left: " + taskTime}};
         int rowOffset = 16;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 2; col++) {
