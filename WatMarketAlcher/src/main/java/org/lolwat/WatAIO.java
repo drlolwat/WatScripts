@@ -29,6 +29,7 @@ import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
+import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
@@ -44,10 +45,9 @@ import org.lolwat.misc.utils.SkillUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.util.*;
 import java.util.List;
@@ -66,7 +66,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private HashMap<Skill, Integer> skillTargets;
     private HashMap<String, Integer> levelUps;
     public double CHECKED_HOURS_AT = 0;
-    public int HOURS_PLAYED = 0;
     public int NET_WORTH = 0;
     public double NET_WORTH_GENERATED = 0;
     public boolean MULE_DEAD = false;
@@ -81,6 +80,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             new Tile(3126, 3142, 0));
 
     // TODO CONFIGURATION CLASS
+    public static String CAPE_TYPE;
+    public static boolean USE_SKIRT;
+    public static int MOUSE_DIFF = 1;
+    public boolean PROFILE_LOADED = false;
     public boolean QUESTS_ENABLED = true; //
     public boolean TRADE_UNLOCKED = false; // false;
     public boolean ENABLE_BREAKS = true; //
@@ -221,6 +224,59 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
     }
 
+    private void getWsProfile() {
+        try {
+            URL url;
+            if(IGNORE_CHECK_TRADE) {
+                url = new URL("https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash() + "&_unl");
+            } else {
+                url = new URL("https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash());
+            }
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+                connection.disconnect();
+
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
+
+                double appearedAt = jsonObject.get("appeared_at").getAsDouble();
+                String capeType = jsonObject.get("cape_type").getAsString();
+                boolean useSkirt = Objects.equals(jsonObject.get("use_plateskirt").getAsString(), "1");
+                int mouseDiff = jsonObject.get("mouse_diff").getAsInt();
+
+                TRADE_UNLOCKED = IGNORE_CHECK_TRADE ||
+                        (Instant.now().getEpochSecond() - appearedAt >= 75600) && Quests.getQuestPoints() >= 10;
+
+                CAPE_TYPE = capeType;
+                USE_SKIRT = useSkirt;
+                MOUSE_DIFF = mouseDiff;
+                PROFILE_LOADED = true;
+                CHECKED_HOURS_AT = Instant.now().getEpochSecond();
+
+                Logger.log(Color.green, "Loaded unique account profile from BotBuddy Hive");
+
+            } else {
+                Logger.error("HTTP request failed with response code: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void doStart(String profile) {
         loadFromProfile(profile);
         // Enable our custom mouse
@@ -242,119 +298,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Logger.log("Set up " + allTasks.size() + " total tasks and " + allQuests.size() + " total quests");
         NET_WORTH = 0;
         TASKS_UNTIL_BREAK = Calculations.random(8, 12);
-    }
-
-    private void checkTradeStatus() {
-        if(IGNORE_CHECK_TRADE) {
-            TRADE_UNLOCKED = true;
-            return;
-        }
-
-        if(TRADE_UNLOCKED) {
-            return;
-        }
-
-        if(CHECKED_HOURS_AT == 0) {
-            if (!Tabs.isOpen(Tab.QUEST)) {
-                Tabs.open(Tab.QUEST);
-                Sleep.sleep(100, 200);
-            }
-
-            List<String> dialogue = Collections.singletonList("Yes and don't ask me again");
-
-            Widget w = Widgets.getWidget(712);
-            if (w == null || !w.isVisible()) {
-                Widget x = Widgets.getWidget(629);
-                if (x != null && x.isVisible() && x.getChild(3).interact()) {
-                    Logger.log("Opened character area");
-                    Sleep.sleep(1200, 2200);
-                }
-            }
-
-            w = Widgets.getWidget(712);
-
-            if (w == null || !w.isVisible()) {
-                Logger.error("Problem getting trade unlock status");
-                return;
-            }
-
-            WidgetChild c = w.getChild(2).getChild(100);
-            if (c != null && c.isVisible()) {
-                if (c.getText().contains("Click")) {
-                    if (c.interact()) {
-                        if (Dialogues.inDialogue()) {
-                            DialogueUtils.solve(dialogue);
-                        }
-                        Sleep.sleep(800, 1500);
-                    }
-                }
-
-                Widget newW = Widgets.getWidget(712);
-
-                if (newW == null) {
-                    Logger.error("really odd error");
-                    return;
-                }
-
-                WidgetChild newC = newW.getChild(2).getChild(100);
-
-                if (newC == null) {
-                    Logger.error("really odd error 2");
-                    return;
-                }
-
-                Sleep.sleep(400, 900);
-
-                int minutesPlayed = 0;
-
-                //double check
-                if (Dialogues.inDialogue()) {
-                    DialogueUtils.solve(dialogue);
-                }
-                Sleep.sleep(800, 1500);
-
-                String[] splitArr = newC.getText().split(">", 2)[1].split("<", 2)[0].split(",");
-                HashMap<String, Integer> timeWordsKey = new HashMap<>();
-                timeWordsKey.put("day", 24 * 60);
-                timeWordsKey.put("hour", 60);
-                timeWordsKey.put("minute", 1);
-                for (String time : splitArr) {
-                    for (String timeWord : timeWordsKey.keySet()) {
-                        if (time.contains(timeWord)) {
-                            time = time.split(" " + timeWord, 2)[0];
-                            if (time.charAt(0) == ' ') {
-                                time = time.substring(1);
-                            }
-                            minutesPlayed += Integer.parseInt(time) * timeWordsKey.get(timeWord);
-                        }
-                    }
-                }
-
-                HOURS_PLAYED = minutesPlayed / 60;
-            }
-
-            CHECKED_HOURS_AT = Instant.now().getEpochSecond();
-            Sleep.sleep(400, 700);
-        } else {
-            // time passed since checking
-            double secondsSince = Instant.now().getEpochSecond() - CHECKED_HOURS_AT;
-            int hoursSince = (int) (secondsSince / 60) / 60;
-
-            if(hoursSince >= 1) {
-                HOURS_PLAYED += hoursSince;
-                CHECKED_HOURS_AT = Instant.now().getEpochSecond();
-            }
-        }
-
-        Logger.log("I have played for " + HOURS_PLAYED + " hour(s)");
-        if (HOURS_PLAYED >= 22 && Quests.getQuestPoints() >= 10 && Skills.getTotalLevel() >= 100) {
-            TRADE_UNLOCKED = true;
-        }
-
-        if (!Tabs.isOpen(Tab.INVENTORY)) {
-            Tabs.open(Tab.INVENTORY);
-            Sleep.sleep(100, 200);
-        }
     }
 
     private boolean evaluateBreak() {
@@ -393,8 +336,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if(!Client.isLoggedIn())
             return;
 
-        if (currentTask != null && currentTask instanceof MulingTask) {
-            return;
+        if(!PROFILE_LOADED || (CHECKED_HOURS_AT == 0 || (Instant.now().getEpochSecond() - CHECKED_HOURS_AT) >= 3600)) {
+            getWsProfile();
         }
 
         if (PlayerSettings.getConfig(281) != 1000) {
@@ -405,11 +348,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        Logger.log("Checking current trade status");
-        checkTradeStatus();
-
         Logger.log("Evaluating goals for stop conditions");
-
         if(evaluateGoals()) {
             return;
         }
