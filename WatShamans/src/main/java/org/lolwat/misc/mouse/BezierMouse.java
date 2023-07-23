@@ -4,6 +4,7 @@ import org.dreambot.api.input.Mouse;
 import org.dreambot.api.input.mouse.algorithm.MouseMovementAlgorithm;
 import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.Calculations;
+import org.lolwat.WatAIO;
 
 import java.awt.*;
 
@@ -51,7 +52,7 @@ public class BezierMouse implements MouseMovementAlgorithm {
             for (int i = 0; i <= steps; i++) {
                 double t = (double) i / steps;
                 Point pointOnCurve = calculateBezierPoint(t, startPos, controlPoint, endPos);
-                sleep(34);
+                sleep(35);
                 Mouse.hop(pointOnCurve);
             }
         } catch (Exception ignored) { }
@@ -80,6 +81,7 @@ public class BezierMouse implements MouseMovementAlgorithm {
     }
 
     private void sleep(int millis) {
+        millis += WatAIO.MOUSE_DIFF;
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
