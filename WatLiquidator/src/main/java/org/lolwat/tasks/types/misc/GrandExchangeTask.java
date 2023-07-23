@@ -162,6 +162,13 @@ public class GrandExchangeTask implements WatTask {
                                     itemCost = Inventory.count("Coins");
                                 }
                             }
+                            else if(itemCost <= 1000 && item.getValue() > 1) {
+                                if(Inventory.contains("Coins") && Inventory.count("Coins") >= 5000) {
+                                    itemCost = 5000;
+                                } else {
+                                    itemCost = Inventory.count("Coins");
+                                }
+                            }
 
                             if(GrandExchange.setPrice(itemCost)) {
                                 Sleep.sleep(100, 200);
