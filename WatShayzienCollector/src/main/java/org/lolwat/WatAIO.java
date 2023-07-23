@@ -143,6 +143,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         defaultProfile.addProperty("ignore_trade_restriction", false);
         defaultProfile.addProperty("mule_trigger", 125000);
         defaultProfile.addProperty("mule_safety_net", 75000);
+        defaultProfile.addProperty("logout_after_unrestricted", true);
 
         return defaultProfile;
     }
@@ -186,6 +187,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             boolean questsEnabled = jsonObject.get("quests_enabled").getAsBoolean();
             boolean breaksEnabled = jsonObject.get("breaks_enabled").getAsBoolean();
             boolean ignoreTradeRest = jsonObject.get("ignore_trade_restriction").getAsBoolean();
+            boolean logoutAfterUnrestricted = jsonObject.get("logout_after_unrestricted").getAsBoolean();
             int muleTrigger = jsonObject.get("mule_trigger").getAsInt();
             int muleSafety = jsonObject.get("mule_safety_net").getAsInt();
 
@@ -211,6 +213,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             IGNORE_CHECK_TRADE = ignoreTradeRest;
             MULE_TRIGGER = muleTrigger;
             MULE_SAFETY_NET = muleSafety;
+            STOP_ON_TRADEUNLOCK = logoutAfterUnrestricted;
 
         } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();
