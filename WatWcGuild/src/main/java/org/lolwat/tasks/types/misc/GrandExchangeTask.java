@@ -14,6 +14,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -118,6 +119,10 @@ public class GrandExchangeTask implements WatTask {
                     GrandExchange.collect();
                 }
 
+                if(GrandExchange.getItem(item.getKey()) != null) {
+                    Logger.log("Tell lolwat");
+                }
+
                 if (isSelling) {
                     Logger.log("Selling: " + item.getKey());
                     if(Inventory.contains(item.getKey())) {
@@ -147,25 +152,7 @@ public class GrandExchangeTask implements WatTask {
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
                             Sleep.sleep(100, 220);
-                            int itemCost = (int) (LivePrices.get(item.getKey()) * 1.2);
-
-                            if(itemCost < 10) {
-                                itemCost += 5;
-                            }
-
-                            Sleep.sleep(100, 300);
-
-                            if(GrandExchange.getCurrentPrice() >= itemCost) {
-                                itemCost = (int) (GrandExchange.getCurrentPrice() * 1.6);
-                            }
-
-                            if(itemCost <= 1000 && item.getValue() == 1) {
-                                if(Inventory.contains("Coins") && Inventory.count("Coins") >= 5000) {
-                                    itemCost = 5000;
-                                } else {
-                                    itemCost = Inventory.count("Coins");
-                                }
-                            }
+                            int itemCost = NumUtils.getItemPrice(item.getKey());
 
                             if(GrandExchange.setPrice(itemCost)) {
                                 Sleep.sleep(100, 200);
@@ -181,7 +168,6 @@ public class GrandExchangeTask implements WatTask {
                             GrandExchange.confirm();
                             item.setValue(0);
 
-                            // Sleep until the item is available..
                             Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 20000);
 
                             if (GrandExchange.isReadyToCollect(slot)) {
