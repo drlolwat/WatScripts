@@ -3,6 +3,7 @@ package org.lolwat.misc.utils.combat.ranged;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.lolwat.WatAIO;
 import org.lolwat.misc.types.combat.DefensiveItemType;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class RangedUtils {
         ret.put(EquipmentSlot.AMULET, "Amulet of power");
         ret.put(EquipmentSlot.FEET, "Leather boots");
         ret.put(EquipmentSlot.HANDS, defensiveItemByType(DefensiveItemType.GLOVES, false));
-        ret.put(EquipmentSlot.CAPE, "Black cape");
+        ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
 
         return ret;
     }
