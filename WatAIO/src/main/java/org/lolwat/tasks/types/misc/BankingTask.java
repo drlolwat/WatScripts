@@ -393,6 +393,29 @@ public class BankingTask implements WatTask {
             return;
         }
 
+        boolean hasRequired = false;
+        if(inventoryRequired != null && inventoryRequired.size() > 0) {
+            for (String i : inventoryRequired.keySet()) {
+                if (Inventory.contains(i)) {
+                    hasRequired = true;
+                }
+            }
+        }
+
+        if(equipmentRequired != null && equipmentRequired.size() > 0) {
+            for(String i : equipmentRequired.keySet()) {
+                if(Inventory.contains(i)) {
+                    hasRequired = true;
+                }
+            }
+        }
+
+        if(!hasRequired) {
+            Bank.depositAllItems();
+            Sleep.sleep(200, 600);
+            return;
+        }
+
         List<Item> toDeposit = new ArrayList<>();
 
         for(Item i : Inventory.all()) {
