@@ -24,7 +24,7 @@ public class MeleeUtils {
 
         ret.put(EquipmentSlot.HAT, defensiveItemByType(DefensiveItemType.HELMET, false));
         ret.put(EquipmentSlot.CHEST, defensiveItemByType(DefensiveItemType.CHEST, Skills.getRealLevel(Skill.DEFENCE) >= 40));
-        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, false));
+        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, WatAIO.USE_SKIRT));
         ret.put(EquipmentSlot.SHIELD, defensiveItemByType(DefensiveItemType.OFFHAND, false));
         ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
         ret.put(EquipmentSlot.AMULET, "Amulet of strength");
@@ -35,12 +35,12 @@ public class MeleeUtils {
         return ret;
     }
 
-    public static String defensiveItemByType(DefensiveItemType type, boolean chainbody) {
+    public static String defensiveItemByType(DefensiveItemType type, boolean alternative) {
         String material = bestDefEquipmentMaterial();
         switch(type) {
             case HELMET: return material + " full helm";
-            case CHEST: return material + (chainbody ? " chainbody" : " platebody");
-            case LEGS: return material + " platelegs";
+            case CHEST: return material + (alternative ? " chainbody" : " platebody");
+            case LEGS: return material + (alternative ? " plateskirt" : " platelegs");
             case OFFHAND: return material + " kiteshield";
         }
         return "";
