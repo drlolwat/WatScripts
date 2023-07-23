@@ -15,6 +15,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 
 import java.time.Instant;
@@ -220,18 +221,9 @@ public class BankingTask implements WatTask {
             int finalPrice = 0;
             for (Map.Entry<String, Integer> entry : buyingRequired.entrySet()) {
                 int itemMultiplier = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                int initialPrice = LivePrices.get(entry.getKey()); // price*itemCount
-
-                if(initialPrice <= 1000) {
-                    if(initialPrice <= 10) {
-                        initialPrice += 5;
-                    } else {
-                        initialPrice = initialPrice * 2;
-                    }
-                }
-
+                int initialPrice = NumUtils.getItemPrice(entry.getKey());
                 int multipliedPrice = initialPrice * itemMultiplier;
-                finalPrice += (int) (multipliedPrice * 1.2); // safety stack?
+                finalPrice += multipliedPrice;
             }
 
             if ((Bank.contains("Coins") && Bank.count("Coins") >= finalPrice)) {
