@@ -390,7 +390,7 @@ public class TaskManager {
                     new Tile(3173, 9881, 0),
                     new Tile(3173, 9886, 0),
                     new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
-                put("Trout", 20);
+                put("Lobster", 20);
             }}));
 
             tasks.add(new MeleeCombatTask(sk,50, 126, new Area(
@@ -409,7 +409,7 @@ public class TaskManager {
                     new Tile(3156, 9900, 0),
                     new Tile(3159, 9898, 0),
                     new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
-                put("Trout", 20);
+                put("Lobster", 20);
             }}));
         }
 
