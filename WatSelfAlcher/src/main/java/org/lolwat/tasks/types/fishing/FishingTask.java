@@ -56,7 +56,7 @@ public class FishingTask implements WatTask {
         String tool = FishingUtils.getToolByFishType(fishType);
         HashMap<String, Integer> requiredItems = new HashMap<String, Integer>() {{ put(tool, 1); }};
 
-        if(FishingUtils.getExtraFishingItems(fishType).size() > 0) {
+        if(!FishingUtils.getExtraFishingItems(fishType).isEmpty()) {
             requiredItems.putAll(FishingUtils.getExtraFishingItems(fishType));
         }
 
