@@ -116,13 +116,11 @@ public class MulingTask implements WatTask {
 
             Logger.log("Sending mule connection");
             try (Socket socket = new Socket("localhost", 8081)) {
-                // Send a message to the server
                 byte[] messageBytes = message.toString().getBytes(StandardCharsets.UTF_8);
                 OutputStream outputStream = socket.getOutputStream();
                 outputStream.write(messageBytes);
                 outputStream.flush();
 
-                // Receive the response from the server
                 InputStream inputStream = socket.getInputStream();
                 byte[] buffer = new byte[1024];
                 int bytesRead = inputStream.read(buffer);
