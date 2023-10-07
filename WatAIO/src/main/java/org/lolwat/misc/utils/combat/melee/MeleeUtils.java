@@ -1,6 +1,8 @@
 package org.lolwat.misc.utils.combat.melee;
 
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
@@ -37,6 +39,10 @@ public class MeleeUtils {
 
     public static String defensiveItemByType(DefensiveItemType type, boolean alternative) {
         String material = bestDefEquipmentMaterial();
+
+        if((alternative && type.equals(DefensiveItemType.CHEST)) && Quests.isFinished(FreeQuest.DRAGON_SLAYER))
+            alternative = false;
+
         switch(type) {
             case HELMET: return material + " full helm";
             case CHEST: return material + (alternative ? " chainbody" : " platebody");
