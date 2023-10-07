@@ -15,6 +15,8 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 public class TraversalTask implements WatTask {
     WatTask postTask;
@@ -52,15 +54,28 @@ public class TraversalTask implements WatTask {
         Logger.log("Traversing to area");
     }
 
+    private void handleSlashing() {
+        List<String> types = Arrays.asList("Web");
+        for (String t : types) {
+            if(GameObjects.closest(t) != null && GameObjects.closest(t).distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest(t).interact()) {
+                Logger.log("Traversal: slashed " + t);
+                Sleep.sleepUntil(() -> GameObjects.closest(t) == null || !GameObjects.closest(t).exists(), 5000);
+                return;
+            }
+        }
+    }
+
     @Override
     public void execute(WatAIO instance) {
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
 
-        if(GameObjects.closest("Web") != null && GameObjects.closest("Web").interact()) {
+        /*if(GameObjects.closest("Web") != null && GameObjects.closest("Web").distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest("Web").interact()) {
             Logger.log("Traversal: slashed web");
             Sleep.sleepUntil(() -> GameObjects.closest("Web") == null || !GameObjects.closest("Web").exists(), 5000);
             return;
-        }
+        }*/
+
+        handleSlashing();
 
         if(!usingArea) {
             if (completedTile && Map.isTileOnMap(target)) {
@@ -89,7 +104,6 @@ public class TraversalTask implements WatTask {
 
             lastWalk = Instant.now().getEpochSecond();
         }
-
     }
 
     @Override
