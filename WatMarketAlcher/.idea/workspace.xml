@@ -7,12 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="More QOL...">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Back at it again, lets go. Java code cleanup. Lobsters for Moss giants.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/fishing/FishingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/fishing/FishingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/MulingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +112,7 @@
       <workItem from="1689578327647" duration="635000" />
       <workItem from="1689613364766" duration="37327000" />
       <workItem from="1694880072709" duration="5780000" />
-      <workItem from="1696567473818" duration="2293000" />
+      <workItem from="1696567473818" duration="4116000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -460,7 +457,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="139" />
+    <option name="localTasksCounter" value="140" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -478,8 +475,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="QoL" />
-    <MESSAGE value="net worth calculation" />
     <MESSAGE value="net worth calculation will only happen once per hour" />
     <MESSAGE value="task evaluator overhaul&#10;mining task is now much more efficient&#10;mining task will pre-select previous rock&#10;combat tasks food qty lowered&#10;combat tasks will (mostly) never bring junk items along&#10;task times now fluctuate based on level of the skill being trained" />
     <MESSAGE value="fix a task oopsie" />
@@ -503,7 +498,9 @@
     <MESSAGE value="Anti-ban via cloud-based profiles. More dynamic behavior." />
     <MESSAGE value="QOL" />
     <MESSAGE value="More QOL..." />
-    <option name="LAST_COMMIT_MESSAGE" value="More QOL..." />
+    <MESSAGE value="Java code cleanup. Lobsters for Moss giants." />
+    <MESSAGE value="Back at it again, lets go. Java code cleanup. Lobsters for Moss giants." />
+    <option name="LAST_COMMIT_MESSAGE" value="Back at it again, lets go. Java code cleanup. Lobsters for Moss giants." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
