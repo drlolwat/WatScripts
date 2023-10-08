@@ -153,4 +153,9 @@ public class GoblinDiplomacyQuest implements WatTask {
     public Quest completesQuest() {
         return FreeQuest.GOBLIN_DIPLOMACY;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }
