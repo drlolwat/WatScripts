@@ -16,6 +16,7 @@ import org.lolwat.WatAIO;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class TraversalTask implements WatTask {
@@ -139,5 +140,10 @@ public class TraversalTask implements WatTask {
     @Override
     public Quest completesQuest() {
         return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
     }
 }
