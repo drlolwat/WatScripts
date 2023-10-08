@@ -99,4 +99,9 @@ public class SheepShearerQuest implements WatTask {
     public Quest completesQuest() {
         return FreeQuest.SHEEP_SHEARER;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }

@@ -111,8 +111,10 @@ public class BankingTask implements WatTask {
         HashMap<String, Integer> buyingRequired = new HashMap<>();
         List<String> toEquip = new ArrayList<>();
 
+        //TODO
+        // use the clothesRequired to do this..
         Logger.log("EQUIPMENTCHECKER: STARTING");
-        if (equipmentRequired.size() > 0) {
+        if (!equipmentRequired.isEmpty()) {
             for (Map.Entry<String, Integer> entry : equipmentRequired.entrySet()) {
                 int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
                 if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getKey()) >= amountRequired) {
@@ -147,7 +149,6 @@ public class BankingTask implements WatTask {
                 }
             }
         }
-        Logger.log("EQUIPMENTCHECKER: DONE");
 
         Sleep.sleep(500, 1000);
         for(String s : equipmentRequired.keySet()) {
@@ -156,6 +157,14 @@ public class BankingTask implements WatTask {
             }
         }
 
+        if(postTask.clothesRequired().isEmpty()) {
+            Bank.depositAllEquipment();
+        }
+
+        Logger.log("EQUIPMENTCHECKER: DONE");
+
+        //TODO
+        // make inventoryRequired part of the task and use that.
         Logger.log("INVENTORYCHECKER: STARTING");
         if (inventoryRequired.size() > 0) {
             checkAndSet(BankMode.ITEM);
@@ -482,5 +491,10 @@ public class BankingTask implements WatTask {
     @Override
     public Quest completesQuest() {
         return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
     }
 }

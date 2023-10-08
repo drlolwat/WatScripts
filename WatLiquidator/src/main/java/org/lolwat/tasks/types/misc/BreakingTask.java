@@ -9,6 +9,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.tasks.WatTask;
 
 import java.time.Instant;
+import java.util.HashMap;
 
 public class BreakingTask implements WatTask {
     private double endsAt;
@@ -71,5 +72,10 @@ public class BreakingTask implements WatTask {
     @Override
     public Quest completesQuest() {
         return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
     }
 }

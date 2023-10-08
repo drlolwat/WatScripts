@@ -100,4 +100,9 @@ public class CooksAssistantQuest implements WatTask {
     public Quest completesQuest() {
         return FreeQuest.COOKS_ASSISTANT;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }
