@@ -308,4 +308,9 @@ public class RomeoJulietQuest implements WatTask {
     public Quest completesQuest() {
         return FreeQuest.ROMEO_AND_JULIET;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }
