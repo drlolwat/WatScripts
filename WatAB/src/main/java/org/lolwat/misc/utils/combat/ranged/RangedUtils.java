@@ -52,7 +52,10 @@ public class RangedUtils {
                 return dhide ? bestArmorMaterial(20) + " body" : mat + " body";
             }
             case LEGS: {
-                if(rngLevel >= 20) {
+                if(rngLevel >= 40) {
+                    return mat + " chaps";
+                }
+                else if(rngLevel >= 20) {
                     return "Studded chaps";
                 }
                 return "Leather chaps";
