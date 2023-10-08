@@ -1,6 +1,8 @@
 package org.lolwat.misc.utils.combat.ranged;
 
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
+import org.dreambot.api.methods.quest.Quests;
+import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
@@ -36,6 +38,10 @@ public class RangedUtils {
 
     public static String defensiveItemByType(DefensiveItemType type, boolean dhide) {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
+
+        if((dhide && Quests.isFinished(FreeQuest.DRAGON_SLAYER)) && type == DefensiveItemType.CHEST) {
+            dhide = false;
+        }
 
         String mat = bestArmorMaterial(rngLevel);
         switch(type) {
