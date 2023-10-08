@@ -4,6 +4,8 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
 
+import java.util.HashMap;
+
 public interface WatTask {
     String getName();
     boolean canPerformTask();
@@ -14,4 +16,5 @@ public interface WatTask {
     Skill trainsSkill();
     Integer avoidAfterLevel();
     Quest completesQuest();
+    HashMap<String, Integer> clothesRequired();
 }
