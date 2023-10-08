@@ -44,6 +44,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.dreambot.api.utilities.Logger.log;
@@ -1072,5 +1073,10 @@ public class TutorialTask implements WatTask {
     @Override
     public Quest completesQuest() {
         return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
     }
 }

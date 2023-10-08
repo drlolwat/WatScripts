@@ -9,6 +9,8 @@ import org.dreambot.api.utilities.Sleep;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
+import java.util.HashMap;
+
 public class HopperTask implements WatTask {
     private final WatTask postTask;
     private final int world;
@@ -78,5 +80,10 @@ public class HopperTask implements WatTask {
     @Override
     public Quest completesQuest() {
         return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
     }
 }
