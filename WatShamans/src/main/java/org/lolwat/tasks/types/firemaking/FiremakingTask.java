@@ -133,4 +133,9 @@ public class FiremakingTask implements WatTask {
     public Quest completesQuest() {
         return null;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }

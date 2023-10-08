@@ -183,4 +183,11 @@ public class RangedCombatTask implements WatTask {
     public Quest completesQuest() {
         return null;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        HashMap<String, Integer> requiredItems = RangedUtils.getRequiredItems();
+        requiredItems.put(RangedUtils.bestArrow(), -1000);
+        return requiredItems;
+    }
 }
