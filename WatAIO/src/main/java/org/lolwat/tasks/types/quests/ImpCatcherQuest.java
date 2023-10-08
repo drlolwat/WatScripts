@@ -110,4 +110,9 @@ public class ImpCatcherQuest implements WatTask {
     public Quest completesQuest() {
         return FreeQuest.IMP_CATCHER;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }

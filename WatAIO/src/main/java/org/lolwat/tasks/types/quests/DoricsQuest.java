@@ -102,4 +102,9 @@ public class DoricsQuest implements WatTask {
     public Quest completesQuest() {
         return FreeQuest.DORICS_QUEST;
     }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
 }
