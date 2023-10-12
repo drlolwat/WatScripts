@@ -146,4 +146,5 @@ public class TraversalTask implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<>();
     }
+
 }
