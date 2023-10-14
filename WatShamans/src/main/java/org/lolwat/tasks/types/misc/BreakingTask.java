@@ -37,7 +37,6 @@ public class BreakingTask implements WatTask {
         if(Instant.now().getEpochSecond() >= endsAt) {
             if(!Client.isLoggedIn()) {
                 instance.enableLoginManager();
-                Sleep.sleepUntil(Client::isLoggedIn, 10000);
                 instance.TASKS_UNTIL_BREAK = Calculations.random(8, 12);
                 instance.currentTask = null;
             }
