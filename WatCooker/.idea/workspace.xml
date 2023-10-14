@@ -7,10 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="BankingTask.java code cleanup">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fix BreakingTask">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +114,7 @@
       <workItem from="1689613364766" duration="37327000" />
       <workItem from="1694880072709" duration="5780000" />
       <workItem from="1696567473818" duration="16239000" />
-      <workItem from="1697042314419" duration="3779000" />
+      <workItem from="1697042314419" duration="13361000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -459,7 +459,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="146" />
+    <option name="localTasksCounter" value="147" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,7 +477,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Trade status correctly used in Bank task. Mining task now hops if too many people are around." />
     <MESSAGE value="Spinning wool task won't buy so many anymore. Reverse muling will now take Bank GP into account when calculating amount required. Grand Exchange task will now cancel/collect when there are no slots available to be used." />
     <MESSAGE value="Tutorial island improvements, Antiban improvements, misc QOL" />
     <MESSAGE value="Jeweled amulets, rings. Muling/Reverse fixes. Selling fixes." />
@@ -502,7 +501,8 @@
     <MESSAGE value="Fix a bork with RangedUtils.java" />
     <MESSAGE value="Support for dynamic equipment on the per-task level, for things like graceful etc" />
     <MESSAGE value="BankingTask.java code cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="BankingTask.java code cleanup" />
+    <MESSAGE value="Fix BreakingTask" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix BreakingTask" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
