@@ -324,8 +324,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void evaluate(Skill sk) {
-        if(!Client.isLoggedIn())
+        if(!Client.isLoggedIn()) {
+            Logger.log("Awaiting login...");
+            enableLoginManager();
             return;
+        }
 
         if(!PROFILE_LOADED || (CHECKED_HOURS_AT == 0 || (Instant.now().getEpochSecond() - CHECKED_HOURS_AT) >= 3600)) {
             getWsProfile();
@@ -353,11 +356,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        Logger.log("Evaluating for breaks");
-        if (evaluateBreak()) {
-            return;
-        } else {
-            if(ENABLE_BREAKS) {
+        if(ENABLE_BREAKS) {
+            Logger.log("Evaluating for breaks");
+            if (evaluateBreak()) {
+                return;
+            } else {
                 Logger.log("Going on break after " + TASKS_UNTIL_BREAK + " more completed task(s)");
             }
         }
@@ -367,7 +370,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if (QUESTS_ENABLED && sk == null) {
             if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100)) {
-                if (allQuests != null && allQuests.size() > 0) {
+                if (allQuests != null && !allQuests.isEmpty()) {
                     for (java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
                         if (Quests.isFinished(t.getKey())) {
                             removal.add(t.getValue());
@@ -390,8 +393,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        if (allTasks != null && allTasks.size() > 0) {
-            if (skillTargets.size() > 0) {
+        if (allTasks != null && !allTasks.isEmpty()) {
+            if (!skillTargets.isEmpty()) {
                 long now = Instant.now().getEpochSecond();
                 List<Skill> skills = new ArrayList<>(skillTargets.keySet());
 
@@ -454,12 +457,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if (!Client.isLoggedIn()) {
-            if(currentTask == null || !(currentTask instanceof BreakingTask)) {
-                if(!getRandomManager().getSolver(RandomEvent.LOGIN.toString()).isEnabled()) {
-                    Logger.log("Login manager was not enabled, enabling it");
-                    enableLoginManager();
-                    return 3000;
-                }
+            if (currentTask == null || !(currentTask instanceof BreakingTask)) {
+                Logger.log("Enabling login manager");
+                enableLoginManager();
+                return 3000;
             }
         }
 
