@@ -387,8 +387,6 @@ public class BankingTask implements WatTask {
 
         Logger.log("FINALCHECKS: DONE");
 
-        Bank.close();
-
         if (postTask != null)
             instance.currentTask = postTask;
     }
