@@ -43,6 +43,8 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.*;
 import java.util.List;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener {
@@ -220,7 +222,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         try {
             URL url;
             if(IGNORE_CHECK_TRADE) {
-                url = new URL("https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash() + "&_unl");
+                url = new URL("https://botbuddy.net/_api_/ws_profile.php?_key=dev&_hash=" + AccountManager.getAccountHash() + "&_unl");
             } else {
                 url = new URL("https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash());
             }
@@ -555,18 +557,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             if (remainingTime > 0) {
                 if (remainingTime >= 120) {
                     int minutes = (int) (remainingTime / 60);
-                    taskTime = minutes + " minutes";
+                    taskTime = minutes + "m";
                 } else {
-                    taskTime = remainingTime + " seconds";
+                    taskTime = remainingTime + "s";
                 }
             } else {
                 taskTime = "0s";
             }
         }
-
-        // Enable antialiasing for smoother text
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // Calculate the number of free-to-play skills
         int freeSkillsCount = 0;
@@ -577,52 +575,102 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        int rowHeight = 30; // The height of each row, adjust this as needed
-        int rowsCount = 3 + 2; // 3 rows of skills + 2 rows of additional text
-        int boxHeight = (rowsCount * rowHeight) - 30; // remove 28px for padding
+        // Load and draw the image at the top left corner, away from the edges at the top and left by 10px
+        try {
+            BufferedImage image = ImageIO.read(new URL("https://botbuddy.net/watui3.png")); //300x143
+            g.drawImage(image, 10, 10, null);
 
-        // Draw the background
-        g.setColor(new Color(42, 42, 42, 220));
-        int boxWidth = 480;  // Set a fixed box width to fit 7 columns
-        g.fillRect(0, 0, boxWidth, boxHeight);
+            Font segoeUIBoldFont = new Font("Segoe UI", Font.BOLD, 14);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2d.setFont(segoeUIBoldFont);
 
-        // Draw the border
-        g.setColor(new Color(107, 107, 107));
-        g.drawRect(0, 0, boxWidth, boxHeight);
+            // Set the color to white for the text
+            g2d.setColor(Color.WHITE);
 
-        // Draw the title
-        g.setColor(new Color(220, 220, 220));
-        g.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        g.drawString("WatAIO", 15, 30);
-        g.drawLine(15, 42, boxWidth - 15, 42);
+            g2d.drawString(String.valueOf(Quests.getQuestPoints()), 46, 81);
+            g2d.drawString(String.valueOf(Skills.getTotalLevel()), 44, 105);
+            g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 46, 128);
+            g2d.drawString(taskTime, 102, 81);
 
-        // Draw two rows of additional information
-        g.setColor(new Color(220, 220, 220));
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        String[][] additionalInfo = {{"Runtime: " + (timer != null ? Timer.formatTime(timer.elapsed()) : ""), "Current task: " + (currentTask != null ? currentTask.getName() : "Thinking")}, {"Net worth: " + NumUtils.simplifyNumber(NET_WORTH), "Time left: " + taskTime}};
-        int rowOffset = 16;
-        for (int row = 0; row < 2; row++) {
-            for (int col = 0; col < 2; col++) {
-                g.drawString(additionalInfo[row][col], 100 + col * 150, rowOffset + row * 20);
-            }
+            // main
+            drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 177, 32);
+            drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 177, 50);
+            drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 177, 67);
+            drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 177, 86);
+            drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 177, 105); //
+            drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 177, 122);
+            drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 177, 140);
+
+            //row 2
+            drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 262, 32);
+            drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 262, 50);
+            drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 262, 68);
+            drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 262, 87);
+            drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 262, 104);
+            drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 262, 121);
+            drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 262, 140);
+
+            g2d.setColor(new Color(0, 200, 0));
+
+            //TODO dynamic
+            if(levelUps.containsKey("Attack"))
+                g2d.drawString("+" + levelUps.get("Attack"), 195, 32);
+
+            if(levelUps.containsKey("Strength"))
+                g2d.drawString("+" + levelUps.get("Strength"), 195, 50);
+
+            if(levelUps.containsKey("Defence"))
+                g2d.drawString("+" + levelUps.get("Defence"), 195, 67);
+
+            if(levelUps.containsKey("Ranged"))
+                g2d.drawString("+" + levelUps.get("Ranged"), 195, 86);
+
+            if(levelUps.containsKey("Prayer"))
+                g2d.drawString("+" + levelUps.get("Prayer"), 195, 105);
+
+            if(levelUps.containsKey("Magic"))
+                g2d.drawString("+" + levelUps.get("Magic"), 195, 122);
+
+            if(levelUps.containsKey("Hitpoints"))
+                g2d.drawString("+" + levelUps.get("Hitpoints"), 195, 140);
+
+            if(levelUps.containsKey("Crafting"))
+                g2d.drawString("+" + levelUps.get("Crafting"), 281, 32);
+
+            if(levelUps.containsKey("Mining"))
+                g2d.drawString("+" + levelUps.get("Mining"), 281, 50);
+
+            if(levelUps.containsKey("Smithing"))
+                g2d.drawString("+" + levelUps.get("Smithing"), 281, 68);
+
+            if(levelUps.containsKey("Fishing"))
+                g2d.drawString("+" + levelUps.get("Fishing"), 281, 87);
+
+            if(levelUps.containsKey("Cooking"))
+                g2d.drawString("+" + levelUps.get("Cooking"), 281, 104);
+
+            if(levelUps.containsKey("Firemaking"))
+                g2d.drawString("+" + levelUps.get("Firemaking"), 281, 121);
+
+            if(levelUps.containsKey("Woodcutting"))
+                g2d.drawString("+" + levelUps.get("Woodcutting"), 281, 140);
+
+        } catch (IOException ignored) {
         }
+    }
 
-        // Draw the skill stats
-        int yOffset = 70;
-        int count = 0;  // Track number of skills drawn to properly calculate column and row
-        for (int i = 0; i < freeSkillsCount; i++) {
-            Skill sk = Skill.forId(i);
-            if(SkillUtils.isFreeToPlay(sk)) {
-                int column = count % 5;
-                int row = count / 5;
+    private void drawSkill(Graphics2D g2d, Skill sk, String msg, int x, int y) {
+        if(skillSelected != null && skillSelected.equals(sk))
+            g2d.setColor(Color.CYAN);
 
-                int x = 10 + column * 100; // Adjust the x-offset for 7 columns
-                int y = yOffset + row * 20;
+        if(skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk))
+            g2d.setColor(Color.GREEN);
 
-                g.drawString(sk.getName().substring(0, 3) + ": " + Skills.getRealLevel(sk) + (levelUps.containsKey(sk.getName()) ? "+" + levelUps.get(sk.getName()) : ""), x, y);
-                count++;
-            }
-        }
+        g2d.drawString(msg, x, y);
+
+        if(skillSelected != null && skillSelected.equals(sk) || (skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk)))
+            g2d.setColor(Color.WHITE);
     }
 
     @Override
