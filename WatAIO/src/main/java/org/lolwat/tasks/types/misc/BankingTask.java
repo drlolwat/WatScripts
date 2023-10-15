@@ -26,6 +26,11 @@ public class BankingTask implements WatTask {
     private final HashMap<String, Integer> sellingItems; // Check this at the very top of banking operations
     private final int inventoriesWorth;
     private WatTask postTask;
+    private final List<String> unrestrictedItems = new ArrayList<String>() {
+        {
+            add("logs");
+        }
+    };
 
     public BankingTask(HashMap<String, Integer> eqRequired, HashMap<String, Integer> invRequired, HashMap<String, Integer> sellList, Integer inventories, WatTask post) {
         if (invRequired == null || invRequired.isEmpty())
@@ -60,7 +65,27 @@ public class BankingTask implements WatTask {
         depositNonRequired();
 
         Logger.log("Sell Checker: starting");
-        if(instance.TRADE_UNLOCKED) {
+
+        boolean allowedToSell = instance.TRADE_UNLOCKED;
+        List<String> toRemove = new ArrayList<>();
+
+        if(!instance.TRADE_UNLOCKED) {
+            for(String s : sellingItems.keySet()) {
+                if(unrestrictedItems.contains(s.toLowerCase())) {
+                    allowedToSell = true;
+                } else {
+                    toRemove.add(s);
+                }
+            }
+
+            for(String s : toRemove) {
+                sellingItems.remove(s);
+            }
+
+            toRemove.clear();
+        }
+
+        if(allowedToSell) {
             if (!sellingItems.isEmpty()) {
                 boolean performSelling = false;
                 if (Inventory.isFull()) {
@@ -96,7 +121,7 @@ public class BankingTask implements WatTask {
                 Logger.log("Nothing to sell");
             }
         } else {
-            Logger.log("Not trade unlocked");
+            Logger.log("Not allowed to sell (account restricted, or restricted items)");
         }
 
         Logger.log("SELLCHECKER: DONE");
@@ -286,7 +311,7 @@ public class BankingTask implements WatTask {
                             return;
                         } else {
                             Logger.log("We are out of GP, time to go and make some.");
-                            instance.NEED_MM = true;
+                            WatAIO.NEED_MM = true;
                             instance.currentTask = null;
                             return;
                         }
@@ -313,7 +338,7 @@ public class BankingTask implements WatTask {
                         return;
                     } else {
                         Logger.log("We are out of GP, time to go and make some.");
-                        instance.NEED_MM = true;
+                        WatAIO.NEED_MM = true;
                         instance.currentTask = null;
                         return;
                     }
