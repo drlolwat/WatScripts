@@ -267,24 +267,30 @@ public class BankingTask implements WatTask {
                     }
 
                     if (needsMule) {
-                        if (Bank.contains("Coins")) {
-                            finalPrice -= Bank.count("Coins");
-                        }
-
-                        if (Inventory.contains("Coins")) {
-                            finalPrice -= Inventory.count("Coins");
-                        }
-
-                        Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
-                        int totalPrice = finalPrice;
-                        instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                            {
-                                put("Coins", totalPrice);
+                        if(!instance.MULE_DEAD) {
+                            if (Bank.contains("Coins")) {
+                                finalPrice -= Bank.count("Coins");
                             }
-                        }, this);
-                        return;
-                    }
 
+                            if (Inventory.contains("Coins")) {
+                                finalPrice -= Inventory.count("Coins");
+                            }
+
+                            Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
+                            int totalPrice = finalPrice;
+                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                                {
+                                    put("Coins", totalPrice);
+                                }
+                            }, this);
+                            return;
+                        } else {
+                            Logger.log("We are out of GP, time to go and make some.");
+                            instance.NEED_MM = true;
+                            instance.currentTask = null;
+                            return;
+                        }
+                    }
                 } else {
                     if (!instance.MULE_DEAD) {
                         if(Bank.contains("Coins")) {
@@ -306,12 +312,15 @@ public class BankingTask implements WatTask {
                         }, this);
                         return;
                     } else {
-                        // logic to do a money gathering task.
+                        Logger.log("We are out of GP, time to go and make some.");
+                        instance.NEED_MM = true;
+                        instance.currentTask = null;
+                        return;
                     }
                 }
             }
 
-            if (m.size() > 0) {
+            if (!m.isEmpty()) {
                 Logger.log("BUYCHECKER: HANDING OFF TO GRAND EXCHANGE");
                 instance.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
                 return;
