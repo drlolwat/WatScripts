@@ -65,7 +65,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public boolean MULE_DEAD = false;
     public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
     public int TASKS_UNTIL_BREAK = 0;
-    public boolean NEED_MM;
+    public static boolean NEED_MM;
     private static Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
@@ -399,13 +399,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         List<WatTask> taskPool;
+        List<Skill> skills;
+        List<Skill> mmSkills = new ArrayList<>();
 
         if(NEED_MM) {
-            NEED_MM = false;
-            if(TRADE_UNLOCKED)
+            if(TRADE_UNLOCKED) {
+                mmSkills.add(Skill.WOODCUTTING);
+                mmSkills.add(Skill.MINING);
+                mmSkills.add(Skill.FISHING);
                 taskPool = TaskManager.getUnrestrictedTasks();
-            else
+            }
+            else {
+                mmSkills.add(Skill.WOODCUTTING);
                 taskPool = TaskManager.getRestrictedTasks();
+            }
         } else {
             taskPool = allTasks;
         }
@@ -413,7 +420,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if (taskPool != null && !taskPool.isEmpty()) {
             if (!skillTargets.isEmpty()) {
                 long now = Instant.now().getEpochSecond();
-                List<Skill> skills = new ArrayList<>(skillTargets.keySet());
+
+                if(!NEED_MM) {
+                    skills = new ArrayList<>(skillTargets.keySet());
+                } else {
+                    skills = mmSkills;
+                    NEED_MM = false;
+                }
 
                 if(sk == null) {
                     Collections.shuffle(skills);
