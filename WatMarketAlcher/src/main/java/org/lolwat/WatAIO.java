@@ -65,6 +65,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public boolean MULE_DEAD = false;
     public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
     public int TASKS_UNTIL_BREAK = 0;
+    public boolean NEED_MM;
     private static Area tutorialIsland = new Area(
             new Tile(3056, 3134, 0),
             new Tile(3055, 3053, 0),
@@ -107,7 +108,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public static boolean STOP_ON_TRADEUNLOCK = true;
     public int MULE_SAFETY_NET;
     public int MULE_TRIGGER;
-
     private static boolean IGNORE_CHECK_TRADE;
 
     @Override
@@ -141,6 +141,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         defaultProfile.addProperty("mule_trigger", 125000);
         defaultProfile.addProperty("mule_safety_net", 75000);
         defaultProfile.addProperty("logout_after_unrestricted", true);
+        defaultProfile.addProperty("disable_mule", true);
 
         return defaultProfile;
     }
@@ -187,6 +188,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             boolean logoutAfterUnrestricted = jsonObject.get("logout_after_unrestricted").getAsBoolean();
             int muleTrigger = jsonObject.get("mule_trigger").getAsInt();
             int muleSafety = jsonObject.get("mule_safety_net").getAsInt();
+            boolean muleDisabled = jsonObject.get("disable_mule").getAsBoolean();
 
             skillTargets = new HashMap<Skill, Integer>(){
                 {
@@ -211,10 +213,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             MULE_TRIGGER = muleTrigger;
             MULE_SAFETY_NET = muleSafety;
             STOP_ON_TRADEUNLOCK = logoutAfterUnrestricted;
+            MULE_DEAD = muleDisabled;
+            NEED_MM = false;
 
-        } catch (IOException | JsonSyntaxException e) {
-            e.printStackTrace();
-            Logger.error("Encountered an error during setup.");
+        } catch (IOException | JsonSyntaxException ignored) {
+            Logger.error("Encountered an error during setup");
         }
     }
 
@@ -395,7 +398,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        if (allTasks != null && !allTasks.isEmpty()) {
+        List<WatTask> taskPool;
+
+        if(NEED_MM) {
+            NEED_MM = false;
+            if(TRADE_UNLOCKED)
+                taskPool = TaskManager.getUnrestrictedTasks();
+            else
+                taskPool = TaskManager.getRestrictedTasks();
+        } else {
+            taskPool = allTasks;
+        }
+
+        if (taskPool != null && !taskPool.isEmpty()) {
             if (!skillTargets.isEmpty()) {
                 long now = Instant.now().getEpochSecond();
                 List<Skill> skills = new ArrayList<>(skillTargets.keySet());
@@ -431,8 +446,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
                 Logger.log("Finding task..");
 
-                Collections.shuffle(allTasks);
-                for (WatTask task : allTasks) {
+                Collections.shuffle(taskPool);
+                for (WatTask task : taskPool) {
                     if (task.trainsSkill() == skillSelected && task.canPerformTask()) {
                         if(ENABLE_BREAKS) {
                             TASKS_UNTIL_BREAK--;
