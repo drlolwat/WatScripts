@@ -301,6 +301,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             Logger.log("Going on break");
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(28800, 43200);
+            TASKS_UNTIL_BREAK = Calculations.random(8, 12);
             currentTask = new BreakingTask((Instant.now().getEpochSecond() + skillRunTime));
             return true;
         }
