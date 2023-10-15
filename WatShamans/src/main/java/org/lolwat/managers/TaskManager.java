@@ -25,21 +25,22 @@ import org.lolwat.tasks.types.smithing.SmithingItemTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TaskManager {
     private static List<WatTask> allTasks;
     private static HashMap<Skill, List<WatTask>> tasksBySkill;
     private static HashMap<Quest, WatTask> questTasks;
     private static WatAIO instance;
+    private static List<WatTask> restrictedMoneyMakingTasks;
+    private static List<WatTask> unrestrictedMoneyMakingTasks;
 
     public static void setupAllTasks(WatAIO core) {
         allTasks = new ArrayList<>();
         tasksBySkill = new HashMap<>();
         questTasks = new HashMap<>();
+        restrictedMoneyMakingTasks = new ArrayList<>();
+        unrestrictedMoneyMakingTasks = new ArrayList<>();
         instance = core;
 
         allTasks.addAll(createMiningTasks());
@@ -64,6 +65,34 @@ public class TaskManager {
         }
 
         questTasks.putAll(createQuestTasks());
+
+        restrictedMoneyMakingTasks.addAll(createRestrictedMMTasks());
+        unrestrictedMoneyMakingTasks.addAll(createUnrestrictedMMTasks());
+    }
+
+    private static List<WatTask> createUnrestrictedMMTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+        List<Skill> mmSkills = new ArrayList<Skill>() { { add(Skill.WOODCUTTING); add(Skill.FISHING); add(Skill.MINING); }};
+
+        for(Map.Entry<Skill, List<WatTask>> e : tasksBySkill.entrySet()) {
+            if(mmSkills.contains(e.getKey())) {
+                tasks.addAll(e.getValue());
+            }
+        }
+
+        return tasks;
+    }
+
+    private static List<WatTask> createRestrictedMMTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //grand exchange south wall
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //lumbridge
+        tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -250); }}));
+        tasks.add(new FishingTask(FishType.SALMON, 35, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -250); put("Raw trout", -250); }}));
+
+        return tasks;
     }
 
     private static HashMap<Quest, WatTask> createQuestTasks() {
@@ -692,5 +721,13 @@ public class TaskManager {
         else {
             return new ArrayList<>();
         }
+    }
+
+    public static List<WatTask> getUnrestrictedTasks() {
+        return unrestrictedMoneyMakingTasks;
+    }
+
+    public static List<WatTask> getRestrictedTasks() {
+        return restrictedMoneyMakingTasks;
     }
 }
