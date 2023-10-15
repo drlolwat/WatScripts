@@ -7,8 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Logic for money-making when a mule doesn't exist">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="See Riboflavin">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +114,7 @@
       <workItem from="1689613364766" duration="37327000" />
       <workItem from="1694880072709" duration="5780000" />
       <workItem from="1696567473818" duration="16239000" />
-      <workItem from="1697042314419" duration="16079000" />
+      <workItem from="1697042314419" duration="21369000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -457,7 +459,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="149" />
+    <option name="localTasksCounter" value="151" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,8 +477,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Jeweled amulets, rings. Muling/Reverse fixes. Selling fixes." />
-    <MESSAGE value="Spinning wheel fixes. SpinningTask uses Areas now." />
     <MESSAGE value="Necklace instead of amulet. Diamond jewelry fix." />
     <MESSAGE value="Crafting DLC test build" />
     <MESSAGE value="Muling improvements" />
@@ -500,7 +500,9 @@
     <MESSAGE value="Fix BreakingTask" />
     <MESSAGE value="Paint v3, BankingTask.java improvements" />
     <MESSAGE value="Logic for money-making when a mule doesn't exist" />
-    <option name="LAST_COMMIT_MESSAGE" value="Logic for money-making when a mule doesn't exist" />
+    <MESSAGE value="wort wort wort" />
+    <MESSAGE value="See Riboflavin" />
+    <option name="LAST_COMMIT_MESSAGE" value="See Riboflavin" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

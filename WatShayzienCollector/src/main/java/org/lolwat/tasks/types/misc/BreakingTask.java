@@ -37,7 +37,6 @@ public class BreakingTask implements WatTask {
         if(Instant.now().getEpochSecond() >= endsAt) {
             if(!Client.isLoggedIn()) {
                 instance.enableLoginManager();
-                instance.TASKS_UNTIL_BREAK = Calculations.random(8, 12);
                 instance.currentTask = null;
             }
         }
