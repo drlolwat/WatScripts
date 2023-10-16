@@ -69,7 +69,7 @@ public class BankingTask implements WatTask {
         boolean allowedToSell = instance.TRADE_UNLOCKED;
         List<String> toRemove = new ArrayList<>();
 
-        if(!instance.TRADE_UNLOCKED) {
+        if(!allowedToSell) {
             for(String s : sellingItems.keySet()) {
                 if(unrestrictedItems.contains(s.toLowerCase())) {
                     allowedToSell = true;
@@ -128,7 +128,6 @@ public class BankingTask implements WatTask {
         checkAndSet(BankMode.ITEM);
 
         HashMap<String, Integer> buyingRequired = new HashMap<>();
-        List<String> toEquip = new ArrayList<>();
 
         // use the clothesRequired to do this..
         // we are doing this now
@@ -144,7 +143,6 @@ public class BankingTask implements WatTask {
 
                     if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
                         Sleep.sleep(200, 400);
-                        toEquip.add(entry.getKey());
                         Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY ALREADY");
                         continue;
                     }
@@ -156,10 +154,9 @@ public class BankingTask implements WatTask {
                         }
 
                         if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), amountRequired)) {
-                            Sleep.sleep(400, 800);
+                            Sleep.sleep(300, 600);
                             if (Inventory.contains(entry.getKey())) {
                                 Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM");
-                                toEquip.add(entry.getKey());
                             }
                         }
                     } else {
@@ -239,7 +236,7 @@ public class BankingTask implements WatTask {
         Logger.log("INVENTORYCHECKER: DONE");
 
         Logger.log("BUYCHECKER: STARTING");
-        if (buyingRequired.size() > 0) {
+        if (!buyingRequired.isEmpty()) {
             checkAndSet(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
