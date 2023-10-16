@@ -142,7 +142,6 @@ public class BankingTask implements WatTask {
                     }
 
                     if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                        Sleep.sleep(200, 400);
                         Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY ALREADY");
                         continue;
                     }
@@ -154,7 +153,7 @@ public class BankingTask implements WatTask {
                         }
 
                         if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), amountRequired)) {
-                            Sleep.sleep(300, 600);
+                            Sleep.sleep(200, 400);
                             if (Inventory.contains(entry.getKey())) {
                                 Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM");
                             }
