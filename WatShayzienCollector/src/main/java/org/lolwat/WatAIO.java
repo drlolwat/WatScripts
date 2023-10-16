@@ -602,16 +602,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        // Calculate the number of free-to-play skills
-        int freeSkillsCount = 0;
-        for (int i = 0; i < 23; i++) {
-            Skill sk = Skill.forId(i);
-            if(SkillUtils.isFreeToPlay(sk)) {
-                freeSkillsCount++;
-            }
+        int totalLevelsGained = 0;
+        for (int i : levelUps.values()) {
+            totalLevelsGained += i;
         }
 
-        // Load and draw the image at the top left corner, away from the edges at the top and left by 10px
         g.drawImage(image, 10, 10, null);
 
         Font segoeUIBoldFont = new Font("Segoe UI", Font.BOLD, 14);
@@ -626,6 +621,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 44, 105);
         g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 46, 128);
         g2d.drawString(taskTime, 102, 81);
+
+        if(totalLevelsGained > 0) {
+            g2d.setColor(new Color(0, 200, 0));
+            g2d.drawString("+" + totalLevelsGained, 79, 105);
+            g2d.setColor(Color.WHITE);
+        }
 
         // main
         drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 177, 32);
@@ -647,7 +648,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         g2d.setColor(new Color(0, 200, 0));
 
-        //TODO dynamic
+        //TODO dynamic in drawSkill
         if(levelUps.containsKey("Attack"))
             g2d.drawString("+" + levelUps.get("Attack"), 195, 32);
 
