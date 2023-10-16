@@ -226,12 +226,15 @@ public class RomeoJulietQuest implements WatTask {
                         NPCs.closest("Juliet").interact();
                         Sleep.sleepUntil(Dialogues::inDialogue, 5000);
                     }
+                } else {
+                    state = State.JULIET_CUTSCENE;
                 }
 
                 break;
             }
 
             case JULIET_CUTSCENE: {
+                Sleep.sleep(2000, 3000);
                 DialogueUtils.continueWhilePossible();
 
                 if(NPCs.closest("Juliet") == null) {

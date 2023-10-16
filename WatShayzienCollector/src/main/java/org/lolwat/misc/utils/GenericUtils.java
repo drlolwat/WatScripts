@@ -49,4 +49,10 @@ public class GenericUtils {
             Mouse.move();
         }
     }
+
+    public static void moveMouse() {
+        if(Calculations.random(16) == 1) {
+            moveMouseInOrOut();
+        }
+    }
 }
