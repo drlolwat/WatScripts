@@ -109,6 +109,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public int MULE_SAFETY_NET;
     public int MULE_TRIGGER;
     private static boolean IGNORE_CHECK_TRADE;
+    private static BufferedImage image;
 
     @Override
     public void onStart(String... params) {
@@ -279,6 +280,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
+
+        try {
+            image = ImageIO.read(new URL("https://botbuddy.net/watui3.png")); //300x143
+        } catch (Exception ignored) {
+
+        }
 
         Logger.log("WatAIO is starting, creating WatTask instances");
 
@@ -605,88 +612,83 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         // Load and draw the image at the top left corner, away from the edges at the top and left by 10px
-        try {
-            BufferedImage image = ImageIO.read(new URL("https://botbuddy.net/watui3.png")); //300x143
-            g.drawImage(image, 10, 10, null);
+        g.drawImage(image, 10, 10, null);
 
-            Font segoeUIBoldFont = new Font("Segoe UI", Font.BOLD, 14);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g2d.setFont(segoeUIBoldFont);
+        Font segoeUIBoldFont = new Font("Segoe UI", Font.BOLD, 14);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setFont(segoeUIBoldFont);
 
-            // Set the color to white for the text
-            g2d.setColor(Color.WHITE);
+        // Set the color to white for the text
+        g2d.setColor(Color.WHITE);
 
-            g2d.drawString(String.valueOf(Quests.getQuestPoints()), 46, 81);
-            g2d.drawString(String.valueOf(Skills.getTotalLevel()), 44, 105);
-            g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 46, 128);
-            g2d.drawString(taskTime, 102, 81);
+        g2d.drawString(String.valueOf(Quests.getQuestPoints()), 46, 81);
+        g2d.drawString(String.valueOf(Skills.getTotalLevel()), 44, 105);
+        g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 46, 128);
+        g2d.drawString(taskTime, 102, 81);
 
-            // main
-            drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 177, 32);
-            drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 177, 50);
-            drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 177, 67);
-            drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 177, 86);
-            drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 177, 105); //
-            drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 177, 122);
-            drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 177, 140);
+        // main
+        drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 177, 32);
+        drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 177, 50);
+        drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 177, 67);
+        drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 177, 86);
+        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 177, 105); //
+        drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 177, 122);
+        drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 177, 140);
 
-            //row 2
-            drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 262, 32);
-            drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 262, 50);
-            drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 262, 68);
-            drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 262, 87);
-            drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 262, 104);
-            drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 262, 121);
-            drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 262, 140);
+        //row 2
+        drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 262, 32);
+        drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 262, 50);
+        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 262, 68);
+        drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 262, 87);
+        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 262, 104);
+        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 262, 121);
+        drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 262, 140);
 
-            g2d.setColor(new Color(0, 200, 0));
+        g2d.setColor(new Color(0, 200, 0));
 
-            //TODO dynamic
-            if(levelUps.containsKey("Attack"))
-                g2d.drawString("+" + levelUps.get("Attack"), 195, 32);
+        //TODO dynamic
+        if(levelUps.containsKey("Attack"))
+            g2d.drawString("+" + levelUps.get("Attack"), 195, 32);
 
-            if(levelUps.containsKey("Strength"))
-                g2d.drawString("+" + levelUps.get("Strength"), 195, 50);
+        if(levelUps.containsKey("Strength"))
+            g2d.drawString("+" + levelUps.get("Strength"), 195, 50);
 
-            if(levelUps.containsKey("Defence"))
-                g2d.drawString("+" + levelUps.get("Defence"), 195, 67);
+        if(levelUps.containsKey("Defence"))
+            g2d.drawString("+" + levelUps.get("Defence"), 195, 67);
 
-            if(levelUps.containsKey("Ranged"))
-                g2d.drawString("+" + levelUps.get("Ranged"), 195, 86);
+        if(levelUps.containsKey("Ranged"))
+            g2d.drawString("+" + levelUps.get("Ranged"), 195, 86);
 
-            if(levelUps.containsKey("Prayer"))
-                g2d.drawString("+" + levelUps.get("Prayer"), 195, 105);
+        if(levelUps.containsKey("Prayer"))
+            g2d.drawString("+" + levelUps.get("Prayer"), 195, 105);
 
-            if(levelUps.containsKey("Magic"))
-                g2d.drawString("+" + levelUps.get("Magic"), 195, 122);
+        if(levelUps.containsKey("Magic"))
+            g2d.drawString("+" + levelUps.get("Magic"), 195, 122);
 
-            if(levelUps.containsKey("Hitpoints"))
-                g2d.drawString("+" + levelUps.get("Hitpoints"), 195, 140);
+        if(levelUps.containsKey("Hitpoints"))
+            g2d.drawString("+" + levelUps.get("Hitpoints"), 195, 140);
 
-            if(levelUps.containsKey("Crafting"))
-                g2d.drawString("+" + levelUps.get("Crafting"), 281, 32);
+        if(levelUps.containsKey("Crafting"))
+            g2d.drawString("+" + levelUps.get("Crafting"), 281, 32);
 
-            if(levelUps.containsKey("Mining"))
-                g2d.drawString("+" + levelUps.get("Mining"), 281, 50);
+        if(levelUps.containsKey("Mining"))
+            g2d.drawString("+" + levelUps.get("Mining"), 281, 50);
 
-            if(levelUps.containsKey("Smithing"))
-                g2d.drawString("+" + levelUps.get("Smithing"), 281, 68);
+        if(levelUps.containsKey("Smithing"))
+            g2d.drawString("+" + levelUps.get("Smithing"), 281, 68);
 
-            if(levelUps.containsKey("Fishing"))
-                g2d.drawString("+" + levelUps.get("Fishing"), 281, 87);
+        if(levelUps.containsKey("Fishing"))
+            g2d.drawString("+" + levelUps.get("Fishing"), 281, 87);
 
-            if(levelUps.containsKey("Cooking"))
-                g2d.drawString("+" + levelUps.get("Cooking"), 281, 104);
+        if(levelUps.containsKey("Cooking"))
+            g2d.drawString("+" + levelUps.get("Cooking"), 281, 104);
 
-            if(levelUps.containsKey("Firemaking"))
-                g2d.drawString("+" + levelUps.get("Firemaking"), 281, 121);
+        if(levelUps.containsKey("Firemaking"))
+            g2d.drawString("+" + levelUps.get("Firemaking"), 281, 121);
 
-            if(levelUps.containsKey("Woodcutting"))
-                g2d.drawString("+" + levelUps.get("Woodcutting"), 281, 140);
-
-        } catch (IOException ignored) {
-        }
+        if(levelUps.containsKey("Woodcutting"))
+            g2d.drawString("+" + levelUps.get("Woodcutting"), 281, 140);
     }
 
     private void drawSkill(Graphics2D g2d, Skill sk, String msg, int x, int y) {
