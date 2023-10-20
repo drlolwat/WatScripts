@@ -245,6 +245,41 @@ public class TaskManager {
             put("Trout", 20);
         }}));
 
+        tasks.add(new RangedCombatTask(60, 99, new Area(
+                new Tile(3165, 9882, 0),
+                new Tile(3162, 9879, 0),
+                new Tile(3162, 9877, 0),
+                new Tile(3163, 9876, 0),
+                new Tile(3164, 9876, 0),
+                new Tile(3165, 9876, 0),
+                new Tile(3170, 9881, 0),
+                new Tile(3173, 9881, 0),
+                new Tile(3173, 9886, 0),
+                new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
+            put("Lobster", 20);
+            put("Knife", 1);
+        }}));
+
+        tasks.add(new RangedCombatTask(60, 99, new Area(
+                new Tile(3154, 9908, 0),
+                new Tile(3154, 9902, 0),
+                new Tile(3156, 9902, 0),
+                new Tile(3158, 9898, 0),
+                new Tile(3159, 9898, 0),
+                new Tile(3162, 9901, 0),
+                new Tile(3163, 9901, 0),
+                new Tile(3166, 9904, 0),
+                new Tile(3165, 9906, 0),
+                new Tile(3159, 9907, 0),
+                new Tile(3158, 9909, 0),
+                new Tile(3154, 9909, 0),
+                new Tile(3156, 9900, 0),
+                new Tile(3159, 9898, 0),
+                new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
+            put("Lobster", 20);
+            put("Knife", 1);
+        }}));
+
         return tasks;
     }
 
