@@ -26,9 +26,13 @@ public class BankingTask implements WatTask {
     private final HashMap<String, Integer> sellingItems; // Check this at the very top of banking operations
     private final int inventoriesWorth;
     private WatTask postTask;
-    private final List<String> unrestrictedItems = new ArrayList<String>() {
+    private final List<String> restrictedItems = new ArrayList<String>() {
         {
             add("logs");
+            add("trout");
+            add("salmon");
+            add("diamond necklace");
+            add("gold bar");
         }
     };
 
@@ -71,7 +75,7 @@ public class BankingTask implements WatTask {
 
         if(!allowedToSell) {
             for(String s : sellingItems.keySet()) {
-                if(unrestrictedItems.contains(s.toLowerCase())) {
+                if(restrictedItems.contains(s.toLowerCase())) {
                     allowedToSell = true;
                 } else {
                     toRemove.add(s);
@@ -117,6 +121,7 @@ public class BankingTask implements WatTask {
                     instance.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
                     return;
                 }
+
             } else {
                 Logger.log("Nothing to sell");
             }
