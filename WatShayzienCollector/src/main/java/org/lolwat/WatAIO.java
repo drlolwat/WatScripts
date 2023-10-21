@@ -560,7 +560,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             currentTask.execute(this);
 
-            if(currentTask!= null && !(currentTask instanceof TraversalTask) && !(currentTask instanceof BankingTask) && !(currentTask instanceof MulingTask)) {
+            if(!isBlockedTask()) {
                 GenericUtils.moveMouse();
             }
 
@@ -569,6 +569,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         return 1000;
+    }
+
+    private boolean isBlockedTask() {
+        return currentTask == null ||
+                currentTask instanceof TraversalTask ||
+                currentTask instanceof BankingTask ||
+                currentTask instanceof MulingTask ||
+                currentTask instanceof BreakingTask;
     }
 
     @Override
