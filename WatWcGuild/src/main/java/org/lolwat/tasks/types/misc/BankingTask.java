@@ -17,6 +17,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.prayer.BuryBonesTask;
 
 import java.time.Instant;
 import java.util.*;
@@ -422,8 +423,11 @@ public class BankingTask implements WatTask {
 
         Logger.log("FINALCHECKS: DONE");
 
-        if (postTask != null)
-            instance.currentTask = postTask;
+        if (postTask != null) {
+            if(!(postTask instanceof BuryBonesTask)) {
+                instance.currentTask = postTask;
+            }
+        }
     }
 
     private void depositNonRequired() {
