@@ -403,7 +403,7 @@ public class TaskManager {
             }));
 
             // varrock guards, palace upstairs north
-            tasks.add(new MeleeCombatTask(sk, 35, 126, new Area(
+            tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
                     new Tile(3207, 3490, 1),
                     new Tile(3200, 3490, 1),
                     new Tile(3200, 3499, 1),
@@ -416,7 +416,7 @@ public class TaskManager {
             }));
 
             // varrock guards, palace courtyard
-            tasks.add(new MeleeCombatTask(sk, 35, 126, new Area(
+            tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
                     new Tile(3202, 3468, 0),
                     new Tile(3202, 3461, 0),
                     new Tile(3204, 3459, 0),
@@ -429,7 +429,7 @@ public class TaskManager {
             }}));
 
             // hill giants (plateau)
-            tasks.add(new MeleeCombatTask(sk, 40, 126, new Area(
+            tasks.add(new MeleeCombatTask(sk, 40, 70, new Area(
                     new Tile(3367, 3157, 0),
                     new Tile(3367, 3142, 0),
                     new Tile(3381, 3142, 0),
