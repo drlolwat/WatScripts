@@ -180,7 +180,7 @@ public class GrandExchangeTask implements WatTask {
                 }
             }
 
-            itemList.clear();
+            //itemList.clear();
 
             Sleep.sleep(3000);
             if(GrandExchange.isReadyToCollect()) {
