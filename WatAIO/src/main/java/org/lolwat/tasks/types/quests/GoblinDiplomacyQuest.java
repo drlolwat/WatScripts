@@ -29,7 +29,7 @@ public class GoblinDiplomacyQuest implements WatTask {
             new Tile(2962, 3514, 0),
             new Tile(2956, 3514, 0));
 
-    private final List<String> startDialogue = Arrays.asList("Do you want me to pick an armour colour for you?", "Yes.", "You should wear red.", "What about a different colour?", "Okay, I'll be back soon.");
+    private final List<String> startDialogue = Arrays.asList("Do you want me to pick an armour colour for you?", "Yes.", "You should wear red.", "What about a different colour?", "Okay, I'll be back soon.", "I'll leave you to it.");
     private final List<String> completeDialogue = Arrays.asList("No, he doesn't look fat.", "I have some orange armour here.", "I have some blue armour here.", "I have some brown armour here.");
     private boolean hasOrange = false;
     private boolean hasBlue = false;

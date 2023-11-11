@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
+import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;

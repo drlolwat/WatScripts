@@ -993,7 +993,7 @@ public class TutorialTask implements WatTask {
     }
 
     private void talkTo(String npc) {
-        List<WidgetChild> clickToContinue = Widgets.getWidgetChildrenContainingText("Click to continue");
+        /*List<WidgetChild> clickToContinue = Widgets.getWidgetChildrenContainingText("Click to continue");
         if (!clickToContinue.isEmpty()) {
             WidgetChild wc = clickToContinue.get(0);
             if (wc != null && wc.isVisible()) {
@@ -1001,7 +1001,8 @@ public class TutorialTask implements WatTask {
                 wc.interact();
                 sleep(900, 1200);
             }
-        }
+        }*/
+
         if (!Dialogues.canContinue()) {
             final NPC guide = NPCs.closest(npc);
             if (guide != null) {
@@ -1017,8 +1018,8 @@ public class TutorialTask implements WatTask {
             }
         } else {
             //log("Clicking continue");
-            Dialogues.clickContinue();
-            sleep(600, 900);
+            Dialogues.continueDialogue();
+            sleep(200, 500);
         }
     }
 
@@ -1041,8 +1042,8 @@ public class TutorialTask implements WatTask {
     }
 
     private void walkingSleep() {
-        Sleep.sleepUntil(() -> Players.getLocal().isMoving(), Calculations.random(1200, 1600));
-        Sleep.sleepUntil(() -> !Players.getLocal().isMoving(), Calculations.random(2400, 3600));
+        Sleep.sleepUntil(() -> Players.getLocal().isMoving(), Calculations.random(300, 1200));
+        Sleep.sleepUntil(() -> !Players.getLocal().isMoving(), Calculations.random(300, 1200));
     }
 
     @Override
