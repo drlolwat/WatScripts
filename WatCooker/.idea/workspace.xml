@@ -7,10 +7,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="See Riboflavin">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Hill giants, Guards - max CB adjusted">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/firemaking/FiremakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TutorialTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +120,9 @@
       <workItem from="1689613364766" duration="37327000" />
       <workItem from="1694880072709" duration="5780000" />
       <workItem from="1696567473818" duration="16239000" />
-      <workItem from="1697042314419" duration="21369000" />
+      <workItem from="1697042314419" duration="35174000" />
+      <workItem from="1699230296932" duration="934000" />
+      <workItem from="1699340775129" duration="11315000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -459,7 +467,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="151" />
+    <option name="localTasksCounter" value="158" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -477,13 +485,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Necklace instead of amulet. Diamond jewelry fix." />
-    <MESSAGE value="Crafting DLC test build" />
-    <MESSAGE value="Muling improvements" />
-    <MESSAGE value="Production ready" />
-    <MESSAGE value="Woodcutting changes, Sell+Mule after &quot;Account complete&quot;" />
-    <MESSAGE value="Fix Crafting task level evaluation bug" />
-    <MESSAGE value="Script breaks refinement" />
     <MESSAGE value="Profiles, G.E updates" />
     <MESSAGE value="Profile variables" />
     <MESSAGE value="Anti-ban via cloud-based profiles. More dynamic behavior." />
@@ -502,7 +503,14 @@
     <MESSAGE value="Logic for money-making when a mule doesn't exist" />
     <MESSAGE value="wort wort wort" />
     <MESSAGE value="See Riboflavin" />
-    <option name="LAST_COMMIT_MESSAGE" value="See Riboflavin" />
+    <MESSAGE value="Breakfix" />
+    <MESSAGE value="Improved BankingTask, improved wealth generation" />
+    <MESSAGE value="TTL on paint shows gained amount" />
+    <MESSAGE value="Antiban, Romeo and Juliet changes, Banking improvements" />
+    <MESSAGE value="Added Moss Giants to Ranged tasks" />
+    <MESSAGE value="Improved antiban, improved restricted selling" />
+    <MESSAGE value="Hill giants, Guards - max CB adjusted" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hill giants, Guards - max CB adjusted" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

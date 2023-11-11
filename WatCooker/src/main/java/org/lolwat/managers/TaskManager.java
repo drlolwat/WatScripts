@@ -526,7 +526,7 @@ public class TaskManager {
                 put("Raw shrimps", -1);
                 put("Herring", -1);
                 put("Raw herring", -1);
-                put("Lobster", -200);
+                put("Lobster", -250);
             }
         }));
 
