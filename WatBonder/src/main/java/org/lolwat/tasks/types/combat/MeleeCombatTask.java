@@ -90,7 +90,7 @@ public class MeleeCombatTask implements WatTask {
             requiredItems.remove(s);
         }
 
-        if (requiredItems.size() > 0) {
+        if (!requiredItems.isEmpty()) {
             Logger.log("We need to grab the rest of our melee equipment..");
             for (String s : requiredItems.keySet()) {
                 Logger.log("- " + s);
@@ -100,7 +100,7 @@ public class MeleeCombatTask implements WatTask {
             return;
         }
 
-        if(food.size() > 0) {
+        if(!food.isEmpty()) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
                     instance.currentTask = new BankingTask(requiredItems, food, null, 1, this);
