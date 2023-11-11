@@ -7,6 +7,7 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -80,11 +81,12 @@ public class FiremakingTask implements WatTask {
         }
 
         if(Inventory.contains("Tinderbox") && Inventory.interact("Tinderbox")) {
+            Tile t = Players.getLocal().getTile();
             if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.interact(WoodcuttingUtils.getLogName(logType))) {
                 ready = false;
                 Sleep.sleep(200, 500);
                 Mouse.move(Inventory.get("Tinderbox").getDestination());
-                Sleep.sleepUntil(() -> Dialogues.canContinue() || ready, 10000);
+                Sleep.sleepUntil(() -> Dialogues.canContinue() || (Players.getLocal().getTile() != t && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating()), 10000);
             }
         }
     }
