@@ -72,8 +72,10 @@ public class BankingTask implements WatTask {
         Logger.log("Sell Checker: starting");
 
         boolean allowedToSell = instance.TRADE_UNLOCKED;
-        List<String> toRemove = new ArrayList<>();
 
+        Logger.log("Trade unrestricted: " + allowedToSell);
+
+        List<String> toRemove = new ArrayList<>();
         if(!allowedToSell) {
             for(String s : sellingItems.keySet()) {
                 if(restrictedItems.contains(s.toLowerCase())) {
@@ -122,7 +124,6 @@ public class BankingTask implements WatTask {
                     instance.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
                     return;
                 }
-
             } else {
                 Logger.log("Nothing to sell");
             }
@@ -424,9 +425,11 @@ public class BankingTask implements WatTask {
         Logger.log("FINALCHECKS: DONE");
 
         if (postTask != null) {
-            if(!(postTask instanceof BuryBonesTask)) {
-                instance.currentTask = postTask;
+            if(postTask instanceof BuryBonesTask) {
+                Bank.close();
             }
+
+            instance.currentTask = postTask;
         }
     }
 
