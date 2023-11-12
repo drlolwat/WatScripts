@@ -176,8 +176,8 @@ public class BankingTask implements WatTask {
 
             Sleep.sleep(500, 1000);
             for (String s : postTask.clothesRequired().keySet()) {
-                if (Inventory.contains(s)) {
-                    GenericUtils.equipItem(s);
+                if (Inventory.contains(s) && !GenericUtils.equipItem(s, null)) {
+                    Logger.error("Error equipping item in BankingTask");
                 }
             }
 
