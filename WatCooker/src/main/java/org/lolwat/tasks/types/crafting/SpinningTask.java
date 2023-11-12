@@ -16,6 +16,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -122,6 +123,6 @@ public class SpinningTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return GenericUtils.styleScape();
     }
 }
