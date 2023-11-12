@@ -154,6 +154,6 @@ public class FishingTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return GenericUtils.styleScape();
+        return GenericUtils.getSkillingGear();
     }
 }
