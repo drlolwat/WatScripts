@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.woodcutting;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -74,6 +75,13 @@ public class WoodcuttingTask implements WatTask {
         else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
+            }
+
+            Item old = Equipment.getItemInSlot(EquipmentSlot.WEAPON);
+            if(GenericUtils.canEquipTool(hatchet) && GenericUtils.equipItem(hatchet, old)) {
+                Sleep.sleep(30, 90);
+            } else {
+                Logger.error("Error equipping hatchet");
             }
 
             // its all very similar to mining isn't it
@@ -157,6 +165,6 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return GenericUtils.styleScape();
+        return GenericUtils.getSkillingGear();
     }
 }
