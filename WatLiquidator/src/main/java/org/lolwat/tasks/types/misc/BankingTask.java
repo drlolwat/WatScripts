@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -425,7 +426,7 @@ public class BankingTask implements WatTask {
         Logger.log("FINALCHECKS: DONE");
 
         if (postTask != null) {
-            if(postTask instanceof BuryBonesTask) {
+            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask) {
                 Bank.close();
             }
 
@@ -462,20 +463,27 @@ public class BankingTask implements WatTask {
                 return;
             }
 
-            List<Item> toDeposit = new ArrayList<>();
-
+            //List<Item> toDeposit = new ArrayList<>();
+            HashMap<Item, Integer> toDeposit = new HashMap<>();
             for (Item i : Inventory.all()) {
                 if (i == null)
                     continue;
 
                 if (inventoryRequired != null && !inventoryRequired.containsKey(i.getName()) && postTask.clothesRequired() != null && !postTask.clothesRequired().containsKey(i.getName())) {
-                    toDeposit.add(i);
+                    toDeposit.put(i, i.getAmount());
                 }
             }
 
             if (!toDeposit.isEmpty()) {
-                for (Item i : toDeposit) {
-                    Bank.depositAll(i);
+                for (Map.Entry<Item, Integer> i : toDeposit.entrySet()) {
+                    if(i.getValue() > 1) {
+                        if(!Inventory.get(i.getKey().getName()).interact()) {
+                            Logger.log("issue interacting with item in inventory");
+                        }
+                    } else {
+                        Bank.depositAll(i.getKey());
+                    }
+
                     Sleep.sleep(10, 30);
                 }
             }
