@@ -15,6 +15,7 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.mixed.FishType;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.cooking.CookingUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
@@ -114,6 +115,6 @@ public class CookingFishTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return GenericUtils.styleScape();
     }
 }

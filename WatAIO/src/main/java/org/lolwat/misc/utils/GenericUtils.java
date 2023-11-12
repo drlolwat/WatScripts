@@ -3,9 +3,14 @@ package org.lolwat.misc.utils;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.WatAIO;
+import org.lolwat.misc.types.combat.DefensiveItemType;
 
 import java.util.*;
 
@@ -24,6 +29,13 @@ public class GenericUtils {
         } else {
             Logger.error("item to equip was null");
         }
+    }
+
+    public static HashMap<String, Integer> styleScape() {
+        HashMap<String, Integer> ret = new HashMap<>();
+        ret.put("Leather boots", 1);
+        ret.put(WatAIO.CAPE_TYPE, 1);
+        return ret;
     }
 
     public static <K, V> void shuffleHashMap(HashMap<K, V> hashMap) {

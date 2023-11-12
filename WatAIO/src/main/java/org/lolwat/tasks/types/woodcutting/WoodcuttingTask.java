@@ -17,6 +17,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.types.mixed.TreeType;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.HopperTask;
@@ -156,6 +157,6 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return GenericUtils.styleScape();
     }
 }
