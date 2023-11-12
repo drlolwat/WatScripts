@@ -115,6 +115,6 @@ public class JewelryTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return GenericUtils.styleScape();
     }
 }

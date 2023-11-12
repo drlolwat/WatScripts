@@ -15,6 +15,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.smithing.SmithingType;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.WatTask;
@@ -120,6 +121,6 @@ public class SmithingItemTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return GenericUtils.styleScape();
     }
 }

@@ -8,6 +8,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.prayer.BoneType;
@@ -87,6 +88,6 @@ public class BuryBonesTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return GenericUtils.styleScape();
     }
 }
