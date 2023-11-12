@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.mining;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -18,6 +19,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.Player;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.mining.MiningUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -119,6 +121,13 @@ public class MiningTask implements WatTask {
                 Tab.INVENTORY.open();
             }
 
+            Item old = Equipment.getItemInSlot(EquipmentSlot.WEAPON);
+            if(GenericUtils.canEquipTool(pickaxe) && GenericUtils.equipItem(pickaxe, old)) {
+                Sleep.sleep(30, 90);
+            } else {
+                Logger.error("Error equipping pickaxe");
+            }
+
             // Check if we need to bank, and tell the Banking task to check if we have over 1000 ore, in which case sell it.
             // We use -1000 so the script knows to check for 1000, but also to sell all of it.
             // If we checked for 1000, then it would only withdraw 1000.
@@ -215,6 +224,6 @@ public class MiningTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return GenericUtils.styleScape();
+        return GenericUtils.getSkillingGear();
     }
 }

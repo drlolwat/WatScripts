@@ -3,39 +3,82 @@ package org.lolwat.misc.utils;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
-import org.lolwat.misc.types.combat.DefensiveItemType;
 
 import java.util.*;
 
 public class GenericUtils {
-    public static void equipItem(String item) {
+    private static HashMap<String, Integer> levels = new HashMap<String, Integer>() {
+        {
+            // picks
+            put("Rune pickaxe", 40);
+            put("Adamant pickaxe", 30);
+            put("Mithril pickaxe", 20);
+            put("Black pickaxe", 10);
+            put("Steel pickaxe", 5);
+            put("Iron pickaxe", 1);
+            put("Bronze pickaxe", 1);
+
+            //axes
+            put("Rune axe", 40);
+            put("Adamant axe", 30);
+            put("Mithril axe", 20);
+            put("Black axe", 10);
+            put("Steel axe", 5);
+            put("Iron axe", 1);
+            put("Bronze axe", 1);
+        }
+    };
+
+    public static boolean equipItem(String item, Item old) {
         Item i = Inventory.get(item);
         if(i != null) {
             if(i.hasAction("Wear") && i.interact("Wear")) {
                 Logger.log("EQUIPMENTCHECKER: EQUIPPED WEARABLE");
                 Sleep.sleep(100, 200);
+
+                if(Bank.isOpen() && old != null) {
+                    Sleep.sleep(200, 400);
+                    Bank.depositAll(old.getName());
+                    Logger.log("EQUIPMENTCHECKER: DEPOSITED OLD WEARABLE: " + old.getName());
+                }
+
+                return true;
             }
             else if(i.hasAction("Wield") && i.interact("Wield")) {
                 Logger.log("EQUIPMENTCHECKER: EQUIPPED WEAPON/AMMO");
                 Sleep.sleep(100, 200);
+
+                if(Bank.isOpen() && old != null) {
+                    Sleep.sleep(200, 400);
+                    Bank.depositAll(old.getName());
+                    Logger.log("EQUIPMENTCHECKER: DEPOSITED OLD WEP/TOOL: " + old.getName());
+                }
+
+                return true;
             }
         } else {
             Logger.error("item to equip was null");
         }
+
+        return false;
     }
 
-    public static HashMap<String, Integer> styleScape() {
+    public static HashMap<String, Integer> getSkillingGear() {
         HashMap<String, Integer> ret = new HashMap<>();
         ret.put("Leather boots", 1);
         ret.put(WatAIO.CAPE_TYPE, 1);
         return ret;
+    }
+
+    public static boolean canEquipTool(String toolName) {
+        return levels.containsKey(toolName) && Skills.getRealLevel(Skill.ATTACK) >= levels.get(toolName);
     }
 
     public static <K, V> void shuffleHashMap(HashMap<K, V> hashMap) {
