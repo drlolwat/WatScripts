@@ -470,13 +470,18 @@ public class BankingTask implements WatTask {
                     continue;
 
                 if (inventoryRequired != null && !inventoryRequired.containsKey(i.getName()) && postTask.clothesRequired() != null && !postTask.clothesRequired().containsKey(i.getName())) {
-                    toDeposit.put(i, i.getAmount());
+                    int am = i.getAmount();
+                    if(toDeposit.containsKey(i)) {
+                        am = am + toDeposit.get(i);
+                    }
+
+                    toDeposit.put(i, am);
                 }
             }
 
             if (!toDeposit.isEmpty()) {
                 for (Map.Entry<Item, Integer> i : toDeposit.entrySet()) {
-                    if(i.getValue() > 1) {
+                    if(i.getValue() == 1) {
                         if(!Inventory.get(i.getKey().getName()).interact()) {
                             Logger.log("issue interacting with item in inventory");
                         }
