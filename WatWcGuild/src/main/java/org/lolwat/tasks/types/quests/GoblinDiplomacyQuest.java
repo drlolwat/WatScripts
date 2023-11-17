@@ -103,7 +103,7 @@ public class GoblinDiplomacyQuest implements WatTask {
     }
 
     private boolean dyeMail(String color) {
-        if(Inventory.contains("Goblin mail") && Inventory.contains(color + " dye")) {
+        if(Inventory.count("Goblin mail") > 1 && Inventory.contains(color + " dye")) {
             if(Inventory.get(color + " dye").interact("Use")) {
                 Sleep.sleep(50, 200);
                 if (Inventory.get("Goblin mail").interact()) {
