@@ -55,7 +55,10 @@ public class TraversalTask implements WatTask {
         Logger.log("Traversing to area");
     }
 
-    private void handleSlashing() {
+    @Override
+    public void execute(WatAIO instance) {
+        boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
+
         List<String> types = Arrays.asList("Web");
         for (String t : types) {
             if(GameObjects.closest(t) != null && GameObjects.closest(t).distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest(t).interact()) {
@@ -64,19 +67,6 @@ public class TraversalTask implements WatTask {
                 return;
             }
         }
-    }
-
-    @Override
-    public void execute(WatAIO instance) {
-        boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
-
-        /*if(GameObjects.closest("Web") != null && GameObjects.closest("Web").distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest("Web").interact()) {
-            Logger.log("Traversal: slashed web");
-            Sleep.sleepUntil(() -> GameObjects.closest("Web") == null || !GameObjects.closest("Web").exists(), 5000);
-            return;
-        }*/
-
-        handleSlashing();
 
         if(!usingArea) {
             if (completedTile && Map.isTileOnMap(target)) {
