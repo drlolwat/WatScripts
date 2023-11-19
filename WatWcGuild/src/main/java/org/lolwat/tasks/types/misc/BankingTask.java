@@ -137,88 +137,125 @@ public class BankingTask implements WatTask {
 
         HashMap<String, Integer> buyingRequired = new HashMap<>();
 
-        // CHECKERS
-        equipmentChecker(buyingRequired);
-        inventoryChecker(instance, buyingRequired);
-        buyChecker(instance, buyingRequired);
-
-        if(!instance.MULE_DEAD && instance.TRADE_UNLOCKED) {
-            int invMoney = 0;
-            int bankMoney = 0;
-
-            if(Inventory.contains("Coins")) {
-                invMoney = Inventory.get("Coins").getAmount();
-            }
-
-            if(Bank.contains("Coins")) {
-                bankMoney = Bank.get("Coins").getAmount();
-            }
-
-            if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
-                int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
-                if(toWithdraw > 0) {
-                    Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                    if(Inventory.isFull() || Inventory.emptySlotCount() < 2) {
-                        Bank.depositAllExcept("Coins");
+        // use the clothesRequired to do this..
+        // we are doing this now
+        Logger.log("EQUIPMENTCHECKER: STARTING");
+        if(postTask != null) {
+            if (!postTask.clothesRequired().isEmpty()) {
+                for (Map.Entry<String, Integer> entry : postTask.clothesRequired().entrySet()) {
+                    int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
+                    if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getKey()) >= amountRequired) {
+                        Logger.log("EQUIPMENTCHECKER: ITEM ALREADY EQUIPPED");
+                        continue;
                     }
-                    Sleep.sleep(100, 200);
-                    Bank.withdraw("Coins", toWithdraw);
-                    Sleep.sleep(200, 400);
-                    postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
+
+                    if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
+                        Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY ALREADY");
+                        continue;
+                    }
+
+                    if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
+                        if (Inventory.fullSlotCount() >= 26) { // deposit only if we need the space
+                            depositNonRequired();
+                            Sleep.sleep(100, 200);
+                        }
+
+                        if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), amountRequired)) {
+                            Sleep.sleep(200, 400);
+                            if (Inventory.contains(entry.getKey())) {
+                                Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM");
+                            }
+                        }
+                    } else {
+                        // need to buy.
+                        buyingRequired.put(entry.getKey(), entry.getValue());
+                        Logger.log("EQUIPMENTCHECKER: NEED TO BUY " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " OF " + entry.getKey());
+                    }
                 }
+            }
+
+            Sleep.sleep(500, 1000);
+            boolean checkedEquipment = false;
+            for (String s : postTask.clothesRequired().keySet()) {
+                if(!checkedEquipment) {
+                    for (Item i : Equipment.all()) {
+                        if ((i != null && postTask != null) && !postTask.clothesRequired().containsKey(i.getName())) {
+                            Bank.depositAllEquipment();
+                            Sleep.sleep(50, 120);
+                            checkedEquipment = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(!Equipment.contains(s)) {
+                    if (Inventory.contains(s) && !GenericUtils.equipItem(s, null)) {
+                        Logger.error("Error equipping item in BankingTask");
+                    }
+                }
+            }
+
+            if (postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
+                Bank.depositAllEquipment();
             }
         }
 
-        Logger.log("FINALCHECKS: STARTING");
+        Logger.log("EQUIPMENTCHECKER: DONE");
 
-        if(postTask != null && !(postTask instanceof MulingTask)) {
-            depositNonRequired();
-        }
+        //TODO
+        // make inventoryRequired part of the task and use that.
+        Logger.log("INVENTORYCHECKER: STARTING");
+        if (!inventoryRequired.isEmpty()) {
+            checkAndSet(BankMode.ITEM);
+            for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+                int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
+                if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
+                    amountRequired = 1;
 
-        // calculate net worth
-        if(instance.NET_WORTH_GENERATED == 0) {
-            instance.NET_WORTH = 0;
-            for (Item i : Bank.all()) {
-                if (i == null)
-                    continue;
+                if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
+                    if(Inventory.get(entry.getKey()).isNoted()) {
+                        Bank.depositAll(entry.getKey());
+                        Sleep.sleep(100, 300);
+                    } else {
+                        Logger.log("INVENTORYCHECKER: ITEM ALREADY IN INVENTORY, MINIMUM QUANTITY MET");
+                        continue;
+                    }
+                }
 
-                if (i.getAmount() > 1) {
-                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
+                    int toWithdraw = entry.getValue() > 0 ? entry.getValue() : Bank.count(entry.getKey());
+                    if (Inventory.isFull()) {
+                        Bank.depositAllItems();
+                        Sleep.sleep(100, 200);
+                    }
+
+                    int reduceBy = 0;
+                    if (Inventory.contains(entry.getKey())) {
+                        reduceBy = Inventory.count(entry.getKey());
+                    }
+
+                    toWithdraw -= reduceBy;
+
+                    if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), toWithdraw)) {
+                        Logger.log("INVENTORYCHECKER: WITHDREW " + toWithdraw + " OF " + entry.getKey());
+                    }
                 } else {
-                    instance.NET_WORTH += LivePrices.get(i);
+                    // needing to buy it.
+                    int amountToBuy = (entry.getValue() > 0 ? entry.getValue() : -entry.getValue()) * inventoriesWorth;
+                    for (String s : instance.SINGULAR_ITEMS) {
+                        if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
+                            amountToBuy = 1;
+                            break;
+                        }
+                    }
+
+                    buyingRequired.put(entry.getKey(), amountToBuy);
+                    Logger.log("INVENTORYCHECKER: NEED TO BUY " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " OF " + entry.getKey());
                 }
             }
-
-            for (Item i : Inventory.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
-                } else {
-                    instance.NET_WORTH += LivePrices.get(i);
-                }
-            }
-
-            instance.NET_WORTH_GENERATED = Instant.now().getEpochSecond();
-        } else {
-            if((Instant.now().getEpochSecond() - instance.NET_WORTH_GENERATED) >= 3600) {
-                instance.NET_WORTH_GENERATED = 0; // will generate net worth next time.
-            }
         }
+        Logger.log("INVENTORYCHECKER: DONE");
 
-        Logger.log("FINALCHECKS: DONE");
-
-        if (postTask != null) {
-            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask) {
-                Bank.close();
-            }
-
-            instance.currentTask = postTask;
-        }
-    }
-
-    private void buyChecker(WatAIO instance, HashMap<String, Integer> buyingRequired) {
         Logger.log("BUYCHECKER: STARTING");
         if (!buyingRequired.isEmpty()) {
             checkAndSet(BankMode.ITEM);
@@ -334,120 +371,81 @@ public class BankingTask implements WatTask {
         }
 
         Logger.log("BUYCHECKER: DONE");
-    }
 
-    private void inventoryChecker(WatAIO instance, HashMap<String, Integer> buyingRequired) {
-        Logger.log("INVENTORYCHECKER: STARTING");
-        if (!inventoryRequired.isEmpty()) {
-            checkAndSet(BankMode.ITEM);
-            for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
-                if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
-                    amountRequired = 1;
+        if(!instance.MULE_DEAD && instance.TRADE_UNLOCKED) {
+            int invMoney = 0;
+            int bankMoney = 0;
 
-                if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    if(Inventory.get(entry.getKey()).isNoted()) {
-                        Bank.depositAll(entry.getKey());
-                        Sleep.sleep(100, 300);
-                    } else {
-                        Logger.log("INVENTORYCHECKER: ITEM ALREADY IN INVENTORY, MINIMUM QUANTITY MET");
-                        continue;
+            if(Inventory.contains("Coins")) {
+                invMoney = Inventory.get("Coins").getAmount();
+            }
+
+            if(Bank.contains("Coins")) {
+                bankMoney = Bank.get("Coins").getAmount();
+            }
+
+            if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
+                int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
+                if(toWithdraw > 0) {
+                    Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
+                    if(Inventory.isFull() || Inventory.emptySlotCount() < 2) {
+                        Bank.depositAllExcept("Coins");
                     }
+                    Sleep.sleep(100, 200);
+                    Bank.withdraw("Coins", toWithdraw);
+                    Sleep.sleep(200, 400);
+                    postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
                 }
+            }
+        }
 
-                if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
-                    int toWithdraw = entry.getValue() > 0 ? entry.getValue() : Bank.count(entry.getKey());
-                    if (Inventory.isFull()) {
-                        Bank.depositAllItems();
-                        Sleep.sleep(100, 200);
-                    }
+        Logger.log("FINALCHECKS: STARTING");
 
-                    int reduceBy = 0;
-                    if (Inventory.contains(entry.getKey())) {
-                        reduceBy = Inventory.count(entry.getKey());
-                    }
+        if(postTask != null && !(postTask instanceof MulingTask)) {
+            depositNonRequired();
+        }
 
-                    toWithdraw -= reduceBy;
+        // calculate net worth
+        if(instance.NET_WORTH_GENERATED == 0) {
+            instance.NET_WORTH = 0;
+            for (Item i : Bank.all()) {
+                if (i == null)
+                    continue;
 
-                    if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), toWithdraw)) {
-                        Logger.log("INVENTORYCHECKER: WITHDREW " + toWithdraw + " OF " + entry.getKey());
-                    }
+                if (i.getAmount() > 1) {
+                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
                 } else {
-                    // needing to buy it.
-                    int amountToBuy = (entry.getValue() > 0 ? entry.getValue() : -entry.getValue()) * inventoriesWorth;
-                    for (String s : instance.SINGULAR_ITEMS) {
-                        if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
-                            amountToBuy = 1;
-                            break;
-                        }
-                    }
-
-                    if(!Equipment.contains(entry.getKey())) {
-                        buyingRequired.put(entry.getKey(), amountToBuy);
-                        Logger.log("INVENTORYCHECKER: NEED TO BUY " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " OF " + entry.getKey());
-                    }
-                }
-            }
-        }
-        Logger.log("INVENTORYCHECKER: DONE");
-    }
-
-    private void equipmentChecker(HashMap<String, Integer> buyingRequired) {
-        Logger.log("EQUIPMENTCHECKER: STARTING");
-        if(postTask != null) {
-            if (!postTask.clothesRequired().isEmpty()) {
-                for (Map.Entry<String, Integer> entry : postTask.clothesRequired().entrySet()) {
-                    int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                    if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getKey()) >= amountRequired) {
-                        Logger.log("EQUIPMENTCHECKER: ITEM ALREADY EQUIPPED");
-                        continue;
-                    }
-
-                    if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                        Logger.log("EQUIPMENTCHECKER: ITEM IN INVENTORY ALREADY");
-                        continue;
-                    }
-
-                    if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
-                        if (Inventory.fullSlotCount() >= 26) { // deposit only if we need the space
-                            depositNonRequired();
-                            Sleep.sleep(100, 200);
-                        }
-
-                        if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), amountRequired)) {
-                            Sleep.sleep(200, 400);
-                            if (Inventory.contains(entry.getKey())) {
-                                Logger.log("EQUIPMENTCHECKER: WITHDREW ITEM");
-                            }
-                        }
-                    } else {
-                        // need to buy.
-                        buyingRequired.put(entry.getKey(), entry.getValue());
-                        Logger.log("EQUIPMENTCHECKER: NEED TO BUY " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " OF " + entry.getKey());
-                    }
+                    instance.NET_WORTH += LivePrices.get(i);
                 }
             }
 
-            Sleep.sleep(500, 1000);
-            for (String s : postTask.clothesRequired().keySet()) {
-                for (Item i : Equipment.all()) {
-                    if ((i != null && postTask != null) && !postTask.clothesRequired().containsKey(i.getName())) {
-                        Bank.depositAllEquipment();
-                        Sleep.sleep(50, 120);
-                        equipmentChecker(buyingRequired);
-                        break;
-                    }
-                }
+            for (Item i : Inventory.all()) {
+                if (i == null)
+                    continue;
 
-                if (!Equipment.contains(s)) {
-                    if (Inventory.contains(s) && GenericUtils.equipItem(s, null)) {
-                        Sleep.sleep(50, 120);
-                    }
+                if (i.getAmount() > 1) {
+                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                } else {
+                    instance.NET_WORTH += LivePrices.get(i);
                 }
+            }
+
+            instance.NET_WORTH_GENERATED = Instant.now().getEpochSecond();
+        } else {
+            if((Instant.now().getEpochSecond() - instance.NET_WORTH_GENERATED) >= 3600) {
+                instance.NET_WORTH_GENERATED = 0; // will generate net worth next time.
             }
         }
 
-        Logger.log("EQUIPMENTCHECKER: DONE");
+        Logger.log("FINALCHECKS: DONE");
+
+        if (postTask != null) {
+            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask) {
+                Bank.close();
+            }
+
+            instance.currentTask = postTask;
+        }
     }
 
     private void depositNonRequired() {
