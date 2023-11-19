@@ -122,10 +122,8 @@ public class MiningTask implements WatTask {
             }
 
             Item old = Equipment.getItemInSlot(EquipmentSlot.WEAPON);
-            if(GenericUtils.canEquipTool(pickaxe) && GenericUtils.equipItem(pickaxe, old)) {
+            if(!Equipment.contains(pickaxe) && GenericUtils.canEquipTool(pickaxe) && GenericUtils.equipItem(pickaxe, old)) {
                 Sleep.sleep(30, 90);
-            } else {
-                Logger.error("Error equipping pickaxe");
             }
 
             // Check if we need to bank, and tell the Banking task to check if we have over 1000 ore, in which case sell it.
@@ -224,6 +222,11 @@ public class MiningTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return GenericUtils.getSkillingGear();
+        return new HashMap<String, Integer>() {
+            {
+                put(MiningUtils.getBestPickaxeForLevel(), 1);
+                putAll(GenericUtils.getSkillingGear());
+            }
+        };
     }
 }
