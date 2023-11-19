@@ -56,7 +56,7 @@ public class BankingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (NPCs.all("Banker").isEmpty()) {
-            instance.currentTask = new TraversalTask(BankLocation.getNearest().getArea(3), this);
+            WatAIO.currentTask = new TraversalTask(BankLocation.getNearest().getArea(3), this);
             return;
         }
 
@@ -122,7 +122,7 @@ public class BankingTask implements WatTask {
                 }
 
                 if (performSelling) {
-                    instance.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
+                    WatAIO.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
                     return;
                 }
             } else {
@@ -137,8 +137,6 @@ public class BankingTask implements WatTask {
 
         HashMap<String, Integer> buyingRequired = new HashMap<>();
 
-        // use the clothesRequired to do this..
-        // we are doing this now
         Logger.log("EQUIPMENTCHECKER: STARTING");
         if(postTask != null) {
             if (!postTask.clothesRequired().isEmpty()) {
@@ -279,7 +277,7 @@ public class BankingTask implements WatTask {
                 Sleep.sleep(100, 200);
                 Bank.close();
 
-                instance.currentTask = new GrandExchangeTask("Buying required items", false, buyingRequired, this);
+                WatAIO.currentTask = new GrandExchangeTask("Buying required items", false, buyingRequired, this);
                 return;
             } else {
                 boolean canSell = false;
@@ -321,7 +319,7 @@ public class BankingTask implements WatTask {
 
                             Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
                             int totalPrice = finalPrice;
-                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                            WatAIO.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                                 {
                                     put("Coins", totalPrice);
                                 }
@@ -330,7 +328,7 @@ public class BankingTask implements WatTask {
                         } else {
                             Logger.log("We are out of GP, time to go and make some.");
                             WatAIO.NEED_MM = true;
-                            instance.currentTask = null;
+                            WatAIO.currentTask = null;
                             return;
                         }
                     }
@@ -348,7 +346,7 @@ public class BankingTask implements WatTask {
                         Sleep.sleep(100, 200);
                         Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
                         int totalPrice = finalPrice;
-                        instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                        WatAIO.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                             {
                                 put("Coins", totalPrice);
                             }
@@ -357,7 +355,7 @@ public class BankingTask implements WatTask {
                     } else {
                         Logger.log("We are out of GP, time to go and make some.");
                         WatAIO.NEED_MM = true;
-                        instance.currentTask = null;
+                        WatAIO.currentTask = null;
                         return;
                     }
                 }
@@ -365,7 +363,7 @@ public class BankingTask implements WatTask {
 
             if (!m.isEmpty()) {
                 Logger.log("BUYCHECKER: HANDING OFF TO GRAND EXCHANGE");
-                instance.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
+                WatAIO.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
                 return;
             }
         }
@@ -444,7 +442,7 @@ public class BankingTask implements WatTask {
                 Bank.close();
             }
 
-            instance.currentTask = postTask;
+            WatAIO.currentTask = postTask;
         }
     }
 
