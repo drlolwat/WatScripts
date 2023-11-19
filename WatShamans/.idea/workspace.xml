@@ -7,11 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Refactor of BankingTask, Task loadouts fixed">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="More of the same lol">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +118,7 @@
       <workItem from="1699230296932" duration="934000" />
       <workItem from="1699340775129" duration="13120000" />
       <workItem from="1699712296640" duration="14510000" />
-      <workItem from="1700068272236" duration="5454000" />
+      <workItem from="1700068272236" duration="6872000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -464,7 +463,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="164" />
+    <option name="localTasksCounter" value="165" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +481,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Java code cleanup. Lobsters for Moss giants." />
     <MESSAGE value="Back at it again, lets go. Java code cleanup. Lobsters for Moss giants." />
     <MESSAGE value="Dragon Slayer completion check for Rune Platebody." />
     <MESSAGE value="Web slashing QOL" />
@@ -507,7 +505,8 @@
     <MESSAGE value="Added clothing/stylescape to all non-combat tasks" />
     <MESSAGE value="Refactor. Equipping of pickaxes/hatchets." />
     <MESSAGE value="Refactor of BankingTask, Task loadouts fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor of BankingTask, Task loadouts fixed" />
+    <MESSAGE value="More of the same lol" />
+    <option name="LAST_COMMIT_MESSAGE" value="More of the same lol" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
