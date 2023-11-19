@@ -19,6 +19,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.mining.MiningUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.HopperTask;
@@ -78,10 +79,8 @@ public class WoodcuttingTask implements WatTask {
             }
 
             Item old = Equipment.getItemInSlot(EquipmentSlot.WEAPON);
-            if(GenericUtils.canEquipTool(hatchet) && GenericUtils.equipItem(hatchet, old)) {
+            if(!Equipment.contains(hatchet) && GenericUtils.canEquipTool(hatchet) && GenericUtils.equipItem(hatchet, old)) {
                 Sleep.sleep(30, 90);
-            } else {
-                Logger.error("Error equipping hatchet");
             }
 
             // its all very similar to mining isn't it
@@ -165,6 +164,11 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return GenericUtils.getSkillingGear();
+        return new HashMap<String, Integer>() {
+            {
+                put(WoodcuttingUtils.getBestHatchetForLevel(), 1);
+                putAll(GenericUtils.getSkillingGear());
+            }
+        };
     }
 }
