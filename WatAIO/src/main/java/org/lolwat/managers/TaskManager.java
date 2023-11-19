@@ -48,7 +48,7 @@ public class TaskManager {
         allTasks.addAll(createWoodcuttingTasks());
         allTasks.addAll(createFishingTasks());
         allTasks.addAll(createCraftingTasks());
-        allTasks.addAll(createFiremakingTasks());
+        allTasks.addAll(createFiremakingTasks());//
         allTasks.addAll(createPrayerTasks());
         allTasks.addAll(createCookingTasks());
         allTasks.addAll(createMeleeTasks());
