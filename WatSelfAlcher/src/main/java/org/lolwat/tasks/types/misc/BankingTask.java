@@ -382,8 +382,10 @@ public class BankingTask implements WatTask {
                         }
                     }
 
-                    buyingRequired.put(entry.getKey(), amountToBuy);
-                    Logger.log("INVENTORYCHECKER: NEED TO BUY " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " OF " + entry.getKey());
+                    if(!Equipment.contains(entry.getKey())) {
+                        buyingRequired.put(entry.getKey(), amountToBuy);
+                        Logger.log("INVENTORYCHECKER: NEED TO BUY " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " OF " + entry.getKey());
+                    }
                 }
             }
         }
@@ -438,14 +440,10 @@ public class BankingTask implements WatTask {
                 }
 
                 if (!Equipment.contains(s)) {
-                    if (Inventory.contains(s) && !GenericUtils.equipItem(s, null)) {
-                        Logger.error("Error equipping item in BankingTask");
+                    if (Inventory.contains(s) && GenericUtils.equipItem(s, null)) {
+                        Sleep.sleep(50, 120);
                     }
                 }
-            }
-
-            if (postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
-                Bank.depositAllEquipment();
             }
         }
 
