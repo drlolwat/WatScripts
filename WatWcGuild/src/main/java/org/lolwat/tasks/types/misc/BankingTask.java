@@ -56,7 +56,7 @@ public class BankingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (NPCs.all("Banker").isEmpty()) {
-            WatAIO.currentTask = new TraversalTask(BankLocation.getNearest().getArea(3), this);
+            instance.currentTask = new TraversalTask(BankLocation.getNearest().getArea(3), this);
             return;
         }
 
@@ -122,7 +122,7 @@ public class BankingTask implements WatTask {
                 }
 
                 if (performSelling) {
-                    WatAIO.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
+                    instance.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
                     return;
                 }
             } else {
@@ -277,7 +277,7 @@ public class BankingTask implements WatTask {
                 Sleep.sleep(100, 200);
                 Bank.close();
 
-                WatAIO.currentTask = new GrandExchangeTask("Buying required items", false, buyingRequired, this);
+                instance.currentTask = new GrandExchangeTask("Buying required items", false, buyingRequired, this);
                 return;
             } else {
                 boolean canSell = false;
@@ -319,7 +319,7 @@ public class BankingTask implements WatTask {
 
                             Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
                             int totalPrice = finalPrice;
-                            WatAIO.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                                 {
                                     put("Coins", totalPrice);
                                 }
@@ -328,7 +328,7 @@ public class BankingTask implements WatTask {
                         } else {
                             Logger.log("We are out of GP, time to go and make some.");
                             WatAIO.NEED_MM = true;
-                            WatAIO.currentTask = null;
+                            instance.currentTask = null;
                             return;
                         }
                     }
@@ -346,7 +346,7 @@ public class BankingTask implements WatTask {
                         Sleep.sleep(100, 200);
                         Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
                         int totalPrice = finalPrice;
-                        WatAIO.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                        instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                             {
                                 put("Coins", totalPrice);
                             }
@@ -355,7 +355,7 @@ public class BankingTask implements WatTask {
                     } else {
                         Logger.log("We are out of GP, time to go and make some.");
                         WatAIO.NEED_MM = true;
-                        WatAIO.currentTask = null;
+                        instance.currentTask = null;
                         return;
                     }
                 }
@@ -363,7 +363,7 @@ public class BankingTask implements WatTask {
 
             if (!m.isEmpty()) {
                 Logger.log("BUYCHECKER: HANDING OFF TO GRAND EXCHANGE");
-                WatAIO.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
+                instance.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
                 return;
             }
         }
@@ -442,7 +442,7 @@ public class BankingTask implements WatTask {
                 Bank.close();
             }
 
-            WatAIO.currentTask = postTask;
+            instance.currentTask = postTask;
         }
     }
 
