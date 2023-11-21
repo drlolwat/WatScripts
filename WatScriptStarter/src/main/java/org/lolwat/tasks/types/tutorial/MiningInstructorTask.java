@@ -1,0 +1,134 @@
+package org.lolwat.tasks.types.tutorial;
+
+import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.hint.HintArrow;
+import org.dreambot.api.methods.hint.HintArrowType;
+import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.quest.book.Quest;
+import org.dreambot.api.methods.settings.PlayerSettings;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.widget.Widgets;
+import org.dreambot.api.methods.widget.helpers.Smithing;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.WatAIO;
+import org.lolwat.misc.utils.DialogueUtils;
+import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.misc.TraversalTask;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+public class MiningInstructorTask implements WatTask {
+    @Override
+    public String getName() {
+        return "Tutorial Island: Mining Instructor";
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
+    }
+
+    @Override
+    public void execute(WatAIO instance) {
+        List<String> rocks = new ArrayList<String>() {
+            {
+                add("Tin rocks");
+                add("Copper rocks");
+            }
+        };
+
+        if(Inventory.contains("Bronze dagger")) {
+            // fuck off to next
+            return;
+        }
+
+        if(HintArrow.exists()) {
+            if(HintArrow.getType().equals(HintArrowType.NPC)) {
+                if(Map.isTileOnScreen(HintArrow.getTile())) {
+                    instance.currentTask = new TraversalTask(HintArrow.getTile().getArea(3), this);
+                    return;
+                }
+
+                DialogueUtils.talkTo("Mining Instructor");
+            } else {
+                GameObject obj = GameObjects.getTopObjectOnTile(HintArrow.getTile());
+
+                if(rocks.contains(obj.getName())) {
+                    List<GameObject> tins = GameObjects.all("Tin rocks");
+                    List<GameObject> coppers = GameObjects.all("Copper rocks");
+                    Collections.shuffle(tins);
+                    Collections.shuffle(coppers);
+
+                    if (!Inventory.contains("Tin ore")) {
+                        if (tins.get(0).interact("Mine")) {
+                            Sleep.sleepUntil(() -> Inventory.contains("Tin ore"), 15000);
+                        }
+                    } else if (!Inventory.contains("Copper ore")) {
+                        if (coppers.get(0).interact("Mine")) {
+                            Sleep.sleepUntil(() -> Inventory.contains("Copper ore"), 15000);
+                        }
+                    }
+                } else {
+                    if(obj.getName().equals("Furnace") && obj.interact()) {
+                        Sleep.sleepUntil(() -> Inventory.contains("Bronze bar"), 3000);
+                    }
+                    else if(obj.getName().equals("Anvil")) {
+                        obj.interact();
+                        Sleep.sleepUntil(() -> Widgets.getWidget(312) != null && Widgets.get(312).isVisible(), 5000);
+                    }
+                }
+            }
+        } else {
+            WidgetChild wc = Widgets.getWidget(312).getChild(9);
+
+            if(wc != null && wc.isVisible()) {
+                if (wc.interact()) {
+                    Sleep.sleepUntil(() -> Inventory.contains("Bronze dagger"), 5000);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
+    public int loopTime() {
+        return Calculations.random(350, 450);
+    }
+
+    @Override
+    public void onExpGained(Skill skill, int amount, WatAIO instance) {
+
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return null;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return 101;
+    }
+
+    @Override
+    public Quest completesQuest() {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        return new HashMap<>();
+    }
+}

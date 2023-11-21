@@ -1,15 +1,19 @@
 package org.lolwat.misc.utils;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.NPC;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.dreambot.api.utilities.Sleep.sleepUntil;
-import static org.dreambot.api.utilities.Sleep.sleepWhile;
+import static org.dreambot.api.utilities.Sleep.*;
 
 public class DialogueUtils {
     public static void continueWhilePossible() {
@@ -35,5 +39,30 @@ public class DialogueUtils {
                 Logger.log(Arrays.toString(Dialogues.getOptions()));
             }
         }
+    }
+
+    public static void talkTo(String npc) {
+        if (!Dialogues.canContinue()) {
+            final NPC guide = NPCs.closest(npc);
+            if (guide != null) {
+                if (guide.isOnScreen()) {
+                    if (guide.interact("Talk-to")) {
+                        dialogueSleep();
+                        Sleep.sleepUntil(Dialogues::canContinue, Calculations.random(1200, 1600));
+                    }
+                } else {
+                    Walking.walk(guide);
+                    dialogueSleep();
+                }
+            }
+        } else {
+            Dialogues.continueDialogue();
+            sleep(200, 500);
+        }
+    }
+
+    private static void dialogueSleep() {
+        Sleep.sleepUntil(() -> Players.getLocal().isMoving(), Calculations.random(300, 1200));
+        Sleep.sleepUntil(() -> !Players.getLocal().isMoving(), Calculations.random(300, 1200));
     }
 }
