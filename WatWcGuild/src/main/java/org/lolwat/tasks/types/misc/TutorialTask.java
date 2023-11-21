@@ -993,16 +993,6 @@ public class TutorialTask implements WatTask {
     }
 
     private void talkTo(String npc) {
-        /*List<WidgetChild> clickToContinue = Widgets.getWidgetChildrenContainingText("Click to continue");
-        if (!clickToContinue.isEmpty()) {
-            WidgetChild wc = clickToContinue.get(0);
-            if (wc != null && wc.isVisible()) {
-                log("Interacting with widget");
-                wc.interact();
-                sleep(900, 1200);
-            }
-        }*/
-
         if (!Dialogues.canContinue()) {
             final NPC guide = NPCs.closest(npc);
             if (guide != null) {
@@ -1017,7 +1007,6 @@ public class TutorialTask implements WatTask {
                 }
             }
         } else {
-            //log("Clicking continue");
             Dialogues.continueDialogue();
             sleep(200, 500);
         }
