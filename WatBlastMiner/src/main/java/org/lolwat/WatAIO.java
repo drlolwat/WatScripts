@@ -58,7 +58,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private long skillSelectedAt;
     private int skillRunTime;
 
-    public static WatTask currentTask;
+    public WatTask currentTask;
     public boolean fatalError = false;
     private HashMap<Skill, Integer> skillTargets;
     private HashMap<String, Integer> levelUps;
