@@ -4,13 +4,21 @@ import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 public class GenericUtils {
@@ -77,8 +85,39 @@ public class GenericUtils {
         return ret;
     }
 
+    public static String generateUsername() {
+        String name = "";
+        try {
+            URL url = new URL("https://botbuddy.net/_api_/getname.php");
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    name = line;
+                }
+                reader.close();
+            } else {
+                System.out.println("HTTP request failed with response code: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return name;
+    }
+
     public static boolean canEquipTool(String toolName) {
         return levels.containsKey(toolName) && Skills.getRealLevel(Skill.ATTACK) >= levels.get(toolName);
+    }
+
+    public static NPC getNpcOnTile(Tile tile) {
+        return NPCs.closest(n -> n.getName().contains("Fishing") && n.getTile().equals(tile));
     }
 
     public static <K, V> void shuffleHashMap(HashMap<K, V> hashMap) {
