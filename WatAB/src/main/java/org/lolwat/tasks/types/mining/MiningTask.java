@@ -103,19 +103,13 @@ public class MiningTask implements WatTask {
     public void execute(WatAIO instance) {
         String pickaxe = MiningUtils.getBestPickaxeForLevel();
 
-        HashMap<String, Integer> bankItems = new HashMap<String, Integer>() {
-            {
-                put(pickaxe, 1);
-            }
-        };
-
         if (WorldHopper.isWorldHopperOpen()) {
             WorldHopper.closeWorldHopper();
         }
 
         if (!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new BankingTask(null, bankItems, sellingItems, 1, this);
+            instance.currentTask = new BankingTask(null, new HashMap<>(), sellingItems, 1, this);
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -131,7 +125,7 @@ public class MiningTask implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask(null, bankItems, sellingItems, 1, this);
+                instance.currentTask = new BankingTask(null, new HashMap<>(), sellingItems, 1, this);
                 lastSuccessfulRock = 0;
                 return;
             }
