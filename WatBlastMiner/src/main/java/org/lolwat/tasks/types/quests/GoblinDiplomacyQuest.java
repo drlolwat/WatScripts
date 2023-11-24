@@ -11,6 +11,7 @@ import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
@@ -34,6 +35,7 @@ public class GoblinDiplomacyQuest implements WatTask {
     private final List<String> completeDialogue = Arrays.asList("No, he doesn't look fat.", "I have some orange armour here.", "I have some blue armour here.", "I have some brown armour here.");
     private boolean hasOrange = false;
     private boolean hasBlue = false;
+    private int dyedMails = 0;
 
     private final HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
         put("Goblin mail", 3);
@@ -50,70 +52,82 @@ public class GoblinDiplomacyQuest implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        // Check if dyes are still needed
+        boolean needBlueDye = !hasBlue && Inventory.count("Blue dye") < needed.get("Blue dye");
+        boolean needOrangeDye = !hasOrange && Inventory.count("Orange dye") < needed.get("Orange dye");
+
         if(!hasDoneDyes()) {
             for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
-                if (!Inventory.contains(kv.getKey()) ||
+                boolean itemIsDye = kv.getKey().endsWith("dye");
+                boolean needItem = itemIsDye ? (kv.getKey().equals("Blue dye") ? needBlueDye : needOrangeDye) : true;
+
+                if (needItem && (!Inventory.contains(kv.getKey()) ||
                         (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
-                        (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
+                        (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue()))) {
                     instance.currentTask = new BankingTask(null, needed, null, 1, this);
                     return;
                 }
             }
+
+            // Attempt to dye mails
+            if(!hasBlue) {
+                dyeMail("Blue");
+            }
+
+            if(!hasOrange) {
+                dyeMail("Orange");
+            }
         }
 
-        //go to start location
         if (!startLocation.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(startLocation, this);
             return;
         }
 
-        if(!Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY)) {
+        // Interact with NPCs only if both dyes have been used
+        if(hasDoneDyes()) {
             if (NPCs.closest("General Bentnoze") != null) {
-                // handle the dialogue here
                 if (Dialogues.inDialogue()) {
                     while (Dialogues.inDialogue()) {
                         DialogueUtils.continueWhilePossible();
-                        DialogueUtils.solve(startDialogue);
+                        DialogueUtils.solve(completeDialogue);
                     }
                 } else {
                     NPCs.closest("General Bentnoze").interact();
                 }
             }
-        } else {
-            if(!hasBlue && dyeMail("Blue"))
-                hasBlue = true;
-
-            if(!hasOrange && dyeMail("Orange"))
-                hasOrange = true;
-
-            if(hasDoneDyes()) {
-                if (NPCs.closest("General Bentnoze") != null) {
-                    // handle the dialogue here
-                    if (Dialogues.inDialogue()) {
-                        while (Dialogues.inDialogue()) {
-                            DialogueUtils.continueWhilePossible();
-                            DialogueUtils.solve(completeDialogue);
-                        }
-                    } else {
-                        NPCs.closest("General Bentnoze").interact();
-                    }
-                }
-            }
         }
     }
 
+
     private boolean dyeMail(String color) {
-        if(Inventory.count("Goblin mail") > 1 && Inventory.contains(color + " dye")) {
-            if(Inventory.get(color + " dye").interact("Use")) {
-                Sleep.sleep(50, 200);
-                if (Inventory.get("Goblin mail").interact()) {
+        if(Inventory.contains(color + " dye")) {
+            List<Item> goblinMails = Inventory.all(item -> item != null && item.getName().equals("Goblin mail"));
+            for (Item goblinMail : goblinMails) {
+                // Check if the mail has already been dyed
+                if ((color.equals("Blue") && hasBlue) || (color.equals("Orange") && hasOrange)) {
+                    continue;
+                }
+
+                if (Inventory.get(color + " dye").interact("Use")) {
+                    if(color.equals("Blue")) {
+                        hasBlue = true;
+                    } else if(color.equals("Orange")) {
+                        hasOrange = true;
+                    }
+
                     Sleep.sleep(50, 200);
-                    return true;
+                    if (goblinMail.interact()) {
+                        Sleep.sleepUntil(() -> !Inventory.contains(color + " dye"), 2000);
+                        return true;
+                    }
                 }
             }
         }
         return false;
     }
+
+
 
     @Override
     public String getName() {
