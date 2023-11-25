@@ -78,14 +78,14 @@ public class MiningInstructorTask implements WatTask {
                         }
                     }
                 } else {
-                    if(obj.getName().equals("Furnace")) {
+                    if(obj.getName().equals("Furnace") && !Inventory.contains("Bronze bar")) {
                         obj.interact();
                         Sleep.sleepUntil(() -> Inventory.contains("Bronze bar") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 25000);
                         Sleep.sleep(60, 120);
                     }
                     else if(obj.getName().equals("Anvil")) {
                         obj.interact();
-                        Sleep.sleepUntil(() -> Widgets.getWidget(312) != null && Widgets.get(312).isVisible() && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
+                        Sleep.sleepUntil(() -> Widgets.getWidget(312) != null && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
                         Sleep.sleep(60, 120);
                     }
                 }
