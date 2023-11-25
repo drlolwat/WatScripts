@@ -109,8 +109,8 @@ public class SurvivalInstructorTask implements WatTask {
 
             if (hasLitFire) {
                 Sleep.sleep(1500, 2000); // hmm
-                if (Inventory.interact("Raw shrimps") && GameObjects.closest("Fire") != null && GameObjects.closest("Fire").interact()) {
-                    Sleep.sleepUntil(() -> (Inventory.contains("Shrimps")) || !Players.getLocal().isAnimating() && !Players.getLocal().isMoving() && !Dialogues.canContinue(), 15000);
+                if (Inventory.interact("Raw shrimps", "Use") && GameObjects.closest("Fire") != null && GameObjects.closest("Fire").interact()) {
+                    Sleep.sleepUntil(() -> (Inventory.contains("Shrimps") && !Inventory.contains("Raw shrimps")) || !Players.getLocal().isAnimating() && !Players.getLocal().isMoving() && !Dialogues.canContinue(), 15000);
                 }
             }
         }
