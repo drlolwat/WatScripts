@@ -51,6 +51,7 @@ public class TutorialBankTask implements WatTask {
                             Sleep.sleepUntil(Bank::isOpen, 15000);
 
                             if(Bank.isOpen()) {
+                                Sleep.sleep(100, 200);
                                 Bank.close();
                                 Sleep.sleep(50, 100);
                             }
@@ -65,6 +66,11 @@ public class TutorialBankTask implements WatTask {
                         }
                     }
                     else if(obj.getName().equals("Door")) {
+                        if(guide) {
+                            instance.currentTask = new BrotherBraceTask();
+                            return;
+                        }
+
                         if(obj.interact("Open")) {
                             Sleep.sleep(50, 100);
                         }
@@ -73,10 +79,6 @@ public class TutorialBankTask implements WatTask {
             } else {
                 guide = true;
                 DialogueUtils.talkTo("Account Guide");
-            }
-        } else {
-            if(guide) {
-                instance.currentTask = new BrotherBraceTask();
             }
         }
     }
