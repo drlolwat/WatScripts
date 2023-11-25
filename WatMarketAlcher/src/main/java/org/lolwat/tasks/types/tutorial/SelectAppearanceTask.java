@@ -55,7 +55,7 @@ public class SelectAppearanceTask implements WatTask {
             if(acc != null && acc.isVisible() && acc.hasAction("Confirm")) {
                 if(acc.interact()) {
                     Sleep.sleepUntil(() -> !acc.isVisible(), 6750);
-                    instance.currentTask = new SurvivalInstructorTask();
+                    instance.currentTask = new GuideTask();
                 }
             }
         }
