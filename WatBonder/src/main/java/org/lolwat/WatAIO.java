@@ -811,7 +811,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public void onMessage(Message m) {
         boolean tenOrThirty = Calculations.random(1, 3) == 1;
-        if(m.toString().contains("You will be logged out in approximately " + (tenOrThirty ? "10" : "30") + " minutes. Make sure you move to a safe area or log out now.")) {
+        if(m.toString().contains("approximately " + (tenOrThirty ? "10" : "30") + " minutes")) {
             if(currentTask != null) {
                 currentTask = new LogoutTask(false, false, currentTask);
             }
