@@ -8,6 +8,7 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
@@ -22,7 +23,7 @@ public class QuestGuideTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Tutorial Island: Quest Guide";
+        return "Tutorial: Quest Guide";
     }
 
     @Override
@@ -37,10 +38,6 @@ public class QuestGuideTask implements WatTask {
             return;
         }
 
-        if (TutorialUtils.needsOpenTab()) {
-            TutorialUtils.handleTab();
-        }
-
         if(Dialogues.canContinue()) {
             Dialogues.continueDialogue();
             return;
@@ -49,12 +46,17 @@ public class QuestGuideTask implements WatTask {
         if(HintArrow.exists()) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
                 DialogueUtils.talkTo("Quest Guide");
+                Sleep.sleep(700, 1400);
             }
             else {
                 if(GameObjects.closest("Ladder").interact("Climb-down")) {
                     instance.currentTask = new MiningInstructorTask();
                 }
             }
+        }
+
+        if (TutorialUtils.needsOpenTab()) {
+            TutorialUtils.handleTab();
         }
     }
 

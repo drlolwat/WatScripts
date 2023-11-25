@@ -37,6 +37,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.SkillUtils;
+import org.lolwat.tasks.types.tutorial.SelectUsernameTask;
 
 import java.awt.*;
 import java.io.*;
@@ -426,7 +427,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if (PlayerSettings.getConfig(281) != 1000) {
-            currentTask = new TutorialTask();
+            currentTask = new SelectUsernameTask();
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             Logger.log("We are performing Tutorial Island");
