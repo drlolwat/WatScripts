@@ -11,6 +11,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -57,6 +58,10 @@ public class TraversalTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if (TutorialUtils.needsOpenTab()) {
+            TutorialUtils.handleTab();
+        }
+
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
 
         List<String> types = Arrays.asList("Web");
