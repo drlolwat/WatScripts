@@ -5,14 +5,17 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.tasks.types.misc.HopperTask;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,6 +46,20 @@ public class GenericUtils {
             put("Bronze axe", 1);
         }
     };
+
+    public static boolean tooManyPlayers(int distance, int count) {
+        int pl = 0;
+        for(Player ply : Players.all()) {
+            if(Players.getLocal().equals(ply))
+                continue;
+
+            if(ply.distance(Players.getLocal()) <= distance) {
+                pl++;
+            }
+        }
+
+        return pl >= count;
+    }
 
     public static boolean equipItem(String item, Item old) {
         Item i = Inventory.get(item);
