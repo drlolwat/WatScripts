@@ -32,7 +32,7 @@ public class CookingInstructorTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(!area.contains(Players.getLocal())) {
+        if(!area.contains(Players.getLocal()) && !Inventory.contains("Bread")) {
             instance.currentTask = new TraversalTask(area, this);
             return;
         }
@@ -44,7 +44,8 @@ public class CookingInstructorTask implements WatTask {
                 } else {
                     if(Inventory.contains("Bread dough")) {
                         GameObject range = GameObjects.closest("Range");
-                        if(range != null && Inventory.interact("Bread dough") && range.interact()) {
+                        if(range != null && range.interact("Cook")) {
+                            Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
                             Sleep.sleep(50, 120);
                         }
                     }
@@ -52,12 +53,13 @@ public class CookingInstructorTask implements WatTask {
             } else {
                 if(Inventory.contains("Pot of flour") && Inventory.contains("Bucket of water")) {
                     if(Inventory.interact("Pot of flour") && Inventory.interact("Bucket of water")) {
-                        Sleep.sleep(50, 150);
+                        Sleep.sleepUntil(() -> !Inventory.contains("Pot of flour") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
+                        Sleep.sleep(50, 120);
                     }
                 }
             }
         } else {
-
+            instance.currentTask = new QuestGuideTask();
         }
     }
 
