@@ -87,7 +87,6 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -27); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -27); }}, false)); //grand exchange south wall
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 99, new HashMap<String, Integer>() { { put("Logs", -27); }}, false)); //lumbridge
 
         return tasks;
     }

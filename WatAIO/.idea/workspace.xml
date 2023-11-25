@@ -7,9 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Remove debug logging">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fixed infinite loop on accounts with no GP.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +79,7 @@
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;application.passwordSafe&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -119,7 +120,8 @@
       <workItem from="1699712296640" duration="14510000" />
       <workItem from="1700068272236" duration="12598000" />
       <workItem from="1700416503479" duration="13651000" />
-      <workItem from="1700870574480" duration="31492000" />
+      <workItem from="1700870574480" duration="32292000" />
+      <workItem from="1700944002527" duration="377000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -464,7 +466,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="173" />
+    <option name="localTasksCounter" value="174" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +484,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Paint v3, BankingTask.java improvements" />
     <MESSAGE value="Logic for money-making when a mule doesn't exist" />
     <MESSAGE value="wort wort wort" />
     <MESSAGE value="See Riboflavin" />
@@ -507,7 +508,8 @@
     <MESSAGE value="Tutorial Island Revamp 90%" />
     <MESSAGE value="Tutorial Island V2 Alpha" />
     <MESSAGE value="Remove debug logging" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove debug logging" />
+    <MESSAGE value="Fixed infinite loop on accounts with no GP." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed infinite loop on accounts with no GP." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
