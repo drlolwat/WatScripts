@@ -50,7 +50,6 @@ public class CombatInstructorTask implements WatTask {
             return;
         }
 
-        // traversal to 3104, 9506
         Area a = new Tile(3104, 9506).getArea(3);
         if(!traversed) {
             traversed = true;
@@ -65,6 +64,12 @@ public class CombatInstructorTask implements WatTask {
         if(HintArrow.exists()) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
                 if(NPCs.closest("Combat Instructor").getTile().equals(HintArrow.getTile())) {
+                    NPC n = NPCs.closest(x -> x.getName().contains("Combat Instructor"));
+                    if(!Players.getLocal().canReach(n.getTile())) {
+                        instance.currentTask = new TraversalTask(n.getTile().getArea(2), this);
+                        return;
+                    }
+
                     DialogueUtils.talkTo("Combat Instructor");
                 } else {
                     NPC n = NPCs.closest(x -> !x.isInCombat() && x.getName().contains("rat"));
@@ -86,7 +91,6 @@ public class CombatInstructorTask implements WatTask {
 
                                 if(!Players.getLocal().isInCombat() && !n.isInCombat() && n.interact()) {
                                     Sleep.sleepUntil(() -> !n.exists() && !Players.getLocal().isInCombat(), 15000);
-                                    traversed = false;
                                 }
                             } else {
                                 if(!Players.getLocal().isInCombat() && !n.isInCombat() && n.interact()) {
@@ -101,9 +105,14 @@ public class CombatInstructorTask implements WatTask {
 
                 if(o != null) {
                     if(o.getName().equals("Ladder")) {
-                        if (Map.isTileOnScreen(o.getTile()) && o.interact("Climb-up")) {
-                            Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
-                            instance.currentTask = new TraversalTask(new Tile(3121, 3122).getArea(3), new TutorialBankTask());
+                        if (Map.isTileOnScreen(o.getTile())) {
+                            if(o.interact("Climb-up")) {
+                                Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
+                                instance.currentTask = new TraversalTask(new Tile(3121, 3122).getArea(3), new TutorialBankTask());
+                                return;
+                            }
+                        } else {
+                            instance.currentTask = new TraversalTask(o.getTile().getArea(2), this);
                             return;
                         }
                     }
