@@ -7,10 +7,13 @@ import org.dreambot.api.methods.hint.HintArrow;
 import org.dreambot.api.methods.hint.HintArrowType;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
+import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -29,6 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MagicInstructorTask implements WatTask {
+    boolean started = false;
+    Area loc = new Tile(3141, 3087).getArea(2);
+
     @Override
     public String getName() {
         return "Tutorial: Magic Instructor";
@@ -49,6 +55,11 @@ public class MagicInstructorTask implements WatTask {
             TutorialUtils.handleTab();
         }
 
+        if(!started && !loc.contains(Players.getLocal())) {
+            started = true;
+            instance.currentTask = new TraversalTask(loc, this);
+        }
+
         List<String> answers = new ArrayList<String>() {
             {
                 add("Yes.");
@@ -61,29 +72,25 @@ public class MagicInstructorTask implements WatTask {
                 NPC n = getNpcOnTile(HintArrow.getTile());
                 if(n != null) {
                     if(n.getName().equals("Magic Instructor")) {
-                        if (Dialogues.getOptions() == null) {
-                            DialogueUtils.talkTo("Magic Instructor");
-                        } else {
-                            if(Dialogues.getOptions()[0].equals("Yes.")) {
-                                Dialogues.chooseOption("Yes.");
-                            } else {
-                                Dialogues.chooseOption("No, I'm not planning to do that.");
-                            }
-                        }
+                        DialogueUtils.talkTo("Magic Instructor", answers);
                     } else if(n.getName().equals("Chicken")) {
                         if(!Tabs.isOpen(Tab.MAGIC)) {
                             Tabs.open(Tab.MAGIC);
                             Sleep.sleep(120, 200);
                         }
 
-                        if(Magic.castSpellOn(Normal.WIND_STRIKE, n)) {
+                        if(Magic.castSpellOn(Normal.WIND_STRIKE, NPCs.closest(x -> !x.isInCombat() && x.getName().equals("Chicken")))) {
                             Sleep.sleep(100, 200);
+                        } else {
+                            Logger.log("error castin' spell on the chucken");
                         }
                     }
                 }
             }
-        } else {
-            instance.currentTask = new TraversalTask(new Tile(3141, 3087).getArea(2), this);
+        }
+
+        if (PlayerSettings.getConfig(281) == 1000) {
+            instance.currentTask = null;
         }
     }
 
