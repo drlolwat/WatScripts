@@ -7,6 +7,7 @@ import org.dreambot.api.methods.hint.HintArrowType;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
@@ -28,7 +29,7 @@ import java.util.List;
 public class MiningInstructorTask implements WatTask {
     @Override
     public String getName() {
-        return "Tutorial Island: Mining Instructor";
+        return "Tutorial: Mining Instructor";
     }
 
     @Override
@@ -46,13 +47,13 @@ public class MiningInstructorTask implements WatTask {
         };
 
         if(Inventory.contains("Bronze dagger")) {
-            // fuck off to next
+            instance.currentTask = new CombatInstructorTask();
             return;
         }
 
-        if(HintArrow.exists()) {
+        if(HintArrow.exists() && HintArrow.getTile() != null) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
-                if(Map.isTileOnScreen(HintArrow.getTile())) {
+                if(!Map.isTileOnScreen(HintArrow.getTile())) {
                     instance.currentTask = new TraversalTask(HintArrow.getTile().getArea(3), this);
                     return;
                 }
@@ -77,22 +78,35 @@ public class MiningInstructorTask implements WatTask {
                         }
                     }
                 } else {
-                    if(obj.getName().equals("Furnace") && obj.interact()) {
-                        Sleep.sleepUntil(() -> Inventory.contains("Bronze bar"), 3000);
+                    if(obj.getName().equals("Furnace")) {
+                        obj.interact();
+                        Sleep.sleepUntil(() -> Inventory.contains("Bronze bar") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 25000);
+                        Sleep.sleep(60, 120);
                     }
                     else if(obj.getName().equals("Anvil")) {
                         obj.interact();
-                        Sleep.sleepUntil(() -> Widgets.getWidget(312) != null && Widgets.get(312).isVisible(), 5000);
+                        Sleep.sleepUntil(() -> Widgets.getWidget(312) != null && Widgets.get(312).isVisible() && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
+                        Sleep.sleep(60, 120);
                     }
                 }
             }
         } else {
-            WidgetChild wc = Widgets.getWidget(312).getChild(9);
+            if(Inventory.contains("Bronze bar")) {
+                WidgetChild wc = Widgets.getWidget(312).getChild(9);
 
-            if(wc != null && wc.isVisible()) {
-                if (wc.interact()) {
-                    Sleep.sleepUntil(() -> Inventory.contains("Bronze dagger"), 5000);
+                if (wc != null && wc.isVisible()) {
+                    if (wc.interact()) {
+                        Sleep.sleepUntil(() -> Inventory.contains("Bronze dagger"), 5000);
+                        Sleep.sleep(60, 120);
+                    }
+                } else {
+                    GameObject obj = GameObjects.closest("Anvil");
+                    if (obj != null && obj.interact()) {
+                        Sleep.sleep(50, 120);
+                    }
                 }
+            } else {
+                instance.currentTask = new TraversalTask(new Tile(3081,  9506, 0).getArea(6), this);
             }
         }
     }
