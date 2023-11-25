@@ -33,14 +33,16 @@ public class TutorialUtils {
     }
 
     public static void handleTab() {
-        if (Dialogues.canContinue()) {
-            Dialogues.clickContinue();
-        }
+        //if (Dialogues.canContinue()) {
+        //    Dialogues.clickContinue();
+        //}
+
         final Tab t = getTab();
         if (t == null) {
             log("Tab is null?");
             return;
         }
+
         if (Tabs.openWithMouse(t)) {
             Sleep.sleepUntil(() -> Tabs.isOpen(t), Calculations.random(1200, 1600));
         }
