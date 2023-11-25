@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 public class CookingInstructorTask implements WatTask {
     private Area area = new Area(3073, 3086, 3078, 3083);
+    boolean ready = false;
     @Override
     public String getName() {
         return "Tutorial: Cooking Instructor";
@@ -45,7 +46,7 @@ public class CookingInstructorTask implements WatTask {
                     if(Inventory.contains("Bread dough")) {
                         GameObject range = GameObjects.closest("Range");
                         if(range != null && range.interact("Cook")) {
-                            Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
+                            Sleep.sleepUntil(() -> (ready && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving()), 10000);
                             Sleep.sleep(50, 120);
                         }
                     }
@@ -75,7 +76,7 @@ public class CookingInstructorTask implements WatTask {
 
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
+        ready = true;
     }
 
     @Override
