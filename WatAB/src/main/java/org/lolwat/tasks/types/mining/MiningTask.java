@@ -150,7 +150,7 @@ public class MiningTask implements WatTask {
                 }
             }
 
-            if(pl >= 3) { // 3 other people
+            if(pl >= 4) {
                 instance.currentTask = new HopperTask(0, this);
                 return;
             }
