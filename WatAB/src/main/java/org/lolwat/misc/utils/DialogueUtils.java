@@ -52,10 +52,15 @@ public class DialogueUtils {
 
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
+            return;
         }
 
-        Sleep.sleepUntil(Dialogues::canContinue, Calculations.random(500, 1200));
-        solve(answers);
+        Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
+
+        if(!answers.isEmpty() && Dialogues.getOptions() != null) {
+            solve(answers);
+            return;
+        }
 
         if(Dialogues.canContinue()) {
             Dialogues.continueDialogue();
@@ -64,7 +69,7 @@ public class DialogueUtils {
             if (n != null) {
                 if (n.isOnScreen()) {
                     if (n.interact("Talk-to")) {
-                        Sleep.sleepUntil(Dialogues::canContinue, Calculations.random(1200, 1600));
+                        Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
                     }
                 } else {
                     Walking.walk(n);
@@ -72,23 +77,6 @@ public class DialogueUtils {
             }
         }
 
-        Sleep.sleepUntil(Dialogues::canContinue, Calculations.random(500, 1200));
-
-        /*
-        if (!Dialogues.canContinue()) {
-            final NPC guide = NPCs.closest(npc);
-            if (guide != null) {
-                if (guide.isOnScreen()) {
-                    if (guide.interact("Talk-to")) {
-                        Sleep.sleepUntil(Dialogues::canContinue, Calculations.random(1200, 1600));
-                    }
-                } else {
-                    Walking.walk(guide);
-                }
-            }
-        } else {
-            Dialogues.continueDialogue();
-            sleep(200, 500);
-        }*/
+        Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
     }
 }
