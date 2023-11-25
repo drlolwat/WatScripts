@@ -1,22 +1,29 @@
 package org.lolwat.tasks.types.tutorial;
 
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.hint.HintArrow;
 import org.dreambot.api.methods.hint.HintArrowType;
+import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.misc.TraversalTask;
 
 import java.util.HashMap;
 
-public class GuideTask implements WatTask {
+public class BrotherBraceTask implements WatTask {
     @Override
     public String getName() {
-        return "Tutorial: Talking to guide";
+        return "Tutorial: Brother Brace";
     }
 
     @Override
@@ -26,19 +33,28 @@ public class GuideTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(HintArrow.exists() && HintArrow.getType() != HintArrowType.NPC) {
-            instance.currentTask = new SurvivalInstructorTask();
-            return;
+        if(Dialogues.canContinue()) {
+            Dialogues.continueDialogue();
         }
 
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
         }
 
-        if (Dialogues.getOptions() == null) {
-            DialogueUtils.talkTo("Gielinor Guide");
+        if(HintArrow.exists()) {
+            if(HintArrow.getType().equals(HintArrowType.NPC)) {
+                DialogueUtils.talkTo("Brother Brace");
+            } else {
+                GameObject obj = GameObjects.getTopObjectOnTile(HintArrow.getTile());
+                if(obj != null && obj.getName().equals("Door")) {
+                    if(obj.interact("Open")) {
+                        Sleep.sleep(150, 300);
+                        instance.currentTask = new MagicInstructorTask();
+                    }
+                }
+            }
         } else {
-            Dialogues.chooseOption("I am an experienced player.");
+            instance.currentTask = new TraversalTask(new Tile(3124, 3107).getArea(3), this);
         }
     }
 

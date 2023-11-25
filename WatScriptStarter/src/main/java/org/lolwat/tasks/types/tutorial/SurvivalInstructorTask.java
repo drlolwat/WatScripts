@@ -2,9 +2,11 @@ package org.lolwat.tasks.types.tutorial;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.hint.HintArrow;
 import org.dreambot.api.methods.hint.HintArrowType;
 import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
@@ -49,7 +51,7 @@ public class SurvivalInstructorTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(!area.contains(Players.getLocal())) {
+        if (!area.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(area, this);
             return;
         }
@@ -58,39 +60,57 @@ public class SurvivalInstructorTask implements WatTask {
             TutorialUtils.handleTab();
         }
 
-        if(hasCookedFish) {
+        if (hasCookedFish) {
             instance.currentTask = new CookingInstructorTask();
             return;
         }
 
-        if(HintArrow.exists()) {
-            if(HintArrow.getType().equals(HintArrowType.NPC)) {
-                if(HintArrow.getType().name().equals("Survial Expert")) {
+        if(Inventory.contains("Burnt shrimp")) {
+            hasLitFire = false;
+            hasCookedFish = false;
+            NPCs.closest("Fishing spot").interact("Net");
+            Sleep.sleepUntil(() -> Inventory.contains("Raw shrimps") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
+        }
+
+        if (HintArrow.exists()) {
+            if (HintArrow.getType().equals(HintArrowType.NPC)) {
+                if (NPCs.closest("Survival Expert").getTile().equals(HintArrow.getTile())) {
                     DialogueUtils.talkTo("Survival Expert");
                 } else {
                     NPC spot = GenericUtils.getNpcOnTile(HintArrow.getTile());
-                    if(spot != null) {
+                    if (spot != null) {
                         spot.interact("Net");
+                        Sleep.sleepUntil(() -> Inventory.contains("Raw shrimps") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
                     }
                 }
-            } else {
-                if(Inventory.contains("Raw shrimps")) {
-                    if (!Inventory.contains("Logs")) {
-                        if(!hasLitFire) {
-                            GameObject obj = GameObjects.closest("Tree");
-                            if (obj != null && obj.interact()) {
-                                Sleep.sleepUntil(() -> Inventory.contains("Logs"), Calculations.random(5000, 10000));
-                            }
-                        }
 
-                        if(Inventory.interact("Raw shrimps") && GameObjects.closest("Fire").interact()) {
-                            Sleep.sleep(100, 150);
-                        }
-                    } else {
-                        if(Inventory.interact("Tinderbox") && Inventory.interact("Logs")) {
-                            Sleep.sleep(100, 150);
+                return;
+            } else {
+                if (!Inventory.contains("Logs")) {
+                    if (!hasLitFire) {
+                        GameObject obj = GameObjects.closest("Tree");
+                        if (obj != null && obj.interact()) {
+                            Sleep.sleepUntil(() -> Inventory.contains("Logs") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
                         }
                     }
+                }
+            }
+        }
+
+        if (Inventory.contains("Raw shrimps")) {
+            if (!hasLitFire && Inventory.contains("Logs")) {
+                if (Inventory.interact("Tinderbox")) {
+                    if(Inventory.interact("Logs")) {
+                        Tile t = Players.getLocal().getTile();
+                        Sleep.sleepUntil(() -> (hasLitFire && Players.getLocal().getTile() != t && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating()), 15000);
+                    }
+                }
+            }
+
+            if (hasLitFire) {
+                Sleep.sleep(1500, 2000); // hmm
+                if (Inventory.interact("Raw shrimps") && GameObjects.closest("Fire") != null && GameObjects.closest("Fire").interact()) {
+                    Sleep.sleepUntil(() -> (Inventory.contains("Shrimps")) || !Players.getLocal().isAnimating() && !Players.getLocal().isMoving() && !Dialogues.canContinue(), 15000);
                 }
             }
         }
@@ -110,8 +130,10 @@ public class SurvivalInstructorTask implements WatTask {
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         if(skill.getName().toLowerCase().contains("cook")) {
             hasCookedFish = true;
+            Sleep.sleep(100, 150);
         } else if(skill.getName().toLowerCase().contains("fire")) {
             hasLitFire = true;
+            Sleep.sleep(100, 150);
         }
     }
 
