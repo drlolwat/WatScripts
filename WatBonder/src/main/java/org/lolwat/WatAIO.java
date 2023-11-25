@@ -642,10 +642,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 GenericUtils.moveMouse();
             }
 
-            if(currentTask != null) {
-                Logger.log("DEBUG: executing task: " + currentTask.getName());
-            }
-
             // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
             return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
         }
