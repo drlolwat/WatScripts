@@ -102,6 +102,11 @@ public class WoodcuttingTask implements WatTask {
             if(Players.getLocal().isAnimating())
                 return;
 
+            if(treeType.equals(TreeType.TREE) && GenericUtils.tooManyPlayers(5, 4)) {
+                instance.currentTask = new HopperTask(0, this);
+                return;
+            }
+
             GameObject tree = GameObjects.closest(x -> x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) && area.contains(x));
             if(tree != null && tree.interact()) {
                 Mouse.move();
