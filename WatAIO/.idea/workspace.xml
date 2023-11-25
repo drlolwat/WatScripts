@@ -7,10 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fixed infinite loop on accounts with no GP.">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Fixed over-hopping during mining, removed Lumbridge from restricted MM tasks (too long of a repeated walk to GE)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +123,7 @@
       <workItem from="1700068272236" duration="12598000" />
       <workItem from="1700416503479" duration="13651000" />
       <workItem from="1700870574480" duration="32292000" />
-      <workItem from="1700944002527" duration="377000" />
+      <workItem from="1700944002527" duration="1959000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -466,7 +468,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="174" />
+    <option name="localTasksCounter" value="175" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +486,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Logic for money-making when a mule doesn't exist" />
     <MESSAGE value="wort wort wort" />
     <MESSAGE value="See Riboflavin" />
     <MESSAGE value="Breakfix" />
@@ -509,7 +510,8 @@
     <MESSAGE value="Tutorial Island V2 Alpha" />
     <MESSAGE value="Remove debug logging" />
     <MESSAGE value="Fixed infinite loop on accounts with no GP." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed infinite loop on accounts with no GP." />
+    <MESSAGE value="Fixed over-hopping during mining, removed Lumbridge from restricted MM tasks (too long of a repeated walk to GE)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed over-hopping during mining, removed Lumbridge from restricted MM tasks (too long of a repeated walk to GE)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
