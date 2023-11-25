@@ -80,8 +80,10 @@ public class GenericUtils {
 
     public static HashMap<String, Integer> getSkillingGear() {
         HashMap<String, Integer> ret = new HashMap<>();
-        ret.put("Leather boots", 1);
-        ret.put(WatAIO.CAPE_TYPE, 1);
+        if(Skills.getTotalLevel() >= 75) {
+            ret.put("Leather boots", 1);
+            ret.put(WatAIO.CAPE_TYPE, 1);
+        }
         return ret;
     }
 
