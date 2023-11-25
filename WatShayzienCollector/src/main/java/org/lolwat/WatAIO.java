@@ -37,7 +37,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.SkillUtils;
-import org.lolwat.tasks.types.tutorial.SelectUsernameTask;
+import org.lolwat.tasks.types.tutorial.*;
 
 import java.awt.*;
 import java.io.*;
@@ -642,6 +642,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 GenericUtils.moveMouse();
             }
 
+            if(currentTask != null) {
+                Logger.log("DEBUG: executing task: " + currentTask.getName());
+            }
+
             // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
             return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
         }
@@ -651,6 +655,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private boolean isBlockedTask() {
         return currentTask == null ||
+                currentTask instanceof BrotherBraceTask ||
+                currentTask instanceof CombatInstructorTask ||
+                currentTask instanceof CookingInstructorTask ||
+                currentTask instanceof GuideTask ||
+                currentTask instanceof MagicInstructorTask ||
+                currentTask instanceof MiningInstructorTask ||
+                currentTask instanceof QuestGuideTask ||
+                currentTask instanceof SelectAppearanceTask ||
+                currentTask instanceof SelectUsernameTask ||
+                currentTask instanceof SurvivalInstructorTask ||
+                currentTask instanceof TutorialBankTask ||
                 currentTask instanceof TraversalTask ||
                 currentTask instanceof BankingTask ||
                 currentTask instanceof MulingTask ||

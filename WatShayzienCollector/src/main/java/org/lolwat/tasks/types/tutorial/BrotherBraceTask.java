@@ -6,6 +6,8 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.hint.HintArrow;
 import org.dreambot.api.methods.hint.HintArrowType;
 import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
@@ -21,6 +23,10 @@ import org.lolwat.tasks.types.misc.TraversalTask;
 import java.util.HashMap;
 
 public class BrotherBraceTask implements WatTask {
+    boolean door = false;
+    boolean started = false;
+    Area loc = new Tile(3124, 3107).getArea(3);
+
     @Override
     public String getName() {
         return "Tutorial: Brother Brace";
@@ -41,6 +47,11 @@ public class BrotherBraceTask implements WatTask {
             TutorialUtils.handleTab();
         }
 
+        if(!started && !loc.contains(Players.getLocal())) {
+            started = true;
+            instance.currentTask = new TraversalTask(loc, this);
+        }
+
         if(HintArrow.exists()) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
                 DialogueUtils.talkTo("Brother Brace");
@@ -48,13 +59,15 @@ public class BrotherBraceTask implements WatTask {
                 GameObject obj = GameObjects.getTopObjectOnTile(HintArrow.getTile());
                 if(obj != null && obj.getName().equals("Door")) {
                     if(obj.interact("Open")) {
-                        Sleep.sleep(150, 300);
-                        instance.currentTask = new MagicInstructorTask();
+                        Sleep.sleep(300, 600);
+
+                        if(door)
+                            instance.currentTask = new MagicInstructorTask();
+                        else
+                            door = true;
                     }
                 }
             }
-        } else {
-            instance.currentTask = new TraversalTask(new Tile(3124, 3107).getArea(3), this);
         }
     }
 
