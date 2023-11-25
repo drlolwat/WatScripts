@@ -7,9 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Tutorial Island V2 Alpha">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Remove debug logging">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +119,7 @@
       <workItem from="1699712296640" duration="14510000" />
       <workItem from="1700068272236" duration="12598000" />
       <workItem from="1700416503479" duration="13651000" />
-      <workItem from="1700870574480" duration="31162000" />
+      <workItem from="1700870574480" duration="31492000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -464,7 +464,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="172" />
+    <option name="localTasksCounter" value="173" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -482,7 +482,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fix BreakingTask" />
     <MESSAGE value="Paint v3, BankingTask.java improvements" />
     <MESSAGE value="Logic for money-making when a mule doesn't exist" />
     <MESSAGE value="wort wort wort" />
@@ -507,7 +506,8 @@
     <MESSAGE value="Tutorial Island Revamp 40%" />
     <MESSAGE value="Tutorial Island Revamp 90%" />
     <MESSAGE value="Tutorial Island V2 Alpha" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tutorial Island V2 Alpha" />
+    <MESSAGE value="Remove debug logging" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove debug logging" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
