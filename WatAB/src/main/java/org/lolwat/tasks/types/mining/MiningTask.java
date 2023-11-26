@@ -140,7 +140,7 @@ public class MiningTask implements WatTask {
                 Dialogues.continueDialogue();
             }
 
-            if(GenericUtils.tooManyPlayers(4, 4)) {
+            if(GenericUtils.tooManyPlayers(3, 5)) {
                 instance.currentTask = new HopperTask(0, this);
                 return;
             }
