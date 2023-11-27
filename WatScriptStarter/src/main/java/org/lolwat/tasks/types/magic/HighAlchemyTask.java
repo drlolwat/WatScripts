@@ -75,9 +75,8 @@ public class HighAlchemyTask implements WatTask {
         }
 
         HashMap<String, Integer> requiredItems = new HashMap<>();
-        requiredItems.put("Coins", -1);
-        requiredItems.putAll(MagicUtils.getRunesRequired(Normal.HIGH_LEVEL_ALCHEMY, casts));
         requiredItems.put(item, -casts);
+        requiredItems.putAll(MagicUtils.getRunesRequired(Normal.HIGH_LEVEL_ALCHEMY, casts));
 
         if (!MagicUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
             Logger.log("We need to grab runes...");
