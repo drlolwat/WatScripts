@@ -74,14 +74,9 @@ public class MagicCombatTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         HashMap<String, Integer> requiredItems = new HashMap<>();
-        requiredItems.putAll(food);
 
         if(!MagicUtils.canAffordCast(toCast)) {
             Logger.log("We need to grab runes...");
-            for (String s : requiredItems.keySet()) {
-                Logger.log("- " + s);
-            }
-
             int casts = Calculations.random(75, 150);
             if(Skills.getRealLevel(Skill.MAGIC) >= 50) {
                 casts *=2;
@@ -96,6 +91,7 @@ public class MagicCombatTask implements WatTask {
         if(!food.isEmpty()) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
+                    requiredItems.putAll(food);
                     Logger.log("We need to grab food...");
                     instance.currentTask = new BankingTask(null, requiredItems, null, 2,this);
                     return;
