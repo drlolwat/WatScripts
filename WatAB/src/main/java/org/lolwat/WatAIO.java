@@ -189,6 +189,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public int MULE_SAFETY_NET;
     public int MULE_TRIGGER;
     private static boolean IGNORE_CHECK_TRADE;
+    public static boolean RUNNING_TUT = false;
     private static BufferedImage image;
 
     @Override
@@ -254,7 +255,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             int strength = jsonObject.get("strength").getAsInt();
             int ranged = jsonObject.get("ranged").getAsInt();
             int prayer = jsonObject.get("prayer").getAsInt();
-            int magic = 0;//jsonObject.get("magic").getAsInt();
+            int magic = jsonObject.get("magic").getAsInt();
             int cooking = jsonObject.get("cooking").getAsInt();
             int woodcutting = jsonObject.get("woodcutting").getAsInt();
             int fishing = jsonObject.get("fishing").getAsInt();
@@ -430,6 +431,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             currentTask = new SelectUsernameTask();
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
+            RUNNING_TUT = true;
             Logger.log("We are performing Tutorial Island");
             return;
         }
