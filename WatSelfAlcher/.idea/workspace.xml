@@ -7,7 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Magic combat training">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Magic combat QOL">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MagicCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MagicCombatTask.java" afterDir="false" />
     </list>
@@ -120,7 +120,7 @@
       <workItem from="1700068272236" duration="12598000" />
       <workItem from="1700416503479" duration="13651000" />
       <workItem from="1700870574480" duration="32292000" />
-      <workItem from="1700944002527" duration="11758000" />
+      <workItem from="1700944002527" duration="12103000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -465,7 +465,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="178" />
+    <option name="localTasksCounter" value="179" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -483,7 +483,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Improved BankingTask, improved wealth generation" />
     <MESSAGE value="TTL on paint shows gained amount" />
     <MESSAGE value="Antiban, Romeo and Juliet changes, Banking improvements" />
     <MESSAGE value="Added Moss Giants to Ranged tasks" />
@@ -508,7 +507,8 @@
     <MESSAGE value="Helper function for playercount in radius. Hopping for TreeType.TREE if &gt;= 4 players nearby." />
     <MESSAGE value="MiningInstructor fix" />
     <MESSAGE value="Magic combat training" />
-    <option name="LAST_COMMIT_MESSAGE" value="Magic combat training" />
+    <MESSAGE value="Magic combat QOL" />
+    <option name="LAST_COMMIT_MESSAGE" value="Magic combat QOL" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
