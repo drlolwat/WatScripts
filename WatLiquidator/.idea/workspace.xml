@@ -7,10 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="High level alchemy, banking changes">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="HLA + Banking QOL">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/magic/HighAlchemyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/magic/HighAlchemyTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +122,7 @@
       <workItem from="1700068272236" duration="12598000" />
       <workItem from="1700416503479" duration="13651000" />
       <workItem from="1700870574480" duration="32292000" />
-      <workItem from="1700944002527" duration="17216000" />
+      <workItem from="1700944002527" duration="18030000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -466,7 +467,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="181" />
+    <option name="localTasksCounter" value="182" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +485,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added Moss Giants to Ranged tasks" />
     <MESSAGE value="Improved antiban, improved restricted selling" />
     <MESSAGE value="Hill giants, Guards - max CB adjusted" />
     <MESSAGE value="Firemaking improvements, Banking improvements, Selling improvements, Tutorial improvements" />
@@ -509,7 +509,8 @@
     <MESSAGE value="Magic combat QOL" />
     <MESSAGE value="Magic combat bugfix" />
     <MESSAGE value="High level alchemy, banking changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="High level alchemy, banking changes" />
+    <MESSAGE value="HLA + Banking QOL" />
+    <option name="LAST_COMMIT_MESSAGE" value="HLA + Banking QOL" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
