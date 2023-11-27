@@ -1,10 +1,12 @@
 package org.lolwat.managers;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.tasks.types.combat.MagicCombatTask;
 import org.lolwat.tasks.types.combat.MeleeCombatTask;
 import org.lolwat.tasks.types.combat.RangedCombatTask;
 import org.lolwat.tasks.types.cooking.CookingFishTask;
@@ -53,6 +55,7 @@ public class TaskManager {
         allTasks.addAll(createCookingTasks());
         allTasks.addAll(createMeleeTasks());
         allTasks.addAll(createRangedTasks());
+        allTasks.addAll(createMagicTasks());
 
         for(WatTask task : allTasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -100,6 +103,149 @@ public class TaskManager {
         tasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
         tasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
         tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
+
+        return tasks;
+    }
+
+    private static List<WatTask> createMagicTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+
+        tasks.add(new MagicCombatTask(1, 5, new Area(
+                new Tile(3170, 3289, 0),
+                new Tile(3183, 3289, 0),
+                new Tile(3185, 3291, 0),
+                new Tile(3185, 3295, 0),
+                new Tile(3186, 3296, 0),
+                new Tile(3186, 3298, 0),
+                new Tile(3185, 3299, 0),
+                new Tile(3185, 3301, 0),
+                new Tile(3183, 3302, 0),
+                new Tile(3182, 3302, 0),
+                new Tile(3182, 3303, 0),
+                new Tile(3181, 3303, 0),
+                new Tile(3179, 3303, 0),
+                new Tile(3179, 3307, 0),
+                new Tile(3174, 3307, 0),
+                new Tile(3172, 3302, 0),
+                new Tile(3170, 3300, 0),
+                new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
+        }));
+
+        // lumbridge chickens east
+        tasks.add(new MagicCombatTask(1, 10, new Area(
+                new Tile(3231, 3295, 0),
+                new Tile(3231, 3287, 0),
+                new Tile(3236, 3287, 0),
+                new Tile(3236, 3300, 0),
+                new Tile(3226, 3301, 0),
+                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }));
+
+        // lumbridge cows north
+        tasks.add(new MagicCombatTask(5, 20, new Area(
+                new Tile(3193, 3300, 0),
+                new Tile(3193, 3286, 0),
+                new Tile(3197, 3282, 0),
+                new Tile(3201, 3283, 0),
+                new Tile(3205, 3283, 0),
+                new Tile(3207, 3284, 0),
+                new Tile(3211, 3284, 0),
+                new Tile(3212, 3285, 0),
+                new Tile(3212, 3289, 0),
+                new Tile(3213, 3290, 0),
+                new Tile(3213, 3292, 0),
+                new Tile(3211, 3295, 0),
+                new Tile(3210, 3297, 0),
+                new Tile(3210, 3301, 0),
+                new Tile(3209, 3302, 0),
+                new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }));
+
+        // lumbridge cows north 2
+        tasks.add(new MagicCombatTask( 5, 20, new Area(
+                new Tile(3154, 3344, 0),
+                new Tile(3155, 3316, 0),
+                new Tile(3161, 3316, 0),
+                new Tile(3165, 3320, 0),
+                new Tile(3172, 3317, 0),
+                new Tile(3178, 3317, 0),
+                new Tile(3181, 3315, 0),
+                new Tile(3185, 3315, 0),
+                new Tile(3190, 3311, 0),
+                new Tile(3204, 3310, 0),
+                new Tile(3199, 3334, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }));
+
+        // lumbridge east cows
+        tasks.add(new MagicCombatTask( 5, 20, new Area(
+                new Tile(3252, 3277, 0),
+                new Tile(3242, 3286, 0),
+                new Tile(3243, 3297, 0),
+                new Tile(3264, 3297, 0),
+                new Tile(3265, 3256, 0),
+                new Tile(3254, 3256, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }));
+
+        // falador cows
+        tasks.add(new MagicCombatTask( 5, 20, new Area(
+                new Tile(3043, 3306, 0),
+                new Tile(3043, 3311, 0),
+                new Tile(3041, 3313, 0),
+                new Tile(3030, 3313, 0),
+                new Tile(3026, 3307, 0),
+                new Tile(3021, 3307, 0),
+                new Tile(3021, 3297, 0),
+                new Tile(3031, 3298, 0),
+                new Tile(3038, 3298, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }));
+
+        tasks.add(new MagicCombatTask(20, 30, new Area(
+                new Tile(3044, 3498, 0),
+                new Tile(3044, 3483, 0),
+                new Tile(3054, 3483, 0),
+                new Tile(3054, 3498, 0)), "Monk", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }}));
+
+        // giant frogs
+        tasks.add(new MagicCombatTask(20, 50, new Area(
+                new Tile(3190, 3179, 0),
+                new Tile(3195, 3174, 0),
+                new Tile(3204, 3173, 0),
+                new Tile(3203, 3179, 0),
+                new Tile(3201, 3182, 0),
+                new Tile(3204, 3186, 0),
+                new Tile(3208, 3189, 0),
+                new Tile(3207, 3196, 0),
+                new Tile(3199, 3195, 0),
+                new Tile(3197, 3195, 0)), "Giant frog", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }));
+
+        tasks.add(new MagicCombatTask(50, 99, new Area(
+                new Tile(3367, 3157, 0),
+                new Tile(3367, 3142, 0),
+                new Tile(3381, 3142, 0),
+                new Tile(3388, 3150, 0),
+                new Tile(3390, 3150, 0),
+                new Tile(3384, 3158, 0),
+                new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
+            put("Trout", 20);
+        }}));
 
         return tasks;
     }
