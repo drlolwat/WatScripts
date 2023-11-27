@@ -4,6 +4,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -75,15 +76,16 @@ public class MagicCombatTask implements WatTask {
     public void execute(WatAIO instance) {
         HashMap<String, Integer> requiredItems = new HashMap<>();
 
+        int casts = Calculations.random(75, 150);
+        if(Skills.getRealLevel(Skill.MAGIC) >= 50) {
+            casts *=2;
+        }
+
+        requiredItems.putAll(MagicUtils.getRunesRequired((Normal) toCast, casts));
+        requiredItems.putAll(food);
+
         if(!MagicUtils.canAffordCast(toCast)) {
             Logger.log("We need to grab runes...");
-            int casts = Calculations.random(75, 150);
-            if(Skills.getRealLevel(Skill.MAGIC) >= 50) {
-                casts *=2;
-            }
-
-            requiredItems.putAll(MagicUtils.getRunesRequired((Normal) toCast, casts));
-
             instance.currentTask = new BankingTask(null, requiredItems, null, 1,this);
             return;
         }
@@ -91,7 +93,6 @@ public class MagicCombatTask implements WatTask {
         if(!food.isEmpty()) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    requiredItems.putAll(food);
                     Logger.log("We need to grab food...");
                     instance.currentTask = new BankingTask(null, requiredItems, null, 2,this);
                     return;
@@ -107,6 +108,11 @@ public class MagicCombatTask implements WatTask {
         }
 
         if(!Magic.isAutocasting()) {
+            if(Bank.isOpen()) {
+                Bank.close();
+                Sleep.sleep(120, 240);
+            }
+
             if (!Tabs.isOpen(Tab.COMBAT)) {
                 Tabs.open(Tab.COMBAT);
                 Sleep.sleep(120, 240);
