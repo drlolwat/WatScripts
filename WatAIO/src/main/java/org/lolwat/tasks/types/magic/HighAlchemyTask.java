@@ -41,8 +41,7 @@ public class HighAlchemyTask implements WatTask {
 
     List<String> items = new ArrayList<String>() {
         {
-            add("Mithril med helm");
-            add("Mithril dagger");
+            add("Gold necklace");
         }
     };
 
@@ -95,6 +94,15 @@ public class HighAlchemyTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
+        if(Inventory.getItemInSlot(11) == null) {
+            if (!Tabs.isOpen(Tab.INVENTORY)) {
+                Tabs.open(Tab.INVENTORY);
+                Sleep.sleep(120, 240);
+            }
+
+            Inventory.drag(item, 11);
+        }
+
         if (!Tabs.isOpen(Tab.MAGIC)) {
             Tabs.open(Tab.MAGIC);
             Sleep.sleep(120, 240);
@@ -105,14 +113,21 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
+        Sleep.sleep(100, 200);
+
         if (!Tabs.isOpen(Tab.INVENTORY)) {
             Logger.log("inventory was not open..?");
+            if(Magic.isSpellSelected()) {
+                Magic.deselect();
+                Sleep.sleep(100, 200);
+            }
+
             return;
         }
 
         if (Inventory.interact(item)) {
             alched = false;
-            Sleep.sleep(50, 100);
+            Sleep.sleep(200, 400);
             Sleep.sleepUntil(() -> alched && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), Calculations.random(750, 1000));
         } else {
             Logger.log("issue interacting with " + item);
@@ -132,6 +147,7 @@ public class HighAlchemyTask implements WatTask {
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         alched = true;
+        Sleep.sleep(360, 720);
     }
 
     @Override
