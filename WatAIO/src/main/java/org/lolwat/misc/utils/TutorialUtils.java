@@ -6,6 +6,7 @@ import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.WatAIO;
 
 import static org.dreambot.api.utilities.Logger.log;
 
@@ -37,14 +38,16 @@ public class TutorialUtils {
         //    Dialogues.clickContinue();
         //}
 
-        final Tab t = getTab();
-        if (t == null) {
-            log("Tab is null?");
-            return;
-        }
+        if(WatAIO.RUNNING_TUT) {
+            final Tab t = getTab();
+            if (t == null) {
+                log("Tab is null?");
+                return;
+            }
 
-        if (Tabs.openWithMouse(t)) {
-            Sleep.sleepUntil(() -> Tabs.isOpen(t), Calculations.random(1200, 1600));
+            if (Tabs.openWithMouse(t)) {
+                Sleep.sleepUntil(() -> Tabs.isOpen(t), Calculations.random(1200, 1600));
+            }
         }
     }
 }
