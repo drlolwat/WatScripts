@@ -212,7 +212,7 @@ public class BankingTask implements WatTask {
                     amountRequired = 1;
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    if(Inventory.get(entry.getKey()).isNoted()) {
+                    if(Inventory.get(entry.getKey()).isNoted() && (postTask != null && !(postTask instanceof HighAlchemyTask))) {
                         Bank.depositAll(entry.getKey());
                         Sleep.sleep(100, 300);
                     } else {
