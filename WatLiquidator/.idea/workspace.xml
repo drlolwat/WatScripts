@@ -7,10 +7,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Helper function for playercount in radius. Hopping for TreeType.TREE if &gt;= 4 players nearby.">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="MiningInstructor fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MagicCombatTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/QuestGuideTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/QuestGuideTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/TutorialUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/TutorialUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/MagicInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/MagicInstructorTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +125,7 @@
       <workItem from="1700068272236" duration="12598000" />
       <workItem from="1700416503479" duration="13651000" />
       <workItem from="1700870574480" duration="32292000" />
-      <workItem from="1700944002527" duration="3930000" />
+      <workItem from="1700944002527" duration="11379000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -466,7 +470,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <option name="localTasksCounter" value="177" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -484,7 +488,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="See Riboflavin" />
     <MESSAGE value="Breakfix" />
     <MESSAGE value="Improved BankingTask, improved wealth generation" />
     <MESSAGE value="TTL on paint shows gained amount" />
@@ -509,7 +512,8 @@
     <MESSAGE value="Fixed infinite loop on accounts with no GP." />
     <MESSAGE value="Fixed over-hopping during mining, removed Lumbridge from restricted MM tasks (too long of a repeated walk to GE)" />
     <MESSAGE value="Helper function for playercount in radius. Hopping for TreeType.TREE if &gt;= 4 players nearby." />
-    <option name="LAST_COMMIT_MESSAGE" value="Helper function for playercount in radius. Hopping for TreeType.TREE if &gt;= 4 players nearby." />
+    <MESSAGE value="MiningInstructor fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="MiningInstructor fix" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
