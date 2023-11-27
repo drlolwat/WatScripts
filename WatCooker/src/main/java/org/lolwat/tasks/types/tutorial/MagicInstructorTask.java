@@ -91,6 +91,7 @@ public class MagicInstructorTask implements WatTask {
 
         if (PlayerSettings.getConfig(281) == 1000) {
             instance.currentTask = null;
+            WatAIO.RUNNING_TUT = false;
         }
     }
 
