@@ -93,6 +93,16 @@ public class MagicUtils {
                 ret.put("Death rune", spellCount);
                 break;
             }
+
+            case FIRE_BLAST: {
+                ret.put("Death rune", spellCount);
+                ret.put("Fire rune", spellCount * 5);
+            }
+
+            case HIGH_LEVEL_ALCHEMY: {
+                ret.put("Nature rune", spellCount);
+                break;
+            }
         }
 
         return ret;
