@@ -18,6 +18,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.magic.HighAlchemyTask;
 import org.lolwat.tasks.types.prayer.BuryBonesTask;
 
 import java.time.Instant;
@@ -204,14 +205,14 @@ public class BankingTask implements WatTask {
         // make inventoryRequired part of the task and use that.
         Logger.log("INVENTORYCHECKER: STARTING");
         if (!inventoryRequired.isEmpty()) {
-            checkAndSet(BankMode.ITEM);
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+                checkAndSet(BankMode.ITEM);
                 int amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
                 if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    if(Inventory.get(entry.getKey()).isNoted()) {
+                    if(Inventory.get(entry.getKey()).isNoted() && (postTask != null && !(postTask instanceof HighAlchemyTask))) {
                         Bank.depositAll(entry.getKey());
                         Sleep.sleep(100, 300);
                     } else {
@@ -233,6 +234,10 @@ public class BankingTask implements WatTask {
                     }
 
                     toWithdraw -= reduceBy;
+
+                    if(postTask != null && postTask instanceof HighAlchemyTask && !entry.getKey().contains("rune") && !entry.getKey().contains("coin")) {
+                        checkAndSet(BankMode.NOTE);
+                    }
 
                     if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), toWithdraw)) {
                         Logger.log("INVENTORYCHECKER: WITHDREW " + toWithdraw + " OF " + entry.getKey());
@@ -272,8 +277,13 @@ public class BankingTask implements WatTask {
                 finalPrice += multipliedPrice;
             }
 
-            if ((Bank.contains("Coins") && Bank.count("Coins") >= finalPrice)) {
-                Bank.withdraw("Coins", finalPrice);
+            int toWithdraw = finalPrice;
+            if(Inventory.contains("Coins")) {
+                toWithdraw -= Inventory.count("Coins");
+            }
+
+            if ((Bank.contains("Coins") && Bank.count("Coins") >= toWithdraw)) {
+                Bank.withdraw("Coins", toWithdraw);
                 Sleep.sleep(100, 200);
                 Bank.close();
 
