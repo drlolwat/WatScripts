@@ -13,6 +13,7 @@ import org.lolwat.tasks.types.cooking.CookingFishTask;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.tasks.types.firemaking.FiremakingTask;
+import org.lolwat.tasks.types.magic.HighAlchemyTask;
 import org.lolwat.tasks.types.prayer.BuryBonesTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
@@ -236,7 +237,7 @@ public class TaskManager {
             }
         }));
 
-        tasks.add(new MagicCombatTask(50, 99, new Area(
+        tasks.add(new MagicCombatTask(50, 55, new Area(
                 new Tile(3367, 3157, 0),
                 new Tile(3367, 3142, 0),
                 new Tile(3381, 3142, 0),
@@ -246,6 +247,8 @@ public class TaskManager {
                 new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
             put("Trout", 20);
         }}));
+
+        tasks.add(new HighAlchemyTask(55, 99));
 
         return tasks;
     }
