@@ -41,11 +41,7 @@ public class HighAlchemyTask implements WatTask {
 
     List<String> items = new ArrayList<String>() {
         {
-            add("Steel chainbody");
-            add("Steel kiteshield");
             add("Mithril med helm");
-            add("Steel full helm");
-            add("Steel warhammer");
             add("Mithril dagger");
         }
     };
