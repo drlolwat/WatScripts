@@ -237,7 +237,7 @@ public class TaskManager {
             }
         }));
 
-        tasks.add(new MagicCombatTask(50, 55, new Area(
+        tasks.add(new MagicCombatTask(50, 99, new Area(
                 new Tile(3367, 3157, 0),
                 new Tile(3367, 3142, 0),
                 new Tile(3381, 3142, 0),
@@ -248,7 +248,7 @@ public class TaskManager {
             put("Trout", 20);
         }}));
 
-        tasks.add(new HighAlchemyTask(55, 99));
+        //tasks.add(new HighAlchemyTask(55, 99));
 
         return tasks;
     }
