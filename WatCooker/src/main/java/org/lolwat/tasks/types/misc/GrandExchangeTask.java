@@ -11,9 +11,12 @@ import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -166,6 +169,16 @@ public class GrandExchangeTask implements WatTask {
                             }
 
                             GrandExchange.confirm();
+                            Sleep.sleep(100, 300);
+                            Widget w = Widgets.getWidget(289);
+                            if(w != null) {
+                                WidgetChild c = w.getChild(8); // yes button
+                                if(c.interact()) {
+                                    Sleep.sleep(100, 200);
+                                } else {
+                                    Logger.log("unable to interact with G.E warning");
+                                }
+                            }
                             item.setValue(0);
 
                             Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 20000);
