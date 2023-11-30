@@ -170,6 +170,7 @@ public class GrandExchangeTask implements WatTask {
 
                             GrandExchange.confirm();
                             Sleep.sleep(100, 300);
+
                             Widget w = Widgets.getWidget(289);
                             if(w != null) {
                                 WidgetChild c = w.getChild(8); // yes button
@@ -179,6 +180,7 @@ public class GrandExchangeTask implements WatTask {
                                     Logger.log("unable to interact with G.E warning");
                                 }
                             }
+
                             item.setValue(0);
 
                             Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 20000);
