@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -9,8 +10,11 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.world.World;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -70,6 +74,23 @@ public class TraversalTask implements WatTask {
                 Logger.log("Traversal: slashed " + t);
                 Sleep.sleepUntil(() -> GameObjects.closest(t) == null || !GameObjects.closest(t).exists(), 5000);
                 return;
+            }
+        }
+
+
+        if(Worlds.getCurrent().isF2P()) {
+            Area castleWars = new Area(2435, 3099, 2446, 3080);
+            if(castleWars.contains(Players.getLocal())) {
+                GameObject obj = GameObjects.closest("Large door");
+                if(obj != null && obj.interact()) {
+                    Sleep.sleep(2000, 3000);
+
+                    if(Dialogues.inDialogue() && Dialogues.getOptions() != null && Dialogues.chooseOption("Yes")) {
+                        Sleep.sleep(1000, 2000);
+                        instance.currentTask = postTask;
+                        return;
+                    }
+                }
             }
         }
 
