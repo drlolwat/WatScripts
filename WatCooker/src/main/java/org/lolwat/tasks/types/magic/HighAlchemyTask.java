@@ -85,6 +85,13 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
+        for(String s : clothesRequired().keySet()) {
+            if(!Equipment.contains(s)) {
+                instance.currentTask = new BankingTask(null, requiredItems, null, 1, this);
+                return;
+            }
+        }
+
         if(Bank.isOpen()) {
             Bank.close();
             Sleep.sleep(100, 200);
