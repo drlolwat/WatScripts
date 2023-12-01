@@ -152,6 +152,10 @@ public class GrandExchangeTask implements WatTask {
                     Sleep.sleep(400, 800);
 
                     while(item.getValue() != 0) {
+                        if(!GrandExchange.isBuyOpen()) {
+                            break;
+                        }
+
                         // Add the item.
                         if (GrandExchange.addBuyItem(item.getKey())) {
                             Sleep.sleep(100, 220);
