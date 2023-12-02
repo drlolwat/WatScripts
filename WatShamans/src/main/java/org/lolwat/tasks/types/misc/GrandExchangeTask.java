@@ -132,7 +132,7 @@ public class GrandExchangeTask implements WatTask {
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
 
-                        if(GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 1.2))) {
+                        if(GrandExchange.setPrice(1)) {//(int) (LivePrices.get(item.getKey()) / 1.2))) {
                             Sleep.sleep(100, 200);
                             GrandExchange.confirm();
                             Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
