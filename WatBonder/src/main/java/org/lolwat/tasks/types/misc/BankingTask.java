@@ -107,17 +107,22 @@ public class BankingTask implements WatTask {
                     if (Bank.contains(entry.getKey()) && Bank.get(entry.getKey()).getAmount() >= triggerAmount) {
                         checkAndSet(BankMode.NOTE);
                         Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName());
-                        if (entry.getValue() > 0) {
-                            int reduceBy = 0;
-                            if (Inventory.contains(entry.getKey()))
-                                reduceBy = Inventory.count(entry.getKey());
+                        if(!Inventory.isFull()) {
+                            if (entry.getValue() > 0) {
+                                int reduceBy = 0;
+                                if (Inventory.contains(entry.getKey()))
+                                    reduceBy = Inventory.count(entry.getKey());
 
-                            Logger.log("Taking " + (entry.getValue() - reduceBy) + " of " + entry.getKey());
-                            Bank.withdraw(entry.getKey(), (entry.getValue() - reduceBy));
+                                Logger.log("Taking " + (entry.getValue() - reduceBy) + " of " + entry.getKey());
+                                Bank.withdraw(entry.getKey(), (entry.getValue() - reduceBy));
+                            } else {
+                                Logger.log("Taking " + entry.getKey());
+                                Bank.withdrawAll(entry.getKey());
+                            }
                         } else {
-                            Logger.log("Taking " + entry.getKey());
-                            Bank.withdrawAll(entry.getKey());
+                            Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName() + ", but inventory is full");
                         }
+
                         performSelling = true;
                     }
                 }
