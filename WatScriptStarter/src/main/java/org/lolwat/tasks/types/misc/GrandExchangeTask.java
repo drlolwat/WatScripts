@@ -153,7 +153,8 @@ public class GrandExchangeTask implements WatTask {
 
                     if(item.getValue() != 0) {
                         if(!GrandExchange.isBuyOpen()) {
-                            break; //TODO RESET THE FUCKIN SHIT OR DO SOMETHING OTHER THAN A LOOP
+                            instance.currentTask = postTask;
+                            break;
                         }
 
                         // Add the item.
