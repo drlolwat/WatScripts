@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -132,6 +133,34 @@ public class GrandExchangeTask implements WatTask {
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
 
+                        for(int i = 0; i <= 3; i++) {
+                            if(!GrandExchange.getDecreasePriceFivePercentButton().interact()) {
+                                Logger.log("error lowering g.e price");
+                            }
+
+                            Sleep.sleep(100, 300);
+                        }
+
+                        if(!GrandExchange.confirm()) {
+                            Logger.log("error confirming g.e offer");
+                            return;
+                        }
+
+                        Sleep.sleepUntil(GrandExchange::isReadyToCollect, Calculations.random(800, 1800));
+
+                        if(!GrandExchange.isReadyToCollect()) {
+                            Logger.log("item did not sell instantly");
+                            return;
+                        }
+
+                        if(!GrandExchange.collect()) {
+                            Logger.log("error collecting items from g.e");
+                            return;
+                        }
+
+                        Sleep.sleep(100, 500);
+
+                        /*
                         if(GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 1.2))) {
                             Sleep.sleep(100, 200);
                             GrandExchange.confirm();
@@ -140,7 +169,7 @@ public class GrandExchangeTask implements WatTask {
                         }
                         else {
                             return;
-                        }
+                        }*/
                     }
                     else {
                         Logger.log("Item was not in inventory: " + item.getKey());
