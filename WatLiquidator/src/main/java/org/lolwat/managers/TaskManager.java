@@ -467,27 +467,27 @@ public class TaskManager {
                     new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }));
 
             // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
-                    new Tile(3193, 3300, 0),
-                    new Tile(3193, 3286, 0),
-                    new Tile(3197, 3282, 0),
-                    new Tile(3201, 3283, 0),
-                    new Tile(3205, 3283, 0),
-                    new Tile(3207, 3284, 0),
-                    new Tile(3211, 3284, 0),
-                    new Tile(3212, 3285, 0),
-                    new Tile(3212, 3289, 0),
-                    new Tile(3213, 3290, 0),
-                    new Tile(3213, 3292, 0),
-                    new Tile(3211, 3295, 0),
-                    new Tile(3210, 3297, 0),
-                    new Tile(3210, 3301, 0),
-                    new Tile(3209, 3302, 0),
-                    new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
-                {
-                    put("Trout", 12);
-                }
-            }));
+            //tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
+            //        new Tile(3193, 3300, 0),
+            //        new Tile(3193, 3286, 0),
+            //        new Tile(3197, 3282, 0),
+            //        new Tile(3201, 3283, 0),
+            //        new Tile(3205, 3283, 0),
+            //        new Tile(3207, 3284, 0),
+            //        new Tile(3211, 3284, 0),
+            //        new Tile(3212, 3285, 0),
+            //        new Tile(3212, 3289, 0),
+            //        new Tile(3213, 3290, 0),
+            //        new Tile(3213, 3292, 0),
+            //        new Tile(3211, 3295, 0),
+            //        new Tile(3210, 3297, 0),
+            //        new Tile(3210, 3301, 0),
+            //        new Tile(3209, 3302, 0),
+            //        new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
+            //    {
+            //        put("Trout", 12);
+            //    }
+            //}));
 
             // lumbridge cows north 2
             tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
