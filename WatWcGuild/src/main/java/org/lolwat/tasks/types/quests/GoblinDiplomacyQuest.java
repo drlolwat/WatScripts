@@ -1,6 +1,7 @@
 package org.lolwat.tasks.types.quests;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -30,28 +31,57 @@ public class GoblinDiplomacyQuest implements WatTask {
             new Tile(2962, 3514, 0),
             new Tile(2956, 3514, 0));
 
-    private final List<String> startDialogue = Arrays.asList("Do you want me to pick an armour colour for you?", "Yes.", "You should wear red.", "What about a different colour?", "Okay, I'll be back soon.", "I'll leave you to it.");
-    private final List<String> completeDialogue = Arrays.asList("No, he doesn't look fat.", "I have some orange armour here.", "I have some blue armour here.", "I have some brown armour here.");
+    private final List<String> startDialogue = Arrays.asList(
+            "Do you want me to pick an armour colour for you?",
+            "Yes.",
+            "You should wear red.",
+            "What about a different colour?",
+            "Okay, I'll be back soon.",
+            "I'll leave you to it.");
+    private final List<String> completeDialogue = Arrays.asList(
+            "Do you want me to pick an armour colour for you?",
+            "What about a different colour?",
+            "Yes.",
+            "You should wear red.",
+            "No, he doesn't look fat.",
+            "I have some orange armour here.",
+            "I have some blue armour here.",
+            "I have some brown armour here.");
+
     private boolean hasOrange = false;
     private boolean hasBlue = false;
 
-    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
+    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() {{
         put("Goblin mail", 3);
         put("Blue dye", 1);
         put("Orange dye", 1);
-    } };
-
-    private boolean hasDoneDyes() {
-        return hasOrange && hasBlue;
-    }
+    }};
 
     public GoblinDiplomacyQuest() {
     }
 
     @Override
     public void execute(WatAIO instance) {
-        if(!hasDoneDyes()) {
+        // Check if the bank window is open and close it if necessary
+        if (Bank.isOpen()) {
+            Bank.close();
+            Sleep.sleep(300, 600); // Wait for the bank to close
+        }
+
+        boolean hasOrangeMail = Inventory.contains("Orange goblin mail");
+        boolean hasBlueMail = Inventory.contains("Blue goblin mail");
+
+        // Update flags based on the presence of dyed goblin mails
+        hasOrange = hasOrange || hasOrangeMail;
+        hasBlue = hasBlue || hasBlueMail;
+
+        if (!hasDoneDyes()) {
             for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
+                if (("Blue dye".equals(kv.getKey()) && hasBlue) ||
+                        ("Orange dye".equals(kv.getKey()) && hasOrange)) {
+                    continue;
+                }
+
                 if (!Inventory.contains(kv.getKey()) ||
                         (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
                         (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
@@ -59,60 +89,73 @@ public class GoblinDiplomacyQuest implements WatTask {
                     return;
                 }
             }
+
+            // Perform dyeing if necessary
+            if(!hasBlue && Inventory.contains("Blue dye")) {
+                dyeMail("Blue");
+            }
+            if(!hasOrange && Inventory.contains("Orange dye")) {
+                dyeMail("Orange");
+            }
         }
 
-        //go to start location
+        // Proceed with the quest if it's started, or the dyes are done
+        if (Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) || hasDoneDyes()) {
+            proceedWithQuestDialogue(instance);
+            return;
+        }
+
         if (!startLocation.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(startLocation, this);
             return;
         }
 
-        if(!Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY)) {
-            if (NPCs.closest("General Bentnoze") != null) {
-                // handle the dialogue here
-                if (Dialogues.inDialogue()) {
-                    while (Dialogues.inDialogue()) {
-                        DialogueUtils.continueWhilePossible();
-                        DialogueUtils.solve(startDialogue);
-                    }
-                } else {
-                    NPCs.closest("General Bentnoze").interact();
+        if (!Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) && NPCs.closest("General Bentnoze") != null) {
+            if (Dialogues.inDialogue()) {
+                while (Dialogues.inDialogue()) {
+                    DialogueUtils.continueWhilePossible();
+                    DialogueUtils.solve(startDialogue);
                 }
+            } else {
+                NPCs.closest("General Bentnoze").interact();
             }
-        } else {
-            if(!hasBlue && dyeMail("Blue"))
-                hasBlue = true;
+        }
+    }
 
-            if(!hasOrange && dyeMail("Orange"))
-                hasOrange = true;
-
-            if(hasDoneDyes()) {
-                if (NPCs.closest("General Bentnoze") != null) {
-                    // handle the dialogue here
-                    if (Dialogues.inDialogue()) {
-                        while (Dialogues.inDialogue()) {
-                            DialogueUtils.continueWhilePossible();
-                            DialogueUtils.solve(completeDialogue);
-                        }
-                    } else {
-                        NPCs.closest("General Bentnoze").interact();
-                    }
+    private void proceedWithQuestDialogue(WatAIO instance) {
+        if (!startLocation.contains(Players.getLocal())) {
+            instance.currentTask = new TraversalTask(startLocation, this);
+        } else if (NPCs.closest("General Bentnoze") != null) {
+            if (Dialogues.inDialogue()) {
+                while (Dialogues.inDialogue()) {
+                    DialogueUtils.continueWhilePossible();
+                    DialogueUtils.solve(completeDialogue);
                 }
+            } else {
+                NPCs.closest("General Bentnoze").interact();
             }
         }
     }
 
     private boolean dyeMail(String color) {
-        if(Inventory.count("Goblin mail") > 1 && Inventory.contains(color + " dye")) {
-            if(Inventory.get(color + " dye").interact("Use")) {
+        if (Inventory.count("Goblin mail") > 1 && Inventory.contains(color + " dye")) {
+            if (Inventory.get(color + " dye").interact("Use")) {
                 Sleep.sleep(50, 200);
                 if (Inventory.get("Goblin mail").interact()) {
                     Sleep.sleep(50, 200);
-                    return true;
+                    boolean hasOrangeMail = Inventory.contains("Orange goblin mail");
+                    boolean hasBlueMail = Inventory.contains("Blue goblin mail");
+                    if ((color.equals("Orange") && hasOrangeMail) || (color.equals("Blue") && hasBlueMail)) {
+                        return true;
+                    }
                 }
             }
         }
         return false;
+    }
+
+    private boolean hasDoneDyes() {
+        return hasOrange && hasBlue;
     }
 
     @Override
@@ -137,7 +180,7 @@ public class GoblinDiplomacyQuest implements WatTask {
 
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
+        // Method implementation
     }
 
     @Override
