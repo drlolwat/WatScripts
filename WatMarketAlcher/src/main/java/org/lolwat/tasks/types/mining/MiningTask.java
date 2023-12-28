@@ -151,11 +151,11 @@ public class MiningTask implements WatTask {
                 }
 
                 GameObject obj = GameObjects.closest(rockName);
-                if (obj.getModelColors() != null) {
+                if (obj != null && obj.getModelColors() != null && Map.canReach(obj)) {
                     rockTile = obj.getTile();
 
                     if (!obj.isOnScreen()) {
-                        Camera.rotateToEntity(obj); // lol
+                        Camera.rotateToEntity(obj);
                     }
 
                     obj.interact();

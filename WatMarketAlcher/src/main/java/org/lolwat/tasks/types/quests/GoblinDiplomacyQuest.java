@@ -62,6 +62,8 @@ public class GoblinDiplomacyQuest implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        //
+
         // Check if the bank window is open and close it if necessary
         if (Bank.isOpen()) {
             Bank.close();
@@ -77,8 +79,7 @@ public class GoblinDiplomacyQuest implements WatTask {
 
         if (!hasDoneDyes()) {
             for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
-                if (("Blue dye".equals(kv.getKey()) && hasBlue) ||
-                        ("Orange dye".equals(kv.getKey()) && hasOrange)) {
+                if (hasBlue && hasOrange) {
                     continue;
                 }
 
