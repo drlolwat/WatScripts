@@ -69,6 +69,27 @@ public class MulingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if (Inventory.isFull()) {
+            Logger.log("Inventory is full. Depositing items except for coins.");
+            if (!Bank.open(BankLocation.GRAND_EXCHANGE)) {
+                Logger.log("Unable to open bank at Grand Exchange.");
+                return;
+            }
+
+            Sleep.sleepUntil(Bank::isOpen, 5000);
+
+            if (Bank.isOpen()) {
+                // Deposit all items except coins
+                Bank.depositAllExcept("Coins");
+                Sleep.sleepUntil(() -> !Inventory.isFull(), 3000);
+            } else {
+                Logger.log("Failed to open bank.");
+                return;
+            }
+
+            Logger.log("Items deposited. Resuming muling task.");
+        }
+
         if(NPCs.closest("Grand Exchange Clerk") == null) {
             instance.currentTask = new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
             return;
