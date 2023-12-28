@@ -28,8 +28,11 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.dreambot.api.methods.hint.HintArrow.getTile;
 
 public class MagicInstructorTask implements WatTask {
     boolean started = false;
@@ -69,7 +72,7 @@ public class MagicInstructorTask implements WatTask {
 
         if(HintArrow.exists()) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
-                NPC n = getNpcOnTile(HintArrow.getTile());
+                NPC n = getNpcOnTile(getTile());
                 if(n != null) {
                     if(n.getName().equals("Magic Instructor")) {
                         DialogueUtils.talkTo("Magic Instructor", answers);
@@ -77,6 +80,13 @@ public class MagicInstructorTask implements WatTask {
                         if(!Tabs.isOpen(Tab.MAGIC)) {
                             Tabs.open(Tab.MAGIC);
                             Sleep.sleep(120, 200);
+                        }
+
+                        Area location = new Area(3138, 3091, 3141, 3091);
+
+                        if (!location.contains(Players.getLocal())) {
+                            instance.currentTask = new TraversalTask(location, this);
+                            return;
                         }
 
                         if(Magic.castSpellOn(Normal.WIND_STRIKE, NPCs.closest(x -> !x.isInCombat() && x.getName().equals("Chicken")))) {
