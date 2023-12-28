@@ -48,7 +48,7 @@ public class TutorialBankTask implements WatTask {
                 if(obj != null) {
                     if(obj.getName().equals("Bank booth")) {
                         if(obj.interact("Use")) {
-                            Sleep.sleepUntil(Bank::isOpen, 15000);
+                            Sleep.sleep(1000, 3000);
 
                             if(Bank.isOpen()) {
                                 Sleep.sleep(100, 200);
