@@ -8,6 +8,7 @@ import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.world.Worlds;
@@ -57,7 +58,7 @@ public class BankingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (NPCs.all("Banker").isEmpty()) {
-            instance.currentTask = new TraversalTask(BankLocation.getNearest().getArea(3), this);
+            instance.currentTask = new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this);
             return;
         }
 
