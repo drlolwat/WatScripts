@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
-import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
+import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
@@ -374,9 +374,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void doStart(String profile) {
         loadFromProfile(profile);
-        Client.getInstance().setMouseMovementAlgorithm(new BezierMouse());
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
+
+        BezierMouse m = new BezierMouse();
+        Mouse.setMouseAlgorithm(m);
 
         try {
             image = ImageIO.read(new URL("https://botbuddy.net/watui3.png")); //300x143
