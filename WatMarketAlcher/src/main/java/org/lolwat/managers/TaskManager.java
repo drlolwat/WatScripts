@@ -755,23 +755,6 @@ public class TaskManager {
     private static List<WatTask> createSmithingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        /*
-        tasks.add(new SmithingIngotTask(IngotType.BRONZE, 1, 15, new HashMap<String, Integer>() {
-            {
-                put("Bronze bar", -200);
-            }
-        }));
-        tasks.add(new SmithingIngotTask(IngotType.IRON, 15, 20, new HashMap<String, Integer>() {
-            {
-                put("Iron bar", -200);
-            }
-        }));
-        tasks.add(new SmithingIngotTask(IngotType.SILVER, 20, 99, new HashMap<String, Integer>() {
-            {
-                put("Silver bar", -200);
-            }
-        })); // profitable*/
-
         // actual items, followed wiki for most efficient leveling
         tasks.add(new SmithingItemTask(IngotType.BRONZE, 1, 5, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
             {

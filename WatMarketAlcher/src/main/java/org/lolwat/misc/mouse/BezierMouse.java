@@ -1,15 +1,19 @@
 package org.lolwat.misc.mouse;
 
 import org.dreambot.api.input.Mouse;
-import org.dreambot.api.input.mouse.algorithm.MouseMovementAlgorithm;
+import org.dreambot.api.input.event.impl.mouse.MouseButton;
+import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
+import org.dreambot.api.input.mouse.algorithm.StandardMouseAlgorithm;
 import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.Calculations;
 import org.lolwat.WatAIO;
 
 import java.awt.*;
 
-public class BezierMouse implements MouseMovementAlgorithm {
+public class BezierMouse implements MouseAlgorithm {
     private boolean isMoving = false;
+    private StandardMouseAlgorithm basic = new StandardMouseAlgorithm();
+
     @Override
     public boolean handleMovement(AbstractMouseDestination abstractMouseDestination) {
         if (isMoving) {
@@ -22,6 +26,11 @@ public class BezierMouse implements MouseMovementAlgorithm {
         isMoving = false;
 
         return distance(Mouse.getPosition(), suitPos) < 2;
+    }
+
+    @Override
+    public boolean handleClick(MouseButton mouseButton) {
+        return basic.handleClick(mouseButton);
     }
 
     public void generatePoints(Point point) {
