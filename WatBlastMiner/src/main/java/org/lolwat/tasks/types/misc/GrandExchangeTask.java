@@ -50,6 +50,32 @@ public class GrandExchangeTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if (Inventory.isFull()) {
+            Logger.log("Inventory is full, going to bank to deposit items.");
+            if (!Bank.open(BankLocation.GRAND_EXCHANGE)) {
+                Logger.log("Unable to open bank at Grand Exchange.");
+                return;
+            }
+
+            Sleep.sleepUntil(Bank::isOpen, 5000);
+
+            if (Bank.isOpen()) {
+                // Deposit all except items in itemList and coins
+                Bank.depositAllExcept(item -> itemList.containsKey(item.getName()) || item.getName().equalsIgnoreCase("Coins"));
+                Sleep.sleepUntil(() -> !Inventory.isFull(), 3000);
+            } else {
+                Logger.log("Failed to open bank.");
+                return;
+            }
+
+            Logger.log("Items deposited, returning to Grand Exchange.");
+            if (!GrandExchange.open()) {
+                Logger.log("Unable to open Grand Exchange.");
+                return;
+            }
+        }
+
+
         if(NPCs.closest("Grand Exchange Clerk") != null) {
             Logger.log("Grand Exchange Clerk: within sight");
             Entity clerk = NPCs.closest("Grand Exchange Clerk");
@@ -128,6 +154,7 @@ public class GrandExchangeTask implements WatTask {
                 }
 
                 if (isSelling) {
+                    //TODO check for trade unrestricted error, check chat log to reduce hive playtime by time provided, then set account to restricted and continue to next task
                     Logger.log("Selling: " + item.getKey());
                     if(Inventory.contains(item.getKey())) {
                         Inventory.get(item.getKey()).interact();
