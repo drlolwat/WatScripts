@@ -461,7 +461,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if(TRADE_UNLOCKED && STOP_ON_TRADEUNLOCK) {
-            Logger.log("WAIO: Trade unrestricted, stopping");
             currentTask = new LogoutTask(true, true,null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
