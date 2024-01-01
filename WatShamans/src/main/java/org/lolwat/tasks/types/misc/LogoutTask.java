@@ -9,6 +9,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.script.ScriptManager;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.tasks.WatTask;
@@ -79,6 +80,7 @@ public class LogoutTask implements WatTask {
                 }
 
                 ScriptManager.getScriptManager().stop();
+                Logger.log("WAIO: Trade unrestricted, stopping");
             }
         } else {
             instance.currentTask = new TraversalTask(loc, this);
