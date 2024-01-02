@@ -117,7 +117,7 @@ public class GoblinDiplomacyQuest implements WatTask {
             return;
         }
 
-        if (!Dialogues.inDialogue() && !startLocation.contains(Players.getLocal())) {
+        if (NPCs.closest("General Bentnoze") == null) {
             instance.currentTask = new TraversalTask(startLocation, this);
             return;
         }
@@ -128,7 +128,9 @@ public class GoblinDiplomacyQuest implements WatTask {
                 Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1000, 1500));
             } else {
                 DialogueUtils.continueWhilePossible();
-                DialogueUtils.solve(Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) ? completeDialogue : startDialogue);
+                if(Dialogues.getOptions() != null) {
+                    DialogueUtils.solve(Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) ? completeDialogue : startDialogue);
+                }
             }
         }
     }
