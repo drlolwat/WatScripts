@@ -54,7 +54,7 @@ public class BezierMouse implements MouseAlgorithm {
     private void moveCursor(Point startPos, Point endPos) {
         if (INSTANT_HOP) {
             Mouse.hop(endPos);
-            sleep(35 + Calculations.random(WatAIO.MOUSE_DIFF));
+            sleep(35);
             return;
         }
 
