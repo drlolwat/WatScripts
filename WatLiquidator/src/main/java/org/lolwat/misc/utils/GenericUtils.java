@@ -95,6 +95,11 @@ public class GenericUtils {
         return false;
     }
 
+    public static boolean notedOrNull(String item) {
+        if(!Inventory.contains(item)) return true;
+        return Inventory.get(item).isNoted();
+    }
+
     public static HashMap<String, Integer> getSkillingGear() {
         HashMap<String, Integer> ret = new HashMap<>();
         if(Skills.getTotalLevel() >= 75) {
