@@ -96,14 +96,14 @@ public class MeleeCombatTask implements WatTask {
                 Logger.log("- " + s);
             }
 
-            instance.currentTask = new BankingTask(requiredItems, food, null, 1,this);
+            instance.currentTask = new BankingTask(food, null, 1,this);
             return;
         }
 
         if(!food.isEmpty()) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(requiredItems, food, null, 1, this);
+                    instance.currentTask = new BankingTask(food, null, 1, this);
                     return;
                 }
             }

@@ -75,7 +75,7 @@ public class LogoutTask implements WatTask {
                         li.put(s, -1);
                     }
 
-                    instance.currentTask = new BankingTask(null, null, li, 1, this);
+                    instance.currentTask = new BankingTask(null, li, 1, this);
                     return;
                 }
 

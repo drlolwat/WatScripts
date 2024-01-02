@@ -57,7 +57,7 @@ public class SmithingItemTask implements WatTask {
         // check to see if we have enough bars
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.materialsForSmithing(itemType, ingotType,false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.count(m.getKey()) < m.getValue()) {
-                instance.currentTask = new BankingTask(null,
+                instance.currentTask = new BankingTask(
                         SmithingUtils.materialsForSmithing(itemType, ingotType, true, 1),
                         byproducts, maximumInventories, this);
 

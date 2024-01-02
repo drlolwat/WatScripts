@@ -18,7 +18,6 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.mining.MiningUtils;
@@ -109,7 +108,7 @@ public class MiningTask implements WatTask {
 
         if (!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new BankingTask(null, new HashMap<>(), sellingItems, 1, this);
+            instance.currentTask = new BankingTask(new HashMap<>(), sellingItems, 1, this);
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -125,7 +124,7 @@ public class MiningTask implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask(null, new HashMap<>(), sellingItems, 1, this);
+                instance.currentTask = new BankingTask(new HashMap<>(), sellingItems, 1, this);
                 lastSuccessfulRock = 0;
                 return;
             }
