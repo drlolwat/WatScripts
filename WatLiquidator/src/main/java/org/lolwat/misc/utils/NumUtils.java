@@ -14,25 +14,6 @@ public class NumUtils {
     }
 
     public static int getItemPrice(String item) {
-        int livePrice = LivePrices.get(item);
-        int ret = 1;
-
-        if(livePrice > 0) {
-            if(livePrice >= 10000) {
-                ret = (int) (livePrice * 1.3);
-            }
-            else if(livePrice >= 5000) {
-                ret = (int) (livePrice * 1.8);
-            }
-            else {
-                if (livePrice <= 1000) {
-                    ret = livePrice * 2;
-                } else {
-                    ret = (int) (livePrice * 1.6);
-                }
-            }
-        }
-
-        return (int) (ret * 1.2);
+        return WikiPricing.getPrice(item);
     }
 }
