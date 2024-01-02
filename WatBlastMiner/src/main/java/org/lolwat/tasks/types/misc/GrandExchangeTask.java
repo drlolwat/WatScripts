@@ -6,7 +6,6 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.grandexchange.GrandExchangeItem;
-import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.map.Map;
@@ -186,17 +185,6 @@ public class GrandExchangeTask implements WatTask {
                         }
 
                         Sleep.sleep(100, 500);
-
-                        /*
-                        if(GrandExchange.setPrice((int) (LivePrices.get(item.getKey()) / 1.2))) {
-                            Sleep.sleep(100, 200);
-                            GrandExchange.confirm();
-                            Sleep.sleepUntil(GrandExchange::isReadyToCollect, 1000);
-                            GrandExchange.collect();
-                        }
-                        else {
-                            return;
-                        }*/
                     }
                     else {
                         Logger.log("Item was not in inventory: " + item.getKey());
