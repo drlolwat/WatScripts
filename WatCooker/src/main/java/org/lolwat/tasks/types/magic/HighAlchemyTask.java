@@ -119,13 +119,12 @@ public class HighAlchemyTask implements WatTask {
                 Magic.deselect();
                 Sleep.sleep(100, 200);
             }
-
             return;
         }
 
         if (Inventory.interact(item)) {
             alched = false;
-            Sleep.sleep(200, 400);
+            Sleep.sleep(300, 500);
             Sleep.sleepUntil(() -> alched && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), Calculations.random(750, 1000));
         } else {
             Logger.log("issue interacting with " + item);
@@ -144,8 +143,8 @@ public class HighAlchemyTask implements WatTask {
 
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
-        alched = true;
         Sleep.sleep(360, 720);
+        alched = true;
     }
 
     @Override
