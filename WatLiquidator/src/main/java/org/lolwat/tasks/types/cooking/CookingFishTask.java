@@ -58,7 +58,7 @@ public class CookingFishTask implements WatTask {
     public void execute(WatAIO instance) {
         for (java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
             if (!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask(null, CookingUtils.getRequiredItems(fishType, true, 1),
+                instance.currentTask = new BankingTask(CookingUtils.getRequiredItems(fishType, true, 1),
                         selling, inventoryCount, this);
 
                 return;

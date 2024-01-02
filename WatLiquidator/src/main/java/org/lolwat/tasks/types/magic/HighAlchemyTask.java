@@ -1,18 +1,13 @@
 package org.lolwat.tasks.types.magic;
 
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.combat.Combat;
-import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
-import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
-import org.dreambot.api.methods.magic.Spell;
-import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -20,15 +15,11 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.NPC;
-import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
-import org.lolwat.misc.utils.combat.ranged.RangedUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.tasks.types.misc.TraversalTask;
 
 import java.util.*;
 
@@ -75,19 +66,19 @@ public class HighAlchemyTask implements WatTask {
 
         if (!MagicUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
             Logger.log("We need to grab runes...");
-            instance.currentTask = new BankingTask(null, requiredItems, null, 1, this);
+            instance.currentTask = new BankingTask(requiredItems, null, 1, this);
             return;
         }
 
         if (!Inventory.contains(item)) {
             Logger.log("We need to grab HA target (" + item + ")");
-            instance.currentTask = new BankingTask(null, requiredItems, null, 1, this);
+            instance.currentTask = new BankingTask(requiredItems, null, 1, this);
             return;
         }
 
         for(String s : clothesRequired().keySet()) {
             if(!Equipment.contains(s)) {
-                instance.currentTask = new BankingTask(null, requiredItems, null, 1, this);
+                instance.currentTask = new BankingTask(requiredItems, null, 1, this);
                 return;
             }
         }
