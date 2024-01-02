@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.quests;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -121,21 +122,13 @@ public class GoblinDiplomacyQuest implements WatTask {
             return;
         }
 
-        if (Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY)) {
-            if(!Dialogues.inDialogue() && NPCs.closest("General Bentnoze") != null) {
+        if (NPCs.closest("General Bentnoze") != null) {
+            if(!Dialogues.inDialogue()) {
                 NPCs.closest("General Bentnoze").interact();
+                Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1000, 1500));
             } else {
                 DialogueUtils.continueWhilePossible();
-                DialogueUtils.solve(completeDialogue);
-            }
-        }
-
-        if (!Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) && NPCs.closest("General Bentnoze") != null) {
-            if (Dialogues.inDialogue()) {
-                DialogueUtils.continueWhilePossible();
-                DialogueUtils.solve(startDialogue);
-            } else {
-                NPCs.closest("General Bentnoze").interact();
+                DialogueUtils.solve(Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) ? completeDialogue : startDialogue);
             }
         }
     }
