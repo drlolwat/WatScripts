@@ -80,6 +80,7 @@ public class GoblinDiplomacyQuest implements WatTask {
             }
         }
 
+        if(GenericUtils.notedOrNull("Orange goblin mail")) return;
         if(GenericUtils.notedOrNull("Blue goblin mail")) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Blue dye")) {
                 instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
@@ -103,7 +104,6 @@ public class GoblinDiplomacyQuest implements WatTask {
 
         Sleep.sleep(200, 500);
         if(GenericUtils.notedOrNull("Blue goblin mail")) return;
-        if(GenericUtils.notedOrNull("Orange goblin mail")) return;
         if(GenericUtils.notedOrNull("Goblin mail")) {
             instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                 {
