@@ -2,10 +2,8 @@ package org.lolwat.tasks.types.combat;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
-import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -25,14 +23,11 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
-import org.lolwat.misc.utils.combat.ranged.RangedUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -86,7 +81,7 @@ public class MagicCombatTask implements WatTask {
 
         if(!MagicUtils.canAffordCast(toCast)) {
             Logger.log("We need to grab runes...");
-            instance.currentTask = new BankingTask(null, requiredItems, null, 1,this);
+            instance.currentTask = new BankingTask(requiredItems, null, 1,this);
             return;
         }
 
@@ -94,7 +89,7 @@ public class MagicCombatTask implements WatTask {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
                     Logger.log("We need to grab food...");
-                    instance.currentTask = new BankingTask(null, requiredItems, null, 2,this);
+                    instance.currentTask = new BankingTask(requiredItems, null, 2,this);
                     return;
                 }
             }

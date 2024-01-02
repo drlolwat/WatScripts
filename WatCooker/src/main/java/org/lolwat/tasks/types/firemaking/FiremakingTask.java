@@ -59,7 +59,7 @@ public class FiremakingTask implements WatTask {
 
         for(java.util.Map.Entry<String, Integer> m : FiremakingUtils.getMaterialsForFiremaking(logType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).isNoted() || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask(null,
+                instance.currentTask = new BankingTask(
                         FiremakingUtils.getMaterialsForFiremaking(logType, true, 1),
                         toSell, inventoryLoads, this);
                 return;

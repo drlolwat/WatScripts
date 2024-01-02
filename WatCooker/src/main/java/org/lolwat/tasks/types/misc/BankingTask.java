@@ -1,6 +1,5 @@
 package org.lolwat.tasks.types.misc;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -40,7 +39,7 @@ public class BankingTask implements WatTask {
         }
     };
 
-    public BankingTask(HashMap<String, Integer> eqRequired, HashMap<String, Integer> invRequired, HashMap<String, Integer> sellList, Integer inventories, WatTask post) {
+    public BankingTask(HashMap<String, Integer> invRequired, HashMap<String, Integer> sellList, Integer inventories, WatTask post) {
         if (invRequired == null || invRequired.isEmpty())
             inventoryRequired = new HashMap<>();
         else
