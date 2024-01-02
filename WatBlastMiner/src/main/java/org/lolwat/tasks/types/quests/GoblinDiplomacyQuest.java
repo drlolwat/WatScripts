@@ -121,6 +121,11 @@ public class GoblinDiplomacyQuest implements WatTask {
         }
 
         if (Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY)) {
+            if(!Dialogues.inDialogue() && NPCs.closest("General Bentnoze") != null) {
+                NPCs.closest("General Bentnoze").interact();
+                return;
+            }
+
             DialogueUtils.continueWhilePossible();
             DialogueUtils.solve(completeDialogue);
             return;
