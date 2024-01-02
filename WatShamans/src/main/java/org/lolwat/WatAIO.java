@@ -726,6 +726,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
+        if(levelUps == null)
+            levelUps = new HashMap<>();
+
         int totalLevelsGained = 0;
         for (int i : levelUps.values()) {
             totalLevelsGained += i;
