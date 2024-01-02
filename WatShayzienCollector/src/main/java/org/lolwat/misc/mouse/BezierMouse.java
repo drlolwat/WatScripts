@@ -12,6 +12,8 @@ import java.awt.*;
 
 public class BezierMouse implements MouseAlgorithm {
     private boolean isMoving = false;
+    private static boolean INSTANT_HOP = false;
+
     private StandardMouseAlgorithm basic = new StandardMouseAlgorithm();
 
     @Override
@@ -50,6 +52,12 @@ public class BezierMouse implements MouseAlgorithm {
     }
 
     private void moveCursor(Point startPos, Point endPos) {
+        if (INSTANT_HOP) {
+            Mouse.hop(endPos);
+            sleep(35 + Calculations.random(WatAIO.MOUSE_DIFF));
+            return;
+        }
+
         Point controlPoint = randomPoint(startPos, endPos);
         int steps = Calculations.random(5, 15);
 
