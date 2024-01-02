@@ -92,14 +92,14 @@ public class RangedCombatTask implements WatTask {
                 Logger.log("- " + s);
             }
 
-            instance.currentTask = new BankingTask(requiredItems, food, null, 1,this);
+            instance.currentTask = new BankingTask(food, null, 1,this);
             return;
         }
 
         if(food.size() > 0) {
             for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(requiredItems, food, null, 2,this);
+                    instance.currentTask = new BankingTask(food, null, 2,this);
                     return;
                 }
             }

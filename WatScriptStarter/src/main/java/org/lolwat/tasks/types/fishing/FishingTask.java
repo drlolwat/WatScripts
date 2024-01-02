@@ -69,7 +69,7 @@ public class FishingTask implements WatTask {
         }
 
         if(!hasItems) {
-            instance.currentTask = new BankingTask(null, requiredItems, sellingItems, 1, this);
+            instance.currentTask = new BankingTask(requiredItems, sellingItems, 1, this);
         }
         else {
             if (!Tab.INVENTORY.isOpen()) {
@@ -78,7 +78,7 @@ public class FishingTask implements WatTask {
 
             if(Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask(null, requiredItems, sellingItems, 1, this);
+                instance.currentTask = new BankingTask(requiredItems, sellingItems, 1, this);
                 return;
             }
 
