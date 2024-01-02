@@ -58,7 +58,7 @@ public class SpinningTask implements WatTask {
 
         for(String it : requiredItems.keySet()) {
             if(!Inventory.contains(it)) {
-                instance.currentTask = new BankingTask(null, requiredItems, toSell, inventoryLoads, this);
+                instance.currentTask = new BankingTask(requiredItems, toSell, inventoryLoads, this);
                 return;
             }
         }

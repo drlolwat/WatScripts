@@ -19,7 +19,6 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.mining.MiningUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.HopperTask;
@@ -65,7 +64,7 @@ public class WoodcuttingTask implements WatTask {
         String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
         if(!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) {
             Logger.log("I don't own the best hatchet available for me: " + hatchet);
-            instance.currentTask = new BankingTask(null, new HashMap<>(), sellList, 1, this);
+            instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
         }
         else {
             if (!Tab.INVENTORY.isOpen()) {
@@ -82,7 +81,7 @@ public class WoodcuttingTask implements WatTask {
                 if(!dropping) {
                     Logger.log("My inventory is full, to the bank!");
                     lastGotLog = 0;
-                    instance.currentTask = new BankingTask(null, new HashMap<>(), sellList, 1, this);
+                    instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
                     return;
                 } else {
                     for(Item it : Inventory.all()) {
