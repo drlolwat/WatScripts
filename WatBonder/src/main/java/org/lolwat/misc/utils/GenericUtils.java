@@ -44,6 +44,24 @@ public class GenericUtils {
             put("Steel axe", 5);
             put("Iron axe", 1);
             put("Bronze axe", 1);
+
+            //staff?
+            put("Staff of fire", 1);
+
+            //scims..
+            put("Rune scimitar", 40);
+            put("Adamant scimitar", 30);
+            put("Mithril scimitar", 20);
+            put("Black scimitar", 10);
+            put("Steel scimitar", 5);
+            put("Iron scimitar", 1);
+            put("Bronze scimitar", 1);
+
+            //bows
+            put("Maple shortbow", 30);
+            put("Willow shortbow", 20);
+            put("Oak shortbow", 5);
+            put("Shortbow", 1);
         }
     };
 
