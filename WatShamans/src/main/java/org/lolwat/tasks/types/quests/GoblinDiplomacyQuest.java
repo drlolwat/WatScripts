@@ -51,6 +51,8 @@ public class GoblinDiplomacyQuest implements WatTask {
             "I have some blue armour here.",
             "I have some brown armour here.");
 
+    boolean traversed = false;
+
     public GoblinDiplomacyQuest() { }
 
     @Override
@@ -60,7 +62,7 @@ public class GoblinDiplomacyQuest implements WatTask {
             Sleep.sleep(300, 600);
         }
 
-        if(GenericUtils.notedOrNull("Orange goblin mail")) {
+        if(GenericUtils.notedOrNull("Orange goblin mail") && !traversed) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Orange dye")) {
                 instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                     {
@@ -82,8 +84,8 @@ public class GoblinDiplomacyQuest implements WatTask {
             }
         }
 
-        if(GenericUtils.notedOrNull("Orange goblin mail")) return;
-        if(GenericUtils.notedOrNull("Blue goblin mail")) {
+        if(GenericUtils.notedOrNull("Orange goblin mail") && !traversed) return;
+        if(GenericUtils.notedOrNull("Blue goblin mail") && !traversed) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Blue dye")) {
                 instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                     {
@@ -105,8 +107,8 @@ public class GoblinDiplomacyQuest implements WatTask {
         }
 
         Sleep.sleep(200, 500);
-        if(GenericUtils.notedOrNull("Blue goblin mail")) return;
-        if(GenericUtils.notedOrNull("Goblin mail")) {
+        if(GenericUtils.notedOrNull("Blue goblin mail") && !traversed) return;
+        if(GenericUtils.notedOrNull("Goblin mail") && !traversed) {
             instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                 {
                     put("Orange goblin mail", 1);
@@ -119,16 +121,16 @@ public class GoblinDiplomacyQuest implements WatTask {
 
         if (NPCs.closest("General Bentnoze") == null) {
             instance.currentTask = new TraversalTask(startLocation, this);
-            return;
-        }
-
-        if (NPCs.closest("General Bentnoze") != null) {
-            if(!Dialogues.inDialogue()) {
+        } else {
+            if (!Dialogues.inDialogue()) {
                 NPCs.closest("General Bentnoze").interact();
                 Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1000, 1500));
             } else {
+                if(!traversed)
+                    traversed = true;
+
                 DialogueUtils.continueWhilePossible();
-                if(Dialogues.getOptions() != null) {
+                if (Dialogues.getOptions() != null) {
                     DialogueUtils.solve(Quests.isStarted(FreeQuest.GOBLIN_DIPLOMACY) ? completeDialogue : startDialogue);
                 }
             }
