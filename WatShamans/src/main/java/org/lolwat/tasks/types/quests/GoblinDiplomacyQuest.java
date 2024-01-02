@@ -20,6 +20,7 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +116,7 @@ public class GoblinDiplomacyQuest implements WatTask {
             return;
         }
 
-        if (!startLocation.contains(Players.getLocal())) {
+        if (!Dialogues.inDialogue() && !startLocation.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(startLocation, this);
             return;
         }
