@@ -40,7 +40,7 @@ public class DoricsQuest implements WatTask {
             if (!Inventory.contains(kv.getKey()) ||
                     (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
                     (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
-                instance.currentTask = new BankingTask(null, needed, null, 1, this);
+                instance.currentTask = new BankingTask(needed, null, 1, this);
                 return;
             }
         }

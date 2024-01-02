@@ -13,7 +13,6 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
@@ -24,7 +23,6 @@ import org.lolwat.tasks.types.misc.TraversalTask;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GoblinDiplomacyQuest implements WatTask {
     private final Area startLocation = new Area(
@@ -62,7 +60,7 @@ public class GoblinDiplomacyQuest implements WatTask {
 
         if(GenericUtils.notedOrNull("Orange goblin mail")) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Orange dye")) {
-                instance.currentTask = new BankingTask(null, new HashMap<String, Integer>() {
+                instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                     {
                         put("Goblin mail", 1);
                         put("Orange dye", 1);
@@ -84,7 +82,7 @@ public class GoblinDiplomacyQuest implements WatTask {
 
         if(GenericUtils.notedOrNull("Blue goblin mail")) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Blue dye")) {
-                instance.currentTask = new BankingTask(null, new HashMap<String, Integer>() {
+                instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                     {
                         put("Orange goblin mail", 1);
                         put("Goblin mail", 1);
@@ -107,7 +105,7 @@ public class GoblinDiplomacyQuest implements WatTask {
         if(GenericUtils.notedOrNull("Blue goblin mail")) return;
         if(GenericUtils.notedOrNull("Orange goblin mail")) return;
         if(GenericUtils.notedOrNull("Goblin mail")) {
-            instance.currentTask = new BankingTask(null, new HashMap<String, Integer>() {
+            instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
                 {
                     put("Orange goblin mail", 1);
                     put("Blue goblin mail", 1);

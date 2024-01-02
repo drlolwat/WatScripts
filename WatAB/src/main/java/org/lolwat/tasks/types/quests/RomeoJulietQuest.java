@@ -72,7 +72,7 @@ public class RomeoJulietQuest implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(Inventory.isFull()) {
-            instance.currentTask = new BankingTask(null, null, null, 1, this);
+            instance.currentTask = new BankingTask(null, null, 1, this);
             return;
         }
 
@@ -184,7 +184,7 @@ public class RomeoJulietQuest implements WatTask {
                 HashMap<String, Integer> req = new HashMap<String, Integer>() { { put("Cadava berries", 1); } };
                 if(!Inventory.contains("Cadava potion")) {
                     if (!Inventory.contains("Cadava berries") || (Inventory.contains("Cadava berries") && Inventory.get("Cadava berries").isNoted())) {
-                        instance.currentTask = new BankingTask(null, req, null, 1,this);
+                        instance.currentTask = new BankingTask(req, null, 1,this);
                         return;
                     }
 
