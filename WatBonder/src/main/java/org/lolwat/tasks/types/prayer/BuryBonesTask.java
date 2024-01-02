@@ -40,7 +40,7 @@ public class BuryBonesTask implements WatTask {
         String name = PrayerUtils.getBonesFromType(buryingType);
         if(name != null) {
             if(!Inventory.contains(name)) {
-                instance.currentTask = new BankingTask(null, new HashMap<String, Integer>() { { put(name, 28); }}, null, inventoryLoads, this);
+                instance.currentTask = new BankingTask(new HashMap<String, Integer>() { { put(name, 28); }}, null, inventoryLoads, this);
                 return;
             }
 
