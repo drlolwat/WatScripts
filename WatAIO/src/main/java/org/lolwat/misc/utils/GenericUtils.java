@@ -62,6 +62,8 @@ public class GenericUtils {
             put("Willow shortbow", 20);
             put("Oak shortbow", 5);
             put("Shortbow", 1);
+
+            //everything else is handled by combat utils
         }
     };
 
@@ -155,6 +157,10 @@ public class GenericUtils {
     }
 
     public static boolean canEquipTool(String toolName) {
+        if(!levels.containsKey(toolName)) {
+            return true;
+        }
+
         return levels.containsKey(toolName) && Skills.getRealLevel(Skill.ATTACK) >= levels.get(toolName);
     }
 
