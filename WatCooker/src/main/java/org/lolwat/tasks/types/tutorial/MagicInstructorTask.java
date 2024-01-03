@@ -37,6 +37,7 @@ import static org.dreambot.api.methods.hint.HintArrow.getTile;
 public class MagicInstructorTask implements WatTask {
     boolean started = false;
     Area loc = new Tile(3141, 3087).getArea(2);
+    private boolean spellCasted = false;
 
     @Override
     public String getName() {
@@ -77,22 +78,25 @@ public class MagicInstructorTask implements WatTask {
                     if(n.getName().equals("Magic Instructor")) {
                         DialogueUtils.talkTo("Magic Instructor", answers);
                     } else if(n.getName().equals("Chicken")) {
-                        if(!Tabs.isOpen(Tab.MAGIC)) {
-                            Tabs.open(Tab.MAGIC);
-                            Sleep.sleep(120, 200);
-                        }
+                        if (!spellCasted) {
+                            if (!Tabs.isOpen(Tab.MAGIC)) {
+                                Tabs.open(Tab.MAGIC);
+                                Sleep.sleep(120, 200);
+                            }
 
-                        Area location = new Area(3138, 3091, 3141, 3091);
+                            Area location = new Area(3138, 3091, 3141, 3091);
 
-                        if (!location.contains(Players.getLocal())) {
-                            instance.currentTask = new TraversalTask(location, this);
-                            return;
-                        }
+                            if (!location.contains(Players.getLocal())) {
+                                instance.currentTask = new TraversalTask(location, this);
+                                return;
+                            }
 
-                        if(Magic.castSpellOn(Normal.WIND_STRIKE, NPCs.closest(x -> !x.isInCombat() && x.getName().equals("Chicken")))) {
-                            Sleep.sleep(100, 200);
-                        } else {
-                            Logger.log("error castin' spell on the chucken");
+                            if (Magic.castSpellOn(Normal.WIND_STRIKE, NPCs.closest(x -> !x.isInCombat() && x.getName().equals("Chicken")))) {
+                                Sleep.sleep(100, 200);
+                                spellCasted = true;
+                            } else {
+                                Logger.log("error castin' spell on the chucken");
+                            }
                         }
                     }
                 }
