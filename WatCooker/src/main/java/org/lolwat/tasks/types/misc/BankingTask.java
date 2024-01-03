@@ -192,6 +192,8 @@ public class BankingTask implements WatTask {
                     }
                 }
 
+
+                //TODO fix
                 if(!Equipment.contains(s)) {
                     if (Inventory.contains(s) && GenericUtils.canEquipTool(s) && !GenericUtils.equipItem(s, null)) {
                         Logger.error("Error equipping item in BankingTask");
