@@ -106,7 +106,7 @@ public class MiningTask implements WatTask {
             WorldHopper.closeWorldHopper();
         }
 
-        if (!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) {
+        if ((!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) || (Inventory.contains(pickaxe) && Inventory.get(pickaxe).isNoted())) {
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
             instance.currentTask = new BankingTask(new HashMap<>(), sellingItems, 1, this);
         } else {
@@ -150,14 +150,17 @@ public class MiningTask implements WatTask {
                 }
 
                 GameObject obj = GameObjects.closest(rockName);
-                if (obj != null && obj.getModelColors() != null && Map.canReach(obj)) {
+                if (obj != null && obj.getModelColors() != null && obj.canReach()) {
                     rockTile = obj.getTile();
 
                     if (!obj.isOnScreen()) {
                         Camera.rotateToEntity(obj);
                     }
 
-                    obj.interact();
+                    if(!obj.interact()) {
+                        Logger.error("error interacting with rock");
+                    }
+
                     gotRock = true;
                 }
 
