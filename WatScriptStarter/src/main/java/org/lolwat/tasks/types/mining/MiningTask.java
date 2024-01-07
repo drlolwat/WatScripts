@@ -164,7 +164,7 @@ public class MiningTask implements WatTask {
                     gotRock = true;
                 } else {
                     Logger.log("traversing to closer rocks");
-                    instance.currentTask = new TraversalTask(GameObjects.all(n -> n.canReach() && n.getName().equals(rockName)).get(0).getTile().getArea(3), this);
+                    instance.currentTask = new TraversalTask(GameObjects.all(n -> n != null && n.canReach() && n.getName().equals(rockName)).get(0).getTile().getArea(3), this);
                     return;
                 }
 
