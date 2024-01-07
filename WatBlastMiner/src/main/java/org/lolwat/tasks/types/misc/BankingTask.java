@@ -58,8 +58,13 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if (NPCs.all("Banker").isEmpty() && GameObjects.closest("Open chest") == null) {
-            instance.currentTask = new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this);
+        //TODO a list of chest names to use for ex. Duel arena/Castle wars chests
+        if (NPCs.all("Banker").isEmpty()) {
+            GameObject chest = GameObjects.closest("Open chest");
+            if(chest == null || !chest.hasAction("Bank")) {
+                instance.currentTask = new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this);
+            }
+
             return;
         }
 
