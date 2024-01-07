@@ -7,12 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="I swear to god I'm still burping up tequila. Should have a fix for gear shit.">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Noted tool checks in wc/mining tasks">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/magic/HighAlchemyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/magic/HighAlchemyTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +123,7 @@
       <workItem from="1703439198009" duration="2421000" />
       <workItem from="1703695452981" duration="23221000" />
       <workItem from="1704344410858" duration="601000" />
-      <workItem from="1704345644184" duration="4584000" />
+      <workItem from="1704345644184" duration="5167000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -472,7 +468,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="213" />
+    <option name="localTasksCounter" value="214" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -490,7 +486,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Handle G.E buy warning" />
     <MESSAGE value="Handling G.E buy warning" />
     <MESSAGE value="Castle Wars/Ferox F2P fix, High Alchemy bugfix" />
     <MESSAGE value="G.E stuck fix attempt" />
@@ -515,7 +510,8 @@
     <MESSAGE value="DialogueUtils" />
     <MESSAGE value="Mouse hopping improvement" />
     <MESSAGE value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
-    <option name="LAST_COMMIT_MESSAGE" value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
+    <MESSAGE value="Noted tool checks in wc/mining tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Noted tool checks in wc/mining tasks" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
