@@ -163,7 +163,7 @@ public class MiningTask implements WatTask {
 
                     gotRock = true;
                 } else {
-                    if(obj != null && !obj.canReach()) {
+                    if(obj != null && obj.canReach()) {
                         instance.currentTask = new TraversalTask(obj.getTile().getArea(3), this);
                         return;
                     }
