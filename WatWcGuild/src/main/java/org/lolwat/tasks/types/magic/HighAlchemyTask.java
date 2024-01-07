@@ -124,7 +124,7 @@ public class HighAlchemyTask implements WatTask {
 
         if (Inventory.interact(item)) {
             alched = false;
-            Sleep.sleep(300, 500);
+            Sleep.sleep(750, 1500);
             Sleep.sleepUntil(() -> alched && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), Calculations.random(750, 1000));
         } else {
             Logger.log("issue interacting with " + item);
