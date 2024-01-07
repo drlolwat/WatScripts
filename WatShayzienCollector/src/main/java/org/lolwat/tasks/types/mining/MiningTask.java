@@ -140,7 +140,7 @@ public class MiningTask implements WatTask {
             }
 
             if(GenericUtils.tooManyPlayers(3, 5)) {
-                instance.currentTask = new HopperTask(0, this);
+                instance.currentTask = new HopperTask(0, this);//
                 return;
             }
 
