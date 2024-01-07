@@ -41,6 +41,8 @@ import org.lolwat.misc.utils.SkillUtils;
 import org.lolwat.tasks.types.tutorial.*;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -51,7 +53,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC)
-public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener {
+public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private Timer timer;
     private List<WatTask> allTasks;
     private HashMap<Quest, WatTask> allQuests;
@@ -209,6 +211,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private static boolean IGNORE_CHECK_TRADE;
     public static boolean RUNNING_TUT = false;
     private static BufferedImage image;
+    private Map<Skill, Rectangle> invisibleButtons;
 
     @Override
     public void onStart(String... params) {
@@ -374,6 +377,23 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
+        int height = 10;
+        int width = 10;
+        invisibleButtons = new HashMap<>();
+        invisibleButtons.put(Skill.ATTACK, new Rectangle(158, 22, width, height));
+        invisibleButtons.put(Skill.STRENGTH, new Rectangle(158, 40, width, height));
+        invisibleButtons.put(Skill.DEFENCE, new Rectangle(158, 56, width, height));
+        invisibleButtons.put(Skill.RANGED, new Rectangle(158, 76, width, height));
+        invisibleButtons.put(Skill.PRAYER, new Rectangle(158, 96, width, height));
+        invisibleButtons.put(Skill.MAGIC, new Rectangle(158, 114, width, height));
+        invisibleButtons.put(Skill.CRAFTING, new Rectangle(245, 23, width, height));
+        invisibleButtons.put(Skill.MINING, new Rectangle(246, 40, width, height));
+        invisibleButtons.put(Skill.SMITHING, new Rectangle(246, 58, width, height));
+        invisibleButtons.put(Skill.FISHING, new Rectangle(246, 78, width, height));
+        invisibleButtons.put(Skill.COOKING, new Rectangle(247, 96, width, height));
+        invisibleButtons.put(Skill.FIREMAKING, new Rectangle(246, 113, width, height));
+        invisibleButtons.put(Skill.WOODCUTTING, new Rectangle(247, 132, width, height));
+
         loadFromProfile(profile);
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
@@ -848,5 +868,43 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     public void enableLoginManager() {
         getRandomManager().enableSolver(RandomEvent.LOGIN);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        for (Map.Entry<Skill, Rectangle> entry : invisibleButtons.entrySet()) {
+            if (entry.getValue().contains(e.getX(), e.getY())) {
+                runSkillFunction(entry.getKey());
+                break;
+            }
+        }
+    }
+
+    private void runSkillFunction(Skill sk) {
+        if(currentTask != null && skillTargets.containsKey(sk)) {
+            Logger.info("Overriding skill selection with " + sk.getName());
+            currentTask = null;
+            evaluate(sk);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
