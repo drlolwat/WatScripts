@@ -14,6 +14,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
@@ -63,7 +64,13 @@ public class BankingTask implements WatTask {
         }
 
         if (!Bank.isOpen()) {
-            Bank.open();
+            GameObject chest = GameObjects.closest("Bank chest");
+            if(chest == null) {
+                Bank.open();
+            } else {
+                chest.interact();
+            }
+
             Sleep.sleepUntil(Bank::isOpen, 1500);
         }
 
