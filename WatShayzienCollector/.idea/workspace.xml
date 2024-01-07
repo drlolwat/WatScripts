@@ -7,10 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Trade unrestricted message moved to LogoutTask">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="I swear to god I'm still burping up tequila. Should have a fix for gear shit.">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +125,9 @@
       <workItem from="1700870574480" duration="32292000" />
       <workItem from="1700944002527" duration="38787000" />
       <workItem from="1703439198009" duration="2421000" />
-      <workItem from="1703695452981" duration="7775000" />
+      <workItem from="1703695452981" duration="23221000" />
+      <workItem from="1704344410858" duration="601000" />
+      <workItem from="1704345644184" duration="4584000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -468,7 +472,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="194" />
+    <option name="localTasksCounter" value="213" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,23 +490,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Sex update (@Merida)" />
-    <MESSAGE value="Double tool withdrawal fix" />
-    <MESSAGE value="Tutorial Island Revamp 40%" />
-    <MESSAGE value="Tutorial Island Revamp 90%" />
-    <MESSAGE value="Tutorial Island V2 Alpha" />
-    <MESSAGE value="Remove debug logging" />
-    <MESSAGE value="Fixed infinite loop on accounts with no GP." />
-    <MESSAGE value="Fixed over-hopping during mining, removed Lumbridge from restricted MM tasks (too long of a repeated walk to GE)" />
-    <MESSAGE value="Helper function for playercount in radius. Hopping for TreeType.TREE if &gt;= 4 players nearby." />
-    <MESSAGE value="MiningInstructor fix" />
-    <MESSAGE value="Magic combat training" />
-    <MESSAGE value="Magic combat QOL" />
-    <MESSAGE value="Magic combat bugfix" />
-    <MESSAGE value="High level alchemy, banking changes" />
-    <MESSAGE value="HLA + Banking QOL" />
-    <MESSAGE value="Disabled Alchemy for now, soz bois" />
-    <MESSAGE value="Alchemy QOL" />
     <MESSAGE value="Handle G.E buy warning" />
     <MESSAGE value="Handling G.E buy warning" />
     <MESSAGE value="Castle Wars/Ferox F2P fix, High Alchemy bugfix" />
@@ -511,7 +498,24 @@
     <MESSAGE value="No longer using deprecated mouse stuff" />
     <MESSAGE value="BankingTask hotfix" />
     <MESSAGE value="Trade unrestricted message moved to LogoutTask" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trade unrestricted message moved to LogoutTask" />
+    <MESSAGE value="Helper boolean function for inventory: notedOrNull" />
+    <MESSAGE value="Goblin Diplomacy rewrite. Pending test @Ribo." />
+    <MESSAGE value="Removed eqRequired parameter in BankingTask constructor." />
+    <MESSAGE value="refactor" />
+    <MESSAGE value="Goblin Diplomacy dialogue check" />
+    <MESSAGE value="Fix for equipping of combat/magic equipment" />
+    <MESSAGE value="High alchemy timing QOL" />
+    <MESSAGE value="Testing of WikiPricing in GE operations" />
+    <MESSAGE value="Mouse changes: see INSTANT_HOP" />
+    <MESSAGE value="Fix NullRef on init" />
+    <MESSAGE value="GD dialogue hotfix" />
+    <MESSAGE value="DialogueUtils hotfix" />
+    <MESSAGE value="GD hotfix" />
+    <MESSAGE value="DialogueUtils timing" />
+    <MESSAGE value="DialogueUtils" />
+    <MESSAGE value="Mouse hopping improvement" />
+    <MESSAGE value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
+    <option name="LAST_COMMIT_MESSAGE" value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
