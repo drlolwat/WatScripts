@@ -62,7 +62,7 @@ public class WoodcuttingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
-        if(!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) {
+        if((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
             Logger.log("I don't own the best hatchet available for me: " + hatchet);
             instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
         }
