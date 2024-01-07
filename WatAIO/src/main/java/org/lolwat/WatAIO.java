@@ -402,7 +402,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Mouse.setMouseAlgorithm(m);
 
         try {
-            image = ImageIO.read(new URL("https://i.imgur.com/iaCiNuO.png")); //300x143
+            image = ImageIO.read(new URL("https://i.imgur.com/PWtfWQn.png")); //300x143
         } catch (Exception ignored) {
 
         }
