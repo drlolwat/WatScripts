@@ -8,7 +8,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -46,7 +45,6 @@ public class MiningTask implements WatTask {
     private final int minLevel;
     private Integer maxMiningLevel = 0;
     private Tile lastTile; // lets try and hover the previous rock for speed
-    private Area area;
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, WatAIO core) {
         minLevel = miningLevel;
@@ -54,7 +52,6 @@ public class MiningTask implements WatTask {
         rockName = pRockName;
         sellingItems = sellableProduct;
         maxMiningLevel = maxMining;
-        area = defaultSquare.getArea(4);
     }
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, List<List<Tile>> rockLists, HashMap<String, Integer> sellableProduct, WatAIO core) {
@@ -132,7 +129,7 @@ public class MiningTask implements WatTask {
                 return;
             }
 
-            if (!area.contains(Players.getLocal())) {
+            if (!Map.isTileOnScreen(defaultSquare)) {
                 Logger.log("I need to traverse to the location.");
                 instance.currentTask = new TraversalTask(defaultSquare, false, this);
                 return;
