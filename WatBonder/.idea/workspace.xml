@@ -8,7 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Noted tool checks in wc/mining tasks">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/magic/HighAlchemyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/magic/HighAlchemyTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/WitchsPotionQuest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/BezierMouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/BezierMouse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
