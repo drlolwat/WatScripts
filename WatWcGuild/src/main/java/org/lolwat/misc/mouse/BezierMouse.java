@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class BezierMouse implements MouseAlgorithm {
     private boolean isMoving = false;
-    private static boolean INSTANT_HOP = true;
+    private static boolean INSTANT_HOP = false;
 
     private StandardMouseAlgorithm basic = new StandardMouseAlgorithm();
 
