@@ -104,6 +104,7 @@ public class TaskManager {
         tasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
         tasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
         tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
+        //tasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
 
         return tasks;
     }
