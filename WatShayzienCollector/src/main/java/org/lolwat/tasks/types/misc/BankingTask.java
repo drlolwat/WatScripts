@@ -63,14 +63,13 @@ public class BankingTask implements WatTask {
             GameObject chest = GameObjects.closest("Open chest");
             if(chest == null || !chest.hasAction("Bank")) {
                 instance.currentTask = new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this);
+                return;
             }
-
-            return;
         }
 
         if (!Bank.isOpen()) {
             GameObject chest = GameObjects.closest("Open chest");
-            if(chest == null) {
+            if(chest == null || !chest.hasAction("Bank")) {
                 Bank.open();
             } else {
                 chest.interact();
