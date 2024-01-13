@@ -7,11 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="xd">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Noted tool checks in wc/mining tasks">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/WitchsPotionQuest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/CombatInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/CombatInstructorTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/BezierMouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/BezierMouse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,11 +128,6 @@
       <workItem from="1703695452981" duration="23221000" />
       <workItem from="1704344410858" duration="601000" />
       <workItem from="1704345644184" duration="5167000" />
-      <workItem from="1704667111630" duration="182000" />
-      <workItem from="1704667308939" duration="321000" />
-      <workItem from="1704667730909" duration="5958000" />
-      <workItem from="1705041747216" duration="599000" />
-      <workItem from="1705121296783" duration="135000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -476,7 +472,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="227" />
+    <option name="localTasksCounter" value="214" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,6 +490,18 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Handling G.E buy warning" />
+    <MESSAGE value="Castle Wars/Ferox F2P fix, High Alchemy bugfix" />
+    <MESSAGE value="G.E stuck fix attempt" />
+    <MESSAGE value="GrandExchangeTask QOL" />
+    <MESSAGE value="No longer using deprecated mouse stuff" />
+    <MESSAGE value="BankingTask hotfix" />
+    <MESSAGE value="Trade unrestricted message moved to LogoutTask" />
+    <MESSAGE value="Helper boolean function for inventory: notedOrNull" />
+    <MESSAGE value="Goblin Diplomacy rewrite. Pending test @Ribo." />
+    <MESSAGE value="Removed eqRequired parameter in BankingTask constructor." />
+    <MESSAGE value="refactor" />
+    <MESSAGE value="Goblin Diplomacy dialogue check" />
     <MESSAGE value="Fix for equipping of combat/magic equipment" />
     <MESSAGE value="High alchemy timing QOL" />
     <MESSAGE value="Testing of WikiPricing in GE operations" />
@@ -507,19 +515,7 @@
     <MESSAGE value="Mouse hopping improvement" />
     <MESSAGE value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
     <MESSAGE value="Noted tool checks in wc/mining tasks" />
-    <MESSAGE value="Revert changes to MiningTask" />
-    <MESSAGE value="Detect if cannot reach rock in MiningTask and call a TraversalTask if required" />
-    <MESSAGE value="lol" />
-    <MESSAGE value="MiningTask QOL" />
-    <MESSAGE value="Fix duel arena banking" />
-    <MESSAGE value="Close #13" />
-    <MESSAGE value="lolwat" />
-    <MESSAGE value="Address null pointer exception in MiningTask" />
-    <MESSAGE value="Selecting a task/skill by clicking its skill icon, will only work if the skill has goals." />
-    <MESSAGE value="Fixed potential bug where non-banking chests are in the vicinity during a BankingTask construction" />
-    <MESSAGE value="Paint widened" />
-    <MESSAGE value="xd" />
-    <option name="LAST_COMMIT_MESSAGE" value="xd" />
+    <option name="LAST_COMMIT_MESSAGE" value="Noted tool checks in wc/mining tasks" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
