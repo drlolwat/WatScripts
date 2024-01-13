@@ -159,11 +159,6 @@ public class CombatInstructorTask implements WatTask {
         }
     }
 
-    //TODO NPC HELPER CLASS
-    private NPC getNpcOnTile(Tile tile) {
-        return NPCs.closest(n -> n.getName().contains("Fishing") && n.getTile().equals(tile));
-    }
-
     @Override
     public boolean requiresLogin() {
         return true;

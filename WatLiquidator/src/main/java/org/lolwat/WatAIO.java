@@ -444,7 +444,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if(goalsMet) {
-            Logger.log("WAIO: Reached target ttl and qp"); // TODO make my own, add to BB
+            Logger.log("WAIO: Reached target ttl and qp");
             currentTask = new LogoutTask(true, true, null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
@@ -795,7 +795,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         g2d.setColor(new Color(0, 200, 0));
 
-        //TODO dynamic in drawSkill
         if(levelUps.containsKey("Attack"))
             g2d.drawString("+" + levelUps.get("Attack"), 195, 32);
 
