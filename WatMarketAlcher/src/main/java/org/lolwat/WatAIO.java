@@ -109,8 +109,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Black platelegs",
             "Black plateskirt",
             "Black scimitar",
+            "Blue wizard robe",
             "Big bones",
             "Body rune",
+            "Bronze bar",
+            "Chaos rune",
             "Clay",
             "Coal",
             "Copper ore",
@@ -148,6 +151,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Mind rune",
             "Mithril arrow",
             "Mithril axe",
+            "Mithril bar",
             "Mithril full helm",
             "Mithril kiteshield",
             "Mithril pickaxe",
@@ -186,7 +190,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Shrimps",
             "Soft clay",
             "Staff of air",
+            "Staff of fire",
             "Steel arrow",
+            "Steel bar",
             "Steel full helm",
             "Steel kiteshield",
             "Steel pickaxe",
@@ -204,7 +210,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             "Water rune",
             "Willow logs",
             "Willow shortbow",
-            "Yew logs");
+            "Yew logs",
+            "Zamarok monk bottom");
+
     public static boolean STOP_ON_TRADEUNLOCK = true;
     public int MULE_SAFETY_NET;
     public int MULE_TRIGGER;
