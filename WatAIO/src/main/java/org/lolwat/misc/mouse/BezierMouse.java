@@ -13,7 +13,6 @@ import java.awt.*;
 public class BezierMouse implements MouseAlgorithm {
     private boolean isMoving = false;
     private static boolean INSTANT_HOP = false;
-
     private StandardMouseAlgorithm basic = new StandardMouseAlgorithm();
 
     @Override
@@ -43,22 +42,23 @@ public class BezierMouse implements MouseAlgorithm {
         try {
             while (currentDistance / initialDistance > 0.05 && Calculations.random(1) == 2) {
                 Point rp = randomPoint(curPos, point);
-                moveCursor(curPos, rp);
+                moveCursorWithCubicBezier(curPos, rp);
                 curPos = Mouse.getPosition();
                 currentDistance = distance(point, curPos);
             }
         } catch (Exception ignored) { }
-        moveCursor(curPos, point);
+        moveCursorWithCubicBezier(curPos, point);
     }
 
-    private void moveCursor(Point startPos, Point endPos) {
+    private void moveCursorWithCubicBezier(Point startPos, Point endPos) {
         if (INSTANT_HOP) {
             Mouse.hop(endPos);
             sleep(35);
             return;
         }
 
-        Point controlPoint = randomPoint(startPos, endPos);
+        Point controlPoint1 = randomPoint(startPos, endPos);
+        Point controlPoint2 = randomPoint(startPos, endPos);
         int steps = Calculations.random(5, 15);
 
         if(distance(startPos, endPos) <= 30) {
@@ -68,21 +68,23 @@ public class BezierMouse implements MouseAlgorithm {
         try {
             for (int i = 0; i <= steps; i++) {
                 double t = (double) i / steps;
-                Point pointOnCurve = calculateBezierPoint(t, startPos, controlPoint, endPos);
-                sleep(35);
+                Point pointOnCurve = calculateCubicBezierPoint(t, startPos, controlPoint1, controlPoint2, endPos);
+                sleep(randomSpeed());
                 Mouse.hop(pointOnCurve);
             }
         } catch (Exception ignored) { }
     }
 
-    private static Point calculateBezierPoint(double t, Point p0, Point p1, Point p2) {
+    private static Point calculateCubicBezierPoint(double t, Point p0, Point p1, Point p2, Point p3) {
         double u = 1 - t;
         double tt = t * t;
         double uu = u * u;
+        double ttt = tt * t;
+        double uuu = uu * u;
 
         Point p = new Point();
-        p.x = (int) (uu * p0.x + 2 * u * t * p1.x + tt * p2.x);
-        p.y = (int) (uu * p0.y + 2 * u * t * p1.y + tt * p2.y);
+        p.x = (int) (uuu * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + ttt * p3.x);
+        p.y = (int) (uuu * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + ttt * p3.y);
 
         return p;
     }
@@ -95,6 +97,10 @@ public class BezierMouse implements MouseAlgorithm {
 
     private static double distance(Point a, Point b) {
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+    }
+
+    private int randomSpeed() {
+        return Calculations.random(30, 70);
     }
 
     private void sleep(int millis) {
