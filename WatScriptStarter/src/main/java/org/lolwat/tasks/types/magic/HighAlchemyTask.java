@@ -98,7 +98,7 @@ public class HighAlchemyTask implements WatTask {
                 Sleep.sleep(120, 240);
             }
 
-            Inventory.drag(item, 11);
+            Inventory.drag(item, 12);
         }
 
         if (!Tabs.isOpen(Tab.MAGIC)) {
