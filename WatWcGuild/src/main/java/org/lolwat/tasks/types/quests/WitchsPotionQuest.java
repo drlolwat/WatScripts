@@ -15,25 +15,33 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
+import org.dreambot.api.utilities.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO - buy raw beef from GE, cook it twice at range by hetty
+//TODO - buy raw beef from GE, cook it twice at range by hetty (GE -- grand exchange)
 //TODO - buy eye of newt from port sarim magic shop
 //TODO - get rat's tail by killing any rat only after starting quest
 public class WitchsPotionQuest implements WatTask{
 
-    private final Area startLocation = new Area(2973, 3206, 2964, 3201);
-    List<String> startDialogue = Arrays.asList("I'm looking for a quest.", "Yes.");
+    private final Area startLocation = new Area(2965, 3207, 2969, 3204);
+
+    private final Area portSarimMagicShop = new Area(3011, 3261, 3016, 3256);
+    private final Area geLocation = new Area(3151, 3502, 3176, 3478);
+    List<String> startDialogue = Arrays.asList("I am in search for a quest.", "Yes, help me become one with my darker side.");
 
     private HashMap<String, Integer> needed = new HashMap<String,Integer>(){ {
         put("Raw beef", 1);
-        put("Eye Of Newt", 1);
+        //put("Eye Of Newt", 1);
         put("Onion", 1);
         // put("Rat's tail", 1);
     } };
+    private HashMap<String, Integer> bettyItem = new HashMap<String, Integer>(){{
+        put("Eye of Newt", 1);
+    }};
+
 
     public WitchsPotionQuest(){
     }
@@ -42,10 +50,27 @@ public class WitchsPotionQuest implements WatTask{
     public void execute(WatAIO instance){
         //check for items
         if (!Inventory.containsAll(needed.keySet())) {
-            instance.currentTask = new BankingTask(needed, new HashMap<>(), 1, this);
+            Logger.log("Checked inventory for items. Some are still required");
+            //checks if player is at grandexch, if not traverse there
+            if(!geLocation.contains(Players.getLocal())){
+                instance.currentTask = new TraversalTask(geLocation, this);
+            } else {
+                //if player is in ge, buy items
+                instance.currentTask = new BankingTask(needed, new HashMap<>(), 1, this);
+            }
             return;
         }
+        //if inv doesn't have eye of newt, go to magic shop
+        // after magic shop, interact with betty
+        // implement dialogue to talk to betty for item
+        // implement checks for the beef. if its burnt, continue. if not, cook again
+        // review romeo and juliet for state info
+        if(!Inventory.containsAll(bettyItem.keySet())){
+            instance.currentTask = new TraversalTask(portSarimMagicShop, this);
+            instance.currentTask = new BankingTask(bettyItem, null, 1, this);
 
+        }
+        //
         //check for burnt meat, buy raw beef from GE and cook it twice at range by hetty if needed
 
         //go to start location
