@@ -92,7 +92,7 @@ public class HighAlchemyTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
-        if(Inventory.getItemInSlot(11) == null) {
+        if(Inventory.getItemInSlot(12) == null) {
             if (!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
                 Sleep.sleep(120, 240);
