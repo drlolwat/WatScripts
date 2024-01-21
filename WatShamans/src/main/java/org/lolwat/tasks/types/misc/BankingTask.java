@@ -431,6 +431,31 @@ public class BankingTask implements WatTask {
             depositNonRequired();
         }
 
+        if(postTask != null) {
+            for (String s : postTask.clothesRequired().keySet()) {
+                if(!Equipment.contains(s)) {
+                    if (Bank.contains(s)) {
+                        Bank.withdraw(s, 1);
+                        Sleep.sleepUntil(() -> Inventory.contains(s), 1500);
+                    }
+
+                    if (Inventory.contains(s)) {
+                        Inventory.get(s).interact("Wear");
+                        Sleep.sleepUntil(() -> Equipment.contains(s), 1500);
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+            String itemName = entry.getKey();
+            int requiredQuantity = entry.getValue();
+            if (!Inventory.contains(itemName) || Inventory.count(itemName) < requiredQuantity) {
+                Bank.withdraw(itemName, requiredQuantity);
+                Sleep.sleepUntil(() -> Inventory.contains(itemName) && Inventory.count(itemName) == requiredQuantity, 1500);
+            }
+        }
+
         // calculate net worth
         if(instance.NET_WORTH_GENERATED == 0) {
             instance.NET_WORTH = 0;
