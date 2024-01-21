@@ -338,15 +338,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
     }
 
-    private void getWsProfile() {
+    private void getWsProfile(int breaking) {
         try {
-            URL url;
+            String urlString = "https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash();
+
             if(IGNORE_CHECK_TRADE) {
-                url = new URL("https://botbuddy.net/_api_/ws_profile.php?_key=dev&_hash=" + AccountManager.getAccountHash() + "&_unl");
-            } else {
-                url = new URL("https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash());
+                urlString += "&_unl";
             }
 
+            if(breaking > 0) {
+                urlString += "&breakTime=" + breaking;
+            }
+
+            URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
@@ -379,7 +383,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 PROFILE_LOADED = true;
                 CHECKED_HOURS_AT = Instant.now().getEpochSecond();
 
-                Logger.log(Color.green, "Loaded unique account profile from BotBuddy Hive");
+                Logger.log(Color.green, (breaking > 0) ? "Updated account hivetime due to break" :"Loaded unique account profile from BotBuddy Hive");
 
             } else {
                 Logger.error("HTTP request failed with response code: " + responseCode);
@@ -444,6 +448,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             skillRunTime = Calculations.random(28800, 43200);
             TASKS_UNTIL_BREAK = Calculations.random(8, 12);
             currentTask = new BreakingTask((Instant.now().getEpochSecond() + skillRunTime));
+            getWsProfile(skillRunTime);
             return true;
         }
         return false;
@@ -478,7 +483,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if(!PROFILE_LOADED || (CHECKED_HOURS_AT == 0 || (Instant.now().getEpochSecond() - CHECKED_HOURS_AT) >= 3600)) {
-            getWsProfile();
+            getWsProfile(0);
         }
 
         if (PlayerSettings.getConfig(281) != 1000) {
