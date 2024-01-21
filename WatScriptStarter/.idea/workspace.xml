@@ -7,8 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Noted tool checks in wc/mining tasks">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="derp HA">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +26,7 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -68,11 +72,13 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatMiner&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -92,6 +98,13 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-1.8.0_392-semeru-1.8.0_392-3183f394aec4-6d4b9ca3" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -124,6 +137,10 @@
       <workItem from="1703695452981" duration="23221000" />
       <workItem from="1704344410858" duration="601000" />
       <workItem from="1704345644184" duration="5167000" />
+      <workItem from="1705467002550" duration="104000" />
+      <workItem from="1705467120785" duration="625000" />
+      <workItem from="1705686721065" duration="2557000" />
+      <workItem from="1705827036938" duration="622000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -468,7 +485,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="214" />
+    <option name="localTasksCounter" value="216" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,8 +503,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Handling G.E buy warning" />
-    <MESSAGE value="Castle Wars/Ferox F2P fix, High Alchemy bugfix" />
     <MESSAGE value="G.E stuck fix attempt" />
     <MESSAGE value="GrandExchangeTask QOL" />
     <MESSAGE value="No longer using deprecated mouse stuff" />
@@ -511,7 +526,9 @@
     <MESSAGE value="Mouse hopping improvement" />
     <MESSAGE value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
     <MESSAGE value="Noted tool checks in wc/mining tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Noted tool checks in wc/mining tasks" />
+    <MESSAGE value="High Alchemy - move item to correct slot (magic book changed)" />
+    <MESSAGE value="derp HA" />
+    <option name="LAST_COMMIT_MESSAGE" value="derp HA" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
