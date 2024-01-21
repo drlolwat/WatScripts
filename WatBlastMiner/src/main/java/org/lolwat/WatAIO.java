@@ -223,8 +223,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onStart(String... params) {
-        doStart(params[0]);
+        if(params.length > 0) {
+            doStart(params[0]);
+        }
+        else {
+            doStart("default");
+        }
     }
+
     @Override
     public void onStart() {
         doStart("default");
