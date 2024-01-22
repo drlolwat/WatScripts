@@ -70,7 +70,7 @@ public class DialogueUtils {
             if (n != null) {
                 if (n.isOnScreen()) {
                     if (n.interact("Talk-to")) {
-                        Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
+                        Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null || !Dialogues.inDialogue()), Calculations.random(500, 1500));
                     }
                 } else {
                     Walking.walk(n);
