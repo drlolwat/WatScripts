@@ -7,12 +7,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Break time is now taken into account on the Hive.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Reworked G.E pricing/buying.">
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WikiPricing.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,30 +61,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.WatAIO [package].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/lolwat/IdeaProjects/WatMiner",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Facets",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatMiner&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="org.lolwat.misc.utils.smithing.SmithingUtils" />
@@ -142,7 +138,7 @@
       <workItem from="1705467002550" duration="104000" />
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
-      <workItem from="1705827036938" duration="4083000" />
+      <workItem from="1705827036938" duration="4272000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -487,7 +483,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="218" />
+    <option name="localTasksCounter" value="219" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -505,7 +501,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="No longer using deprecated mouse stuff" />
     <MESSAGE value="BankingTask hotfix" />
     <MESSAGE value="Trade unrestricted message moved to LogoutTask" />
     <MESSAGE value="Helper boolean function for inventory: notedOrNull" />
@@ -530,7 +525,8 @@
     <MESSAGE value="derp HA" />
     <MESSAGE value="fix for BB3 launches" />
     <MESSAGE value="Break time is now taken into account on the Hive." />
-    <option name="LAST_COMMIT_MESSAGE" value="Break time is now taken into account on the Hive." />
+    <MESSAGE value="Reworked G.E pricing/buying." />
+    <option name="LAST_COMMIT_MESSAGE" value="Reworked G.E pricing/buying." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
