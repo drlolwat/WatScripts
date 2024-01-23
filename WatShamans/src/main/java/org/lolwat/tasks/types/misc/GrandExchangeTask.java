@@ -153,7 +153,6 @@ public class GrandExchangeTask implements WatTask {
                 }
 
                 if (isSelling) {
-                    //TODO check for trade unrestricted error, check chat log to reduce hive playtime by time provided, then set account to restricted and continue to next task
                     Logger.log("Selling: " + item.getKey());
                     if(Inventory.contains(item.getKey())) {
                         Inventory.get(item.getKey()).interact();
@@ -191,7 +190,10 @@ public class GrandExchangeTask implements WatTask {
                     }
                 } else {
                     Logger.log("Buying: " + item.getKey());
-                    GrandExchange.openBuyScreen(slot);
+
+                    if(!GrandExchange.openBuyScreen(slot)) {
+                        return;
+                    }
 
                     Sleep.sleep(400, 800);
 
@@ -236,6 +238,12 @@ public class GrandExchangeTask implements WatTask {
 
                             if (GrandExchange.isReadyToCollect(slot)) {
                                 GrandExchange.collect();
+                            } else {
+                                if(GrandExchange.cancelOffer(slot)) {
+                                    Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
+                                    NumUtils.raisePrice(item.getKey());
+                                    return;
+                                }
                             }
 
                             Sleep.sleep(50, 125);
@@ -243,8 +251,6 @@ public class GrandExchangeTask implements WatTask {
                     }
                 }
             }
-
-            //itemList.clear();
 
             Sleep.sleep(3000);
             if(GrandExchange.isReadyToCollect()) {
@@ -259,14 +265,6 @@ public class GrandExchangeTask implements WatTask {
             }
 
             Sleep.sleepUntil(Bank::isOpen, 7500);
-
-            /*
-            if(postTask != null && !(postTask instanceof BankingTask)) {
-                Bank.depositAllItems();
-            }
-            else {
-                Bank.depositAllItems();
-            }*/
 
             Sleep.sleep(300, 800);
             instance.currentTask = postTask;
