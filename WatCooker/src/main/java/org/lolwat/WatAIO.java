@@ -31,13 +31,11 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.WikiPricing;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
-import org.lolwat.misc.utils.SkillUtils;
 import org.lolwat.tasks.types.tutorial.*;
 
 import java.awt.*;
