@@ -39,7 +39,6 @@ public class NumUtils {
         }
 
         num = (int) (num * 1.2);
-
         itemPrices.put(item, num);
     }
 }
