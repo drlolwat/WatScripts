@@ -2,7 +2,10 @@ package org.lolwat.misc.utils;
 
 import org.dreambot.api.methods.grandexchange.LivePrices;
 
+import java.util.HashMap;
+
 public class NumUtils {
+    private static HashMap<String, Integer> itemPrices;
     public static String simplifyNumber(double number) {
         if (number >= 1000000) {
             return String.format("%.2fM", number / 1000000);
@@ -14,6 +17,29 @@ public class NumUtils {
     }
 
     public static int getItemPrice(String item) {
-        return WikiPricing.getPrice(item);
+        if(itemPrices == null) {
+            itemPrices = new HashMap<>();
+        }
+
+        if(itemPrices.containsKey(item)) {
+            return itemPrices.get(item);
+        }
+
+        return LivePrices.get(item);
+    }
+
+    public static void raisePrice(String item) {
+        int num;
+        if(itemPrices.containsKey(item)) {
+            num = itemPrices.get(item);
+            itemPrices.remove(item);
+        }
+        else {
+            num = LivePrices.get(item);
+        }
+
+        num = (int) (num * 1.2);
+
+        itemPrices.put(item, num);
     }
 }
