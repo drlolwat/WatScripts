@@ -7,9 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Reworked G.E pricing/buying.">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" afterDir="false" />
-    </list>
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="A bit of this and that. Closes #15" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -138,7 +136,7 @@
       <workItem from="1705467002550" duration="104000" />
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
-      <workItem from="1705827036938" duration="4272000" />
+      <workItem from="1705827036938" duration="4941000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -483,7 +481,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="219" />
+    <option name="localTasksCounter" value="220" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -501,7 +499,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="BankingTask hotfix" />
     <MESSAGE value="Trade unrestricted message moved to LogoutTask" />
     <MESSAGE value="Helper boolean function for inventory: notedOrNull" />
     <MESSAGE value="Goblin Diplomacy rewrite. Pending test @Ribo." />
@@ -526,7 +523,8 @@
     <MESSAGE value="fix for BB3 launches" />
     <MESSAGE value="Break time is now taken into account on the Hive." />
     <MESSAGE value="Reworked G.E pricing/buying." />
-    <option name="LAST_COMMIT_MESSAGE" value="Reworked G.E pricing/buying." />
+    <MESSAGE value="A bit of this and that. Closes #15" />
+    <option name="LAST_COMMIT_MESSAGE" value="A bit of this and that. Closes #15" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

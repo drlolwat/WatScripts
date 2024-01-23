@@ -218,6 +218,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public static boolean RUNNING_TUT = false;
     private static BufferedImage image;
     private Map<Skill, Rectangle> invisibleButtons;
+    private static int QUEST_MIN_TTL = 150;
 
     @Override
     public void onStart(String... params) {
@@ -257,6 +258,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         defaultProfile.addProperty("mule_safety_net", 75000);
         defaultProfile.addProperty("logout_after_unrestricted", true);
         defaultProfile.addProperty("disable_mule", true);
+        defaultProfile.addProperty("quest_min_ttl", 150);
 
         return defaultProfile;
     }
@@ -304,6 +306,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             int muleTrigger = jsonObject.get("mule_trigger").getAsInt();
             int muleSafety = jsonObject.get("mule_safety_net").getAsInt();
             boolean muleDisabled = jsonObject.get("disable_mule").getAsBoolean();
+            int questMinTtl = jsonObject.get("quest_min_ttl").getAsInt();
 
             skillTargets = new HashMap<Skill, Integer>(){
                 {
@@ -330,6 +333,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             STOP_ON_TRADEUNLOCK = logoutAfterUnrestricted;
             MULE_DEAD = muleDisabled;
             NEED_MM = false;
+            QUEST_MIN_TTL = questMinTtl;
 
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
@@ -519,7 +523,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         List<WatTask> removal = new ArrayList<>();
 
         if (QUESTS_ENABLED && sk == null) {
-            if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= 100)) {
+            if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= QUEST_MIN_TTL)) {
                 if (allQuests != null && !allQuests.isEmpty()) {
                     for (java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
                         if (Quests.isFinished(t.getKey())) {
