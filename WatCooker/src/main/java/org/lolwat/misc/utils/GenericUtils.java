@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
@@ -127,6 +128,10 @@ public class GenericUtils {
             ret.put(WatAIO.CAPE_TYPE, 1);
         }
         return ret;
+    }
+
+    public static boolean isMember() {
+        return PlayerSettings.getConfig(1780) > 0;
     }
 
     public static String generateUsername() {
