@@ -242,7 +242,6 @@ public class GrandExchangeTask implements WatTask {
                                 if(GrandExchange.cancelOffer(slot)) {
                                     Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
                                     NumUtils.raisePrice(item.getKey());
-                                    return;
                                 }
                             }
 
