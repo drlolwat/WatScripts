@@ -914,7 +914,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void runSkillFunction(Skill sk) {
         if(currentTask != null && skillTargets.containsKey(sk) && !currentTask.getName().contains("Tutorial")) {
-            Logger.info("Overriding skill selection with " + sk.getName());
+            Logger.log("Overriding skill selection with " + sk.getName());
             currentTask = null;
             evaluate(sk);
         }
