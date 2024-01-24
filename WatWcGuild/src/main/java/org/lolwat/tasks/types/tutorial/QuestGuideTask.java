@@ -67,10 +67,7 @@ public class QuestGuideTask implements WatTask {
             else {
                 if(GameObjects.closest("Ladder").interact("Climb-down")) {
                     Sleep.sleep(300, 600);
-
-                    //if(Players.getLocal().getTile().getX() == 3088 && Players.getLocal().getTile().getY() == 9520) {
                     instance.currentTask = new MiningInstructorTask();
-                    //}
                 }
             }
         }
