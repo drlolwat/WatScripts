@@ -51,6 +51,13 @@ public class MiningInstructorTask implements WatTask {
             return;
         }
 
+        if(GameObjects.closest("Ladder") != null) {
+            if(GameObjects.closest("Ladder").hasAction("Climb-down")) {
+                GameObjects.closest("Ladder").interact("Climb-down");
+                return;
+            }
+        }
+
         if(HintArrow.exists() && HintArrow.getTile() != null) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
                 if(!Map.isTileOnScreen(HintArrow.getTile())) {
