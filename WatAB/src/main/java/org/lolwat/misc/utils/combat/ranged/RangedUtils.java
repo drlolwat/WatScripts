@@ -7,6 +7,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.combat.DefensiveItemType;
+import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
 
@@ -38,9 +39,16 @@ public class RangedUtils {
 
     public static String defensiveItemByType(DefensiveItemType type, boolean dhide) {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
+        int defLevel = Skills.getRealLevel(Skill.DEFENCE);
 
-        if((dhide && Quests.isFinished(FreeQuest.DRAGON_SLAYER)) && type == DefensiveItemType.CHEST) {
+        if((dhide && defLevel >= 40 && Quests.isFinished(FreeQuest.DRAGON_SLAYER)) && type == DefensiveItemType.CHEST) {
             dhide = false;
+        }
+
+        if(dhide && GenericUtils.isMember()) {
+            if(rngLevel >= 50 && defLevel >= 40) {
+                dhide = false;
+            }
         }
 
         String mat = bestArmorMaterial(rngLevel);
@@ -62,6 +70,16 @@ public class RangedUtils {
             }
             case GLOVES: {
                 if(rngLevel >= 40) {
+                    if (GenericUtils.isMember()) {
+                        if (rngLevel >= 70) {
+                            return "Black d'hide vambraces";
+                        } else if (rngLevel >= 60) {
+                            return "Red d'hide vambraces";
+                        } else if (rngLevel >= 50) {
+                            return "Blue d'hide vambraces";
+                        }
+                    }
+
                     return "Green d'hide vambraces";
                 }
                 else {
@@ -79,6 +97,16 @@ public class RangedUtils {
     public static String bestArmorMaterial(int rngLevel) {
         int defLevel = Skills.getRealLevel(Skill.DEFENCE);
         if(rngLevel >= 40) {
+            if(GenericUtils.isMember()) {
+                if (rngLevel >= 70) {
+                    return "Black d'hide";
+                } else if (rngLevel >= 60) {
+                    return "Red d'hide";
+                } else if (rngLevel >= 50) {
+                    return "Blue d'hide";
+                }
+            }
+
             return "Green d'hide";
         }
         else if(rngLevel >= 20) {
@@ -102,7 +130,13 @@ public class RangedUtils {
 
     public static String bestRangedWeapon() {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
-        if(rngLevel >= 30) {
+        if(rngLevel >= 50 && GenericUtils.isMember()) {
+            return "Magic shortbow";
+        }
+        else if(rngLevel >= 40 && GenericUtils.isMember()) {
+            return "Yew shortbow";
+        }
+        else if(rngLevel >= 30) {
             return "Maple shortbow";
         }
         else if(rngLevel >= 20) {
@@ -118,7 +152,10 @@ public class RangedUtils {
 
     public static String bestArrow() {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
-        if(rngLevel >= 20) {
+        if(rngLevel >= 50 && GenericUtils.isMember()) {
+            return "Adamant arrow";
+        }
+        else if(rngLevel >= 20) {
             return "Mithril arrow";
         }
         else if(rngLevel >= 5) {
