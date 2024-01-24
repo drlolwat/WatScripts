@@ -90,7 +90,7 @@ public class BondingTask implements WatTask {
         }
 
         if(requiresHop) {
-            instance.currentTask = new LogoutTask(false, false, new HopperTask(-1, postTask));
+            instance.currentTask = new LogoutTask(false, false, new HopperTask(0, postTask));
             return;
         }
 
