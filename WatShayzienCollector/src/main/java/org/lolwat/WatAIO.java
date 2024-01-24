@@ -337,6 +337,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             MULE_DEAD = muleDisabled;
             NEED_MM = false;
             QUEST_MIN_TTL = questMinTtl;
+            BOND_MIN_TTL = bondMinTtl;
 
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
@@ -500,7 +501,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        if (PlayerSettings.getConfig(1780) == 0) {
+        if (PlayerSettings.getConfig(1780) == 0 && (BOND_MIN_TTL > 0 && BOND_MIN_TTL >= Skills.getTotalLevel())) {
             currentTask = new BondingTask(null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
