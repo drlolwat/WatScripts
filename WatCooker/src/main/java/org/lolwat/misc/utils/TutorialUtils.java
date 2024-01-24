@@ -34,10 +34,6 @@ public class TutorialUtils {
     }
 
     public static void handleTab() {
-        //if (Dialogues.canContinue()) {
-        //    Dialogues.clickContinue();
-        //}
-
         if(WatAIO.RUNNING_TUT) {
             final Tab t = getTab();
             if (t == null) {
