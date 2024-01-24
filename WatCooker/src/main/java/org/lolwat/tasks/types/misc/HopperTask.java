@@ -1,10 +1,12 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
+import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -39,6 +41,9 @@ public class HopperTask implements WatTask {
 
         if(world == 0) {
             WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+        }
+        else if(world == -1) {
+            WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
         }
         else {
             WorldHopper.hopWorld(world);
