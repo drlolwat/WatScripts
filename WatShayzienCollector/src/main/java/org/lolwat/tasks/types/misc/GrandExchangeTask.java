@@ -189,24 +189,32 @@ public class GrandExchangeTask implements WatTask {
                         Logger.log("Item was not in inventory: " + item.getKey());
                     }
                 } else {
-                    Logger.log("Buying: " + item.getKey());
+                    String itemFinal = item.getKey();
+                    if(itemFinal.equals("Old school bond (untradeable)")) {
+                        itemFinal = "Old school bond";
+                    }
+
+                    Logger.log("Buying: " + itemFinal);
 
                     if(!GrandExchange.openBuyScreen(slot)) {
-                        return;
+                        Logger.log("Error opening buy screen in G.E");
+                        instance.currentTask = postTask;
+                        break;
                     }
 
                     Sleep.sleep(400, 800);
 
                     if(item.getValue() != 0) {
                         if(!GrandExchange.isBuyOpen()) {
+                            Logger.log("Buy screen was not open when it was meant to be.");
                             instance.currentTask = postTask;
                             break;
                         }
 
                         // Add the item.
-                        if (GrandExchange.addBuyItem(item.getKey())) {
+                        if (GrandExchange.addBuyItem(itemFinal)) {
                             Sleep.sleep(100, 220);
-                            int itemCost = NumUtils.getItemPrice(item.getKey());
+                            int itemCost = NumUtils.getItemPrice(itemFinal);
 
                             if(GrandExchange.setPrice(itemCost)) {
                                 Sleep.sleep(100, 200);
@@ -214,7 +222,7 @@ public class GrandExchangeTask implements WatTask {
 
                             Sleep.sleep(100, 300);
 
-                            if (item.getValue() != 1 && !instance.SINGULAR_ITEMS.contains(item.getKey())) {
+                            if (item.getValue() != 1 && !instance.SINGULAR_ITEMS.contains(itemFinal)) {
                                 GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
                                 Sleep.sleep(100, 300);
                             }
