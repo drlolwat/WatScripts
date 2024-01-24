@@ -32,9 +32,9 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
         ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, WatAIO.USE_SKIRT));
         ret.put(EquipmentSlot.SHIELD, defensiveItemByType(DefensiveItemType.OFFHAND, false));
         ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
-        ret.put(EquipmentSlot.AMULET, "Amulet of strength");
-        ret.put(EquipmentSlot.FEET, "Leather boots");
-        ret.put(EquipmentSlot.HANDS, "Leather gloves");
+        ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
+        ret.put(EquipmentSlot.FEET, defensiveItemByType(DefensiveItemType.FEET, false));
+        ret.put(EquipmentSlot.HANDS, GenericUtils.isMember() ? "Combat bracelet(4)" : "Leather gloves");
         ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
 
         return ret;
@@ -72,6 +72,14 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
                 }
 
                 return material + " kiteshield";
+            }
+
+            case FEET: {
+                if(GenericUtils.isMember()) {
+                    return material + " boots";
+                }
+
+                return "Leather boots";
             }
         }
 
