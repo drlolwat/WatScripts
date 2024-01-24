@@ -68,11 +68,7 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
             case LEGS: return material + (WatAIO.USE_SKIRT ? " plateskirt" : " platelegs");
             case OFFHAND: {
                 if(GenericUtils.isMember() && Skills.getRealLevel(Skill.DEFENCE) >= 50) {
-                    if(Skills.getRealLevel(Skill.STRENGTH) >= 50) {
-                        return "Granite shield";
-                    } else {
-                        return "Rune kiteshield";
-                    }
+                    return "Rune kiteshield";
                 }
 
                 return material + " kiteshield";
