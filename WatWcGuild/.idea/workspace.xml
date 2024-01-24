@@ -7,13 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Streamline hopping to P2P worlds">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Added P2P armor/weapons to RangedUtils">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/NumUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/ranged/RangedUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/ranged/RangedUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +141,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="3245000" />
+      <workItem from="1706079551295" duration="5005000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -490,7 +486,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="234" />
+    <option name="localTasksCounter" value="236" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -537,8 +533,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="DialogueUtils timing" />
-    <MESSAGE value="DialogueUtils" />
     <MESSAGE value="Mouse hopping improvement" />
     <MESSAGE value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
     <MESSAGE value="Noted tool checks in wc/mining tasks" />
@@ -562,7 +556,9 @@
     <MESSAGE value="isMembers helper function" />
     <MESSAGE value="Hook up helper." />
     <MESSAGE value="Streamline hopping to P2P worlds" />
-    <option name="LAST_COMMIT_MESSAGE" value="Streamline hopping to P2P worlds" />
+    <MESSAGE value="Grand Exchange QOL" />
+    <MESSAGE value="Added P2P armor/weapons to RangedUtils" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added P2P armor/weapons to RangedUtils" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

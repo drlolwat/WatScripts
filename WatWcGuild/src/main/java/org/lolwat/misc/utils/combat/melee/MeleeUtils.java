@@ -3,14 +3,17 @@ package org.lolwat.misc.utils.combat.melee;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
+import org.dreambot.api.methods.quest.book.PaidQuest;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.combat.DefensiveItemType;
+import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
 
-public class MeleeUtils {
+public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
     public static HashMap<String, Integer> getRequiredItems() {
         HashMap<String, Integer> ret = new HashMap<>();
 
@@ -43,12 +46,39 @@ public class MeleeUtils {
         if((alternative && type.equals(DefensiveItemType.CHEST)) && Quests.isFinished(FreeQuest.DRAGON_SLAYER))
             alternative = false;
 
-        switch(type) {
-            case HELMET: return material + " full helm";
-            case CHEST: return material + (alternative ? " chainbody" : " platebody");
-            case LEGS: return material + (alternative ? " plateskirt" : " platelegs");
-            case OFFHAND: return material + " kiteshield";
+        if(!alternative && GenericUtils.isMember() && type.equals(DefensiveItemType.CHEST)) {
+            alternative = true;
         }
+
+        switch(type) {
+            case HELMET: {
+                if(!GenericUtils.isMember()) {
+                    return material + " full helm";
+                }
+                else {
+                    if(Skills.getRealLevel(Skill.DEFENCE) >= 40) {
+                        return material + " med helm";
+                    }
+                    else {
+                        return material + " full helm";
+                    }
+                }
+            }
+            case CHEST: return material + (alternative ? " chainbody" : " platebody");
+            case LEGS: return material + (WatAIO.USE_SKIRT ? " plateskirt" : " platelegs");
+            case OFFHAND: {
+                if(GenericUtils.isMember() && Skills.getRealLevel(Skill.DEFENCE) >= 50) {
+                    if(Skills.getRealLevel(Skill.STRENGTH) >= 50) {
+                        return "Granite shield";
+                    } else {
+                        return "Rune kiteshield";
+                    }
+                }
+
+                return material + " kiteshield";
+            }
+        }
+
         return "";
     }
 
@@ -56,6 +86,16 @@ public class MeleeUtils {
         int defLevel = Skills.getRealLevel(Skill.DEFENCE);
 
         if(defLevel >= 40) {
+            if(GenericUtils.isMember()) {
+                if(defLevel >= 60) {
+                    return "Dragon";
+                }
+
+                if(defLevel >= 50 && Skills.getRealLevel(Skill.STRENGTH) >= 50) {
+                    return "Granite";
+                }
+            }
+
             return "Rune";
         }
         else if(defLevel >= 30) {
@@ -76,6 +116,15 @@ public class MeleeUtils {
         int attackLevel = Skills.getRealLevel(Skill.ATTACK);
 
         if(attackLevel >= 40) {
+            if(GenericUtils.isMember()) {
+                if(attackLevel >= 60) {
+                    if(Quests.isFinished(PaidQuest.MONKEY_MADNESS))
+                        return "Dragon scimitar";
+                    else
+                        return "Dragon sword";
+                }
+            }
+
             return "Rune scimitar";
         }
         else if(attackLevel >= 30) {
