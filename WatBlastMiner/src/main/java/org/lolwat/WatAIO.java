@@ -501,7 +501,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        if (!GenericUtils.isMember() && (BOND_MIN_TTL > 0 && BOND_MIN_TTL >= Skills.getTotalLevel())) {
+        if (!GenericUtils.isMember() && (BOND_MIN_TTL > 0 && Skills.getTotalLevel() >= BOND_MIN_TTL)) {
             currentTask = new BondingTask(null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
