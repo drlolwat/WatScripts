@@ -2,6 +2,8 @@ package org.lolwat.tasks.types.quests;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -12,6 +14,8 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -19,6 +23,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
+import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
 import java.util.Arrays;
@@ -38,12 +43,11 @@ public class TheRestlessGhostQuest implements WatTask {
     private final List<String> fatherAereckDialogue = Arrays.asList("I'm looking for a quest!", "Ok, let me help then.", "Yes.");
     private final List<String> fatherUrhneyDialogue = Arrays.asList("Father Aereck sent me to talk to you.", "He's got a ghost haunting his graveyard.");
     private final List<String> ghost0Dialogue = Arrays.asList("Yep, now tell me what the problem is.");
-    private final List<String> ghost1Dialogue = Arrays.asList("");
 
-    private boolean amuletAcquired = false;
-    private boolean skullAcquired = false;
     private boolean questStarted = false;
+    private boolean amuletAcquired = false;
     private boolean talkedToGhost = false;
+    private boolean skullAcquired = false;
     private boolean questCompleted = false;
 
     @Override
@@ -62,6 +66,14 @@ public class TheRestlessGhostQuest implements WatTask {
     }
 
     private void startQuest(WatAIO instance) {
+        if (Inventory.isFull()) {
+            Bank.open();
+            Sleep.sleepUntil(() -> Bank.isOpen(), Calculations.random(1000, 2000));
+            Bank.depositAllItems();
+            Sleep.sleepUntil(() -> Inventory.isEmpty(), Calculations.random(1000, 2000));
+            return;
+        }
+
         if (!lumbridgeChurch.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(lumbridgeChurch, this);
             return;
@@ -101,11 +113,24 @@ public class TheRestlessGhostQuest implements WatTask {
         GameObject coffin = GameObjects.closest("Coffin");
         NPC ghost = NPCs.closest("Restless ghost");
         if (coffin != null) {
-            coffin.interact("Open");
-            if (ghost != null) {
-                interactWithNPC(ghost, ghost0Dialogue);
-                Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(2000, 4000));
-                talkedToGhost = true;
+            // search or open coffin if not in dialogue and ghost is null
+            if (!Dialogues.inDialogue() && ghost == null) {
+                coffin.interact();
+                Sleep.sleep(1000, 1500);
+            } else if (ghost != null) {
+                ghost.interact("Talk-to");
+                Sleep.sleep(1000, 1500);
+                if (Dialogues.inDialogue()) {
+                    while (Dialogues.inDialogue()) {
+                        if (Dialogues.canContinue()) {
+                            Dialogues.spaceToContinue();
+                        } else {
+                            DialogueUtils.solve(ghost0Dialogue);
+                            Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(1000, 1500));
+                            talkedToGhost = true;
+                        }
+                    }
+                }
             }
         }
     }
@@ -135,17 +160,14 @@ public class TheRestlessGhostQuest implements WatTask {
 
         GameObject coffin = GameObjects.closest("Coffin");
         if (coffin != null) {
-            if (!coffin.interact("Open"))
-                return;
-
-            NPC ghost = NPCs.closest("Restless ghost");
-            if (ghost != null) {
-                interactWithNPC(ghost, ghost1Dialogue);
-                if (!Dialogues.inDialogue()) {
-                    coffin.interact("Search");
-                    questCompleted = Quests.isFinished(FreeQuest.THE_RESTLESS_GHOST);
-                }
+            if (!coffin.hasAction("Close")) {
+                coffin.interact("Open");
+                Sleep.sleep(1000, 3000);
             }
+            coffin.interact("Search");
+            DialogueUtils.continueWhilePossible();
+            Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(1000, 1500));
+            questCompleted = Quests.isFinished(FreeQuest.THE_RESTLESS_GHOST);
         }
     }
 
