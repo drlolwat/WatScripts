@@ -50,6 +50,13 @@ public class CombatInstructorTask implements WatTask {
             return;
         }
 
+        if(GameObjects.closest("Ladder") != null) {
+            if(GameObjects.closest("Ladder").hasAction("Climb-down")) {
+                instance.currentTask = new TutorialBankTask();
+                return;
+            }
+        }
+
         Area a = new Tile(3104, 9506).getArea(3);
         if(!traversed) {
             traversed = true;
