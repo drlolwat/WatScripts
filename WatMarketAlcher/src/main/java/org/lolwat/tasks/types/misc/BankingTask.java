@@ -171,7 +171,7 @@ public class BankingTask implements WatTask {
                     }
 
                     if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
-                        if (Inventory.fullSlotCount() >= 26) { // deposit only if we need the space
+                        if (Inventory.isFull()) { // deposit only if we need the space
                             depositNonRequired();
                             Sleep.sleep(100, 200);
                         }
