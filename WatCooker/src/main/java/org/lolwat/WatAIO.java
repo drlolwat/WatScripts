@@ -219,6 +219,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private static BufferedImage image;
     private Map<Skill, Rectangle> invisibleButtons;
     private static int QUEST_MIN_TTL = 150;
+    private static int BOND_MIN_TTL = 500;
 
     @Override
     public void onStart(String... params) {
@@ -259,6 +260,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         defaultProfile.addProperty("logout_after_unrestricted", true);
         defaultProfile.addProperty("disable_mule", true);
         defaultProfile.addProperty("quest_min_ttl", 150);
+        defaultProfile.addProperty("bond_min_ttl", 500);
 
         return defaultProfile;
     }
@@ -307,6 +309,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             int muleSafety = jsonObject.get("mule_safety_net").getAsInt();
             boolean muleDisabled = jsonObject.get("disable_mule").getAsBoolean();
             int questMinTtl = jsonObject.get("quest_min_ttl").getAsInt();
+            int bondMinTtl = jsonObject.get("bond_min_ttl").getAsInt();
 
             skillTargets = new HashMap<Skill, Integer>(){
                 {
@@ -494,6 +497,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             RUNNING_TUT = true;
             Logger.log("We are performing Tutorial Island");
+            return;
+        }
+
+        if (PlayerSettings.getConfig(1780) == 0) {
+            currentTask = new BondingTask(null);
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(1200, 6750); // in seconds
+            Logger.log("We are making our account a member.");
             return;
         }
 
