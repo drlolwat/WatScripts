@@ -27,7 +27,7 @@ public class BondingTask implements WatTask {
 
     @Override
     public String getName() {
-        return "World Hopping";
+        return "Bonding";
     }
 
     public BondingTask(WatTask post) {
