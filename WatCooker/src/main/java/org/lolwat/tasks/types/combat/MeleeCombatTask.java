@@ -81,7 +81,7 @@ public class MeleeCombatTask implements WatTask {
                         continue;
                     }
 
-                    if (Inventory.get(item.getKey()).hasAction("Eat") || Inventory.interact(item.getKey())) {
+                    if (Inventory.get(item.getKey()).hasAction("Eat")) {
                         toRemove.add(item.getKey());
                     }
                 }
