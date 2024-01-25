@@ -192,41 +192,32 @@ public class BankingTask implements WatTask {
                             Logger.log("We are going to go and get a " + entry.getKey());
 
                             String latestObtained = "";
-                            if(Bank.contains("Rune defender"))
+                            if (Bank.contains("Rune defender"))
                                 latestObtained = "Rune defender";
-                            else if(Bank.contains("Adamant defender"))
+                            else if (Bank.contains("Adamant defender"))
                                 latestObtained = "Adamant defender";
-                            else if(Bank.contains("Mithril defender"))
+                            else if (Bank.contains("Mithril defender"))
                                 latestObtained = "Mithril defender";
-                            else if(Bank.contains("Black defender"))
+                            else if (Bank.contains("Black defender"))
                                 latestObtained = "Black defender";
-                            else if(Bank.contains("Steel defender"))
+                            else if (Bank.contains("Steel defender"))
                                 latestObtained = "Steel defender";
-                            else if(Bank.contains("Iron defender"))
+                            else if (Bank.contains("Iron defender"))
                                 latestObtained = "Iron defender";
-                            else if(Bank.contains("Bronze defender"))
+                            else if (Bank.contains("Bronze defender"))
                                 latestObtained = "Bronze defender";
 
-                            if(Bank.count("Warrior guild token") >= 200) {
-                                instance.currentTask = new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
-                                    {
-                                        put("Lobster", 20);
-                                        put("Warrior guild token", -Bank.count("Warrior guild token"));
-                                    }
-                                }, latestObtained);
-                            } else {
-                                instance.currentTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
-                                    {
-                                        put("Lobster", 14);
-                                        put("Warrior guild token", -Bank.count("Warrior guild token"));
-                                    }
-                                }, Bank.count("Warrior guild token"), latestObtained);
-                            }
+
+                            instance.currentTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
+                                {
+                                    put("Lobster", 14);
+                                    put("Warrior guild token", -Bank.count("Warrior guild token"));
+                                }
+                            }, Bank.count("Warrior guild token"), latestObtained);
+
 
                             return;
                         }
-
-
 
                         // need to buy.
                         buyingRequired.put(entry.getKey(), entry.getValue());
