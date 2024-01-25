@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.combat.warriorguild;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -117,6 +118,19 @@ public class FightArmorSetTask implements WatTask {
             }
         }
 
+        if (Inventory.count("Warrior guild token") >= 200) {
+            instance.currentTask = new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
+                {
+                    put("Lobster", 20);
+                }
+            }, new HashMap<String, Integer>() {
+                {
+                    put("Warrior guild token", -Inventory.count("Warrior guild token"));
+                }
+            }, latest);
+            return;
+        }
+
         if (!fightingArea.contains(Players.getLocal())) {
             instance.currentTask = new TraversalTask(fightingArea, this);
             return;
@@ -172,15 +186,6 @@ public class FightArmorSetTask implements WatTask {
                     tokens += count;
                 }
             }
-        }
-
-        if (Inventory.count("Warrior guild token") >= 200) {
-            instance.currentTask = new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
-                {
-                    put("Lobster", 20);
-                }
-            }, latest);
-            return;
         }
 
         if (!Players.getLocal().isInCombat() && !Dialogues.inDialogue()) {
