@@ -146,23 +146,24 @@ public class FightCyclopsTask implements WatTask {
             requiredItems.remove(s);
         }
 
+        if(!Inventory.contains("Warrior guild token")) {
+            Logger.log("We need tokens so we'll fight for 'em.");
+            instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
+                {
+                    put("Lobster", 14);
+                }
+            }, 0, latestDefender);
+            return;
+        }
+
         if (!requiredItems.isEmpty()) {
             Logger.log("We need to grab the rest of our melee equipment..");
             for (String s : requiredItems.keySet()) {
                 Logger.log("- " + s);
             }
 
-            if(requiredItems.containsKey("Warrior guild token")) {
-                Logger.log("We need tokens so we'll fight for 'em.");
-                instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
-                    {
-                        put("Lobster", 14);
-                    }
-                }, 0, latestDefender);
-            }
-            else {
-                instance.currentTask = new BankingTask(food, null, 1, this);
-            }
+            instance.currentTask = new BankingTask(food, null, 1, this);
+
             return;
         }
 
