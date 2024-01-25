@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Added P2P armor/weapons to RangedUtils">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="More polish, more shine.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/RangedCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/RangedCombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +143,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="5005000" />
+      <workItem from="1706079551295" duration="23368000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -486,7 +488,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="236" />
+    <option name="localTasksCounter" value="254" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,24 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Mouse hopping improvement" />
-    <MESSAGE value="I swear to god I'm still burping up tequila. Should have a fix for gear shit." />
-    <MESSAGE value="Noted tool checks in wc/mining tasks" />
-    <MESSAGE value="High Alchemy - move item to correct slot (magic book changed)" />
-    <MESSAGE value="derp HA" />
-    <MESSAGE value="fix for BB3 launches" />
-    <MESSAGE value="Break time is now taken into account on the Hive." />
-    <MESSAGE value="Reworked G.E pricing/buying." />
-    <MESSAGE value="A bit of this and that. Closes #15" />
-    <MESSAGE value="GE task flow completion after raising price internally" />
-    <MESSAGE value="CombatInstructorTask: Failsafe for moving onto TutorialBankTask." />
-    <MESSAGE value="MiningInstructorTask: Failsafe for moving on from QuestGuideTask" />
-    <MESSAGE value="Removal of useless comments" />
-    <MESSAGE value="Disallow task switching during tutorial island" />
-    <MESSAGE value="Support for P2P worlds" />
-    <MESSAGE value="Support for bond purchasing" />
-    <MESSAGE value="Bonding task" />
-    <MESSAGE value="Remove bad comments" />
     <MESSAGE value="Added bond_min_ttl option (regen cfg or add manually)" />
     <MESSAGE value="Hook up auto bonding. Set to 0 to never bond." />
     <MESSAGE value="isMembers helper function" />
@@ -558,7 +542,25 @@
     <MESSAGE value="Streamline hopping to P2P worlds" />
     <MESSAGE value="Grand Exchange QOL" />
     <MESSAGE value="Added P2P armor/weapons to RangedUtils" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added P2P armor/weapons to RangedUtils" />
+    <MESSAGE value="Rough outline of P2P melee." />
+    <MESSAGE value="fix Autobond" />
+    <MESSAGE value="revert some to F2P MeleeUtils. TODO P2PUtils" />
+    <MESSAGE value="Bugfix: Trying to withdraw equipment w/ full inventory" />
+    <MESSAGE value="Fix BondingTask name" />
+    <MESSAGE value="Add P2P equipment: Boots, Glory, Combat bracelet" />
+    <MESSAGE value="BankingTask: defender stuff" />
+    <MESSAGE value="MeleeUtils: defender stuff" />
+    <MESSAGE value="TraversalTask: add postTask name, Warrior guild banking" />
+    <MESSAGE value="FightArmorSetTask: Initial, test build" />
+    <MESSAGE value="FightCyclopsTask: Initial, test build" />
+    <MESSAGE value="BankingTask cleanup" />
+    <MESSAGE value="FightArmorSetTask cleanup" />
+    <MESSAGE value="FightCyclopsTask cleanup" />
+    <MESSAGE value="Polish, leave room on obtaining a new defender." />
+    <MESSAGE value="Depositing extras of items we don't require" />
+    <MESSAGE value="Correctly hand off to FightCyclopsTask" />
+    <MESSAGE value="More polish, more shine." />
+    <option name="LAST_COMMIT_MESSAGE" value="More polish, more shine." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
