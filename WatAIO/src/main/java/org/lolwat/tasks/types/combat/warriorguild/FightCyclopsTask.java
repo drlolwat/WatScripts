@@ -57,6 +57,8 @@ public class FightCyclopsTask implements WatTask {
             new Tile(2940, 9973, 0),
             new Tile(2916, 9973, 0));
 
+    private final Area lobbyArea = new Area(2842, 3541, 2845, 3538, 2);
+
     private boolean needsCheck = true;
     private final boolean basement;
     private String latestDefender;
@@ -89,6 +91,13 @@ public class FightCyclopsTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if(Bank.isOpen()) {
+            if(!Inventory.contains("Warrior guild token")) {
+                Bank.withdrawAll("Warrior guild token");
+                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
+            }
+        }
+
         Area fightingArea;
         HashMap<String, Integer> requiredItems = inventoryReq;
         if(basement || latestDefender.contains("Rune"))
@@ -219,6 +228,10 @@ public class FightCyclopsTask implements WatTask {
                     Logger.error("Error picking up defender...");
                 } else {
                     latestDefender = i.getName();
+                    if(!lobbyArea.contains(Players.getLocal())) {
+                        instance.currentTask = new TraversalTask(lobbyArea, this);
+                        return;
+                    }
                 }
             }
         }
