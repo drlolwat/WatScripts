@@ -181,6 +181,11 @@ public class BankingTask implements WatTask {
                             Sleep.sleep(100, 200);
                         }
 
+                        if(Inventory.count(entry.getKey()) > amountRequired) {
+                            Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
+                            Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
+                        }
+
                         if (buyingRequired.isEmpty() && Bank.withdraw(entry.getKey(), amountRequired)) {
                             Sleep.sleep(200, 400);
                             if (Inventory.contains(entry.getKey())) {
