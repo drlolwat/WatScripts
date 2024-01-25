@@ -126,6 +126,7 @@ public class FightArmorSetTask implements WatTask {
             }, new HashMap<String, Integer>() {
                 {
                     put("Warrior guild token", -(Inventory.count("Warrior guild token") + Bank.count("Warrior guild token")));
+                    put(latest, 1);
                 }
             }, latest);
             return;
