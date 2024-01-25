@@ -212,15 +212,12 @@ public class BankingTask implements WatTask {
                             else if (Bank.contains("Bronze defender"))
                                 latestObtained = "Bronze defender";
 
-
                             instance.currentTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                 {
                                     put("Lobster", 14);
                                     put("Warrior guild token", -Bank.count("Warrior guild token"));
                                 }
                             }, Bank.count("Warrior guild token"), latestObtained);
-
-
                             return;
                         }
 
