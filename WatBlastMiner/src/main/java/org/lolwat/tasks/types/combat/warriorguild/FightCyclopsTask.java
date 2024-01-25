@@ -3,6 +3,7 @@ package org.lolwat.tasks.types.combat.warriorguild;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -36,7 +37,7 @@ import java.util.Map;
 public class FightCyclopsTask implements WatTask {
     private Skill trainingSkill;
     private boolean needsEat;
-    private HashMap<String, Integer> inventoryReq;
+    private final HashMap<String, Integer> food;
     private String lookingForDefender;
     private final Area nonDragonFightingArea = new Area(
             new Tile(2847, 3543, 2),
@@ -57,18 +58,19 @@ public class FightCyclopsTask implements WatTask {
             new Tile(2916, 9973, 0));
 
     private boolean needsCheck = true;
-    private boolean basement;
+    private final boolean basement;
     private String latestDefender;
+    private final HashMap<String, Integer> inventoryReq = new HashMap<>();
 
-    public FightCyclopsTask(Skill skillType, HashMap<String, Integer> inventory, String latest) {
+    public FightCyclopsTask(Skill skillType, HashMap<String, Integer> foodReq, HashMap<String, Integer> inv, String latest) {
         trainingSkill = skillType;
 
-        if(inventory != null && !inventory.isEmpty()) {
+        if(foodReq != null && !foodReq.isEmpty()) {
             needsEat = true;
-            inventoryReq = inventory;
+            food = foodReq;
         } else {
             needsEat = false;
-            inventoryReq = new HashMap<>();
+            food = new HashMap<>();
         }
 
         basement = latest.contains("Rune");
@@ -88,6 +90,7 @@ public class FightCyclopsTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         Area fightingArea;
+        HashMap<String, Integer> requiredItems = inventoryReq;
         if(basement || latestDefender.contains("Rune"))
             fightingArea = dragonFightingArea;
         else
@@ -114,14 +117,16 @@ public class FightCyclopsTask implements WatTask {
 
         List<String> toRemove = new ArrayList<>();
 
-        for (java.util.Map.Entry<String, Integer> item : inventoryReq.entrySet()) {
+        for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
                     if(Inventory.get(item.getKey()).isNoted()) {
                         continue;
                     }
 
-                    toRemove.add(item.getKey());
+                    if (Inventory.get(item.getKey()).hasAction("Eat")) {
+                        toRemove.add(item.getKey());
+                    }
                 }
             } else {
                 toRemove.add(item.getKey());
@@ -129,23 +134,33 @@ public class FightCyclopsTask implements WatTask {
         }
 
         for (String s : toRemove) {
-            inventoryReq.remove(s);
+            requiredItems.remove(s);
         }
 
-        if (!inventoryReq.isEmpty()) {
+        if (!requiredItems.isEmpty()) {
             Logger.log("We need to grab the rest of our melee equipment..");
-            for (String s : inventoryReq.keySet()) {
+            for (String s : requiredItems.keySet()) {
                 Logger.log("- " + s);
             }
 
-            instance.currentTask = new BankingTask(inventoryReq, null, 1,this);
+            if(requiredItems.containsKey("Warrior guild token")) {
+                Logger.log("We need tokens so we'll fight for 'em.");
+                instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
+                    {
+                        put("Lobster", 14);
+                    }
+                }, 0, latestDefender);
+            }
+            else {
+                instance.currentTask = new BankingTask(food, null, 1, this);
+            }
             return;
         }
 
-        if(!inventoryReq.isEmpty()) {
-            for (Map.Entry<String, Integer> f : inventoryReq.entrySet()) {
+        if(!food.isEmpty()) {
+            for (Map.Entry<String, Integer> f : food.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(inventoryReq, null, 1, this);
+                    instance.currentTask = new BankingTask(food, null, 1, this);
                     return;
                 }
             }
