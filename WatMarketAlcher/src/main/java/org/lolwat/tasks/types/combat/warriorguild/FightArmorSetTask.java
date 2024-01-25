@@ -56,6 +56,10 @@ public class FightArmorSetTask implements WatTask {
         inventoryReq.put("Black platebody", 1);
         inventoryReq.put("Black platelegs", 1);
 
+        if(!latestObtained.isEmpty()) {
+            inventoryReq.put(latestObtained, 1);
+        }
+
         tokens = tokenCount;
         latest = latestObtained;
     }
@@ -72,6 +76,13 @@ public class FightArmorSetTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if(Bank.isOpen()) {
+            if(!Inventory.contains("Warrior guild token")) {
+                Bank.withdrawAll("Warrior guild token");
+                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
+            }
+        }
+
         List<String> toRemove = new ArrayList<>();
 
         for (java.util.Map.Entry<String, Integer> item : inventoryReq.entrySet()) {
