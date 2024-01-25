@@ -57,7 +57,7 @@ public class TraversalTask implements WatTask {
         usingArea = true;
         lastWalk = 0;
 
-        Logger.log("Traversing to area");
+        Logger.log("Traversing to area for task " + post.getName());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class TraversalTask implements WatTask {
             }
         } else {
             if(area.contains(Players.getLocal())) {
-                Logger.log("Reached target area");
+                Logger.log("Reached target area for task " + postTask.getName());
                 instance.currentTask = postTask;
                 return;
             }
