@@ -1,10 +1,14 @@
 package org.lolwat.tasks.types.combat;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.filter.Filter;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -68,7 +72,7 @@ public class MeleeCombatTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         List<String> toRemove = new ArrayList<>();
-        HashMap<String, Integer> requiredItems = MeleeUtils.getRequiredItems();
+        HashMap<String, Integer> requiredItems = MeleeUtils.getRequiredItems(false);
 
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
@@ -192,6 +196,6 @@ public class MeleeCombatTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return MeleeUtils.getRequiredItems();
+        return MeleeUtils.getRequiredItems(false);
     }
 }
