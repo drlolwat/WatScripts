@@ -73,7 +73,7 @@ public class RangedCombatTask implements WatTask {
         for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
             if (!Equipment.contains(item.getKey())) {
                 if (Inventory.contains(item.getKey())) {
-                    if (Inventory.get(item.getKey()).hasAction("Eat") || Inventory.interact(item.getKey())) {
+                    if (Inventory.get(item.getKey()).hasAction("Eat")) {
                         toRemove.add(item.getKey());
                     }
                 }
