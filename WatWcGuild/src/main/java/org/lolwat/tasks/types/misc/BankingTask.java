@@ -215,7 +215,6 @@ public class BankingTask implements WatTask {
                             instance.currentTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                 {
                                     put("Lobster", 14);
-                                    put("Warrior guild token", -Bank.count("Warrior guild token"));
                                 }
                             }, Bank.count("Warrior guild token"), latestObtained);
                             return;
