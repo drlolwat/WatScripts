@@ -14,10 +14,17 @@ import org.lolwat.misc.utils.GenericUtils;
 import java.util.HashMap;
 
 public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
-    public static HashMap<String, Integer> getRequiredItems() {
+    public static HashMap<String, Integer> getRequiredItems(boolean replaceDefender) {
         HashMap<String, Integer> ret = new HashMap<>();
 
         for(String s : bestGearForLevel().values()) {
+            if(replaceDefender) {
+                if(s.contains("defender")) {
+                    s = s.replace("Dragon", "Rune"); // lolwat
+                    s = s.replace("defender", "kiteshield");
+                }
+            }
+
             ret.put(s, 1);
         }
 
@@ -34,7 +41,7 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
         ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
         ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
         ret.put(EquipmentSlot.FEET, defensiveItemByType(DefensiveItemType.FEET, false));
-        ret.put(EquipmentSlot.HANDS, GenericUtils.isMember() ? "Combat bracelet(4)" : "Leather gloves");
+        ret.put(EquipmentSlot.HANDS, "Leather gloves"); //TODO handler for Combat bracelet....
         ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
 
         return ret;
@@ -67,8 +74,18 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
             case CHEST: return material + (alternative ? " chainbody" : " platebody");
             case LEGS: return material + (WatAIO.USE_SKIRT ? " plateskirt" : " platelegs");
             case OFFHAND: {
-                if(GenericUtils.isMember() && Skills.getRealLevel(Skill.DEFENCE) >= 50) {
-                    return "Rune kiteshield";
+                if(GenericUtils.isMember()) {
+                    int defLevel = Skills.getRealLevel(Skill.DEFENCE);
+                    int attLevel = Skills.getRealLevel(Skill.ATTACK);
+                    int strLevel = Skills.getRealLevel(Skill.STRENGTH);
+
+                    if((defLevel + attLevel + strLevel) >= 130) {
+                        return material + " defender";
+                    }
+
+                    if(material.equals("Dragon")) {
+                        return "Rune kiteshield";
+                    }
                 }
 
                 return material + " kiteshield";
@@ -89,29 +106,18 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
     public static String bestDefEquipmentMaterial() {
         int defLevel = Skills.getRealLevel(Skill.DEFENCE);
 
-        if(defLevel >= 40) {
-            if(GenericUtils.isMember()) {
-                if(defLevel >= 60) {
-                    return "Dragon";
-                }
-
-                if(defLevel >= 50 && Skills.getRealLevel(Skill.STRENGTH) >= 50) {
-                    return "Granite";
-                }
+        if (defLevel >= 40) {
+            if (GenericUtils.isMember() && defLevel >= 60) {
+                return "Dragon";
             }
-
             return "Rune";
-        }
-        else if(defLevel >= 30) {
+        } else if (defLevel >= 30) {
             return "Adamant";
-        }
-        else if(defLevel >= 20) {
+        } else if (defLevel >= 20) {
             return "Mithril";
-        }
-        else if(defLevel >= 10) {
+        } else if (defLevel >= 10) {
             return "Black";
-        }
-        else {
+        } else {
             return "Iron";
         }
     }
