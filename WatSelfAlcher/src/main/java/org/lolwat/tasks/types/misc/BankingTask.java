@@ -231,6 +231,7 @@ public class BankingTask implements WatTask {
                         }
 
                         // need to buy.
+                        buyingRequired.put(entry.getKey(), (entry.getValue() > 0 ? amountRequired : -entry.getValue()));
                         Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
                     }
                 }
@@ -325,6 +326,7 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Beginning checks");
         if (!buyingRequired.isEmpty()) {
+            Logger.log("Entered Exchanger");
             checkAndSet(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
