@@ -30,6 +30,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.message.Message;
+import org.lolwat.misc.utils.DiscordUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
@@ -408,6 +409,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
+        DiscordUtils.postWebhook("WatAIO Started", Client.getForumUser().getUsername() + " has started the script with a profile named " + profile);
+
         int height = 10;
         int width = 10;
         invisibleButtons = new HashMap<>();
