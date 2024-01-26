@@ -86,25 +86,25 @@ public class GenericUtils {
         Item i = Inventory.get(item);
         if(i != null) {
             if(i.hasAction("Wear") && i.interact("Wear")) {
-                Logger.log("EQUIPMENTCHECKER: EQUIPPED WEARABLE");
+                Logger.log("Equipment: Equipped wearable");
                 Sleep.sleep(100, 200);
 
                 if(Bank.isOpen() && old != null) {
                     Sleep.sleep(200, 400);
                     Bank.depositAll(old.getName());
-                    Logger.log("EQUIPMENTCHECKER: DEPOSITED OLD WEARABLE: " + old.getName());
+                    Logger.log("Equipment: Deposited old item: " + old.getName());
                 }
 
                 return true;
             }
             else if(i.hasAction("Wield") && i.interact("Wield")) {
-                Logger.log("EQUIPMENTCHECKER: EQUIPPED WEAPON/AMMO");
+                Logger.log("Equipment: Equipped wieldable");
                 Sleep.sleep(100, 200);
 
                 if(Bank.isOpen() && old != null) {
                     Sleep.sleep(200, 400);
                     Bank.depositAll(old.getName());
-                    Logger.log("EQUIPMENTCHECKER: DEPOSITED OLD WEP/TOOL: " + old.getName());
+                    Logger.log("Equipment: Deposited old item: " + old.getName());
                 }
 
                 return true;
