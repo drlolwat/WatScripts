@@ -8,6 +8,7 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
@@ -19,6 +20,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
@@ -55,18 +57,13 @@ public class FightArmorSetTask implements WatTask {
         inventoryReq.put("Black full helm", 1);
         inventoryReq.put("Black platebody", 1);
         inventoryReq.put("Black platelegs", 1);
-        inventoryReq.put("Lobster", 14);
-
-        if(!latestObtained.isEmpty()) {
-            inventoryReq.put(latestObtained, 1);
-        }
 
         latest = latestObtained;
     }
 
     @Override
     public String getName() {
-        return "Obtaining warrior guild tokens";
+        return "Fighting armor set";
     }
 
     @Override
@@ -76,39 +73,23 @@ public class FightArmorSetTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        List<String> toRemove = new ArrayList<>();
-
-        for (java.util.Map.Entry<String, Integer> item : inventoryReq.entrySet()) {
-            if (!Equipment.contains(item.getKey())) {
-                if (Inventory.contains(item.getKey())) {
-                    if (Inventory.get(item.getKey()).isNoted()) {
-                        continue;
-                    }
-
-                    toRemove.add(item.getKey());
-                }
-            } else {
-                toRemove.add(item.getKey());
-            }
-        }
-
-        for (String s : toRemove) {
-            inventoryReq.remove(s);
-        }
-
-        if (!inventoryReq.isEmpty()) {
-            Logger.log("We need to grab the rest of our melee equipment..");
-            for (String s : inventoryReq.keySet()) {
-                Logger.log("- " + s);
-            }
-
-            instance.currentTask = new BankingTask(inventoryReq, null, 1, this);
-            return;
-        }
-
         if (!inventoryReq.isEmpty()) {
             for (Map.Entry<String, Integer> f : inventoryReq.entrySet()) {
+                if(Dialogues.inDialogue()) {
+                    Sleep.sleepUntil(() -> !Dialogues.inDialogue(), 5000);
+                    continue;
+                }
+
                 if (!Inventory.contains(f.getKey())) {
+                    NPC armorSet = NPCs.closest("Animated Black Armour");
+                    GroundItem i = GroundItems.closest(x -> x.getName().contains("Black"));
+                    if(f.getKey().contains("Black")) {
+                        if (Players.getLocal().isInCombat() || armorSet != null || i != null) {
+                            continue;
+                        }
+                    }
+
+                    Logger.log("We are missing " + f.getKey() + ", going to get it.");
                     instance.currentTask = new BankingTask(inventoryReq, null, 1, this);
                     return;
                 }
@@ -133,10 +114,6 @@ public class FightArmorSetTask implements WatTask {
             instance.currentTask = new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
                 {
                     put("Lobster", 20);
-                }
-            }, new HashMap<String, Integer>() {
-                {
-                    put(latest, 1);
                 }
             }, latest);
             return;
@@ -179,9 +156,6 @@ public class FightArmorSetTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
-        if (needsCheck)
-            needsCheck = false;
-
         for (GroundItem i : GroundItems.all()) {
             if (i.getName().contains("Black")) {
                 if (!i.interact("Take")) {
@@ -214,10 +188,6 @@ public class FightArmorSetTask implements WatTask {
                     if (animator.interact("Animate")) {
                         Sleep.sleepUntil(() -> !Dialogues.inDialogue(), 5000);
                     }
-                }
-            } else {
-                if(GroundItems.closest(n -> n.getName().contains("Black")) == null) {
-                    needsCheck = true;
                 }
             }
         }
