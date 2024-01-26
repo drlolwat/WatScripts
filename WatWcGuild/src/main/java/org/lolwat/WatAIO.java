@@ -269,12 +269,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         String filePath = System.getProperty("user.dir") + "/WatAIO/" + p + ".json";
 
         try {
-            // Create a Gson object
             Gson gson = new Gson();
 
             File file = new File(filePath);
             if (!file.exists()) {
-                // Create the directories if they don't exist
                 file.getParentFile().mkdirs();
 
                 JsonObject defaultProfile = getDefaultProfile();
@@ -283,10 +281,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 fileWriter.close();
             }
 
-            // Read the JSON content from the file and parse it into a JsonObject
             JsonObject jsonObject = gson.fromJson(new FileReader(filePath), JsonObject.class);
+            JsonObject defaultProfile = getDefaultProfile();
 
-            // Now you can access the values in the JsonObject
+            for (String key : defaultProfile.keySet()) {
+                if (!jsonObject.has(key)) {
+                    jsonObject.add(key, defaultProfile.get(key));
+                }
+            }
+
             int attack = jsonObject.get("attack").getAsInt();
             int defense = jsonObject.get("defence").getAsInt();
             int strength = jsonObject.get("strength").getAsInt();
