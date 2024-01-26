@@ -61,6 +61,10 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if(postTask != null) {
+            Logger.error(postTask.getName());
+        }
+
         //TODO a list of chest names to use for ex. Duel arena/Castle wars chests
         if (NPCs.all("Banker").isEmpty() && GameObjects.all("Bank booth").isEmpty()) {
             GameObject chest = GameObjects.closest("Open chest");
@@ -326,7 +330,6 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Beginning checks");
         if (!buyingRequired.isEmpty()) {
-            Logger.log("Entered Exchanger");
             checkAndSet(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
