@@ -197,7 +197,7 @@ public class FightArmorSetTask implements WatTask {
             }
         }
 
-        if (!Players.getLocal().isInCombat() && !Dialogues.inDialogue()) {
+        if (!Players.getLocal().isInCombat()) {
             if (Inventory.contains("Black full helm") && Inventory.contains("Black platebody") && Inventory.contains("Black platelegs")) {
                 GameObject animator = GameObjects.closest("Magical Animator");
                 if (animator != null) {
