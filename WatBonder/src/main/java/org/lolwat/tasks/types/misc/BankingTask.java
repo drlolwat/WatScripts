@@ -90,7 +90,7 @@ public class BankingTask implements WatTask {
             return;
         }
 
-        depositNonRequired(inventoryRequired);
+        depositNonRequired();
 
         Logger.log("Sell Checker: starting");
 
@@ -480,7 +480,7 @@ public class BankingTask implements WatTask {
         Logger.log("Final checks: Net worth, etc.");
 
         if(postTask != null && !(postTask instanceof MulingTask)) {
-            depositNonRequired(inventoryRequired);
+            depositNonRequired();
         }
 
         if(postTask != null) {
@@ -551,14 +551,14 @@ public class BankingTask implements WatTask {
         }
     }
 
-    private void depositNonRequired(HashMap<String, Integer> inventoryRequired) {
+    private void depositNonRequired() {
         if(Inventory.isEmpty()) {
             return;
         }
 
         if(!inventoryRequired.isEmpty()) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                Logger.log(entry.getKey());
+                Logger.log("Inventory requires: " + entry.getKey());
                 if (Inventory.contains(entry.getKey())) {
                     if(Inventory.count(entry.getKey()) > entry.getValue()) {
                         Logger.log("Final: Depositing extras of: " + entry.getKey() + ", have: " + Inventory.count(entry.getKey()) + ", need: " + entry.getValue());
@@ -568,7 +568,16 @@ public class BankingTask implements WatTask {
                 }
             }
 
-            //TODO deposit extra items that we do not need.
+            for(Item i : Inventory.all()) {
+                if(i == null)
+                    continue;
+
+                if(!inventoryRequired.containsKey(i.getName())) {
+                    Logger.log("Banking: Depositing " + i.getName() + ", not required.");
+                    Bank.depositAll(i.getName());
+                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                }
+            }
         }
     }
 
