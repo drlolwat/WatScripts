@@ -109,7 +109,7 @@ public class TraversalTask implements WatTask {
 
                 instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
                     {
-                        put("Lobster", 14);
+                        put("Lobster", 20);
                     }
                 }, defender);
                 return;
