@@ -38,7 +38,7 @@ import java.util.Map;
 public class FightCyclopsTask implements WatTask {
     private Skill trainingSkill;
     private boolean needsEat;
-    private final HashMap<String, Integer> food;
+    private final HashMap<String, Integer> inventoryRequired;
     private String lookingForDefender;
     private final Area nonDragonFightingArea = new Area(
             new Tile(2847, 3543, 2),
@@ -63,17 +63,16 @@ public class FightCyclopsTask implements WatTask {
     private boolean needsCheck = true;
     private final boolean basement;
     private String latestDefender;
-    private final HashMap<String, Integer> inventoryReq = new HashMap<>();
 
-    public FightCyclopsTask(Skill skillType, HashMap<String, Integer> foodReq, HashMap<String, Integer> inv, String latest) {
+    public FightCyclopsTask(Skill skillType, HashMap<String, Integer> inventory, String latest) {
         trainingSkill = skillType;
 
-        if(foodReq != null && !foodReq.isEmpty()) {
+        if(inventory != null && !inventory.isEmpty()) {
             needsEat = true;
-            food = foodReq;
+            inventoryRequired = inventory;
         } else {
             needsEat = false;
-            food = new HashMap<>();
+            inventoryRequired = new HashMap<>();
         }
 
         basement = latest.contains("Rune");
@@ -93,7 +92,6 @@ public class FightCyclopsTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         Area fightingArea;
-        HashMap<String, Integer> requiredItems = inventoryReq;
         if(basement || latestDefender.contains("Rune"))
             fightingArea = dragonFightingArea;
         else
@@ -118,28 +116,6 @@ public class FightCyclopsTask implements WatTask {
         else
             lookingForDefender = "Bronze defender";
 
-        List<String> toRemove = new ArrayList<>();
-
-        for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
-            if (!Equipment.contains(item.getKey())) {
-                if (Inventory.contains(item.getKey())) {
-                    if(Inventory.get(item.getKey()).isNoted()) {
-                        continue;
-                    }
-
-                    if (Inventory.get(item.getKey()).hasAction("Eat")) {
-                        toRemove.add(item.getKey());
-                    }
-                }
-            } else {
-                toRemove.add(item.getKey());
-            }
-        }
-
-        for (String s : toRemove) {
-            requiredItems.remove(s);
-        }
-
         if(!Inventory.contains("Warrior guild token")) {
             Logger.log("We need tokens so we'll fight for 'em.");
             instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
@@ -150,20 +126,10 @@ public class FightCyclopsTask implements WatTask {
             return;
         }
 
-        if (!requiredItems.isEmpty()) {
-            Logger.log("We need to grab the rest of our melee equipment..");
-            for (String s : requiredItems.keySet()) {
-                Logger.log("- " + s);
-            }
-
-            instance.currentTask = new BankingTask(food, null, 1, this);
-            return;
-        }
-
-        if(!food.isEmpty()) {
-            for (Map.Entry<String, Integer> f : food.entrySet()) {
+        if(!inventoryRequired.isEmpty()) {
+            for (Map.Entry<String, Integer> f : inventoryRequired.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(food, null, 1, this);
+                    instance.currentTask = new BankingTask(inventoryRequired, null, 1, this);
                     return;
                 }
             }
@@ -221,7 +187,7 @@ public class FightCyclopsTask implements WatTask {
         }
 
         if(Inventory.isFull()) {
-            instance.currentTask = new BankingTask(food, null, 1, this);
+            instance.currentTask = new BankingTask(inventoryRequired, null, 1, this);
             return;
         }
 
