@@ -231,7 +231,7 @@ public class BankingTask implements WatTask {
                         }
 
                         // need to buy.
-                        buyingRequired.put(entry.getKey(), (entry.getValue() > 0 ? amountRequired : -entry.getValue()));
+                        buyingRequired.put(entry.getKey(), amountRequired);
                         Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
                     }
                 }
