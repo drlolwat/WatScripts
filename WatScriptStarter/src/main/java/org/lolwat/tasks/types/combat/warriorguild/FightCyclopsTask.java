@@ -144,7 +144,7 @@ public class FightCyclopsTask implements WatTask {
             Logger.log("We need tokens so we'll fight for 'em.");
             instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
                 {
-                    put("Lobster", 14);
+                    put("Lobster", 20);
                 }
             }, latestDefender);
             return;
