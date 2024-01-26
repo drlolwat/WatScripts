@@ -904,12 +904,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        /*
         for (Map.Entry<Skill, Rectangle> entry : invisibleButtons.entrySet()) {
             if (entry.getValue().contains(e.getX(), e.getY())) {
                 runSkillFunction(entry.getKey());
                 break;
             }
-        }
+        }*/
     }
 
     private void runSkillFunction(Skill sk) {
