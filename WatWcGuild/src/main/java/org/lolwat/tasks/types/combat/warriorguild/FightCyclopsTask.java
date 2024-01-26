@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.combat.warriorguild;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -91,13 +92,6 @@ public class FightCyclopsTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(Bank.isOpen()) {
-            if(!Inventory.contains("Warrior guild token")) {
-                Bank.withdrawAll("Warrior guild token");
-                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
-            }
-        }
-
         Area fightingArea;
         HashMap<String, Integer> requiredItems = inventoryReq;
         if(basement || latestDefender.contains("Rune"))
@@ -152,7 +146,7 @@ public class FightCyclopsTask implements WatTask {
                 {
                     put("Lobster", 14);
                 }
-            }, 0, latestDefender);
+            }, latestDefender);
             return;
         }
 
@@ -163,7 +157,6 @@ public class FightCyclopsTask implements WatTask {
             }
 
             instance.currentTask = new BankingTask(food, null, 1, this);
-
             return;
         }
 
@@ -173,6 +166,13 @@ public class FightCyclopsTask implements WatTask {
                     instance.currentTask = new BankingTask(food, null, 1, this);
                     return;
                 }
+            }
+        }
+
+        if(Bank.isOpen()) {
+            if(!Inventory.contains("Warrior guild token")) {
+                Bank.withdrawAll("Warrior guild token");
+                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
             }
         }
 
@@ -220,6 +220,11 @@ public class FightCyclopsTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
+        if(Inventory.isFull()) {
+            instance.currentTask = new BankingTask(food, null, 1, this);
+            return;
+        }
+
         if(needsCheck)
             needsCheck = false;
 
@@ -229,12 +234,25 @@ public class FightCyclopsTask implements WatTask {
                     Logger.error("Error picking up defender...");
                 } else {
                     latestDefender = i.getName();
-                    if(!lobbyArea.contains(Players.getLocal())) {
-                        instance.currentTask = new TraversalTask(lobbyArea, this);
-                        return;
+                    Sleep.sleepUntil(() -> Inventory.contains(latestDefender), Calculations.random(1500, 5000));
+
+                    if(Inventory.contains(latestDefender)) {
+                        if(!lobbyArea.contains(Players.getLocal())) {
+                            instance.currentTask = new TraversalTask(lobbyArea, this);
+                            return;
+                        }
                     }
                 }
             }
+        }
+
+        if(Inventory.contains(latestDefender) && !Equipment.contains(latestDefender)) {
+            if(!Inventory.interact(latestDefender, "Wield")) {
+                Logger.error("Error wielding new defender...");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> Equipment.contains(latestDefender), Calculations.random(1500, 5000));
         }
 
         if(latestDefender.equalsIgnoreCase(lookingForDefender)) {
@@ -283,6 +301,21 @@ public class FightCyclopsTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return MeleeUtils.getRequiredItems(true);
+        HashMap<String, Integer> gear = MeleeUtils.getRequiredItems(true);
+        if(!latestDefender.isEmpty()) {
+            String toRemove = "";
+            for(Map.Entry<String, Integer> e : gear.entrySet()) {
+                if(e.getKey().contains("kiteshield")) {
+                    toRemove = e.getKey();
+                }
+            }
+
+            if(!toRemove.isEmpty()) {
+                gear.remove(toRemove);
+                gear.put(latestDefender, 1);
+            }
+        }
+
+        return gear;
     }
 }
