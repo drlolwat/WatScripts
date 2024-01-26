@@ -290,6 +290,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 }
             }
 
+            FileWriter fileWriter = new FileWriter(file);
+            gson.toJson(jsonObject, fileWriter);
+            fileWriter.close();
+
             int attack = jsonObject.get("attack").getAsInt();
             int defense = jsonObject.get("defence").getAsInt();
             int strength = jsonObject.get("strength").getAsInt();
