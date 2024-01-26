@@ -85,11 +85,11 @@ public class BankingTask implements WatTask {
         }
 
         if (!Bank.isOpen()) {
-            Sleep.sleep(Calculations.random(1000, 2000));
+            Sleep.sleepUntil(Bank::isOpen, Calculations.random(5000, 10000));
             return;
         }
 
-        depositNonRequired();
+        depositNonRequired(inventoryRequired);
 
         Logger.log("Sell Checker: starting");
 
@@ -227,7 +227,7 @@ public class BankingTask implements WatTask {
 
                             postTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                 {
-                                    put("Lobster", 14);
+                                    put("Lobster", 20);
                                 }
                             }, latestObtained);
                             return;
@@ -478,7 +478,7 @@ public class BankingTask implements WatTask {
         Logger.log("Final checks: Net worth, etc.");
 
         if(postTask != null && !(postTask instanceof MulingTask)) {
-            depositNonRequired();
+            depositNonRequired(inventoryRequired);
         }
 
         if(postTask != null) {
@@ -549,20 +549,24 @@ public class BankingTask implements WatTask {
         }
     }
 
-    private void depositNonRequired() {
+    private void depositNonRequired(HashMap<String, Integer> inventoryRequired) {
         if(Inventory.isEmpty()) {
             return;
         }
 
         if(!inventoryRequired.isEmpty()) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+                Logger.log(entry.getKey());
                 if (Inventory.contains(entry.getKey())) {
                     if(Inventory.count(entry.getKey()) > entry.getValue()) {
+                        Logger.log("Final: Depositing extras of: " + entry.getKey() + ", have: " + Inventory.count(entry.getKey()) + ", need: " + entry.getValue());
                         Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - entry.getValue()));
                         Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == entry.getValue(), 1500);
                     }
                 }
             }
+
+            //TODO deposit extra items that we do not need.
         }
     }
 

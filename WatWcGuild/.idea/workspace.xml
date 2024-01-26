@@ -7,11 +7,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="More polish, more shine.">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Save json after modification :joy:">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DiscordUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/MeleeCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/RangedCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/RangedCombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightArmorSetTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightArmorSetTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightCyclopsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightCyclopsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +146,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="23368000" />
+      <workItem from="1706079551295" duration="36629000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -488,7 +491,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="254" />
+    <option name="localTasksCounter" value="265" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,17 +538,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added bond_min_ttl option (regen cfg or add manually)" />
-    <MESSAGE value="Hook up auto bonding. Set to 0 to never bond." />
-    <MESSAGE value="isMembers helper function" />
-    <MESSAGE value="Hook up helper." />
-    <MESSAGE value="Streamline hopping to P2P worlds" />
-    <MESSAGE value="Grand Exchange QOL" />
-    <MESSAGE value="Added P2P armor/weapons to RangedUtils" />
-    <MESSAGE value="Rough outline of P2P melee." />
-    <MESSAGE value="fix Autobond" />
-    <MESSAGE value="revert some to F2P MeleeUtils. TODO P2PUtils" />
-    <MESSAGE value="Bugfix: Trying to withdraw equipment w/ full inventory" />
     <MESSAGE value="Fix BondingTask name" />
     <MESSAGE value="Add P2P equipment: Boots, Glory, Combat bracelet" />
     <MESSAGE value="BankingTask: defender stuff" />
@@ -560,7 +552,18 @@
     <MESSAGE value="Depositing extras of items we don't require" />
     <MESSAGE value="Correctly hand off to FightCyclopsTask" />
     <MESSAGE value="More polish, more shine." />
-    <option name="LAST_COMMIT_MESSAGE" value="More polish, more shine." />
+    <MESSAGE value="i am retarded, lol.. Fix double withdrawing in certain situations." />
+    <MESSAGE value="Ensure we have our latest defender and all our tokens at all times" />
+    <MESSAGE value="BankingTask has been given some love." />
+    <MESSAGE value="Traversal: Handling of warriors guild with &lt; 100 tokens." />
+    <MESSAGE value="GenericUtils: No longer shouting all the time" />
+    <MESSAGE value="BankingTask: More love, less shouting." />
+    <MESSAGE value="FightArmorSetTask: polish" />
+    <MESSAGE value="FightCyclopsTask: polish, equipping latest defender" />
+    <MESSAGE value="Disabled paint clickable buttons for the time being." />
+    <MESSAGE value="Add missing json keys if missing from cfg (no more regens...)" />
+    <MESSAGE value="Save json after modification :joy:" />
+    <option name="LAST_COMMIT_MESSAGE" value="Save json after modification :joy:" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
