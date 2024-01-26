@@ -1,5 +1,8 @@
 package org.lolwat.tasks.types.misc;
 
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -18,6 +21,8 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
+import org.lolwat.tasks.types.combat.warriorguild.FightArmorSetTask;
+import org.lolwat.tasks.types.combat.warriorguild.FightCyclopsTask;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -77,7 +82,6 @@ public class TraversalTask implements WatTask {
             }
         }
 
-
         if(Worlds.getCurrent().isF2P()) {
             Area castleWars = new Area(2435, 3099, 2446, 3080);
             if(castleWars.contains(Players.getLocal())) {
@@ -91,6 +95,24 @@ public class TraversalTask implements WatTask {
                         return;
                     }
                 }
+            }
+        }
+
+        if(postTask instanceof FightCyclopsTask) {
+            if(!Inventory.contains("Warrior guild token") || Inventory.count("Warrior guild token") < 100) {
+                String defender = "";
+                if(Equipment.slotContains(EquipmentSlot.SHIELD, x -> x.getName().contains("defender"))) {
+                    defender = Equipment.getItemInSlot(EquipmentSlot.SHIELD).getName();
+                } else if(Inventory.contains(x -> x.getName().contains("defender"))) {
+                    defender = Inventory.get(x -> x.getName().contains("defender")).getName();
+                }
+
+                instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
+                    {
+                        put("Lobster", 14);
+                    }
+                }, defender);
+                return;
             }
         }
 
