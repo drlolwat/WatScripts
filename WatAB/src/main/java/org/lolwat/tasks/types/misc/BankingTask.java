@@ -158,7 +158,7 @@ public class BankingTask implements WatTask {
             Logger.log("Not allowed to sell (account restricted, or restricted items)");
         }
 
-        Logger.log("SELLCHECKER: DONE");
+        Logger.log("Sell checker: finished");
         checkAndSet(BankMode.ITEM);
 
         HashMap<String, Integer> buyingRequired = new HashMap<>();
@@ -205,20 +205,25 @@ public class BankingTask implements WatTask {
                             Logger.log("We are going to go and obtain a " + entry.getKey() + " first. Restarting loop.");
 
                             String latestObtained = "";
-                            if (Bank.contains("Rune defender"))
-                                latestObtained = "Rune defender";
-                            else if (Bank.contains("Adamant defender"))
-                                latestObtained = "Adamant defender";
-                            else if (Bank.contains("Mithril defender"))
-                                latestObtained = "Mithril defender";
-                            else if (Bank.contains("Black defender"))
-                                latestObtained = "Black defender";
-                            else if (Bank.contains("Steel defender"))
-                                latestObtained = "Steel defender";
-                            else if (Bank.contains("Iron defender"))
-                                latestObtained = "Iron defender";
-                            else if (Bank.contains("Bronze defender"))
-                                latestObtained = "Bronze defender";
+
+                            if(!Equipment.contains(x -> x.getName().contains("defender"))) {
+                                if (Bank.contains("Rune defender"))
+                                    latestObtained = "Rune defender";
+                                else if (Bank.contains("Adamant defender"))
+                                    latestObtained = "Adamant defender";
+                                else if (Bank.contains("Mithril defender"))
+                                    latestObtained = "Mithril defender";
+                                else if (Bank.contains("Black defender"))
+                                    latestObtained = "Black defender";
+                                else if (Bank.contains("Steel defender"))
+                                    latestObtained = "Steel defender";
+                                else if (Bank.contains("Iron defender"))
+                                    latestObtained = "Iron defender";
+                                else if (Bank.contains("Bronze defender"))
+                                    latestObtained = "Bronze defender";
+                            } else {
+                                latestObtained = Equipment.get(x -> x.getName().contains("defender")).getName();
+                            }
 
                             postTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                 {
@@ -470,7 +475,7 @@ public class BankingTask implements WatTask {
             }
         }
 
-        Logger.log("FINALCHECKS: STARTING");
+        Logger.log("Final checks: Net worth, etc.");
 
         if(postTask != null && !(postTask instanceof MulingTask)) {
             depositNonRequired();
@@ -533,7 +538,7 @@ public class BankingTask implements WatTask {
             }
         }
 
-        Logger.log("FINALCHECKS: DONE");
+        Logger.log("Banking: Complete");
 
         if (postTask != null) {
             if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask) {
@@ -549,60 +554,16 @@ public class BankingTask implements WatTask {
             return;
         }
 
-        /*
-        if(postTask != null) {
-            boolean hasRequired = false;
-            if (inventoryRequired != null && !inventoryRequired.isEmpty()) {
-                for (String i : inventoryRequired.keySet()) {
-                    if (Inventory.contains(i)) {
-                        hasRequired = true;
+        if(!inventoryRequired.isEmpty()) {
+            for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+                if (Inventory.contains(entry.getKey())) {
+                    if(Inventory.count(entry.getKey()) > entry.getValue()) {
+                        Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - entry.getValue()));
+                        Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == entry.getValue(), 1500);
                     }
                 }
             }
-
-            if (postTask.clothesRequired() != null && !postTask.clothesRequired().isEmpty()) {
-                for (String i : postTask.clothesRequired().keySet()) {
-                    if (Inventory.contains(i)) {
-                        hasRequired = true;
-                    }
-                }
-            }
-
-            if (!hasRequired) {
-                Bank.depositAllItems();
-                Sleep.sleep(200, 600);
-                return;
-            }
-
-            HashMap<Item, Integer> toDeposit = new HashMap<>();
-            for (Item i : Inventory.all()) {
-                if (i == null)
-                    continue;
-
-                if (inventoryRequired != null && !inventoryRequired.containsKey(i.getName()) && postTask.clothesRequired() != null && !postTask.clothesRequired().containsKey(i.getName())) {
-                    int am = i.getAmount();
-                    if(toDeposit.containsKey(i)) {
-                        am = am + toDeposit.get(i);
-                    }
-
-                    toDeposit.put(i, am);
-                }
-            }
-
-            if (!toDeposit.isEmpty()) {
-                for (Map.Entry<Item, Integer> i : toDeposit.entrySet()) {
-                    if(i.getValue() == 1) {
-                        if(!Inventory.get(i.getKey().getName()).interact()) {
-                            Logger.log("issue interacting with item in inventory");
-                        }
-                    } else {
-                        Bank.depositAll(i.getKey());
-                    }
-
-                    Sleep.sleep(10, 30);
-                }
-            }
-        }*/
+        }
     }
 
     public void checkAndSet(BankMode mode) {
