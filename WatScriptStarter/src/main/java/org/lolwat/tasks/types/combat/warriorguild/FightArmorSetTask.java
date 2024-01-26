@@ -38,10 +38,9 @@ public class FightArmorSetTask implements WatTask {
     private HashMap<String, Integer> inventoryReq;
     private final Area fightingArea = new Area(2849, 3545, 2858, 3534);
     private boolean needsCheck = true;
-    private int tokens;
     private String latest;
 
-    public FightArmorSetTask(Skill skillType, HashMap<String, Integer> inventory, int tokenCount, String latestObtained) {
+    public FightArmorSetTask(Skill skillType, HashMap<String, Integer> inventory, String latestObtained) {
         trainingSkill = skillType;
 
         if(inventory != null && !inventory.isEmpty()) {
@@ -60,7 +59,6 @@ public class FightArmorSetTask implements WatTask {
             inventoryReq.put(latestObtained, 1);
         }
 
-        tokens = tokenCount;
         latest = latestObtained;
     }
 
@@ -76,13 +74,6 @@ public class FightArmorSetTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(Bank.isOpen()) {
-            if(!Inventory.contains("Warrior guild token")) {
-                Bank.withdrawAll("Warrior guild token");
-                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
-            }
-        }
-
         List<String> toRemove = new ArrayList<>();
 
         for (java.util.Map.Entry<String, Integer> item : inventoryReq.entrySet()) {
@@ -122,6 +113,13 @@ public class FightArmorSetTask implements WatTask {
             }
         }
 
+        if(Bank.isOpen()) {
+            if(!Inventory.contains("Warrior guild token")) {
+                Bank.withdrawAll("Warrior guild token");
+                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
+            }
+        }
+
         if (needsEat && Combat.getHealthPercent() <= 50) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i != null && i.interact()) {
@@ -132,11 +130,10 @@ public class FightArmorSetTask implements WatTask {
         if (Inventory.count("Warrior guild token") >= 200) {
             instance.currentTask = new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
                 {
-                    put("Lobster", 20);
+                    put("Lobster", 14);
                 }
             }, new HashMap<String, Integer>() {
                 {
-                    put("Warrior guild token", -(Inventory.count("Warrior guild token") + Bank.count("Warrior guild token")));
                     put(latest, 1);
                 }
             }, latest);
@@ -187,15 +184,14 @@ public class FightArmorSetTask implements WatTask {
             if (i.getName().contains("Black")) {
                 if (!i.interact("Take")) {
                     Logger.error("Error picking up armor set...");
+                    return;
                 }
             }
 
             if (i.getName().contains("token")) {
-                int count = i.getAmount();
                 if (!i.interact("Take")) {
                     Logger.error("Error picking up token...");
-                } else {
-                    tokens += count;
+                    return;
                 }
             }
         }
@@ -248,6 +244,21 @@ public class FightArmorSetTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return MeleeUtils.getRequiredItems(true);
+        HashMap<String, Integer> gear = MeleeUtils.getRequiredItems(true);
+        if(!latest.isEmpty()) {
+            String toRemove = "";
+            for(Map.Entry<String, Integer> e : gear.entrySet()) {
+                if(e.getKey().contains("kiteshield")) {
+                    toRemove = e.getKey();
+                }
+            }
+
+            if(!toRemove.isEmpty()) {
+                gear.remove(toRemove);
+                gear.put(latest, 1);
+            }
+        }
+
+        return gear;
     }
 }
