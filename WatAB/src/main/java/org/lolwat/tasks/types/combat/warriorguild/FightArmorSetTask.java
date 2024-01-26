@@ -54,6 +54,7 @@ public class FightArmorSetTask implements WatTask {
         inventoryReq.put("Black full helm", 1);
         inventoryReq.put("Black platebody", 1);
         inventoryReq.put("Black platelegs", 1);
+        inventoryReq.put("Lobster", 14);
 
         if(!latestObtained.isEmpty()) {
             inventoryReq.put(latestObtained, 1);
@@ -130,7 +131,7 @@ public class FightArmorSetTask implements WatTask {
         if (Inventory.count("Warrior guild token") >= 200) {
             instance.currentTask = new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
                 {
-                    put("Lobster", 14);
+                    put("Lobster", 20);
                 }
             }, new HashMap<String, Integer>() {
                 {
