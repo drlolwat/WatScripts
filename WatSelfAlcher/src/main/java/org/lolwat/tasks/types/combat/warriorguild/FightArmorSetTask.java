@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.combat.warriorguild;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -195,6 +196,15 @@ public class FightArmorSetTask implements WatTask {
                     return;
                 }
             }
+        }
+
+        if(Inventory.contains(latest) && !Equipment.contains(latest)) {
+            if(!Inventory.interact(latest, "Wield")) {
+                Logger.error("Error wielding new defender...");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> Equipment.contains(latest), Calculations.random(1500, 5000));
         }
 
         if (!Players.getLocal().isInCombat()) {
