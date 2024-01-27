@@ -24,21 +24,15 @@ public class CooksAssistantQuest implements WatTask {
     private final Area startLocation = new Area(3205, 3217, 3212, 3212);
     private final List<String> startDialogue = Arrays.asList("What's wrong?", "Yes.");
 
-    private HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
-        put("Egg", 1);
-        put("Bucket of milk", 1);
-        put("Pot of flour", 1);
-    } };
-
     public CooksAssistantQuest() {
     }
 
     @Override
     public void execute(WatAIO instance) {
         //check for items
-        for (String i : needed.keySet()) {
-            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
-                instance.currentTask = new BankingTask(needed, null, 1, this);
+        for (String i : inventoryRequired().keySet()) {
+            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < inventoryRequired().get(i))) {
+                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
                 return;
             }
         }
@@ -105,5 +99,12 @@ public class CooksAssistantQuest implements WatTask {
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
+    }
+
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<String, Integer>() {{
+            put("Egg", 1);
+            put("Bucket of milk", 1);
+            put("Pot of flour", 1); }};
     }
 }
