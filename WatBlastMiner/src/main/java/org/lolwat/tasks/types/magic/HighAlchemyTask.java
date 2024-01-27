@@ -170,6 +170,10 @@ public class HighAlchemyTask implements WatTask {
                 put("Staff of fire", 1);
             }
         };
+    }
 
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
     }
 }

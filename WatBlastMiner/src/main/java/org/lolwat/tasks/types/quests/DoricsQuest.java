@@ -108,4 +108,9 @@ public class DoricsQuest implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
     }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
+    }
 }
