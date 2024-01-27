@@ -202,7 +202,7 @@ public class FightCyclopsTask implements WatTask {
                     latestDefender = i.getName();
                     Sleep.sleepUntil(() -> Inventory.contains(latestDefender), Calculations.random(1500, 5000));
 
-                    if(Inventory.contains(latestDefender)) {
+                    if(Inventory.contains(latestDefender) && !latestDefender.contains("Dragon")) {
                         if(!lobbyArea.contains(Players.getLocal())) {
                             instance.currentTask = new TraversalTask(lobbyArea, this);
                             return;
