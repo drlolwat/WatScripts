@@ -551,6 +551,7 @@ public class BankingTask implements WatTask {
         }
     }
 
+    /*
     private void depositNonRequired() {
         if(Inventory.isEmpty()) {
             return;
@@ -576,6 +577,66 @@ public class BankingTask implements WatTask {
                     Logger.log("Banking: Depositing " + i.getName() + ", not required.");
                     Bank.depositAll(i.getName());
                     Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                }
+            }
+        }
+    }*/
+
+    private void depositNonRequired() {
+        if(Inventory.isEmpty()) {
+            return;
+        }
+
+        if(postTask != null) {
+            boolean hasRequired = false;
+            if (inventoryRequired != null && !inventoryRequired.isEmpty()) {
+                for (String i : inventoryRequired.keySet()) {
+                    if (Inventory.contains(i)) {
+                        hasRequired = true;
+                    }
+                }
+            }
+
+            if (postTask.clothesRequired() != null && !postTask.clothesRequired().isEmpty()) {
+                for (String i : postTask.clothesRequired().keySet()) {
+                    if (Inventory.contains(i)) {
+                        hasRequired = true;
+                    }
+                }
+            }
+
+            if (!hasRequired) {
+                Bank.depositAllItems();
+                Sleep.sleep(200, 600);
+                return;
+            }
+
+            HashMap<Item, Integer> toDeposit = new HashMap<>();
+            for (Item i : Inventory.all()) {
+                if (i == null)
+                    continue;
+
+                if (inventoryRequired != null && !inventoryRequired.containsKey(i.getName()) && postTask.clothesRequired() != null && !postTask.clothesRequired().containsKey(i.getName())) {
+                    int am = i.getAmount();
+                    if(toDeposit.containsKey(i)) {
+                        am = am + toDeposit.get(i);
+                    }
+
+                    toDeposit.put(i, am);
+                }
+            }
+
+            if (!toDeposit.isEmpty()) {
+                for (Map.Entry<Item, Integer> i : toDeposit.entrySet()) {
+                    if(i.getValue() == 1) {
+                        if(!Inventory.get(i.getKey().getName()).interact()) {
+                            Logger.log("issue interacting with item in inventory");
+                        }
+                    } else {
+                        Bank.depositAll(i.getKey());
+                    }
+
+                    Sleep.sleep(10, 30);
                 }
             }
         }
