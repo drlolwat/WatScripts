@@ -4,7 +4,9 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public interface WatTask {
     String getName();
@@ -18,6 +20,9 @@ public interface WatTask {
     Quest completesQuest();
     HashMap<String, Integer> clothesRequired();
     HashMap<String, Integer> inventoryRequired();
+    default List<String> inventoryTolerated() {
+        return new ArrayList<>();
+    }
     default HashMap<String, Object> data() {
         return new HashMap<>();
     }
