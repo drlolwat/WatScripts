@@ -25,19 +25,15 @@ public class SheepShearerQuest implements WatTask {
 
     List<String> startDialogue = Arrays.asList("I'm looking for a quest.", "Yes.");
 
-    private HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
-        put("Ball of wool", 20);
-    } };
-
     public SheepShearerQuest() {
     }
 
     @Override
     public void execute(WatAIO instance) {
         //check for items
-        for (String i : needed.keySet()) {
-            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
-                instance.currentTask = new BankingTask(needed, null, 1, this);
+        for (String i : inventoryRequired().keySet()) {
+            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < inventoryRequired().get(i))) {
+                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
                 return;
             }
         }
@@ -104,5 +100,10 @@ public class SheepShearerQuest implements WatTask {
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
+    }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<String, Integer>() { { put("Ball of wool", 20); }};
     }
 }
