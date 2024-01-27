@@ -116,4 +116,13 @@ public class ImpCatcherQuest implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
     }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<String, Integer>() {{
+            put("Black bead", 1);
+            put("Yellow bead", 1);
+            put("Red bead", 1);
+            put("White bead", 1); }};
+    }
 }
