@@ -900,7 +900,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void onMessage(Message m) {
         if (currentTask != null) {
             if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
-                Keyboard.type(WebUtils.getRealResponse(m.getUsername(), m.getMessage(), currentTask.getName()));
+                Keyboard.type(WebUtils.getRealResponse(m.getUsername(), m.getMessage(), currentTask.getName()), true);
             }
 
             boolean tenOrThirty = Calculations.random(1, 3) == 1;
