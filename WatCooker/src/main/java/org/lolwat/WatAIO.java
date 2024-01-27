@@ -907,7 +907,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                         waitingForResponse = true;
                         new Thread(() -> {
                             String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), currentTask.getName());
-                            Keyboard.type(response, true);
+                            if(!response.isEmpty()) {
+                                Keyboard.type(response, true);
+                            }
                             waitingForResponse = false;
                         }).start();
                     }
