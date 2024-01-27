@@ -53,7 +53,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
-@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private Timer timer;
     private List<WatTask> allTasks;
@@ -358,7 +358,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void getWsProfile(int breaking) {
         try {
-            String urlString = "https://botbuddy.net/_api_/ws_profile.php?_hash=" + AccountManager.getAccountHash();
+            String urlString = "https://botbuddy.net/_api_/ws_profile.php?fu=" + Client.getForumUser().getUsername() + "&_hash=" + AccountManager.getAccountHash();
 
             if(IGNORE_CHECK_TRADE) {
                 urlString += "&_unl";
