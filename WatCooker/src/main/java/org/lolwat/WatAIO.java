@@ -4,10 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
+import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
@@ -30,7 +32,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.message.Message;
-import org.lolwat.misc.utils.DiscordUtils;
+import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
@@ -409,7 +411,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
-        DiscordUtils.postWebhook("WatAIO Started", Client.getForumUser().getUsername() + " has started the script with a profile named " + profile);
+        WebUtils.postWebhook("WatAIO Started", Client.getForumUser().getUsername() + " has started the script with a profile named " + profile);
 
         int height = 10;
         int width = 10;
@@ -896,11 +898,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onMessage(Message m) {
-        boolean tenOrThirty = Calculations.random(1, 3) == 1;
-        if(m.toString().contains("approximately " + (tenOrThirty ? "10" : "30") + " minutes")) {
-            if(currentTask != null) {
-                currentTask = new LogoutTask(false, false, currentTask);
+        if (currentTask != null) {
+            if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
+                Keyboard.type(WebUtils.getRealResponse(m.getUsername(), m.getMessage(), currentTask.getName()));
             }
+
+            boolean tenOrThirty = Calculations.random(1, 3) == 1;
+            if (m.toString().contains("approximately " + (tenOrThirty ? "10" : "30") + " minutes"))
+                currentTask = new LogoutTask(false, false, currentTask);
         }
     }
 
