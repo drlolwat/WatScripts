@@ -4,6 +4,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -78,6 +79,12 @@ public class MagicCombatTask implements WatTask {
 
         requiredItems.putAll(MagicUtils.getRunesRequired((Normal) toCast, casts));
         requiredItems.putAll(food);
+
+        if(Equipment.isEmpty()) {
+            Logger.log("We need to grab runes and staff...");
+            instance.currentTask = new BankingTask(requiredItems, null, 1,this);
+            return;
+        }
 
         if(!MagicUtils.canAffordCast(toCast)) {
             Logger.log("We need to grab runes...");
