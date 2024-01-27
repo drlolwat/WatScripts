@@ -203,7 +203,7 @@ public class GrandExchangeTask implements WatTask {
                         break;
                     }
 
-                    Sleep.sleep(400, 800);
+                    Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
                     if(item.getValue() != 0) {
                         if(!GrandExchange.isBuyOpen()) {
@@ -214,7 +214,7 @@ public class GrandExchangeTask implements WatTask {
 
                         // Add the item.
                         if (GrandExchange.addBuyItem(itemFinal)) {
-                            Sleep.sleep(100, 220);
+                            Sleep.sleep(600, 1200);
                             int itemCost = NumUtils.getItemPrice(itemFinal);
 
                             if(GrandExchange.setPrice(itemCost)) {
