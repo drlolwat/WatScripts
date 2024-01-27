@@ -169,4 +169,9 @@ public class WoodcuttingTask implements WatTask {
             }
         };
     }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
+    }
 }

@@ -17,4 +17,8 @@ public interface WatTask {
     Integer avoidAfterLevel();
     Quest completesQuest();
     HashMap<String, Integer> clothesRequired();
+    HashMap<String, Integer> inventoryRequired();
+    default HashMap<String, Object> data() {
+        return new HashMap<>();
+    }
 }
