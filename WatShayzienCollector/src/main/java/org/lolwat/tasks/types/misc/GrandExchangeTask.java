@@ -251,7 +251,7 @@ public class GrandExchangeTask implements WatTask {
                                 if(GrandExchange.cancelOffer(slot)) {
                                     Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
                                     NumUtils.raisePrice(item.getKey());
-                                    Sleep.sleep(Calculations.random(100, 500));
+                                    Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
                                     if(!GrandExchange.collect()) {
                                         Logger.error("Error collecting cancelled item from G.E");
                                     }
