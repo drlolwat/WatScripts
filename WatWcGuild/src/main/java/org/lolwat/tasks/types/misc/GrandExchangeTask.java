@@ -98,9 +98,11 @@ public class GrandExchangeTask implements WatTask {
                 // Get a slot. If unavailable, will cancel the other offers we have going
                 if (GrandExchange.getFirstOpenSlot() == -1) {
                     Sleep.sleep(500, 900);
+
                     if(GrandExchange.isReadyToCollect()) {
                         GrandExchange.collect();
                     }
+
                     Sleep.sleep(500, 900);
 
                     if (GrandExchange.getFirstOpenSlot() == -1) {
@@ -205,11 +207,20 @@ public class GrandExchangeTask implements WatTask {
 
                     Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
-                    if(item.getValue() != 0) {
+                    while(item.getValue() != 0) {
                         if(!GrandExchange.isBuyOpen()) {
-                            Logger.log("Buy screen was not open when it was meant to be.");
-                            instance.currentTask = postTask;
-                            break;
+                            Sleep.sleep(1000, 2000);
+
+                            if(!GrandExchange.openBuyScreen(slot)) {
+                                Logger.log("Error ensuring buy screen is open in G.E");
+                            }
+
+                            Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
+
+                            if(!GrandExchange.isBuyOpen()) {
+                                Logger.log("Buy screen was not open when it was meant to be.");
+                                continue;
+                            }
                         }
 
                         // Add the item.
@@ -241,12 +252,13 @@ public class GrandExchangeTask implements WatTask {
                                 }
                             }
 
-                            item.setValue(0);
-
                             Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
 
                             if (GrandExchange.isReadyToCollect(slot)) {
-                                GrandExchange.collect();
+                                if(!GrandExchange.collect()) {
+                                    Logger.log("Error collecting items");
+                                }
+                                item.setValue(0);
                             } else {
                                 if(GrandExchange.cancelOffer(slot)) {
                                     Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
