@@ -104,4 +104,8 @@ public class SelectUsernameTask implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<>();
     }
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
+    }
 }

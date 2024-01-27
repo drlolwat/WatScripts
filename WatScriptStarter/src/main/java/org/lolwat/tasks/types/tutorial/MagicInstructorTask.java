@@ -147,4 +147,9 @@ public class MagicInstructorTask implements WatTask {
     public static NPC getNpcOnTile(Tile tile) {
         return NPCs.closest(n -> n.getTile().equals(tile));
     }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
+    }
 }
