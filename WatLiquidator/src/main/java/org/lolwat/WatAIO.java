@@ -75,14 +75,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
     public int TASKS_UNTIL_BREAK = 0;
     public static boolean NEED_MM;
-    private static Area tutorialIsland = new Area(
-            new Tile(3056, 3134, 0),
-            new Tile(3055, 3053, 0),
-            new Tile(3146, 3052, 0),
-            new Tile(3159, 3072, 0),
-            new Tile(3157, 3125, 0),
-            new Tile(3126, 3142, 0));
-
     // TODO CONFIGURATION CLASS
     public static String CAPE_TYPE;
     public static boolean USE_SKIRT;
