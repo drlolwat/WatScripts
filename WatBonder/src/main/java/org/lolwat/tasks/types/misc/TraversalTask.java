@@ -43,7 +43,7 @@ public class TraversalTask implements WatTask {
             return postTask.getName();
         }
 
-        return "Traversing";
+        return "Walking";
     }
 
     public TraversalTask(Tile tile, boolean tileOnly, WatTask post) {
@@ -53,7 +53,7 @@ public class TraversalTask implements WatTask {
         lastWalk = 0;
         usingArea = false;
 
-        Logger.log("Traversing to coords");
+        Logger.log("Walking to coords");
     }
 
     public TraversalTask(Area using, WatTask post) {
@@ -62,7 +62,7 @@ public class TraversalTask implements WatTask {
         usingArea = true;
         lastWalk = 0;
 
-        Logger.log("Traversing to area for task " + post.getName());
+        Logger.log("Walking to area for task " + post.getName());
     }
 
     @Override
