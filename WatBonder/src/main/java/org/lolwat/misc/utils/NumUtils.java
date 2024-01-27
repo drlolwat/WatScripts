@@ -39,6 +39,10 @@ public class NumUtils {
             num = LivePrices.get(item);
         }
 
+        if(num < 10) {
+            num = num * 2;
+        }
+
         num = (int) (num * 1.2);
         itemPrices.put(item, num);
     }
