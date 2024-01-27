@@ -7,15 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="don't run to entrance after getting dragon defender">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="A non easter, easter egg.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DialogueUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DialogueUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/WatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightArmorSetTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightArmorSetTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightCyclopsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/combat/warriorguild/FightCyclopsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +142,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="52860000" />
+      <workItem from="1706079551295" duration="56469000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -492,7 +487,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="277" />
+    <option name="localTasksCounter" value="287" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,15 +534,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Polish, leave room on obtaining a new defender." />
-    <MESSAGE value="Depositing extras of items we don't require" />
-    <MESSAGE value="Correctly hand off to FightCyclopsTask" />
-    <MESSAGE value="More polish, more shine." />
-    <MESSAGE value="i am retarded, lol.. Fix double withdrawing in certain situations." />
-    <MESSAGE value="Ensure we have our latest defender and all our tokens at all times" />
-    <MESSAGE value="BankingTask has been given some love." />
-    <MESSAGE value="Traversal: Handling of warriors guild with &lt; 100 tokens." />
-    <MESSAGE value="GenericUtils: No longer shouting all the time" />
     <MESSAGE value="BankingTask: More love, less shouting." />
     <MESSAGE value="FightArmorSetTask: polish" />
     <MESSAGE value="FightCyclopsTask: polish, equipping latest defender" />
@@ -564,7 +550,16 @@
     <MESSAGE value="NONONONO" />
     <MESSAGE value="add inventoryRequired to WatTask interface" />
     <MESSAGE value="don't run to entrance after getting dragon defender" />
-    <option name="LAST_COMMIT_MESSAGE" value="don't run to entrance after getting dragon defender" />
+    <MESSAGE value="add option for tasks to have &quot;tolerated&quot; items that will not be force banked." />
+    <MESSAGE value="remove useless stuff" />
+    <MESSAGE value="G.E logspam addressed" />
+    <MESSAGE value="DialogueUtils logspam addressed" />
+    <MESSAGE value="BankingTask: where to start.. lets just say its functioning well now." />
+    <MESSAGE value="Banking improvements" />
+    <MESSAGE value="Better calculation of low-priced items final price" />
+    <MESSAGE value="Grand Exchange collecting error fix" />
+    <MESSAGE value="A non easter, easter egg." />
+    <option name="LAST_COMMIT_MESSAGE" value="A non easter, easter egg." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
