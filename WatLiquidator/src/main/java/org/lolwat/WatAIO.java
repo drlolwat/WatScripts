@@ -722,9 +722,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             currentTask.execute(this);
 
-            if(!isBlockedTask()) {
-                GenericUtils.moveMouse();
-            }
+            //if(!isBlockedTask()) {
+            //    GenericUtils.moveMouse();
+            //}
 
             // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
             return currentTask != null ? (currentTask.loopTime() > 0 ? currentTask.loopTime() : 500) : 500;
@@ -885,7 +885,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if(skillSelected != null && skillSelected.equals(sk))
             g2d.setColor(Color.CYAN);
 
-        if(skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk))
+        if(skillTargets != null && skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk))
             g2d.setColor(Color.GREEN);
 
         g2d.drawString(msg, x, y);
