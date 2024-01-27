@@ -25,7 +25,6 @@ import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
 import java.util.ArrayList;
@@ -105,7 +104,7 @@ public class MagicInstructorTask implements WatTask {
         }
 
         if (PlayerSettings.getConfig(281) == 1000) {
-            instance.currentTask = new BankingTask(new HashMap<>(), null, 1, null);
+            instance.currentTask = null;
             WatAIO.RUNNING_TUT = false;
         }
     }
