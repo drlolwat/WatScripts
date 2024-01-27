@@ -280,7 +280,7 @@ public class BankingTask implements WatTask {
                 if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
                 else {
-                    amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
+                    amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
                 }
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
@@ -288,7 +288,7 @@ public class BankingTask implements WatTask {
                         Bank.depositAll(entry.getKey());
                         Sleep.sleep(100, 300);
                     } else {
-                        if(Inventory.count(entry.getKey()) > amountRequired) {
+                        if(entry.getValue() > 0 && Inventory.count(entry.getKey()) > amountRequired) {
                             Logger.log("Inventory: Depositing extras of: " + entry.getKey());
                             Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
                             Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
@@ -326,8 +326,12 @@ public class BankingTask implements WatTask {
                             Sleep.sleepUntil(() -> Inventory.contains(entry.getKey()), Calculations.random(5000, 10000));
                         }
                     }
-
                 } else {
+                    if(Inventory.contains(entry.getKey()) && (Inventory.count(entry.getKey()) >= amountRequired || Inventory.get(entry.getKey()).getAmount() >= amountRequired)) {
+                        Logger.log("Inventory: We have enough of " + entry.getKey() + " already");
+                        continue;
+                    }
+
                     int amountToBuy = (entry.getValue() > 0 ? entry.getValue() : -entry.getValue()) * inventoriesWorth;
                     for (String s : instance.SINGULAR_ITEMS) {
                         if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
