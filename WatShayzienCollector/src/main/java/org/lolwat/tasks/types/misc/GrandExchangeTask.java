@@ -86,6 +86,7 @@ public class GrandExchangeTask implements WatTask {
 
             if (!GrandExchange.isOpen()) {
                 GrandExchange.open();
+                Sleep.sleepUntil(GrandExchange::isOpen, Calculations.random(5000, 10000));
                 return;
             }
 
