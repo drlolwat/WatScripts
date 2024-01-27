@@ -89,8 +89,8 @@ public class TaskManager {
 
     private static List<WatTask> createRestrictedMMTasks() {
         List<WatTask> tasks = new ArrayList<>();
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -27); }}, false)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -27); }}, false)); //grand exchange south wall
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
 
         return tasks;
     }
@@ -637,7 +637,7 @@ public class TaskManager {
         tasks.add(new CookingFishTask(FishType.HERRING, 5, 15, 15, new HashMap<String, Integer>() {{
             put("Shrimp", -1);
             put("Raw shrimps", -1);
-            put("Herring", -200);
+            put("Herring", -Calculations.random(200, 400));
         }}));
 
         tasks.add(new CookingFishTask(FishType.TROUT, 15, 50, 15, new HashMap<String, Integer>() {
@@ -646,7 +646,7 @@ public class TaskManager {
                 put("Raw shrimps", -1);
                 put("Herring", -1);
                 put("Raw herring", -1);
-                put("Trout", -200);
+                put("Trout", -Calculations.random(200, 400));
             }
         }));
 
@@ -656,7 +656,7 @@ public class TaskManager {
                 put("Raw shrimps", -1);
                 put("Herring", -1);
                 put("Raw herring", -1);
-                put("Salmon", -200);
+                put("Salmon", -Calculations.random(200, 400));
             }
         }));
 
@@ -666,7 +666,7 @@ public class TaskManager {
                 put("Raw shrimps", -1);
                 put("Herring", -1);
                 put("Raw herring", -1);
-                put("Tuna", -200);
+                put("Tuna", -Calculations.random(200, 400));
             }
         }));
 
@@ -676,7 +676,7 @@ public class TaskManager {
                 put("Raw shrimps", -1);
                 put("Herring", -1);
                 put("Raw herring", -1);
-                put("Lobster", -250);
+                put("Lobster", -Calculations.random(200, 400));
             }
         }));
 
@@ -705,15 +705,15 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // wool, only uses lumbridge castle at the moment
-        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 8, new HashMap<String, Integer>() { { put("Ball of wool", -200); }}));
+        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 8, new HashMap<String, Integer>() { { put("Ball of wool", -Calculations.random(200, 400)); }}));
         // jewelry
-        tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -200); }}));
-        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -200); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 20, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -200); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -Calculations.random(200, 400)); }}));
+        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -Calculations.random(200, 400)); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 20, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -Calculations.random(200, 400)); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
         tasks.add(new JewelryTask(CraftingType.EMERALDRING, 27, 32, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald ring", -200); put("Sapphire ring", -1); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.EMERALDNECKLACE, 29, 40, new HashMap<String, Integer>() { { put("Emerald necklace", -200); put("Emerald ring", -1); put("Sapphire ring", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.RUBYNECKLACE, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby necklace", -200); put("Emerald necklace", -1); put("Gold necklace", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.DIAMONDNECKLACE, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond necklace", -200); put("Ruby necklace", -1); put("Emerald necklace", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.EMERALDNECKLACE, 29, 40, new HashMap<String, Integer>() { { put("Emerald necklace", -Calculations.random(200, 400)); put("Emerald ring", -1); put("Sapphire ring", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.RUBYNECKLACE, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby necklace", -Calculations.random(200, 400)); put("Emerald necklace", -1); put("Gold necklace", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.DIAMONDNECKLACE, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond necklace", -Calculations.random(200, 400)); put("Ruby necklace", -1); put("Emerald necklace", -1); }}));
 
         return tasks;
     }
@@ -722,11 +722,11 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // lumbridge
-        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 10, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -250); put("Raw anchovies", -250); }}));
-        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -250); put("Raw sardine", -250); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
+        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 10, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -Calculations.random(200, 400)); put("Raw anchovies", -Calculations.random(200, 400)); }}));
+        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -Calculations.random(200, 400)); put("Raw sardine", -Calculations.random(200, 400)); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
         // barbarian village
-        tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -250); }}));
-        tasks.add(new FishingTask(FishType.SALMON, 35, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -250); put("Raw trout", -250); }}));
+        tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -Calculations.random(200, 400)); }}));
+        tasks.add(new FishingTask(FishType.SALMON, 35, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -Calculations.random(200, 400)); put("Raw trout", -Calculations.random(200, 400)); }}));
 
         return tasks;
     }
@@ -735,21 +735,21 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // regular logs
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //grand exchange south wall
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -500); }}, false)); //lumbridge
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(200, 400)); }}, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(200, 400)); }}, false)); //grand exchange south wall
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(200, 400)); }}, false)); //lumbridge
 
         // oak logs
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //varrock west
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -500); put("Logs", -1); }}, false)); //lumbridge
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -Calculations.random(200, 400)); put("Logs", -1); }}, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -Calculations.random(200, 400)); put("Logs", -1); }}, false)); //varrock west
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -Calculations.random(200, 400)); put("Logs", -1); }}, false)); //lumbridge
 
         // willow logs
         tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 99, new HashMap<String, Integer>(){ { put("Willow logs", -2000); put("Oak logs", -1); put("Logs", -1); }}, false)); //lumbridge
 
         // yew logs
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //edge
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -500); }}, false)); //g.e
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -Calculations.random(200, 400)); }}, false)); //edge
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -Calculations.random(200, 400)); }}, false)); //g.e
 
         return tasks;
     }
@@ -856,23 +856,23 @@ public class TaskManager {
 
         // Varrock East Copper
         tasks.add(new MiningTask(1, 20, new Tile(3289, 3362), "Copper rocks",
-                        new HashMap<String, Integer>() {{ put("Copper ore", -1000); }}, instance));
+                        new HashMap<String, Integer>() {{ put("Copper ore", -Calculations.random(800, 1200)); }}, instance));
 
         // Varrock East Tin
         tasks.add(new MiningTask(1, 20, new Tile(3282, 3363), "Tin rocks",
-                new HashMap<String, Integer>() {{ put("Tin ore", -1000); }}, instance));
+                new HashMap<String, Integer>() {{ put("Tin ore", -Calculations.random(800, 1200)); }}, instance));
 
         // Varrock East Iron
         tasks.add(new MiningTask(15, 60, new Tile(3286, 3368), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -1000); }}, instance));
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, instance));
 
         // Mining Guild Iron
         tasks.add(new MiningTask(60, 70, new Tile(3033, 9738), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -1000); }}, instance));
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, instance));
 
         // Mining Guild Coal
         tasks.add(new MiningTask(70, 100, new Tile(3033, 9738), "Coal rocks",
-                new HashMap<String, Integer>() {{ put("Coal", -1000); }}, instance));
+                new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}, instance));
 
         return tasks;
     }
