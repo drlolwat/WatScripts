@@ -372,7 +372,7 @@ public class BankingTask implements WatTask {
             }
 
             if ((Bank.contains("Coins") && Bank.count("Coins") >= toWithdraw)) {
-                Bank.withdraw("Coins", toWithdraw);
+                Bank.withdraw("Coins", Bank.count("Coins"));
                 Sleep.sleep(100, 200);
                 Bank.close();
 

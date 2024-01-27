@@ -7,10 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Disable easter egg by default">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="G.E stuff, misc">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,7 +143,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="62199000" />
+      <workItem from="1706079551295" duration="67327000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -488,7 +488,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="289" />
+    <option name="localTasksCounter" value="290" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="FightCyclopsTask: polish, equipping latest defender" />
     <MESSAGE value="Disabled paint clickable buttons for the time being." />
     <MESSAGE value="Add missing json keys if missing from cfg (no more regens...)" />
     <MESSAGE value="Save json after modification :joy:" />
@@ -560,7 +559,8 @@
     <MESSAGE value="A non easter, easter egg." />
     <MESSAGE value="Update TraversalTask" />
     <MESSAGE value="Disable easter egg by default" />
-    <option name="LAST_COMMIT_MESSAGE" value="Disable easter egg by default" />
+    <MESSAGE value="G.E stuff, misc" />
+    <option name="LAST_COMMIT_MESSAGE" value="G.E stuff, misc" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
