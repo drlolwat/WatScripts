@@ -20,7 +20,6 @@ import static org.dreambot.api.utilities.Sleep.*;
 public class DialogueUtils {
     public static void continueWhilePossible() {
         while (Dialogues.canContinue() && Dialogues.inDialogue()) {
-            Logger.log("continuing while possible");
             Dialogues.continueDialogue();
             sleepWhile(Dialogues::isProcessing, Dialogues::canContinue, Calculations.random(100, 300), 1000);
             Sleep.sleep(500, 700);
