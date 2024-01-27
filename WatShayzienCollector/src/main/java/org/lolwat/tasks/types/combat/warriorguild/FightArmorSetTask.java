@@ -84,7 +84,7 @@ public class FightArmorSetTask implements WatTask {
                     NPC armorSet = NPCs.closest("Animated Black Armour");
                     GroundItem i = GroundItems.closest(x -> x.getName().contains("Black"));
                     if(f.getKey().contains("Black")) {
-                        if (Players.getLocal().isInCombat() || armorSet != null || i != null) {
+                        if (Players.getLocal().isInCombat() || armorSet != null || i != null || Players.getLocal().isHealthBarVisible()) {
                             continue;
                         }
                     }
@@ -241,5 +241,10 @@ public class FightArmorSetTask implements WatTask {
         }
 
         return gear;
+    }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
     }
 }

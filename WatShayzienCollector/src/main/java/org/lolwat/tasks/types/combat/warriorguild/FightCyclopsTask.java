@@ -284,4 +284,9 @@ public class FightCyclopsTask implements WatTask {
 
         return gear;
     }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
+    }
 }
