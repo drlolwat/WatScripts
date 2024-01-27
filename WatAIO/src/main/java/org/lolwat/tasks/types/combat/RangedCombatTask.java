@@ -190,4 +190,9 @@ public class RangedCombatTask implements WatTask {
         requiredItems.put(RangedUtils.bestArrow(), -1000);
         return requiredItems;
     }
+
+    @Override
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<>();
+    }
 }
