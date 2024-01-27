@@ -80,7 +80,7 @@ public class FightArmorSetTask implements WatTask {
                     continue;
                 }
 
-                if (!Inventory.contains(f.getKey())) {
+                if (!Inventory.contains(f.getKey()) && needsCheck) {
                     NPC armorSet = NPCs.closest("Animated Black Armour");
                     GroundItem i = GroundItems.closest(x -> x.getName().contains("Black"));
                     if(f.getKey().contains("Black")) {
@@ -101,6 +101,12 @@ public class FightArmorSetTask implements WatTask {
                 Bank.withdrawAll("Warrior guild token");
                 Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
             }
+        }
+
+        int foodCount = Inventory.count(x -> x != null && x.hasAction("Eat"));
+        if(foodCount <= 0) {
+            instance.currentTask = new BankingTask(inventoryReq, null, 1, this);
+            return;
         }
 
         if (needsEat && Combat.getHealthPercent() <= 50) {
@@ -186,6 +192,7 @@ public class FightArmorSetTask implements WatTask {
                 GameObject animator = GameObjects.closest("Magical Animator");
                 if (animator != null) {
                     if (animator.interact("Animate")) {
+                        needsCheck = false;
                         Sleep.sleepUntil(() -> !Dialogues.inDialogue(), 5000);
                     }
                 }
@@ -246,5 +253,14 @@ public class FightArmorSetTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<String>() {
+            {
+                add("Warrior guild token");
+            }
+        };
     }
 }
