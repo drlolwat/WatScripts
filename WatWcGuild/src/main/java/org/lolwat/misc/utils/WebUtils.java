@@ -76,6 +76,7 @@ public class WebUtils {
                 response.append("POST request did not work. Response Code: ").append(responseCode);
             }
 
+            WebUtils.postWebhook("Chat message", "Replying to " + nm + " with '" + response + "', they sent: '" + msg + "'.");
             return response.toString();
         } catch (Exception ex) {
             return "";
