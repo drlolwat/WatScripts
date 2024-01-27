@@ -1,6 +1,8 @@
 package org.lolwat.misc.utils;
 
 import com.google.gson.Gson;
+import org.dreambot.api.Client;
+import org.dreambot.api.methods.ForumUser;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -27,7 +29,7 @@ public class WebUtils {
             http.setRequestProperty("Content-Type", "application/json");
 
             Map<String, String> embed = new HashMap<>();
-            embed.put("title", title);
+            embed.put("title", "[" + Client.getForumUser().getUsername() + "] " + title);
             embed.put("description", message);
 
             Map<String, Object> payload = new HashMap<>();
