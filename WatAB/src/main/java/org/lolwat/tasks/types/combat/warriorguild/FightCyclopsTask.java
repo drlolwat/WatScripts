@@ -23,6 +23,7 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.WatTask;
@@ -59,10 +60,10 @@ public class FightCyclopsTask implements WatTask {
             new Tile(2916, 9973, 0));
 
     private final Area lobbyArea = new Area(2842, 3541, 2845, 3538, 2);
-
     private boolean needsCheck = true;
     private final boolean basement;
     private String latestDefender;
+    private boolean talkedToLaurelai = false;
 
     public FightCyclopsTask(Skill skillType, HashMap<String, Integer> inventory, String latest) {
         trainingSkill = skillType;
@@ -116,6 +117,13 @@ public class FightCyclopsTask implements WatTask {
         else
             lookingForDefender = "Bronze defender";
 
+        if(Bank.isOpen()) {
+            if(!Inventory.contains("Warrior guild token")) {
+                Bank.withdrawAll("Warrior guild token");
+                Sleep.sleepUntil(() -> Inventory.contains("Warrior guild token"), 10000);
+            }
+        }
+
         if(!Inventory.contains("Warrior guild token")) {
             Logger.log("We need tokens so we'll fight for 'em.");
             instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
@@ -146,6 +154,34 @@ public class FightCyclopsTask implements WatTask {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i != null && i.interact()) {
                 Sleep.sleep(60, 120);
+            }
+        }
+
+        if(fightingArea.equals(dragonFightingArea)) {
+            if(!talkedToLaurelai) {
+                Area a = new Tile(2909, 9971, 0).getArea(3);
+                if(!a.contains(Players.getLocal())) {
+                    instance.currentTask = new TraversalTask(a, this);
+                    return;
+                }
+
+                NPC n = NPCs.closest("Lorelai");
+                if(n != null && n.interact("Talk-to")) {
+                    Sleep.sleepUntil(Dialogues::inDialogue, 10000);
+                    while(Dialogues.inDialogue()) {
+                        DialogueUtils.continueWhilePossible();
+                        DialogueUtils.solve(new ArrayList<String>() {
+                            {
+                                add("Can I fight them?");
+                                add("I have a Rune defender here!");
+                            }
+                        });
+                    }
+
+                    talkedToLaurelai = true;
+                }
+
+                return;
             }
         }
 
@@ -288,5 +324,14 @@ public class FightCyclopsTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<String>() {
+            {
+                add("Warrior guild token");
+            }
+        };
     }
 }
