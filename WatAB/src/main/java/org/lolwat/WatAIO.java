@@ -65,6 +65,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     public WatTask currentTask;
     public boolean fatalError = false;
+    private boolean waitingForResponse = false;
     private HashMap<Skill, Integer> skillTargets;
     private HashMap<String, Integer> levelUps;
     public double CHECKED_HOURS_AT = 0;
@@ -223,6 +224,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private Map<Skill, Rectangle> invisibleButtons;
     private static int QUEST_MIN_TTL = 150;
     private static int BOND_MIN_TTL = 500;
+    private static boolean ENABLE_GPT = false;
 
     @Override
     public void onStart(String... params) {
@@ -899,8 +901,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public void onMessage(Message m) {
         if (currentTask != null) {
-            if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
-                Keyboard.type(WebUtils.getRealResponse(m.getUsername(), m.getMessage(), currentTask.getName()), true);
+            if(!waitingForResponse && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+                if(ENABLE_GPT) {
+                    if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
+                        waitingForResponse = true;
+                        new Thread(() -> {
+                            String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), currentTask.getName());
+                            Keyboard.type(response, true);
+                            waitingForResponse = false;
+                        }).start();
+                    }
+                }
             }
 
             boolean tenOrThirty = Calculations.random(1, 3) == 1;
