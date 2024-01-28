@@ -18,6 +18,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
+import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
 
@@ -175,5 +176,10 @@ public class HighAlchemyTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<String>() { { add("Gold necklace"); } };
     }
 }
