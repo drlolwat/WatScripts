@@ -227,6 +227,8 @@ public class GrandExchangeTask implements WatTask {
                         if (GrandExchange.addBuyItem(itemFinal)) {
                             Sleep.sleep(600, 1200);
                             int itemCost = NumUtils.getItemPrice(itemFinal);
+                            if(Inventory.count("Coins") < itemCost)
+                                itemCost = Inventory.count("Coins");
 
                             if(GrandExchange.setPrice(itemCost)) {
                                 Sleep.sleep(100, 200);
