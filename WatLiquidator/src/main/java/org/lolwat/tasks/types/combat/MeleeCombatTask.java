@@ -42,21 +42,24 @@ public class MeleeCombatTask implements WatTask {
     private String name;
     private boolean needsEat;
     private HashMap<String, Integer> food;
+    private final List<String> pickups;
 
-    public MeleeCombatTask(Skill skillType, int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {
+    public MeleeCombatTask(Skill skillType, int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake, List<String> itemsToPickup) {
         trainingSkill = skillType;
         minLevel = minimumLevel;
         zone = killingArea;
         name = monsterName;
         maxLevel = maximumLevel;
 
-        if(foodToTake != null && foodToTake.size() > 0) {
+        if(foodToTake != null && !foodToTake.isEmpty()) {
             needsEat = true;
             food = foodToTake;
         } else {
             needsEat = false;
             food = new HashMap<>();
         }
+
+        pickups = itemsToPickup;
     }
 
     @Override
@@ -113,6 +116,16 @@ public class MeleeCombatTask implements WatTask {
             }
         }
 
+        if(Inventory.isFull()) {
+            for(Item i : Inventory.all()) {
+                if(pickups.contains(i.getName())) {
+                    Logger.log("Inventory is full, including pickups, returning to the bank.");
+                    instance.currentTask = new BankingTask(food, null, 1, this);
+                    return;
+                }
+            }
+        }
+
         if (needsEat && Combat.getHealthPercent() <= 50) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i != null && i.interact()) {
@@ -157,6 +170,10 @@ public class MeleeCombatTask implements WatTask {
         }
 
         if (!Players.getLocal().isInCombat()) {
+            if(!pickups.isEmpty()) {
+                GenericUtils.handlePickup(pickups);
+            }
+
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
                 GenericUtils.moveMouseInOrOut();
