@@ -380,6 +380,14 @@ public class BankingTask implements WatTask {
             }
 
             if ((Bank.contains("Coins") && Bank.count("Coins") >= toWithdraw)) {
+                Item i = Bank.get("Coins");
+                if(i != null) {
+                    if(Bank.needToScroll(i)) {
+                        Bank.scroll("Coins");
+                        Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
+                    }
+                }
+
                 Bank.withdraw("Coins", Bank.count("Coins"));
                 Sleep.sleep(100, 200);
                 Bank.close();
