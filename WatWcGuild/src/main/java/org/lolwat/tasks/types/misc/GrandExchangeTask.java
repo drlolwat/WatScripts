@@ -16,6 +16,7 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
+import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
@@ -28,7 +29,7 @@ public class GrandExchangeTask implements WatTask {
     private final HashMap<String, Integer> itemList;
     private final WatTask postTask;
     private final boolean isSelling;
-    private final int retries = 0;
+    private int retries = 0;
 
     public GrandExchangeTask(String taskName, boolean selling, HashMap<String, Integer> items, WatTask post) {
         name = taskName;
@@ -171,19 +172,19 @@ public class GrandExchangeTask implements WatTask {
 
                         if(!GrandExchange.confirm()) {
                             Logger.log("error confirming g.e offer");
-                            return;
+                            continue;
                         }
 
                         Sleep.sleepUntil(GrandExchange::isReadyToCollect, Calculations.random(800, 1800));
 
                         if(!GrandExchange.isReadyToCollect()) {
                             Logger.log("item did not sell instantly");
-                            return;
+                            continue;
                         }
 
                         if(!GrandExchange.collect()) {
                             Logger.log("error collecting items from g.e");
-                            return;
+                            continue;
                         }
 
                         Sleep.sleep(100, 500);
@@ -208,6 +209,12 @@ public class GrandExchangeTask implements WatTask {
                     Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
                     while(item.getValue() != 0) {
+                        if(retries >= 5) {
+                            retries = 0;
+                            Logger.log("Something went wrong with the G.E loop, breaking it.");
+                            break;
+                        }
+
                         if(!GrandExchange.isBuyOpen()) {
                             Sleep.sleep(1000, 2000);
 
@@ -227,8 +234,13 @@ public class GrandExchangeTask implements WatTask {
                         if (GrandExchange.addBuyItem(itemFinal)) {
                             Sleep.sleep(600, 1200);
                             int itemCost = NumUtils.getItemPrice(itemFinal);
-                            if(Inventory.count("Coins") < itemCost)
-                                itemCost = Inventory.count("Coins");
+
+                            Item coins = Inventory.get("Coins");
+                            if(coins != null) {
+                                if (coins.getAmount() < itemCost) {
+                                    itemCost = coins.getAmount();
+                                }
+                            }
 
                             if(GrandExchange.setPrice(itemCost)) {
                                 Sleep.sleep(100, 200);
@@ -265,6 +277,8 @@ public class GrandExchangeTask implements WatTask {
                                 if(GrandExchange.cancelOffer(slot)) {
                                     Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
                                     if(!GrandExchange.collect()) {
+                                        retries++;
+                                        item.setValue(0);
                                         Logger.error("Error collecting cancelled item from G.E");
                                     } else {
                                         Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
