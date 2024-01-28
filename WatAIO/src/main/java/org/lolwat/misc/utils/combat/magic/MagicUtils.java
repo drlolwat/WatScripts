@@ -126,7 +126,8 @@ public class MagicUtils {
         else if(magicLevel >= 5) {
             return Normal.WATER_STRIKE;
         }
-
-        return Normal.WIND_STRIKE;
+        else {
+            return Normal.WIND_STRIKE;
+        }
     }
 }
