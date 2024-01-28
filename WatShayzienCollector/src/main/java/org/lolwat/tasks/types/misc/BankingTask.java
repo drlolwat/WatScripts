@@ -627,10 +627,11 @@ public class BankingTask implements WatTask {
                     continue;
                 }
 
-                if(!inventoryRequired.containsKey(i.getName())) {
+                if(inventoryRequired != null && !inventoryRequired.containsKey(i.getName())) {
                     Logger.log("Banking: Depositing " + i.getName() + ", not required.");
                     Bank.depositAll(i.getName());
                     Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                    continue;
                 }
 
                 if(i.isNoted()) {
