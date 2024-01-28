@@ -624,17 +624,15 @@ public class BankingTask implements WatTask {
                 }
             }
         } else {
-            if(Inventory.isFull()) {
-                for(Item i : Inventory.all()) {
-                    if(postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
-                        Logger.log("Banking: Inventory tolerates item: " + i.getName());
-                        continue;
-                    }
-
-                    Logger.log("Banking: Depositing " + i.getName() + ", not required and full.");
-                    Bank.depositAll(i.getName());
-                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 5000);
+            for (Item i : Inventory.all()) {
+                if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
+                    Logger.log("Banking: Inventory tolerates item: " + i.getName());
+                    continue;
                 }
+
+                Logger.log("Banking: Depositing " + i.getName() + ", not required.");
+                Bank.depositAll(i.getName());
+                Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 5000);
             }
         }
     }
