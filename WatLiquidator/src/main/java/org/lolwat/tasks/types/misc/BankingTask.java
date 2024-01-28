@@ -502,7 +502,8 @@ public class BankingTask implements WatTask {
             depositNonRequired();
         }
 
-        if(postTask != null) {
+        // did we really need to double check here?
+        /*if(postTask != null) {
             for (String s : postTask.clothesRequired().keySet()) {
                 if(!Equipment.contains(s)) {
                     if (Bank.contains(s)) {
@@ -525,7 +526,7 @@ public class BankingTask implements WatTask {
                 Bank.withdraw(itemName, requiredQuantity);
                 Sleep.sleepUntil(() -> Inventory.contains(itemName) && Inventory.count(itemName) == requiredQuantity, 1500);
             }
-        }
+        }*/
 
         // calculate net worth
         if(instance.NET_WORTH_GENERATED == 0) {
@@ -606,7 +607,7 @@ public class BankingTask implements WatTask {
                     continue;
 
                 if(postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
-                    Logger.log("Inventory tolerates item: " + i.getName());
+                    Logger.log("Banking: Inventory tolerates item: " + i.getName());
                     continue;
                 }
 
@@ -614,6 +615,25 @@ public class BankingTask implements WatTask {
                     Logger.log("Banking: Depositing " + i.getName() + ", not required.");
                     Bank.depositAll(i.getName());
                     Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                }
+
+                if(i.isNoted()) {
+                    Logger.log("Banking: Depositing " + i.getName() + ", noted.");
+                    Bank.depositAll(i.getName());
+                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                }
+            }
+        } else {
+            if(Inventory.isFull()) {
+                for(Item i : Inventory.all()) {
+                    if(postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
+                        Logger.log("Banking: Inventory tolerates item: " + i.getName());
+                        continue;
+                    }
+
+                    Logger.log("Banking: Depositing " + i.getName() + ", not required and full.");
+                    Bank.depositAll(i.getName());
+                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 5000);
                 }
             }
         }
