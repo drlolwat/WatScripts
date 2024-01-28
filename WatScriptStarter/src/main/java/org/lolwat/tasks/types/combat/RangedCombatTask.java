@@ -195,4 +195,13 @@ public class RangedCombatTask implements WatTask {
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
     }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        List<String> ret = new ArrayList<String>() { { add(RangedUtils.bestArrow()); } };
+        for (Map.Entry<String, Integer> f : clothesRequired().entrySet()) {
+            ret.add(f.getKey());
+        }
+        return ret;
+    }
 }
