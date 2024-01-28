@@ -21,6 +21,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.mining.MiningUtils;
+import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.HopperTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
@@ -223,5 +224,10 @@ public class MiningTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<String>() { { add(MiningUtils.getBestPickaxeForLevel()); } };
     }
 }
