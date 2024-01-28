@@ -642,6 +642,8 @@ public class BankingTask implements WatTask {
             }
         } else {
             for (Item i : Inventory.all()) {
+                if(i == null) continue;
+
                 if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
                     Logger.log("Banking: Inventory tolerates item: " + i.getName());
                     continue;
