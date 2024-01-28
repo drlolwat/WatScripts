@@ -27,7 +27,9 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class WoodcuttingTask implements WatTask {
     private final HashMap<Skill, Integer> levelRequirements = new HashMap<>();
@@ -42,16 +44,6 @@ public class WoodcuttingTask implements WatTask {
     public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
         treeType = type;
         area = startingLocation.getArea(15);
-        avoidAfterLevel = maxLevel;
-        minimumLevel = minLevel;
-        sellList = sellingList;
-        lastGotLog = 0;
-        dropping = drop;
-    }
-
-    public WoodcuttingTask(TreeType type, Area startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
-        treeType = type;
-        area = startingLocation;
         avoidAfterLevel = maxLevel;
         minimumLevel = minLevel;
         sellList = sellingList;
@@ -173,5 +165,10 @@ public class WoodcuttingTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<String>() { { add(WoodcuttingUtils.getBestHatchetForLevel()); } };
     }
 }
