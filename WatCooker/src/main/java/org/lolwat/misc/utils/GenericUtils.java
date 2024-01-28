@@ -6,6 +6,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
@@ -14,6 +15,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.tasks.types.misc.HopperTask;
@@ -67,6 +69,20 @@ public class GenericUtils {
             //everything else is handled by combat utils
         }
     };
+
+    public static void handlePickup(List<String> items) {
+        for(GroundItem i : GroundItems.all()) {
+            if(i == null || i.getTile() == null || i.getName() == null)
+                continue;
+
+            if(items.contains(i.getName())) {
+                if(i.interact("Take")) {
+                    Logger.log("GenericUtils: Picked up item: " + i.getName());
+                    Sleep.sleepUntil(() -> !i.exists(), 5000);
+                }
+            }
+        }
+    }
 
     public static boolean tooManyPlayers(int distance, int count) {
         int pl = 0;
