@@ -457,7 +457,7 @@ public class TaskManager {
                     new Tile(3172, 3302, 0),
                     new Tile(3170, 3300, 0),
                     new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
-            }));
+            }, new ArrayList<>()));
 
             // lumbridge chickens east
             tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
@@ -466,7 +466,7 @@ public class TaskManager {
                     new Tile(3236, 3287, 0),
                     new Tile(3236, 3300, 0),
                     new Tile(3226, 3301, 0),
-                    new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }));
+                    new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, new ArrayList<>()));
 
             // lumbridge cows north
             tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
@@ -489,7 +489,7 @@ public class TaskManager {
                 {
                     put("Trout", 12);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // lumbridge cows north 2
             tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
@@ -507,7 +507,7 @@ public class TaskManager {
                 {
                     put("Trout", 12);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // lumbridge east cows
             tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
@@ -520,7 +520,7 @@ public class TaskManager {
                 {
                     put("Trout", 12);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // falador cows
             tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
@@ -536,21 +536,21 @@ public class TaskManager {
                 {
                     put("Trout", 12);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // al kharid warriors east
             tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
                     put("Trout", 20);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // al kharid warrior west
             tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
                     put("Trout", 20);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // varrock guards, palace upstairs north
             tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
@@ -563,7 +563,7 @@ public class TaskManager {
                 {
                     put("Trout", 20);
                 }
-            }));
+            }, new ArrayList<>()));
 
             // varrock guards, palace courtyard
             tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
@@ -576,7 +576,7 @@ public class TaskManager {
                     new Tile(3217, 3471, 0),
                     new Tile(3207, 3471, 0)), "Guard", new HashMap<String, Integer>() {{
                 put("Trout", 20);
-            }}));
+            }}, new ArrayList<>()));
 
             // hill giants (plateau)
             tasks.add(new MeleeCombatTask(sk, 40, 70, new Area(
@@ -588,7 +588,7 @@ public class TaskManager {
                     new Tile(3384, 3158, 0),
                     new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
                 put("Trout", 20);
-            }}));
+            }}, new ArrayList<String>() { { add("Giant key"); }}));
 
             tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
                     new Tile(3165, 9882, 0),
@@ -602,7 +602,7 @@ public class TaskManager {
                     new Tile(3173, 9886, 0),
                     new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
                 put("Lobster", 20);
-            }}));
+            }}, new ArrayList<String>() { { add("Mossy key"); }}));
 
             tasks.add(new MeleeCombatTask(sk,50, 126, new Area(
                     new Tile(3154, 9908, 0),
@@ -621,7 +621,7 @@ public class TaskManager {
                     new Tile(3159, 9898, 0),
                     new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
                 put("Lobster", 20);
-            }}));
+            }}, new ArrayList<String>() { { add("Mossy key"); }}));
         }
 
         return tasks;
