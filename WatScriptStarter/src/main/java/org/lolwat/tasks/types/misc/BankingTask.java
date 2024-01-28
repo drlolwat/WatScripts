@@ -318,6 +318,14 @@ public class BankingTask implements WatTask {
                         checkAndSet(BankMode.NOTE);
                     }
 
+                    Item i = Bank.get(entry.getKey());
+                    if(i != null) {
+                        if(Bank.needToScroll(i)) {
+                            Bank.scroll(entry.getKey());
+                            Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
+                        }
+                    }
+
                     if (buyingRequired.isEmpty()) {
                         if(!Bank.withdraw(entry.getKey(), toWithdraw)) {
                             Logger.error("Inventory: Issue withdrawing " + entry.getKey());
