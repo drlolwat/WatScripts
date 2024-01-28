@@ -7,9 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Revert banking after tut, addressed underlying issue">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="G.E task, offer cash stack if price greaterThan stack">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/ScavengingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +85,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "reference.settings.project.statistic.project.settings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -141,7 +143,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="70336000" />
+      <workItem from="1706079551295" duration="85522000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -486,7 +488,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="293" />
+    <option name="localTasksCounter" value="309" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,22 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Polish, shine." />
-    <MESSAGE value="FightArmorSetTask: equip newest defender incase FightCyclopsTask doesn't" />
-    <MESSAGE value="Patch bank derp" />
-    <MESSAGE value="Don't know what the fuck changed but here it is working" />
-    <MESSAGE value="Banking stuff" />
-    <MESSAGE value="Cleanup" />
-    <MESSAGE value="Restore original depositNonRequired method" />
-    <MESSAGE value="NONONONO" />
-    <MESSAGE value="add inventoryRequired to WatTask interface" />
-    <MESSAGE value="don't run to entrance after getting dragon defender" />
-    <MESSAGE value="add option for tasks to have &quot;tolerated&quot; items that will not be force banked." />
-    <MESSAGE value="remove useless stuff" />
-    <MESSAGE value="G.E logspam addressed" />
-    <MESSAGE value="DialogueUtils logspam addressed" />
-    <MESSAGE value="BankingTask: where to start.. lets just say its functioning well now." />
-    <MESSAGE value="Banking improvements" />
     <MESSAGE value="Better calculation of low-priced items final price" />
     <MESSAGE value="Grand Exchange collecting error fix" />
     <MESSAGE value="A non easter, easter egg." />
@@ -558,7 +544,23 @@
     <MESSAGE value="Version 0.9, prep for 1.0 release" />
     <MESSAGE value="Use bank immediately after tutorial island" />
     <MESSAGE value="Revert banking after tut, addressed underlying issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revert banking after tut, addressed underlying issue" />
+    <MESSAGE value="Randomized selling points" />
+    <MESSAGE value="Add unequipped hatchet to tolerated items." />
+    <MESSAGE value="Add unequipped pickaxe to tolerated items." />
+    <MESSAGE value="Add noted high alchemy items to inventory tolerated" />
+    <MESSAGE value="Fix for not depositing if a postTask had no inventoryRequired" />
+    <MESSAGE value="QOL for item toleration" />
+    <MESSAGE value="Bank QOL: Always scroll using mousewheel" />
+    <MESSAGE value="Bank QOL: Exchanger wasn't scrolling" />
+    <MESSAGE value="More Banking stuff" />
+    <MESSAGE value="NullRef fix" />
+    <MESSAGE value="only raise price if collecting item is successful..." />
+    <MESSAGE value="GenericUtils: add pickup support with given List&lt;String&gt;" />
+    <MESSAGE value="MeleeCombatTask: pickup support with banking" />
+    <MESSAGE value="TaskManager: add Giant key, Mossy keys to pickup in Giant tasks" />
+    <MESSAGE value="RangedCombatTask: add bows to tolerated" />
+    <MESSAGE value="G.E task, offer cash stack if price greaterThan stack" />
+    <option name="LAST_COMMIT_MESSAGE" value="G.E task, offer cash stack if price greaterThan stack" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
