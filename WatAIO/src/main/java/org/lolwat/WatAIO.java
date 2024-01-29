@@ -20,6 +20,7 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -511,7 +512,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             currentTask = new BondingTask(null);
             skillSelectedAt = Instant.now().getEpochSecond();
             skillRunTime = Calculations.random(1200, 6750); // in seconds
-            Logger.log("We are making our account a member.");
+            Logger.log("We are making our account a member");
+            return;
+        }
+
+        if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+            currentTask = new HopperTask(0, (currentTask != null) ? currentTask : null);
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(1200, 6750); // in seconds
+            Logger.log("We are hopping into a P2P world");
             return;
         }
 
