@@ -14,6 +14,7 @@ import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.tasks.types.firemaking.FiremakingTask;
 import org.lolwat.tasks.types.magic.HighAlchemyTask;
+import org.lolwat.tasks.types.misc.ScavengingTask;
 import org.lolwat.tasks.types.prayer.BuryBonesTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
@@ -91,6 +92,7 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
+        tasks.add(new ScavengingTask());
 
         return tasks;
     }
