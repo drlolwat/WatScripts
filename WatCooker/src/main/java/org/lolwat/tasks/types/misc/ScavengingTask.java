@@ -1,6 +1,7 @@
 package org.lolwat.tasks.types.misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
@@ -13,6 +14,7 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -29,6 +31,8 @@ public class ScavengingTask implements WatTask {
             new Tile(3154, 3503, 0));
 
     private final List<String> avoidItems;
+    private List<String> itemsTaken;
+    private int maxScavenge = 50000;
 
     @Override
     public String getName() {
@@ -42,6 +46,8 @@ public class ScavengingTask implements WatTask {
                 add("bones");
             }
         };
+
+        itemsTaken = new ArrayList<>();
     }
 
     @Override
@@ -51,8 +57,22 @@ public class ScavengingTask implements WatTask {
             return;
         }
 
-        if(Inventory.isFull()) {
-            instance.currentTask = new BankingTask(new HashMap<>(), new HashMap<>(), 1, this);
+        HashMap<String, Integer> sellList = new HashMap<>();
+        int worth = 0;
+
+        for(Item i : Inventory.all()) {
+            if(i == null) {
+                continue;
+            }
+
+            if(itemsTaken.contains(i.getName())) {
+                worth += LivePrices.get(i);
+                sellList.put(i.getName(), Inventory.count(i.getName()));
+            }
+        }
+
+        if(Inventory.isFull() || worth > maxScavenge) {
+            instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, (worth > maxScavenge) ? null : this);
             return;
         }
 
@@ -63,6 +83,7 @@ public class ScavengingTask implements WatTask {
 
             if(item.interact("Take")) {
                 Sleep.sleepUntil(() -> !item.exists(), 5000);
+                itemsTaken.add(item.getName());
             }
         }
     }
