@@ -144,7 +144,7 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
             return "Mithril scimitar";
         }
         else if(attackLevel >= 10) {
-            return "Steel scimitar";
+            return "Iron scimitar";
         }
         else {
             return "Iron scimitar";
