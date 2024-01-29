@@ -68,10 +68,13 @@ public class ScavengingTask implements WatTask {
             if(itemsTaken.contains(i.getName())) {
                 worth += LivePrices.get(i);
                 sellList.put(i.getName(), Inventory.count(i.getName()));
+            } else {
+                sellList.remove(i.getName());
             }
         }
 
         if(Inventory.isFull() || worth > maxScavenge) {
+            itemsTaken.clear();
             instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, (worth > maxScavenge) ? null : this);
             return;
         }
