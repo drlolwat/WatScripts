@@ -504,6 +504,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
+        if(WatConfig.getToolFailures() >= 3) {
+            Logger.log("FallbackUtil: Resetting tool failures");
+            WatConfig.resetToolFailures();
+        }
+
         if (PlayerSettings.getConfig(281) != 1000) {
             currentTask = new SelectUsernameTask();
             skillSelectedAt = Instant.now().getEpochSecond();
@@ -680,10 +685,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             firstStart = false;
         }
 
-        Logger.log("tool failures: " + WatConfig.getToolFailures());
-        if(WatConfig.getToolFailures() > 3) {
-            Logger.log("falling back on tool..");
-        }
+        //Logger.log("tool failures: " + WatConfig.getToolFailures());
+        //if(WatConfig.getToolFailures() > 3) {
+        //    Logger.log("falling back on tool..");
+        //}
 
         if (currentTask != null) {
             if (!(currentTask instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {
