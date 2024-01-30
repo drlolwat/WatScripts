@@ -153,7 +153,9 @@ public class GenericUtils {
         HashMap<String, Integer> ret = new HashMap<>();
         if(Skills.getTotalLevel() >= 75) {
             ret.put("Leather boots", 1);
-            ret.put(WatAIO.CAPE_TYPE, 1);
+            if(WatAIO.WEAR_CAPES) {
+                ret.put(WatAIO.CAPE_TYPE, 1);
+            }
         }
         return ret;
     }
