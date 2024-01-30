@@ -24,7 +24,9 @@ public class MagicUtils {
         ret.put(EquipmentSlot.AMULET, "Amulet of magic");
         ret.put(EquipmentSlot.FEET, "Leather boots");
         ret.put(EquipmentSlot.HANDS, "Leather gloves");
-        ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        if(WatAIO.WEAR_CAPES) {
+            ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        }
         return ret;
     }
 
