@@ -504,11 +504,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        Logger.log("tool failures: " + WatConfig.getToolFailures());
-        if(WatConfig.getToolFailures() > 3) {
-            Logger.log("falling back on tool..");
-        }
-
         if (PlayerSettings.getConfig(281) != 1000) {
             currentTask = new SelectUsernameTask();
             skillSelectedAt = Instant.now().getEpochSecond();
@@ -683,6 +678,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if (firstStart) {
             Sleep.sleep(5000);
             firstStart = false;
+        }
+
+        Logger.log("tool failures: " + WatConfig.getToolFailures());
+        if(WatConfig.getToolFailures() > 3) {
+            Logger.log("falling back on tool..");
         }
 
         if (currentTask != null) {
