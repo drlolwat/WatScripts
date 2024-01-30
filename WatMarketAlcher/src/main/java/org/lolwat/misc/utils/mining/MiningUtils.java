@@ -2,6 +2,7 @@ package org.lolwat.misc.utils.mining;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.types.mixed.OreType;
 
 import java.util.HashMap;
@@ -43,6 +44,10 @@ public class MiningUtils {
 
     public static String getBestPickaxeForLevel() {
         int level = Skills.getRealLevel(Skill.MINING);
+
+        if(WatConfig.getToolFailures() >= 3) {
+            return pickaxeTypes.get(1);
+        }
 
         if(level >= 41) {
             return pickaxeTypes.get(41);
