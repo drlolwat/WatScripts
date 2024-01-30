@@ -506,19 +506,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        //TODO a method for this
-        if(WatConfig.getToolFailures() >= 3) {
-            if(!(currentTask instanceof GrandExchangeTask) &&
-                    !(currentTask instanceof TraversalTask) &&
-                    !(currentTask instanceof BankingTask) &&
-                    !(currentTask instanceof MiningTask) &&
-                    !(currentTask instanceof WoodcuttingTask)) {
-
-                Logger.log("Resetting tool failures, no longer on task");
-                WatConfig.resetToolFailures();
-            }
-        }
-
         if (PlayerSettings.getConfig(281) != 1000) {
             currentTask = new SelectUsernameTask();
             skillSelectedAt = Instant.now().getEpochSecond();
@@ -693,6 +680,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if (firstStart) {
             Sleep.sleep(5000);
             firstStart = false;
+        }
+
+        //TODO a method for this
+        if(WatConfig.getToolFailures() >= 3 && currentTask != null) {
+            if(!(currentTask instanceof GrandExchangeTask) &&
+                    !(currentTask instanceof TraversalTask) &&
+                    !(currentTask instanceof BankingTask) &&
+                    !(currentTask instanceof MiningTask) &&
+                    !(currentTask instanceof WoodcuttingTask)) {
+
+                Logger.log(currentTask.getName() + ": Resetting tool failures, no longer on task");
+                WatConfig.resetToolFailures();
+            }
         }
 
         //Logger.log("tool failures: " + WatConfig.getToolFailures());
