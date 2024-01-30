@@ -42,7 +42,9 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
         ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
         ret.put(EquipmentSlot.FEET, defensiveItemByType(DefensiveItemType.FEET, false));
         ret.put(EquipmentSlot.HANDS, "Leather gloves"); //TODO handler for Combat bracelet....
-        ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        if(WatAIO.WEAR_CAPES) {
+            ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        }
 
         return ret;
     }
