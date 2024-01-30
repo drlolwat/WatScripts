@@ -7,10 +7,6 @@ public class WatConfig {
         return toolFailures;
     }
 
-    public static void setToolFailures(int failures) {
-        toolFailures = failures;
-    }
-
     public static void incrementToolFailures() {
         toolFailures++;
     }
