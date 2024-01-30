@@ -508,7 +508,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         //TODO a method for this
         if(WatConfig.getToolFailures() >= 3) {
-            if(!(currentTask instanceof MiningTask) && !(currentTask instanceof WoodcuttingTask)) {
+            if(!(currentTask instanceof GrandExchangeTask) &&
+                    !(currentTask instanceof TraversalTask) &&
+                    !(currentTask instanceof BankingTask) &&
+                    !(currentTask instanceof MiningTask) &&
+                    !(currentTask instanceof WoodcuttingTask)) {
+
                 Logger.log("Resetting tool failures, no longer on task");
                 WatConfig.resetToolFailures();
             }
