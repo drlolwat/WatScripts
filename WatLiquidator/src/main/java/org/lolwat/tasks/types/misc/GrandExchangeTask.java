@@ -208,7 +208,8 @@ public class GrandExchangeTask implements WatTask {
 
                     Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
-                    while(item.getValue() != 0) {
+                    int loops = 0;
+                    while(loops < 5) {
                         if(retries >= 5) {
                             retries = 0;
                             Logger.log("Something went wrong with the G.E loop, breaking it.");
@@ -226,6 +227,7 @@ public class GrandExchangeTask implements WatTask {
 
                             if(!GrandExchange.isBuyOpen()) {
                                 Logger.log("Buy screen was not open when it was meant to be.");
+                                loops++;
                                 continue;
                             }
                         }
@@ -289,6 +291,8 @@ public class GrandExchangeTask implements WatTask {
 
                             Sleep.sleep(50, 125);
                         }
+
+                        loops++;
                     }
                 }
             }
