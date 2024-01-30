@@ -504,7 +504,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
-        WatConfig.resetToolFailures();
+        Logger.log("tool failures: " + WatConfig.getToolFailures());
+        if(WatConfig.getToolFailures() > 3) {
+            Logger.log("falling back on tool..");
+        }
 
         if (PlayerSettings.getConfig(281) != 1000) {
             currentTask = new SelectUsernameTask();
