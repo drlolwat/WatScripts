@@ -17,6 +17,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
@@ -54,30 +55,30 @@ public class WoodcuttingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
-        if((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
+        if ((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
+            WatConfig.incrementToolFailures();
             Logger.log("I don't own the best hatchet available for me: " + hatchet);
             instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
-        }
-        else {
+        } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
             }
 
             Item old = Equipment.getItemInSlot(EquipmentSlot.WEAPON);
-            if(!Equipment.contains(hatchet) && GenericUtils.canEquipTool(hatchet) && GenericUtils.equipItem(hatchet, old)) {
+            if (!Equipment.contains(hatchet) && GenericUtils.canEquipTool(hatchet) && GenericUtils.equipItem(hatchet, old)) {
                 Sleep.sleep(30, 90);
             }
 
             // its all very similar to mining isn't it
             if (Inventory.isFull()) {
-                if(!dropping) {
+                if (!dropping) {
                     Logger.log("My inventory is full, to the bank!");
                     lastGotLog = 0;
                     instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
                     return;
                 } else {
-                    for(Item it : Inventory.all()) {
-                        if(it.getName().equals(WoodcuttingUtils.getLogName(treeType))) {
+                    for (Item it : Inventory.all()) {
+                        if (it.getName().equals(WoodcuttingUtils.getLogName(treeType))) {
                             Inventory.drop(it.getName());
                             Sleep.sleep(800, 1200);
                         }
@@ -90,21 +91,21 @@ public class WoodcuttingTask implements WatTask {
                 return;
             }
 
-            if(Players.getLocal().isAnimating())
+            if (Players.getLocal().isAnimating())
                 return;
 
-            if(treeType.equals(TreeType.TREE) && GenericUtils.tooManyPlayers(5, 4)) {
+            if (treeType.equals(TreeType.TREE) && GenericUtils.tooManyPlayers(5, 4)) {
                 instance.currentTask = new HopperTask(0, this);
                 return;
             }
 
             GameObject tree = GameObjects.closest(x -> x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) && area.contains(x));
-            if(tree != null && tree.interact()) {
+            if (tree != null && tree.interact()) {
                 Mouse.move();
                 Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 60000);
             } else { // hop if no trees are around and it's been 30 seconds since our last log
                 Sleep.sleep(5000, 10000);
-                if(lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
+                if (lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
                     instance.currentTask = new HopperTask(0, this);
                     lastGotLog = 0;
                 }
@@ -169,6 +170,10 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public List<String> inventoryTolerated() {
-        return new ArrayList<String>() { { add(WoodcuttingUtils.getBestHatchetForLevel()); } };
+        return new ArrayList<String>() {
+            {
+                add(WoodcuttingUtils.getBestHatchetForLevel());
+            }
+        };
     }
 }
