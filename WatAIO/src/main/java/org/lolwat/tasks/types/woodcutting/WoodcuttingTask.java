@@ -58,7 +58,7 @@ public class WoodcuttingTask implements WatTask {
         if ((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
             WatConfig.incrementToolFailures();
             Logger.log("I don't own the best hatchet available for me: " + hatchet);
-            instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
+            instance.currentTask = new BankingTask(new HashMap<String, Integer>() { { put(hatchet, 1); }}, sellList, 1, this);
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
