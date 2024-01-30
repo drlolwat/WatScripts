@@ -24,6 +24,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
@@ -33,6 +34,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.message.Message;
+import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.types.misc.*;
@@ -402,6 +404,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             connection.disconnect();
         } catch (IOException ignored) {
+            ScriptManager.getScriptManager().stop();
         }
     }
 
@@ -489,15 +492,19 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void evaluate(Skill sk) {
+        if(!PROFILE_LOADED || (CHECKED_HOURS_AT == 0 || (Instant.now().getEpochSecond() - CHECKED_HOURS_AT) >= 3600)) {
+            disableLoginManager();
+            getWsProfile(0);
+            enableLoginManager();
+        }
+
         if(!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
             enableLoginManager();
             return;
         }
 
-        if(!PROFILE_LOADED || (CHECKED_HOURS_AT == 0 || (Instant.now().getEpochSecond() - CHECKED_HOURS_AT) >= 3600)) {
-            getWsProfile(0);
-        }
+        WatConfig.resetToolFailures();
 
         if (PlayerSettings.getConfig(281) != 1000) {
             currentTask = new SelectUsernameTask();
