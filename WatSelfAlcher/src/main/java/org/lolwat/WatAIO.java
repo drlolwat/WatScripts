@@ -222,6 +222,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private static int QUEST_MIN_TTL = 150;
     private static int BOND_MIN_TTL = 500;
     private static boolean ENABLE_GPT = false;
+    public static boolean WEAR_CAPES = true;
 
     @Override
     public void onStart(String... params) {
@@ -263,6 +264,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         defaultProfile.addProperty("disable_mule", true);
         defaultProfile.addProperty("quest_min_ttl", 150);
         defaultProfile.addProperty("bond_min_ttl", 500);
+        defaultProfile.addProperty("use_profile_cape", true);
 
         return defaultProfile;
     }
@@ -319,6 +321,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             boolean muleDisabled = jsonObject.get("disable_mule").getAsBoolean();
             int questMinTtl = jsonObject.get("quest_min_ttl").getAsInt();
             int bondMinTtl = jsonObject.get("bond_min_ttl").getAsInt();
+            boolean useProfileCape = jsonObject.get("use_profile_cape").getAsBoolean();
 
             skillTargets = new HashMap<Skill, Integer>(){
                 {
@@ -347,6 +350,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             NEED_MM = false;
             QUEST_MIN_TTL = questMinTtl;
             BOND_MIN_TTL = bondMinTtl;
+            WEAR_CAPES = useProfileCape;
 
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
