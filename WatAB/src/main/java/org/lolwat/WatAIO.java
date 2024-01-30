@@ -37,12 +37,14 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.types.tutorial.*;
+import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -504,9 +506,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return;
         }
 
+        //TODO a method for this
         if(WatConfig.getToolFailures() >= 3) {
-            Logger.log("FallbackUtil: Resetting tool failures");
-            WatConfig.resetToolFailures();
+            if(!(currentTask instanceof MiningTask) && !(currentTask instanceof WoodcuttingTask)) {
+                Logger.log("Resetting tool failures, no longer on task");
+                WatConfig.resetToolFailures();
+            }
         }
 
         if (PlayerSettings.getConfig(281) != 1000) {
