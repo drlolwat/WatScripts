@@ -468,6 +468,7 @@ public class BankingTask implements WatTask {
                         }, this);
                         return;
                     } else {
+                        // Restricted moneymaker time...
                         Logger.log("We are out of GP, time to go and make some.");
                         WatAIO.NEED_MM = true;
                         instance.currentTask = null;
