@@ -7,11 +7,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="G.E task, offer cash stack if price greaterThan stack">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/ScavengingTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="BankingTask: small documentation? We needed differentiation..">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/config/WatConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/config/WatConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +143,7 @@
       <workItem from="1705467120785" duration="625000" />
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
-      <workItem from="1706079551295" duration="85522000" />
+      <workItem from="1706079551295" duration="94290000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -488,7 +488,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="309" />
+    <option name="localTasksCounter" value="325" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,22 +535,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Better calculation of low-priced items final price" />
-    <MESSAGE value="Grand Exchange collecting error fix" />
-    <MESSAGE value="A non easter, easter egg." />
-    <MESSAGE value="Update TraversalTask" />
-    <MESSAGE value="Disable easter egg by default" />
-    <MESSAGE value="G.E stuff, misc" />
-    <MESSAGE value="Version 0.9, prep for 1.0 release" />
-    <MESSAGE value="Use bank immediately after tutorial island" />
-    <MESSAGE value="Revert banking after tut, addressed underlying issue" />
-    <MESSAGE value="Randomized selling points" />
-    <MESSAGE value="Add unequipped hatchet to tolerated items." />
-    <MESSAGE value="Add unequipped pickaxe to tolerated items." />
-    <MESSAGE value="Add noted high alchemy items to inventory tolerated" />
-    <MESSAGE value="Fix for not depositing if a postTask had no inventoryRequired" />
-    <MESSAGE value="QOL for item toleration" />
-    <MESSAGE value="Bank QOL: Always scroll using mousewheel" />
     <MESSAGE value="Bank QOL: Exchanger wasn't scrolling" />
     <MESSAGE value="More Banking stuff" />
     <MESSAGE value="NullRef fix" />
@@ -560,7 +544,23 @@
     <MESSAGE value="TaskManager: add Giant key, Mossy keys to pickup in Giant tasks" />
     <MESSAGE value="RangedCombatTask: add bows to tolerated" />
     <MESSAGE value="G.E task, offer cash stack if price greaterThan stack" />
-    <option name="LAST_COMMIT_MESSAGE" value="G.E task, offer cash stack if price greaterThan stack" />
+    <MESSAGE value="Break the G.E loop after 5 failed retries." />
+    <MESSAGE value="Attempt fix for weird WIND_STRIKE returner" />
+    <MESSAGE value="MeleeUtils: uses Steel instead of Black" />
+    <MESSAGE value="new Task: ScavengingTask" />
+    <MESSAGE value="TaskManager: add ScavengingTask to restricted moneymakers" />
+    <MESSAGE value="ScavengingTask: Keep track of looted total worth, bank/sell after 50k gp. Move to next task after 50k gp." />
+    <MESSAGE value="ScavTask: Clear/remove from itemsTaken when needed" />
+    <MESSAGE value="MeleeUtils: Iron scimitar" />
+    <MESSAGE value="Hop to P2P world if a member and in F2P" />
+    <MESSAGE value="MiningTask: Basic fallback implementation" />
+    <MESSAGE value="MiningTask: Basic fallback implementation #2 lol" />
+    <MESSAGE value="WoodcuttingTask: basic fallback implementation" />
+    <MESSAGE value="New class: WatConfig" />
+    <MESSAGE value="WatAIO: profile loading improvements, reset tool failures on evaluation." />
+    <MESSAGE value="GenericUtils: getFallbackTool method, for TODO.." />
+    <MESSAGE value="BankingTask: small documentation? We needed differentiation.." />
+    <option name="LAST_COMMIT_MESSAGE" value="BankingTask: small documentation? We needed differentiation.." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
