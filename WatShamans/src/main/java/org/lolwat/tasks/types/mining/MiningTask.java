@@ -110,7 +110,7 @@ public class MiningTask implements WatTask {
         if ((!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) || (Inventory.contains(pickaxe) && Inventory.get(pickaxe).isNoted())) {
             WatConfig.incrementToolFailures();
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new BankingTask(new HashMap<>(), sellingItems, 1, this);
+            instance.currentTask = new BankingTask(new HashMap<String, Integer>() { { put(pickaxe, 1); }}, sellingItems, 1, this);
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
