@@ -7,6 +7,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.interactive.Players;
@@ -442,7 +443,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Mouse.setMouseAlgorithm(m);
 
         try {
-            image = ImageIO.read(new URL("https://i.imgur.com/PWtfWQn.png")); //300x143
+            image = ImageIO.read(new URL("https://i.imgur.com/TrjzOvx.png")); //300x143
         } catch (Exception ignored) {
 
         }
@@ -833,7 +834,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         g.drawImage(image, 10, 10, null);
 
-        Font segoeUIBoldFont = new Font("Segoe UI", Font.BOLD, 14);
+        Font segoeUIBoldFont = new Font("Verdana", Font.BOLD, 10);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setFont(segoeUIBoldFont);
@@ -841,10 +842,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // Set the color to white for the text
         g2d.setColor(Color.WHITE);
 
-        g2d.drawString(String.valueOf(Quests.getQuestPoints()), 46, 81);
-        g2d.drawString(String.valueOf(Skills.getTotalLevel()), 44, 105);
-        g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 46, 128);
-        g2d.drawString(taskTime, 102, 81);
+        g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
+        g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
+        g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 135, 40);
+        g2d.drawString(taskTime, 77, 40);
 
         if(totalLevelsGained > 0) {
             g2d.setColor(new Color(0, 200, 0));
@@ -853,22 +854,26 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         // main
-        drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 177, 32);
-        drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 177, 50);
-        drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 177, 67);
-        drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 177, 86);
-        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 177, 105); //
-        drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 177, 122);
-        drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 177, 140);
+        g2d.drawString(String.valueOf(Combat.getCombatLevel()), 38, 59);
+        drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 38, 77);
+        drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 38, 95);
+        drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 38, 113);
+        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 38, 131); //
+        drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 38, 149);
+        drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 38, 167);
 
         //row 2
-        drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 262, 32);
-        drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 262, 50);
-        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 262, 68);
-        drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 262, 87);
-        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 262, 104);
-        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 262, 121);
-        drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 262, 140);
+        drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 108, 59);
+        drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 108, 77);
+        drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 108, 95);
+        drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 108, 113);
+        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 108, 131);
+        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.RUNECRAFTING)), 108, 149);
+        drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 108, 167);
+
+        //row 3
+        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 180, 59);
+        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 180, 77);
 
         g2d.setColor(new Color(0, 200, 0));
 
