@@ -9,6 +9,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.types.combat.DefensiveItemType;
+import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,16 +18,28 @@ public class MagicUtils {
     public static HashMap<EquipmentSlot, String> bestGearForLevel() {
         HashMap<EquipmentSlot, String> ret = new HashMap<>();
 
-        ret.put(EquipmentSlot.HAT, "Wizard hat");
-        ret.put(EquipmentSlot.CHEST,"Blue wizard robe");
-        ret.put(EquipmentSlot.LEGS, "Zamorak monk bottom");
-        ret.put(EquipmentSlot.WEAPON, "Staff of air");
-        ret.put(EquipmentSlot.AMULET, "Amulet of magic");
-        ret.put(EquipmentSlot.FEET, "Leather boots");
-        ret.put(EquipmentSlot.HANDS, "Leather gloves");
-        if(WatAIO.WEAR_CAPES) {
+        if(GenericUtils.isMember() && Skills.getRealLevel(Skill.DEFENCE) >= 40) {
+            ret.put(EquipmentSlot.HAT, "Mystic hat");
+            ret.put(EquipmentSlot.CHEST, "Mystic robe top");
+            ret.put(EquipmentSlot.LEGS, "Mystic robe bottom");
+            ret.put(EquipmentSlot.WEAPON, "Staff of air");
+            ret.put(EquipmentSlot.AMULET, "Amulet of magic");
+            ret.put(EquipmentSlot.FEET, "Mystic boots");
+            ret.put(EquipmentSlot.HANDS, "Mystic gloves");
+        } else {
+            ret.put(EquipmentSlot.HAT, "Wizard hat");
+            ret.put(EquipmentSlot.CHEST, "Blue wizard robe");
+            ret.put(EquipmentSlot.LEGS, "Zamorak monk bottom");
+            ret.put(EquipmentSlot.WEAPON, "Staff of air");
+            ret.put(EquipmentSlot.AMULET, "Amulet of magic");
+            ret.put(EquipmentSlot.FEET, "Leather boots");
+            ret.put(EquipmentSlot.HANDS, "Leather gloves");
+        }
+
+        if (WatAIO.WEAR_CAPES) {
             ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
         }
+
         return ret;
     }
 
