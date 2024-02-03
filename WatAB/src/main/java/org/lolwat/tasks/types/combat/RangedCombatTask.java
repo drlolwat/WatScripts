@@ -35,7 +35,6 @@ public class RangedCombatTask implements WatTask {
     private int maxLevel;
     private Area zone;
     private String name;
-    private boolean needsEat;
     private final HashMap<String, Integer> food;
 
     public RangedCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {
@@ -44,11 +43,9 @@ public class RangedCombatTask implements WatTask {
         name = monsterName;
         maxLevel = maximumLevel;
 
-        if(foodToTake != null && foodToTake.size() > 0) {
-            needsEat = true;
+        if(foodToTake != null && !foodToTake.isEmpty()) {
             food = foodToTake;
         } else {
-            needsEat = false;
             food = new HashMap<>();
         }
     }
@@ -65,50 +62,40 @@ public class RangedCombatTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        List<String> toRemove = new ArrayList<>();
-        HashMap<String, Integer> requiredItems = RangedUtils.getRequiredItems();
-        // check for required armor/weapons
-        requiredItems.put(RangedUtils.bestArrow(), -1000);
-
-        for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
-            if (!Equipment.contains(item.getKey())) {
-                if (Inventory.contains(item.getKey())) {
-                    if (Inventory.get(item.getKey()).hasAction("Eat")) {
-                        toRemove.add(item.getKey());
+        for(String n : clothesRequired().keySet()) {
+            if(!Equipment.contains(n)) {
+                if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
+                    Logger.error("RangedCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + clothesRequired().get(n) + ")");
+                    instance.currentTask = new BankingTask(null, null, 1, this);
+                    return;
+                } else {
+                    if(!GenericUtils.equipItem(n, null)) {
+                        Logger.error("Error equipping item during RangedCombatTask");
                     }
                 }
-            } else {
-                toRemove.add(item.getKey());
             }
         }
 
-        for (String s : toRemove) {
-            requiredItems.remove(s);
+        for(String n : inventoryRequired().keySet()) {
+            if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
+                Logger.error("RangedCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + inventoryRequired().get(n) + ")");
+                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                return;
+            }
         }
 
-        if (requiredItems.size() > 0) {
-            Logger.log("We need to grab the rest of our ranged equipment..");
-            for (String s : requiredItems.keySet()) {
-                Logger.log("- " + s);
+        if (!food.isEmpty()) {
+            if(Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
+                Logger.error("RangedCombatTask is missing food");
+                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                return;
             }
 
-            instance.currentTask = new BankingTask(food, null, 1,this);
-            return;
-        }
-
-        if(food.size() > 0) {
-            for (Map.Entry<String, Integer> f : food.entrySet()) {
-                if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(food, null, 2,this);
-                    return;
+            if(Combat.getHealthPercent() <= 50) {
+                Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
+                if (i != null && i.interact()) {
+                    Sleep.sleep(60, 120);
                 }
-            }
-        }
-
-        if (needsEat && Combat.getHealthPercent() <= 50) {
-            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-            if (i != null && i.interact()) {
-                Sleep.sleep(60, 120);
             }
         }
 
@@ -193,7 +180,7 @@ public class RangedCombatTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        return food;
     }
 
     @Override
