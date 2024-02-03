@@ -838,10 +838,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setFont(segoeUIBoldFont);
-
-        // Set the color to white for the text
         g2d.setColor(Color.WHITE);
 
+        // main
         g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
         g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 135, 40);
@@ -853,12 +852,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             g2d.setColor(Color.WHITE);
         }
 
-        // main
+        // row 1
         g2d.drawString(String.valueOf(Combat.getCombatLevel()), 38, 59);
         drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 38, 77);
         drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 38, 95);
         drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 38, 113);
-        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 38, 131); //
+        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 38, 131);
         drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 38, 149);
         drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 38, 167);
 
@@ -876,48 +875,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 180, 77);
 
         g2d.setColor(new Color(0, 200, 0));
+    }
 
-        if(levelUps.containsKey("Attack"))
-            g2d.drawString("+" + levelUps.get("Attack"), 195, 32);
-
-        if(levelUps.containsKey("Strength"))
-            g2d.drawString("+" + levelUps.get("Strength"), 195, 50);
-
-        if(levelUps.containsKey("Defence"))
-            g2d.drawString("+" + levelUps.get("Defence"), 195, 67);
-
-        if(levelUps.containsKey("Ranged"))
-            g2d.drawString("+" + levelUps.get("Ranged"), 195, 86);
-
-        if(levelUps.containsKey("Prayer"))
-            g2d.drawString("+" + levelUps.get("Prayer"), 195, 105);
-
-        if(levelUps.containsKey("Magic"))
-            g2d.drawString("+" + levelUps.get("Magic"), 195, 122);
-
-        if(levelUps.containsKey("Hitpoints"))
-            g2d.drawString("+" + levelUps.get("Hitpoints"), 195, 140);
-
-        if(levelUps.containsKey("Crafting"))
-            g2d.drawString("+" + levelUps.get("Crafting"), 281, 32);
-
-        if(levelUps.containsKey("Mining"))
-            g2d.drawString("+" + levelUps.get("Mining"), 281, 50);
-
-        if(levelUps.containsKey("Smithing"))
-            g2d.drawString("+" + levelUps.get("Smithing"), 281, 68);
-
-        if(levelUps.containsKey("Fishing"))
-            g2d.drawString("+" + levelUps.get("Fishing"), 281, 87);
-
-        if(levelUps.containsKey("Cooking"))
-            g2d.drawString("+" + levelUps.get("Cooking"), 281, 104);
-
-        if(levelUps.containsKey("Firemaking"))
-            g2d.drawString("+" + levelUps.get("Firemaking"), 281, 121);
-
-        if(levelUps.containsKey("Woodcutting"))
-            g2d.drawString("+" + levelUps.get("Woodcutting"), 281, 140);
+    private void drawLevelUp(Graphics2D g2d, Skill sk, int x, int y) {
+        if(levelUps.containsKey(sk.getName())) {
+            g2d.setColor(Color.GREEN);
+            g2d.drawString("+" + levelUps.get(sk.getName()), x, y);
+            g2d.setColor(Color.WHITE);
+        }
     }
 
     private void drawSkill(Graphics2D g2d, Skill sk, String msg, int x, int y) {
@@ -931,6 +896,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if(skillSelected != null && skillSelected.equals(sk) || (skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk)))
             g2d.setColor(Color.WHITE);
+
+        drawLevelUp(g2d, sk, x + 15, y);
     }
 
     @Override
