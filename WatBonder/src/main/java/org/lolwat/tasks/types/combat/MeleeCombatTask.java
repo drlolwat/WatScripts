@@ -40,7 +40,6 @@ public class MeleeCombatTask implements WatTask {
     private int maxLevel;
     private Area zone;
     private String name;
-    private boolean needsEat;
     private HashMap<String, Integer> food;
     private final List<String> pickups;
 
@@ -52,10 +51,8 @@ public class MeleeCombatTask implements WatTask {
         maxLevel = maximumLevel;
 
         if(foodToTake != null && !foodToTake.isEmpty()) {
-            needsEat = true;
             food = foodToTake;
         } else {
-            needsEat = false;
             food = new HashMap<>();
         }
 
@@ -74,62 +71,40 @@ public class MeleeCombatTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        List<String> toRemove = new ArrayList<>();
-        HashMap<String, Integer> requiredItems = MeleeUtils.getRequiredItems(false);
-
-        for (java.util.Map.Entry<String, Integer> item : requiredItems.entrySet()) {
-            if (!Equipment.contains(item.getKey())) {
-                if (Inventory.contains(item.getKey())) {
-                    if(Inventory.get(item.getKey()).isNoted()) {
-                        continue;
-                    }
-
-                    if (Inventory.get(item.getKey()).hasAction("Eat")) {
-                        toRemove.add(item.getKey());
+        for(String n : clothesRequired().keySet()) {
+            if(!Equipment.contains(n)) {
+                if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
+                    Logger.error("MeleeCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + clothesRequired().get(n) + ")");
+                    instance.currentTask = new BankingTask(null, null, 1, this);
+                    return;
+                } else {
+                    if(!GenericUtils.equipItem(n, null)) {
+                        Logger.error("Error equipping item during MeleeCombatTask");
                     }
                 }
-            } else {
-                toRemove.add(item.getKey());
             }
         }
 
-        for (String s : toRemove) {
-            requiredItems.remove(s);
+        for(String n : inventoryRequired().keySet()) {
+            if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
+                Logger.error("MeleeCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + inventoryRequired().get(n) + ")");
+                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                return;
+            }
         }
 
-        if (!requiredItems.isEmpty()) {
-            Logger.log("We need to grab the rest of our melee equipment..");
-            for (String s : requiredItems.keySet()) {
-                Logger.log("- " + s);
+        if (!food.isEmpty()) {
+            if(Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
+                Logger.error("MeleeCombatTask is missing food");
+                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                return;
             }
 
-            instance.currentTask = new BankingTask(food, null, 1,this);
-            return;
-        }
-
-        if(!food.isEmpty()) {
-            for (Map.Entry<String, Integer> f : food.entrySet()) {
-                if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(food, null, 1, this);
-                    return;
+            if(Combat.getHealthPercent() <= 50) {
+                Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
+                if (i != null && i.interact()) {
+                    Sleep.sleep(60, 120);
                 }
-            }
-        }
-
-        if(Inventory.isFull()) {
-            for(Item i : Inventory.all()) {
-                if(pickups.contains(i.getName())) {
-                    Logger.log("Inventory is full, including pickups, returning to the bank.");
-                    instance.currentTask = new BankingTask(food, null, 1, this);
-                    return;
-                }
-            }
-        }
-
-        if (needsEat && Combat.getHealthPercent() <= 50) {
-            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-            if (i != null && i.interact()) {
-                Sleep.sleep(60, 120);
             }
         }
 
