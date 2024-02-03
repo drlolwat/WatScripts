@@ -37,9 +37,9 @@ public class MagicCombatTask implements WatTask {
     private int maxLevel;
     private Area zone;
     private String name;
-    private boolean needsEat;
     private final HashMap<String, Integer> food;
     private Spell toCast;
+    private int casts;
 
     public MagicCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {
         minLevel = minimumLevel;
@@ -50,12 +50,12 @@ public class MagicCombatTask implements WatTask {
         toCast = MagicUtils.getBestSpellForLevel();
 
         if(foodToTake != null && !foodToTake.isEmpty()) {
-            needsEat = true;
             food = foodToTake;
         } else {
-            needsEat = false;
             food = new HashMap<>();
         }
+
+        casts = Calculations.random(75, 150);
     }
 
     @Override
@@ -72,7 +72,6 @@ public class MagicCombatTask implements WatTask {
     public void execute(WatAIO instance) {
         HashMap<String, Integer> requiredItems = new HashMap<>();
 
-        int casts = Calculations.random(75, 150);
         if(Skills.getRealLevel(Skill.MAGIC) >= 50) {
             casts *=2;
         }
@@ -80,7 +79,7 @@ public class MagicCombatTask implements WatTask {
         requiredItems.putAll(MagicUtils.getRunesRequired((Normal) toCast, casts));
         requiredItems.putAll(food);
 
-        if(Equipment.isEmpty()) {
+        if(Equipment.isEmpty() || Equipment.all(x -> x.getName().toLowerCase().contains("staff")).isEmpty()) {
             Logger.log("We need to grab runes and staff...");
             instance.currentTask = new BankingTask(requiredItems, null, 1,this);
             return;
@@ -93,16 +92,14 @@ public class MagicCombatTask implements WatTask {
         }
 
         if(!food.isEmpty()) {
-            for (Map.Entry<String, Integer> f : food.entrySet()) {
-                if (!Inventory.contains(f.getKey())) {
-                    Logger.log("We need to grab food...");
-                    instance.currentTask = new BankingTask(requiredItems, null, 2,this);
-                    return;
-                }
+            if(Inventory.isEmpty() || Inventory.all(x -> x.hasAction("Eat")).isEmpty()) {
+                Logger.log("We need to grab food...");
+                instance.currentTask = new BankingTask(requiredItems, null, 2,this);
+                return;
             }
         }
 
-        if (needsEat && Combat.getHealthPercent() <= 50) {
+        if (!food.isEmpty() && Combat.getHealthPercent() <= 50) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i != null && i.interact()) {
                 Sleep.sleep(60, 120);
