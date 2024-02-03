@@ -77,12 +77,6 @@ public class GrandExchangeTask implements WatTask {
 
 
         if(NPCs.closest("Grand Exchange Clerk") != null) {
-            Logger.log("Grand Exchange Clerk: within sight");
-            Entity clerk = NPCs.closest("Grand Exchange Clerk");
-            if (clerk != null && !Map.isTileOnScreen(clerk.getTile())) {
-                Camera.rotateToEntity(clerk);
-            }
-
             Logger.log("Opening Grand Exchange");
 
             if (!GrandExchange.isOpen()) {
@@ -200,16 +194,15 @@ public class GrandExchangeTask implements WatTask {
 
                     Logger.log("Buying: " + itemFinal);
 
-                    if(!GrandExchange.openBuyScreen(slot)) {
-                        Logger.log("Error opening buy screen in G.E");
+                    if(!GrandExchange.isBuyOpen() && !GrandExchange.openBuyScreen(slot)) {
+                        Logger.error("Error opening buy screen in G.E, returning to postTask");
                         instance.currentTask = postTask;
-                        break;
+                        return;
                     }
 
                     Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
-                    int loops = 0;
-                    while(loops < 5) {
+                    while(item.getValue() != 0) {
                         if(retries >= 5) {
                             retries = 0;
                             Logger.log("Something went wrong with the G.E loop, breaking it.");
@@ -227,7 +220,6 @@ public class GrandExchangeTask implements WatTask {
 
                             if(!GrandExchange.isBuyOpen()) {
                                 Logger.log("Buy screen was not open when it was meant to be.");
-                                loops++;
                                 continue;
                             }
                         }
@@ -291,8 +283,6 @@ public class GrandExchangeTask implements WatTask {
 
                             Sleep.sleep(50, 125);
                         }
-
-                        loops++;
                     }
                 }
             }
