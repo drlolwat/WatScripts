@@ -229,11 +229,11 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleep(600, 1200);
                             int itemCost = NumUtils.getItemPrice(itemFinal);
 
-                            Item coins = Inventory.get("Coins");
-                            if(coins != null) {
-                                if (coins.getAmount() < itemCost) {
-                                    itemCost = coins.getAmount();
-                                }
+                            int coins = Inventory.count("Coins");
+                            if (itemCost > coins) {
+                                Logger.error("Didn't have enough coins to fulfill offer, breaking loop.");
+                                instance.currentTask = postTask;
+                                return;
                             }
 
                             if(GrandExchange.setPrice(itemCost)) {
