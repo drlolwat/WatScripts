@@ -871,8 +871,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 108, 167);
 
         //row 3
-        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 180, 59);
-        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 180, 77);
+        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 180, 77);
+        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 180, 59);
 
         g2d.setColor(new Color(0, 200, 0));
     }
