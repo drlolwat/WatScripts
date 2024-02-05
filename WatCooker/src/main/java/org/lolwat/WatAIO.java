@@ -242,30 +242,30 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private JsonObject getDefaultProfile() {
         JsonObject defaultProfile = new JsonObject();
-        defaultProfile.addProperty("attack", 10);
-        defaultProfile.addProperty("defence", 10);
-        defaultProfile.addProperty("strength", 10);
-        defaultProfile.addProperty("ranged", 10);
+        defaultProfile.addProperty("attack", 99);
+        defaultProfile.addProperty("defence", 99);
+        defaultProfile.addProperty("strength", 99);
+        defaultProfile.addProperty("ranged", 99);
         defaultProfile.addProperty("prayer", 1);
-        defaultProfile.addProperty("magic", 1);
-        defaultProfile.addProperty("cooking", 10);
-        defaultProfile.addProperty("woodcutting", 40);
-        defaultProfile.addProperty("fishing", 40);
-        defaultProfile.addProperty("firemaking", 10);
+        defaultProfile.addProperty("magic", 99);
+        defaultProfile.addProperty("cooking", 99);
+        defaultProfile.addProperty("woodcutting", 99);
+        defaultProfile.addProperty("fishing", 99);
+        defaultProfile.addProperty("firemaking", 1);
         defaultProfile.addProperty("crafting", 10);
         defaultProfile.addProperty("smithing", 10);
-        defaultProfile.addProperty("mining", 50);
+        defaultProfile.addProperty("mining", 99);
 
         defaultProfile.addProperty("quests_enabled", true);
         defaultProfile.addProperty("breaks_enabled", true);
         defaultProfile.addProperty("ignore_trade_restriction", false);
         defaultProfile.addProperty("mule_trigger", 125000);
         defaultProfile.addProperty("mule_safety_net", 75000);
-        defaultProfile.addProperty("logout_after_unrestricted", true);
-        defaultProfile.addProperty("disable_mule", true);
-        defaultProfile.addProperty("quest_min_ttl", 150);
-        defaultProfile.addProperty("bond_min_ttl", 500);
-        defaultProfile.addProperty("use_profile_cape", true);
+        defaultProfile.addProperty("logout_after_unrestricted", false);
+        defaultProfile.addProperty("disable_mule", false);
+        defaultProfile.addProperty("quest_min_ttl", 175);
+        defaultProfile.addProperty("bond_min_ttl", 0);
+        defaultProfile.addProperty("use_profile_cape", false);
 
         return defaultProfile;
     }
@@ -848,7 +848,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if(totalLevelsGained > 0) {
             g2d.setColor(new Color(0, 200, 0));
-            g2d.drawString("+" + totalLevelsGained, 79, 105);
+            g2d.drawString("+" + totalLevelsGained, 277, 40);
             g2d.setColor(Color.WHITE);
         }
 
@@ -867,7 +867,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 108, 95);
         drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 108, 113);
         drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 108, 131);
-        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.RUNECRAFTING)), 108, 149);
+        drawSkill(g2d, Skill.RUNECRAFTING, String.valueOf(Skills.getRealLevel(Skill.RUNECRAFTING)), 108, 149);
         drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 108, 167);
 
         //row 3
