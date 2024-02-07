@@ -1,5 +1,6 @@
 package org.lolwat.tasks.types.combat;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -87,7 +88,7 @@ public class RangedCombatTask implements WatTask {
         if (!food.isEmpty()) {
             if(Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
                 Logger.error("RangedCombatTask is missing food");
-                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                instance.currentTask = new BankingTask(inventoryRequired(), null, Calculations.random(1, 5), this);
                 return;
             }
 
