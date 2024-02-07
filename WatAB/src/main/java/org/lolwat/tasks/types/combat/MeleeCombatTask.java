@@ -144,6 +144,8 @@ public class MeleeCombatTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
+        GenericUtils.handleSpecial();
+
         if (!Players.getLocal().isInCombat()) {
             if(!pickups.isEmpty()) {
                 GenericUtils.handlePickup(pickups);
