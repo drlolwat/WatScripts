@@ -886,18 +886,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void drawSkill(Graphics2D g2d, Skill sk, String msg, int x, int y) {
-        if(skillSelected != null && skillSelected.equals(sk))
-            g2d.setColor(Color.CYAN);
+        try {
+            if (skillSelected != null && skillSelected.equals(sk))
+                g2d.setColor(Color.CYAN);
 
-        if(skillTargets != null && skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk))
-            g2d.setColor(Color.GREEN);
+            if (skillTargets != null && skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk))
+                g2d.setColor(Color.GREEN);
 
-        g2d.drawString(msg, x, y);
+            g2d.drawString(msg, x, y);
 
-        if(skillSelected != null && skillSelected.equals(sk) || (skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk)))
-            g2d.setColor(Color.WHITE);
+            if (skillSelected != null && skillSelected.equals(sk) || (skillTargets.containsKey(sk) && Skills.getRealLevel(sk) >= skillTargets.get(sk)))
+                g2d.setColor(Color.WHITE);
 
-        drawLevelUp(g2d, sk, x + 15, y);
+            drawLevelUp(g2d, sk, x + 15, y);
+        } catch (Exception ignored) { }
     }
 
     @Override
