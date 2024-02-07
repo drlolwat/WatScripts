@@ -853,7 +853,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         // row 1
-        g2d.drawString(String.valueOf(Combat.getCombatLevel()), 38, 59);
+        g2d.drawString((currentTask != null && currentTask instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 38, 59);
         drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 38, 77);
         drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 38, 95);
         drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 38, 113);
