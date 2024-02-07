@@ -2,8 +2,11 @@ package org.lolwat.misc.utils;
 
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
@@ -230,6 +233,22 @@ public class GenericUtils {
     public static void moveMouse() {
         if(Calculations.random(10) == 1) {
             moveMouseInOrOut();
+        }
+    }
+
+    public static void handleSpecial() {
+        List<String> weapons = new ArrayList<String>() { {
+            add("Magic shortbow");
+            add("Dragon sword");
+            add("Dragon scimitar");
+        } };
+
+        for(String s : weapons) {
+            if (Equipment.slotContains(EquipmentSlot.WEAPON, s)) {
+                if(Combat.getSpecialPercentage() > 75) {
+                    Combat.toggleSpecialAttack(true);
+                }
+            }
         }
     }
 }
