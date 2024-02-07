@@ -96,7 +96,7 @@ public class MeleeCombatTask implements WatTask {
         if (!food.isEmpty()) {
             if(Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
                 Logger.error("MeleeCombatTask is missing food");
-                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                instance.currentTask = new BankingTask(inventoryRequired(), null, Calculations.random(1, 5), this);
                 return;
             }
 
@@ -193,6 +193,6 @@ public class MeleeCombatTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        return food;
     }
 }
