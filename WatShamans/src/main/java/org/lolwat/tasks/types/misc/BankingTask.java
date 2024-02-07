@@ -257,13 +257,34 @@ public class BankingTask implements WatTask {
             }
 
             Sleep.sleep(500, 1000);
+
+            if(!postTask.clothesRequired().isEmpty()) {
+                for (Map.Entry<String, Integer> entry : postTask.clothesRequired().entrySet()) {
+                    if (!Equipment.contains(entry.getKey()) && Inventory.contains(entry.getKey())) {
+                        if(Bank.isOpen()) {
+                            Bank.close();
+                            Sleep.sleepUntil(() -> !Bank.isOpen(), Calculations.random(5000, 10000));
+                        }
+
+                        if (!GenericUtils.equipItem(entry.getKey(), null)) {
+                            Logger.error("Equipment: Error equipping item");
+                        }
+                    }
+                }
+
+                if(!Bank.isOpen()) {
+                    Bank.open();
+                    Sleep.sleepUntil(Bank::isOpen, Calculations.random(5000, 10000));
+                }
+            }
+            /*
             for (String s : postTask.clothesRequired().keySet()) {
                 if(!Equipment.contains(s)) {
                     if (Inventory.contains(s) && GenericUtils.canEquipTool(s) && !GenericUtils.equipItem(s, null)) {
                         Logger.error("Equipment: Error equipping item");
                     }
                 }
-            }
+            }*/
 
             if (postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
                 Bank.depositAllEquipment();
