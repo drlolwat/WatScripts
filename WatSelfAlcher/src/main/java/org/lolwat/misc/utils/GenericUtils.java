@@ -170,7 +170,7 @@ public class GenericUtils {
     public static String generateUsername() {
         String name = "";
         try {
-            URL url = new URL("https://botbuddy.net/_api_/getname.php");
+            URL url = new URL("https://api.botbuddy.net/getname.php");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
