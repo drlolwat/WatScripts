@@ -360,7 +360,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void getWsProfile(int breaking) {
         try {
-            String urlString = "https://botbuddy.net/_api_/ws_profile.php?fu=" + Client.getForumUser().getUsername() + "&_hash=" + AccountManager.getAccountHash();
+            String urlString = "https://api.botbuddy.net/ws_profile.php?fu=" + Client.getForumUser().getUsername() + "&_hash=" + AccountManager.getAccountHash();
 
             if(IGNORE_CHECK_TRADE) {
                 urlString += "&_unl";
