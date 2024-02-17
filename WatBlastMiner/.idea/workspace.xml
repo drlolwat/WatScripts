@@ -7,11 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="BankingTask: small documentation? We needed differentiation..">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="GenericUtils: method for handling special attack">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/config/WatConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/config/WatConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/woodcutting/WoodcuttingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +48,7 @@
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts/WatAIO.git&quot;,
-    &quot;second&quot;: &quot;854f8543-1ad0-4979-ba91-55621d061bc7&quot;
+    &quot;second&quot;: &quot;bf997ea0-6cb7-4432-9c8f-de6a5125b790&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -64,31 +65,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.WatAIO [package].executor": "Run",
-    "Maven.WatAIO [verify].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/lolwat/IdeaProjects/WatMiner",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Facets",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.settings.project.statistic.project.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatMiner&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;discord-application&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="org.lolwat.misc.utils.smithing.SmithingUtils" />
@@ -104,7 +105,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-1.8.0_392-semeru-1.8.0_392-3183f394aec4-6d4b9ca3" />
+        <option value="jdk-1.8.0_402-corretto-1.8.0_402-4caba194b151-ae57be32" />
       </set>
     </attachedChunks>
   </component>
@@ -144,6 +145,9 @@
       <workItem from="1705686721065" duration="2557000" />
       <workItem from="1705827036938" duration="4941000" />
       <workItem from="1706079551295" duration="94290000" />
+      <workItem from="1707070905200" duration="20674000" />
+      <workItem from="1708153181231" duration="605000" />
+      <workItem from="1708189604594" duration="32000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -488,7 +492,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="325" />
+    <option name="localTasksCounter" value="335" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,16 +539,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Bank QOL: Exchanger wasn't scrolling" />
-    <MESSAGE value="More Banking stuff" />
-    <MESSAGE value="NullRef fix" />
-    <MESSAGE value="only raise price if collecting item is successful..." />
-    <MESSAGE value="GenericUtils: add pickup support with given List&lt;String&gt;" />
-    <MESSAGE value="MeleeCombatTask: pickup support with banking" />
-    <MESSAGE value="TaskManager: add Giant key, Mossy keys to pickup in Giant tasks" />
-    <MESSAGE value="RangedCombatTask: add bows to tolerated" />
-    <MESSAGE value="G.E task, offer cash stack if price greaterThan stack" />
-    <MESSAGE value="Break the G.E loop after 5 failed retries." />
     <MESSAGE value="Attempt fix for weird WIND_STRIKE returner" />
     <MESSAGE value="MeleeUtils: uses Steel instead of Black" />
     <MESSAGE value="new Task: ScavengingTask" />
@@ -560,7 +554,17 @@
     <MESSAGE value="WatAIO: profile loading improvements, reset tool failures on evaluation." />
     <MESSAGE value="GenericUtils: getFallbackTool method, for TODO.." />
     <MESSAGE value="BankingTask: small documentation? We needed differentiation.." />
-    <option name="LAST_COMMIT_MESSAGE" value="BankingTask: small documentation? We needed differentiation.." />
+    <MESSAGE value="GrandExchangeTask: Return to postTask if offerCoins &gt; coinStack" />
+    <MESSAGE value="Paint things" />
+    <MESSAGE value="MeleeCombatTask: fix food loading" />
+    <MESSAGE value="RangedCombatTask: buy random inv loads of food when run out" />
+    <MESSAGE value="BankingTask: Equipping items flow improved" />
+    <MESSAGE value="WatAIO: Ignore bullshit paint errors completely, fuck em" />
+    <MESSAGE value="Paint: Display 'Break' instead of combat level while on break." />
+    <MESSAGE value="MeleeCombatTask: enable Special attack for DScim, DSword" />
+    <MESSAGE value="RangedCombatTask: enable Special attack for Magic shortbow" />
+    <MESSAGE value="GenericUtils: method for handling special attack" />
+    <option name="LAST_COMMIT_MESSAGE" value="GenericUtils: method for handling special attack" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
