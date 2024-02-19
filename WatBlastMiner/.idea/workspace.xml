@@ -7,12 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="GenericUtils: method for handling special attack">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="connect to BB production api">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +144,9 @@
       <workItem from="1706079551295" duration="94290000" />
       <workItem from="1707070905200" duration="20674000" />
       <workItem from="1708153181231" duration="605000" />
-      <workItem from="1708189604594" duration="32000" />
+      <workItem from="1708189604594" duration="1842000" />
+      <workItem from="1708235596190" duration="1419000" />
+      <workItem from="1708301151554" duration="1643000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -492,7 +491,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="335" />
+    <option name="localTasksCounter" value="336" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,7 +538,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt fix for weird WIND_STRIKE returner" />
     <MESSAGE value="MeleeUtils: uses Steel instead of Black" />
     <MESSAGE value="new Task: ScavengingTask" />
     <MESSAGE value="TaskManager: add ScavengingTask to restricted moneymakers" />
@@ -564,7 +562,8 @@
     <MESSAGE value="MeleeCombatTask: enable Special attack for DScim, DSword" />
     <MESSAGE value="RangedCombatTask: enable Special attack for Magic shortbow" />
     <MESSAGE value="GenericUtils: method for handling special attack" />
-    <option name="LAST_COMMIT_MESSAGE" value="GenericUtils: method for handling special attack" />
+    <MESSAGE value="connect to BB production api" />
+    <option name="LAST_COMMIT_MESSAGE" value="connect to BB production api" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
