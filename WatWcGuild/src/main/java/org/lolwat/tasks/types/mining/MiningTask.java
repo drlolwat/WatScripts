@@ -59,7 +59,7 @@ public class MiningTask implements WatTask {
         minLevel = miningLevel;
         alternateRockList = new ArrayList<>();
 
-        if (rockLists.size() > 0) {
+        if (!rockLists.isEmpty()) {
             defaultRocks = rockLists.get(0);
             for (List<Tile> rockTiles : rockLists) {
                 if (rockTiles.equals(defaultRocks))
