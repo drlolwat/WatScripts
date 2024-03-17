@@ -7,8 +7,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="connect to BB production api">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="MiningTask: hopping QOL">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/mining/MiningTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -146,7 +147,8 @@
       <workItem from="1708153181231" duration="605000" />
       <workItem from="1708189604594" duration="1842000" />
       <workItem from="1708235596190" duration="1419000" />
-      <workItem from="1708301151554" duration="1643000" />
+      <workItem from="1708301151554" duration="6460000" />
+      <workItem from="1710639896628" duration="137000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -491,7 +493,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="336" />
+    <option name="localTasksCounter" value="337" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -538,7 +540,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="MeleeUtils: uses Steel instead of Black" />
     <MESSAGE value="new Task: ScavengingTask" />
     <MESSAGE value="TaskManager: add ScavengingTask to restricted moneymakers" />
     <MESSAGE value="ScavengingTask: Keep track of looted total worth, bank/sell after 50k gp. Move to next task after 50k gp." />
@@ -563,7 +564,8 @@
     <MESSAGE value="RangedCombatTask: enable Special attack for Magic shortbow" />
     <MESSAGE value="GenericUtils: method for handling special attack" />
     <MESSAGE value="connect to BB production api" />
-    <option name="LAST_COMMIT_MESSAGE" value="connect to BB production api" />
+    <MESSAGE value="MiningTask: hopping QOL" />
+    <option name="LAST_COMMIT_MESSAGE" value="MiningTask: hopping QOL" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
