@@ -47,45 +47,11 @@ public class MiningTask implements WatTask {
     private Integer maxMiningLevel = 0;
     private Tile lastTile; // lets try and hover the previous rock for speed
 
-    public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, WatAIO core) {
+    public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct) {
         minLevel = miningLevel;
         defaultSquare = startPosition;
         rockName = pRockName;
         sellingItems = sellableProduct;
-        maxMiningLevel = maxMining;
-    }
-
-    public MiningTask(int miningLevel, int maxMining, Tile startPosition, List<List<Tile>> rockLists, HashMap<String, Integer> sellableProduct, WatAIO core) {
-        minLevel = miningLevel;
-        alternateRockList = new ArrayList<>();
-
-        if (!rockLists.isEmpty()) {
-            defaultRocks = rockLists.get(0);
-            for (List<Tile> rockTiles : rockLists) {
-                if (rockTiles.equals(defaultRocks))
-                    continue;
-
-                alternateRockList.add(rockTiles);
-            }
-        } else {
-            // no rocks? kill task
-            Logger.error("Mining task had no rocks setup");
-            core.fatalError = true;
-            core.currentTask = null;
-            return;
-        }
-
-        if (startPosition != null) {
-            defaultSquare = startPosition;
-        } else {
-            Logger.error("Mining task had no default location setup");
-            core.fatalError = true;
-            core.currentTask = null;
-            return;
-        }
-
-        sellingItems = sellableProduct;
-        rockName = "";
         maxMiningLevel = maxMining;
     }
 
@@ -216,7 +182,6 @@ public class MiningTask implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<String, Integer>() {
             {
-                put(MiningUtils.getBestPickaxeForLevel(), 1);
                 putAll(GenericUtils.getSkillingGear());
             }
         };
@@ -224,7 +189,11 @@ public class MiningTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        return new HashMap<String, Integer>() {
+            {
+                put(MiningUtils.getBestPickaxeForLevel(), 1);
+            }
+        };
     }
 
     @Override
