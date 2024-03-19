@@ -858,23 +858,23 @@ public class TaskManager {
 
         // Varrock East Copper
         tasks.add(new MiningTask(1, 20, new Tile(3289, 3362), "Copper rocks",
-                        new HashMap<String, Integer>() {{ put("Copper ore", -Calculations.random(800, 1200)); }}, instance));
+                        new HashMap<String, Integer>() {{ put("Copper ore", -Calculations.random(800, 1200)); }}));
 
         // Varrock East Tin
         tasks.add(new MiningTask(1, 20, new Tile(3282, 3363), "Tin rocks",
-                new HashMap<String, Integer>() {{ put("Tin ore", -Calculations.random(800, 1200)); }}, instance));
+                new HashMap<String, Integer>() {{ put("Tin ore", -Calculations.random(800, 1200)); }}));
 
         // Varrock East Iron
         tasks.add(new MiningTask(15, 60, new Tile(3286, 3368), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, instance));
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}));
 
         // Mining Guild Iron
         tasks.add(new MiningTask(60, 70, new Tile(3033, 9738), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, instance));
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}));
 
         // Mining Guild Coal
         tasks.add(new MiningTask(70, 100, new Tile(3033, 9738), "Coal rocks",
-                new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}, instance));
+                new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}));
 
         return tasks;
     }
