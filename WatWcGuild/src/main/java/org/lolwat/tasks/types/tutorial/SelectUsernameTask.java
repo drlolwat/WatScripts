@@ -1,7 +1,7 @@
 package org.lolwat.tasks.types.tutorial;
 
+import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.input.Keyboard;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.widget.Widgets;
@@ -54,7 +54,8 @@ public class SelectUsernameTask implements WatTask {
                 else {
                     if(nameText.interact()) {
                         while(!nameText.getText().equals("*")) {
-                            Keyboard.typeSpecialKey(KeyEvent.VK_BACK_SPACE);
+                            Keyboard.typeKey(KeyEvent.VK_BACK_SPACE);
+                            //Keyboard.typeSpecialKey(KeyEvent.VK_BACK_SPACE);
                         }
                     }
                 }
