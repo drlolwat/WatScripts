@@ -224,6 +224,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private static int BOND_MIN_TTL = 500;
     private static boolean ENABLE_GPT = false;
     public static boolean WEAR_CAPES = true;
+    private static boolean FASTER_QUESTS = false;
 
     @Override
     public void onStart(String... params) {
@@ -266,6 +267,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         defaultProfile.addProperty("quest_min_ttl", 175);
         defaultProfile.addProperty("bond_min_ttl", 0);
         defaultProfile.addProperty("use_profile_cape", false);
+        defaultProfile.addProperty("faster_quests", false);
 
         return defaultProfile;
     }
@@ -323,6 +325,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             int questMinTtl = jsonObject.get("quest_min_ttl").getAsInt();
             int bondMinTtl = jsonObject.get("bond_min_ttl").getAsInt();
             boolean useProfileCape = jsonObject.get("use_profile_cape").getAsBoolean();
+            boolean fasterQuests = jsonObject.get("faster_quests").getAsBoolean();
 
             skillTargets = new HashMap<Skill, Integer>(){
                 {
@@ -352,6 +355,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             QUEST_MIN_TTL = questMinTtl;
             BOND_MIN_TTL = bondMinTtl;
             WEAR_CAPES = useProfileCape;
+            FASTER_QUESTS = fasterQuests;
 
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
@@ -562,7 +566,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         List<WatTask> removal = new ArrayList<>();
 
         if (QUESTS_ENABLED && sk == null) {
-            if ((Calculations.random(8) == 1 && Skills.getTotalLevel() >= QUEST_MIN_TTL)) {
+            if ((Calculations.random(FASTER_QUESTS ? 4 : 8) == 1 && Skills.getTotalLevel() >= QUEST_MIN_TTL)) {
                 if (allQuests != null && !allQuests.isEmpty()) {
                     for (java.util.Map.Entry<Quest, WatTask> t : allQuests.entrySet()) {
                         if (Quests.isFinished(t.getKey())) {
