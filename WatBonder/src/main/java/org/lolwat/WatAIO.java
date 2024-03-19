@@ -86,8 +86,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public static boolean USE_SKIRT;
     public static int MOUSE_DIFF = 1;
     public boolean PROFILE_LOADED = false;
-    public boolean QUESTS_ENABLED = true; //
-    public boolean TRADE_UNLOCKED = false; // false;
+    public static boolean QUESTS_ENABLED = true; //
+    public static boolean TRADE_UNLOCKED = false; // false;
     public boolean ENABLE_BREAKS = true; //
     public List<String> EMERGENCY_SELL = Arrays.asList("Adamant arrow",
             "Adamant axe",
