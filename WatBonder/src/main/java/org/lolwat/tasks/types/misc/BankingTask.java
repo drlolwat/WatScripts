@@ -98,7 +98,7 @@ public class BankingTask implements WatTask {
 
         Logger.log("Sell Checker: starting");
 
-        boolean allowedToSell = instance.TRADE_UNLOCKED;
+        boolean allowedToSell = WatAIO.TRADE_UNLOCKED;
 
         Logger.log("Trade unrestricted: " + allowedToSell);
 
@@ -120,7 +120,7 @@ public class BankingTask implements WatTask {
         }
 
         if(allowedToSell) {
-            if (!sellingItems.isEmpty()) {
+            if (sellingItems.size() > 0) {
                 boolean performSelling = false;
                 if (Inventory.isFull()) {
                     Bank.depositAllItems();
