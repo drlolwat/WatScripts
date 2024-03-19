@@ -55,7 +55,6 @@ public class SelectUsernameTask implements WatTask {
                     if(nameText.interact()) {
                         while(!nameText.getText().equals("*")) {
                             Keyboard.typeKey(KeyEvent.VK_BACK_SPACE);
-                            //Keyboard.typeSpecialKey(KeyEvent.VK_BACK_SPACE);
                         }
                     }
                 }
