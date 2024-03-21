@@ -59,7 +59,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
-@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
+@ScriptManifest(name = "Watvertiser", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private Timer timer;
     private List<WatTask> allTasks;
@@ -225,6 +225,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private static boolean ENABLE_GPT = false;
     public static boolean WEAR_CAPES = true;
     private static boolean FASTER_QUESTS = false;
+    private static boolean ADVERTISE_MODE = true;
 
     @Override
     public void onStart(String... params) {
@@ -342,6 +343,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     put(Skill.CRAFTING, crafting);
                     put(Skill.SMITHING, smithing);
                     put(Skill.MINING, mining);
+                    put(Skill.HITPOINTS, 100);
                 }};
 
             QUESTS_ENABLED = questsEnabled;
@@ -447,7 +449,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Mouse.setMouseAlgorithm(m);
 
         try {
-            image = ImageIO.read(new URL("https://api.botbuddy.net/paint.png")); //300x143
+            image = ImageIO.read(new URL("https://api.botbuddy.net/waio2.png")); //300x143
         } catch (Exception ignored) {
 
         }
@@ -521,6 +523,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             skillRunTime = Calculations.random(1200, 6750); // in seconds
             RUNNING_TUT = true;
             Logger.log("We are performing Tutorial Island");
+            return;
+        }
+
+        if(ADVERTISE_MODE) {
+            currentTask = new AdvertiseTask();
+            skillSelectedAt = Instant.now().getEpochSecond();
+            skillRunTime = Calculations.random(1200, 6750);
             return;
         }
 
@@ -620,15 +629,23 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     NEED_MM = false;
                 }
 
+                skillSelected = null;
+
                 if(sk == null) {
                     Collections.shuffle(skills);
                     for (Skill s : skills) {
                         if (Skills.getRealLevel(s) < skillTargets.get(s)) {
                             skillSelected = s;
-                            Logger.log(s.toString());
                             break;
                         } else {
-                            skillSelected = null;
+                            if(NEED_MM) {
+                                for(WatTask t : taskPool) {
+                                    if(t.trainsSkill().equals(s)) {
+                                        skillSelected = s;
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
 
