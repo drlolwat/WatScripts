@@ -11,6 +11,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,22 +34,22 @@ public class SelectAppearanceTask implements WatTask {
     public void execute(WatAIO instance) {
         final Widget par = Widgets.getWidget(APPEAR_PAR);
         if (par != null && par.isVisible()) {
-            boolean oddEven = Calculations.random(1, 2) == 1;
             List<WidgetChild> widgets = Widgets.getAll(x -> x.hasAction("Select"));
-            Collections.shuffle(widgets);
-            for(WidgetChild c : widgets) {
-                if (oddEven) {
-                    oddEven = false;
-                    continue;
-                }
+            List<WidgetChild> rightArrows = new ArrayList<>();
+            for (int i = 1; i < widgets.size(); i += 2) {
+                rightArrows.add(widgets.get(i));
+            }
 
-                for (int i = 0; i < Calculations.random(2, 12); i++) {
-                    if (c != null && c.isVisible() && c.interact()) {
+            Collections.shuffle(rightArrows);
+            List<WidgetChild> selectedWidgets = rightArrows.subList(0, Math.min(7, rightArrows.size()));
+
+            for (WidgetChild widget : selectedWidgets) {
+                int timesToClick = Calculations.random(1, 5);
+                for (int i = 0; i < timesToClick; i++) {
+                    if (widget != null && widget.isVisible() && widget.interact()) {
                         Sleep.sleep(200, 400);
                     }
                 }
-
-                oddEven = true;
             }
 
             WidgetChild acc = Widgets.getWidget(APPEAR_PAR).getChild(ACCEPT);
