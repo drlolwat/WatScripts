@@ -59,7 +59,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
-@ScriptManifest(name = "Watvertiser", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private Timer timer;
     private List<WatTask> allTasks;
@@ -225,7 +225,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private static boolean ENABLE_GPT = false;
     public static boolean WEAR_CAPES = true;
     private static boolean FASTER_QUESTS = false;
-    private static boolean ADVERTISE_MODE = true;
+    private static boolean ADVERTISE_MODE = false;
 
     @Override
     public void onStart(String... params) {
