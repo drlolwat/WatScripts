@@ -4,6 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
@@ -77,11 +78,74 @@ public class TaskManager {
     }
 
     public void getNewTask() {
+        getNewTask(false);
+    }
+
+    public void getNewTask(boolean noQuest) {
         preTaskSelection();
+        boolean quest = !noQuest && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3;
+
+        if(!quest) {
+            for (WatTask task : tasks) {
+                if (task.trainsSkill().equals(Skill.HITPOINTS))
+                    continue;
+
+                if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
+                    if (task.canPerformTask()) {
+                        Logger.log("TaskManager: Selected task: " + task.getName());
+                        setCurrentTask(task);
+                        return;
+                    }
+                }
+            }
+        } else {
+            for (Map.Entry<Quest, WatTask> questTask : questTasks.entrySet()) {
+                if (questTask.getValue().canPerformTask() && Quests.isFinished(questTask.getValue().completesQuest())) {
+                    Logger.log("TaskManager: Selected quest task: " + questTask.getValue().getName());
+                    setCurrentTask(questTask.getValue());
+                    return;
+                }
+            }
+
+            Logger.log(Color.red, "TaskManager: no quest tasks available, selecting a regular task");
+            getNewTask(true);
+        }
+
+        Logger.error("TaskManager: could not select a task");
     }
 
     public void getSpecificSkillTask(Skill sk) {
         preTaskSelection();
+        if(sk.equals(Skill.HITPOINTS)) {
+            List<WatTask> pool;
+            if(ConfigManager.getInstance().isTradeUnlocked()) {
+                pool = unrestrictedMoneyMakingTasks;
+            } else {
+                pool = restrictedMoneyMakingTasks;
+            }
+
+            Collections.shuffle(pool);
+            for(WatTask t : pool) {
+                if(t.canPerformTask()) {
+                    Logger.log(Color.green, "TaskManager: Selected money making task: " + t.getName());
+                    setCurrentTask(t);
+                    return;
+                }
+            }
+        }
+        else {
+            for(WatTask t : tasksBySkill.get(sk)) {
+                if(ConfigManager.getInstance().getSkillTarget(t.trainsSkill()) > Skills.getRealLevel(t.trainsSkill()) &&
+                        t.canPerformTask()) {
+
+                    Logger.log(Color.green, "TaskManager: Selected task for skill: " + sk.getName() + " - " + t.getName());
+                    setCurrentTask(t);
+                    return;
+                }
+            }
+        }
+
+        Logger.error("TaskManager: could not select a specific task for skill: " + sk.getName());
     }
 
     public WatTask getCurrentTask() {
@@ -96,6 +160,16 @@ public class TaskManager {
         currentTask = value;
         taskSelectedAt = Instant.now().getEpochSecond();
         taskRunTime = runtime > 0 ? runtime : Calculations.random(1200, 6750);
+    }
+
+    public void shuffleQuestTasks() {
+        List<Map.Entry<Quest, WatTask>> questTaskList = new ArrayList<>(questTasks.entrySet());
+        Collections.shuffle(questTaskList);
+
+        questTasks.clear();
+        for (Map.Entry<Quest, WatTask> entry : questTaskList) {
+            questTasks.put(entry.getKey(), entry.getValue());
+        }
     }
 
     public void resetBreaks() {
@@ -193,6 +267,9 @@ public class TaskManager {
                 Logger.log("Going on break after " + tasksUntilBreak + " more completed task(s)");
             }
         }
+
+        Collections.shuffle(tasks);
+        shuffleQuestTasks();
     }
 
     private void setupAllTasks() {
