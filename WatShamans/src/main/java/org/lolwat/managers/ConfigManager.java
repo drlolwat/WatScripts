@@ -178,7 +178,6 @@ public class ConfigManager {
     public int getConfigInt(String key) {
         return Integer.parseInt(config.get(key).toString());
     }
-
     public double getConfigDouble(String key) {
         return Double.parseDouble(config.get(key).toString());
     }
