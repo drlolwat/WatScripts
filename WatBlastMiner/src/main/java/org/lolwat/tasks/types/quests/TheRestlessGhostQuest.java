@@ -20,6 +20,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
@@ -75,7 +76,7 @@ public class TheRestlessGhostQuest implements WatTask {
         }
 
         if (!lumbridgeChurch.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(lumbridgeChurch, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(lumbridgeChurch, this));
             return;
         }
 
@@ -88,7 +89,7 @@ public class TheRestlessGhostQuest implements WatTask {
 
     private void acquireAmulet(WatAIO instance) {
         if (!lumbridgeSwamp.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(lumbridgeSwamp, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(lumbridgeSwamp, this));
             return;
         }
 
@@ -102,7 +103,7 @@ public class TheRestlessGhostQuest implements WatTask {
     // Go to graveyard and interact with coffin then speak to ghost
     private void talkToRestlessGhost(WatAIO instance) {
         if (!graveyard.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(graveyard, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(graveyard, this));
             return;
         }
 
@@ -138,7 +139,7 @@ public class TheRestlessGhostQuest implements WatTask {
 
     private void retrieveSkull(WatAIO instance) {
         if (!wizardTower.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(wizardTower, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(wizardTower, this));
             return;
         }
 
@@ -154,7 +155,7 @@ public class TheRestlessGhostQuest implements WatTask {
 
     private void completeQuest(WatAIO instance) {
         if (!graveyard.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(graveyard, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(graveyard, this));
             return;
         }
 

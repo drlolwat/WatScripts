@@ -18,6 +18,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -91,7 +92,7 @@ public class TraversalTask implements WatTask {
 
                     if(Dialogues.inDialogue() && Dialogues.getOptions() != null && Dialogues.chooseOption("Yes")) {
                         Sleep.sleep(1000, 2000);
-                        instance.currentTask = postTask;
+                        TaskManager.getInstance().setCurrentTask(postTask);
                         return;
                     }
                 }
@@ -107,11 +108,11 @@ public class TraversalTask implements WatTask {
                     defender = Inventory.get(x -> x.getName().contains("defender")).getName();
                 }
 
-                instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
+                TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
                     {
                         put("Lobster", 20);
                     }
-                }, defender);
+                }, defender));
                 return;
             }
         }
@@ -124,13 +125,13 @@ public class TraversalTask implements WatTask {
                 }
 
                 Logger.log("Reached target: X:" + target.getX() + ", Y:" + target.getY());
-                instance.currentTask = postTask;
+                TaskManager.getInstance().setCurrentTask(postTask);
                 return;
             }
         } else {
             if(area.contains(Players.getLocal())) {
                 Logger.log("Reached target area for task " + postTask.getName());
-                instance.currentTask = postTask;
+                TaskManager.getInstance().setCurrentTask(postTask);
                 return;
             }
         }

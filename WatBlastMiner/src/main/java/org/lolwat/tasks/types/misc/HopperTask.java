@@ -8,6 +8,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -51,7 +52,7 @@ public class HopperTask implements WatTask {
             WorldHopper.hopWorld(world);
         }
 
-        instance.currentTask = postTask;
+        TaskManager.getInstance().setCurrentTask(postTask);
     }
 
     @Override
