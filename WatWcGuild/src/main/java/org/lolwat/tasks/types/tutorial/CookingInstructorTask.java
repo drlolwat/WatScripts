@@ -12,6 +12,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
@@ -33,34 +34,34 @@ public class CookingInstructorTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        if(!area.contains(Players.getLocal()) && !Inventory.contains("Bread")) {
-            instance.currentTask = new TraversalTask(area, this);
+        if (!area.contains(Players.getLocal()) && !Inventory.contains("Bread")) {
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
             return;
         }
 
-        if(!Inventory.contains("Bread")) {
-            if(HintArrow.exists()) {
-                if(HintArrow.getType().equals(HintArrowType.NPC)) {
+        if (!Inventory.contains("Bread")) {
+            if (HintArrow.exists()) {
+                if (HintArrow.getType().equals(HintArrowType.NPC)) {
                     DialogueUtils.talkTo("Master Chef");
                 } else {
-                    if(Inventory.contains("Bread dough")) {
+                    if (Inventory.contains("Bread dough")) {
                         GameObject range = GameObjects.closest("Range");
-                        if(range != null && range.interact("Cook")) {
+                        if (range != null && range.interact("Cook")) {
                             Sleep.sleepUntil(() -> (ready && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving()), 10000);
                             Sleep.sleep(50, 120);
                         }
                     }
                 }
             } else {
-                if(Inventory.contains("Pot of flour") && Inventory.contains("Bucket of water")) {
-                    if(Inventory.interact("Pot of flour") && Inventory.interact("Bucket of water")) {
+                if (Inventory.contains("Pot of flour") && Inventory.contains("Bucket of water")) {
+                    if (Inventory.interact("Pot of flour") && Inventory.interact("Bucket of water")) {
                         Sleep.sleepUntil(() -> !Inventory.contains("Pot of flour") && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
                         Sleep.sleep(50, 120);
                     }
                 }
             }
         } else {
-            instance.currentTask = new QuestGuideTask();
+            TaskManager.getInstance().setCurrentTask(new QuestGuideTask());
         }
     }
 

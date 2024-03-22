@@ -8,6 +8,7 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
@@ -56,7 +57,7 @@ public class SelectAppearanceTask implements WatTask {
             if(acc != null && acc.isVisible() && acc.hasAction("Confirm")) {
                 if(acc.interact()) {
                     Sleep.sleepUntil(() -> !acc.isVisible(), 6750);
-                    instance.currentTask = new GuideTask();
+                    TaskManager.getInstance().setCurrentTask(new GuideTask());
                 }
             }
         }

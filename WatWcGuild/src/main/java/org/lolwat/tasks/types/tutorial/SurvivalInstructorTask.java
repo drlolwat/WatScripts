@@ -16,6 +16,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
@@ -52,7 +53,7 @@ public class SurvivalInstructorTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (!area.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(area, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
             return;
         }
 
@@ -61,7 +62,7 @@ public class SurvivalInstructorTask implements WatTask {
         }
 
         if (hasCookedFish) {
-            instance.currentTask = new CookingInstructorTask();
+            TaskManager.getInstance().setCurrentTask(new CookingInstructorTask());
             return;
         }
 

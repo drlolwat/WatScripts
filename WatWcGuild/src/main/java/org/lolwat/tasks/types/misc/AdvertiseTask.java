@@ -13,6 +13,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -52,7 +53,7 @@ public class AdvertiseTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(!spamZone.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(spamZone, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(spamZone, this));
             return;
         }
 
@@ -63,7 +64,7 @@ public class AdvertiseTask implements WatTask {
 
         if(count >= 20) {
             count = 0;
-            instance.currentTask = new HopperTask(0, this);
+            TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
             return;
         }
 

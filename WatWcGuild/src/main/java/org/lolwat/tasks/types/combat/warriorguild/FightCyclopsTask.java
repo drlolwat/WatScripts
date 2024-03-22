@@ -23,6 +23,7 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
@@ -126,18 +127,18 @@ public class FightCyclopsTask implements WatTask {
 
         if(!Inventory.contains("Warrior guild token")) {
             Logger.log("We need tokens so we'll fight for 'em.");
-            instance.currentTask = new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
                 {
                     put("Lobster", 20);
                 }
-            }, latestDefender);
+            }, latestDefender));
             return;
         }
 
         if(!inventoryRequired.isEmpty()) {
             for (Map.Entry<String, Integer> f : inventoryRequired.entrySet()) {
                 if (!Inventory.contains(f.getKey())) {
-                    instance.currentTask = new BankingTask(inventoryRequired, null, 1, this);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired, null, 1, this));
                     return;
                 }
             }
@@ -161,7 +162,7 @@ public class FightCyclopsTask implements WatTask {
             if(!talkedToLaurelai) {
                 Area a = new Tile(2909, 9971, 0).getArea(3);
                 if(!a.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(a, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(a, this));
                     return;
                 }
 
@@ -186,7 +187,7 @@ public class FightCyclopsTask implements WatTask {
         }
 
         if (!fightingArea.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(fightingArea, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(fightingArea, this));
             return;
         }
 
@@ -223,7 +224,7 @@ public class FightCyclopsTask implements WatTask {
         }
 
         if(Inventory.isFull()) {
-            instance.currentTask = new BankingTask(inventoryRequired, null, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired, null, 1, this));
             return;
         }
 
@@ -240,7 +241,7 @@ public class FightCyclopsTask implements WatTask {
 
                     if(Inventory.contains(latestDefender) && !latestDefender.contains("Dragon")) {
                         if(!lobbyArea.contains(Players.getLocal())) {
-                            instance.currentTask = new TraversalTask(lobbyArea, this);
+                            TaskManager.getInstance().setCurrentTask(new TraversalTask(lobbyArea, this));
                             return;
                         }
                     }
@@ -259,7 +260,8 @@ public class FightCyclopsTask implements WatTask {
 
         if(latestDefender.equalsIgnoreCase(lookingForDefender)) {
             Logger.log("We got the defender we were looking for!");
-            instance.currentTask = null;
+            Logger.log("We are going to continue training " + trainingSkill.getName());
+            TaskManager.getInstance().getSpecificSkillTask(trainingSkill);
             return;
         }
 

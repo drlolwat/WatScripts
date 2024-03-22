@@ -16,6 +16,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
@@ -67,19 +68,19 @@ public class HighAlchemyTask implements WatTask {
 
         if (!MagicUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
             Logger.log("We need to grab runes...");
-            instance.currentTask = new BankingTask(requiredItems, null, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
             return;
         }
 
         if (!Inventory.contains(item)) {
             Logger.log("We need to grab HA target (" + item + ")");
-            instance.currentTask = new BankingTask(requiredItems, null, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
             return;
         }
 
         for(String s : clothesRequired().keySet()) {
             if(!Equipment.contains(s)) {
-                instance.currentTask = new BankingTask(requiredItems, null, 1, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
                 return;
             }
         }

@@ -9,6 +9,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 
@@ -64,7 +65,7 @@ public class SelectUsernameTask implements WatTask {
             if(confirmName != null && confirmName.isVisible() && confirmName.hasAction("Set name")) {
                 if(confirmName.interact("Set name")) {
                     Sleep.sleep(500, 1200);
-                    instance.currentTask = new SelectAppearanceTask();
+                    TaskManager.getInstance().setCurrentTask(new SelectAppearanceTask());
                 }
             }
         }
