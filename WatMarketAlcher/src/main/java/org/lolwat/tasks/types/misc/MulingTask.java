@@ -14,6 +14,7 @@ import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -103,7 +104,7 @@ public class MulingTask implements WatTask {
 
         if(!active) {
             if(retries > 5) {
-                instance.muleConnectionFailed = true;
+                ConfigManager.getInstance().setMuleConnectionFailed(true);
                 // put GP back
                 if(!Bank.isOpen()) {
                     Bank.open();
