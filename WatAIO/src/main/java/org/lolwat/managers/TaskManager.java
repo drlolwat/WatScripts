@@ -132,7 +132,7 @@ public class TaskManager {
     }
 
     private void preTaskSelection() {
-        if(!ConfigManager.getInstance().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
+        if(!ConfigManager.getInstance().hasLoadedProfile() || (getCheckedHoursAt() == 0 || (Instant.now().getEpochSecond() - getCheckedHoursAt()) >= 3600)) {
             watAIO.disableLoginManager();
             ConfigManager.getInstance().getWsProfile(0);
             ConfigManager.getInstance().setHasLoadedProfile(true);
