@@ -16,6 +16,7 @@ import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -38,16 +39,16 @@ public class BondingTask implements WatTask {
     public void execute(WatAIO instance) {
         boolean requiresHop = false;
         if(!BankLocation.GRAND_EXCHANGE.getArea(5).contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(5), this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(5), this));
             return;
         }
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                 {
                     put("Old school bond (untradeable)", 1);
                 }
-            }, new HashMap<>(), 1, this);
+            }, new HashMap<>(), 1, this));
             return;
         }
 
@@ -90,12 +91,12 @@ public class BondingTask implements WatTask {
         }
 
         if(requiresHop) {
-            instance.currentTask = new LogoutTask(false, false, new HopperTask(0, postTask));
+            TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false, new HopperTask(0, postTask)));
             return;
         }
 
         Logger.error("For some reason, BondingTask did not require a hop.");
-        instance.currentTask = postTask;
+        TaskManager.getInstance().setCurrentTask(postTask);
     }
 
     @Override

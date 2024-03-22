@@ -17,6 +17,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
@@ -58,7 +59,7 @@ public class WoodcuttingTask implements WatTask {
         if ((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
             WatConfig.incrementToolFailures();
             Logger.log("I don't own the best hatchet available for me: " + hatchet);
-            instance.currentTask = new BankingTask(new HashMap<String, Integer>() { { put(hatchet, 1); }}, sellList, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() { { put(hatchet, 1); }}, sellList, 1, this));
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -74,7 +75,7 @@ public class WoodcuttingTask implements WatTask {
                 if (!dropping) {
                     Logger.log("My inventory is full, to the bank!");
                     lastGotLog = 0;
-                    instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, this);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellList, 1, this));
                     return;
                 } else {
                     for (Item it : Inventory.all()) {
@@ -87,7 +88,7 @@ public class WoodcuttingTask implements WatTask {
             }
 
             if (!area.contains(Players.getLocal())) {
-                instance.currentTask = new TraversalTask(area, this);
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
                 return;
             }
 
@@ -95,7 +96,7 @@ public class WoodcuttingTask implements WatTask {
                 return;
 
             if (treeType.equals(TreeType.TREE) && GenericUtils.tooManyPlayers(5, 4)) {
-                instance.currentTask = new HopperTask(0, this);
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
                 return;
             }
 
@@ -103,10 +104,10 @@ public class WoodcuttingTask implements WatTask {
             if (tree != null && tree.interact()) {
                 Mouse.move();
                 Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 60000);
-            } else { // hop if no trees are around and it's been 30 seconds since our last log
+            } else {
                 Sleep.sleep(5000, 10000);
                 if (lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
-                    instance.currentTask = new HopperTask(0, this);
+                    TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
                     lastGotLog = 0;
                 }
             }

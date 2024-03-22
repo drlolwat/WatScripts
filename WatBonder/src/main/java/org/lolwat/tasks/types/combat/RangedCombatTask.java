@@ -19,6 +19,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.ranged.RangedUtils;
 import org.lolwat.tasks.WatTask;
@@ -67,7 +68,7 @@ public class RangedCombatTask implements WatTask {
             if(!Equipment.contains(n)) {
                 if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
                     Logger.error("RangedCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + clothesRequired().get(n) + ")");
-                    instance.currentTask = new BankingTask(null, null, 1, this);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, this));
                     return;
                 } else {
                     if(!GenericUtils.equipItem(n, null)) {
@@ -80,7 +81,7 @@ public class RangedCombatTask implements WatTask {
         for(String n : inventoryRequired().keySet()) {
             if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
                 Logger.error("RangedCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + inventoryRequired().get(n) + ")");
-                instance.currentTask = new BankingTask(inventoryRequired(), null, 1, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this));
                 return;
             }
         }
@@ -88,7 +89,7 @@ public class RangedCombatTask implements WatTask {
         if (!food.isEmpty()) {
             if(Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
                 Logger.error("RangedCombatTask is missing food");
-                instance.currentTask = new BankingTask(inventoryRequired(), null, Calculations.random(1, 5), this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, Calculations.random(1, 5), this));
                 return;
             }
 
@@ -101,7 +102,7 @@ public class RangedCombatTask implements WatTask {
         }
 
         if (!zone.contains(Players.getLocal()) && !Players.getLocal().isInCombat()) {
-            instance.currentTask = new TraversalTask(zone, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(zone, this));
             return;
         }
 

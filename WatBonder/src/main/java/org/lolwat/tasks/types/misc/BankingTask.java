@@ -18,6 +18,8 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
@@ -74,7 +76,7 @@ public class BankingTask implements WatTask {
         if (NPCs.all("Banker").isEmpty() && GameObjects.all("Bank booth").isEmpty()) {
             GameObject chest = GameObjects.closest("Open chest");
             if(chest == null || !chest.hasAction("Bank")) {
-                instance.currentTask = new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this);
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this));
                 return;
             }
         }
@@ -98,7 +100,7 @@ public class BankingTask implements WatTask {
 
         Logger.log("Sell Checker: starting");
 
-        boolean allowedToSell = WatAIO.TRADE_UNLOCKED;
+        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked();
 
         Logger.log("Trade unrestricted: " + allowedToSell);
 
@@ -153,7 +155,7 @@ public class BankingTask implements WatTask {
                 }
 
                 if (performSelling) {
-                    instance.currentTask = new GrandExchangeTask("Selling at G.E", true, sellingItems, this);
+                    TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Selling at G.E", true, sellingItems, this));
                     return;
                 }
             } else {
@@ -232,19 +234,19 @@ public class BankingTask implements WatTask {
 
                             int tokens = Bank.count("Warrior guild token") + Inventory.count("Warrior guild token");
                             if(tokens >= 200) {
-                                instance.currentTask = new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
+                                TaskManager.getInstance().setCurrentTask(new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                     {
                                         put("Lobster", 20);
                                     }
-                                }, latestObtained);
+                                }, latestObtained));
                                 return;
                             }
                             else {
-                                instance.currentTask = new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
+                                TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                     {
                                         put("Lobster", 20);
                                     }
-                                }, latestObtained);
+                                }, latestObtained));
                             }
                             return;
                         }
@@ -413,7 +415,7 @@ public class BankingTask implements WatTask {
                 Sleep.sleep(100, 200);
                 Bank.close();
 
-                instance.currentTask = new GrandExchangeTask("Buying required items", false, buyingRequired, this);
+                TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Buying required items", false, buyingRequired, this));
                 return;
             } else {
                 boolean canSell = false;
@@ -424,7 +426,7 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                if (canSell && instance.TRADE_UNLOCKED) {
+                if (canSell && ConfigManager.getInstance().isTradeUnlocked()) {
                     checkAndSet(BankMode.NOTE);
                     Logger.log("Exchanger: Need to sell items");
                     if (Inventory.isFull()) {
@@ -455,16 +457,15 @@ public class BankingTask implements WatTask {
 
                             Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
                             int totalPrice = finalPrice;
-                            instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                            TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                                 {
                                     put("Coins", totalPrice);
                                 }
-                            }, this);
+                            }, this));
                             return;
                         } else {
                             Logger.log("We are out of GP, time to go and make some.");
-                            WatAIO.NEED_MM = true;
-                            instance.currentTask = null;
+                            TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS);
                             return;
                         }
                     }
@@ -482,17 +483,16 @@ public class BankingTask implements WatTask {
                         Sleep.sleep(100, 200);
                         Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
                         int totalPrice = finalPrice;
-                        instance.currentTask = new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                        TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                             {
                                 put("Coins", totalPrice);
                             }
-                        }, this);
+                        }, this));
                         return;
                     } else {
                         // Restricted moneymaker time...
-                        Logger.log("We are out of GP, time to go and make some.");
-                        WatAIO.NEED_MM = true;
-                        instance.currentTask = null;
+                        Logger.log("We are out of GP, time to go and make some. (Restricted)");
+                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS);
                         return;
                     }
                 }
@@ -500,14 +500,14 @@ public class BankingTask implements WatTask {
 
             if (!m.isEmpty()) {
                 Logger.log("Exchanger: Handing off to G.E task");
-                instance.currentTask = new GrandExchangeTask("Selling at G.E", true, m, this);
+                TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Selling at G.E", true, m, this));
                 return;
             }
         }
 
         Logger.log("Exchanger: Finished checks");
 
-        if(!instance.MULE_DEAD && instance.TRADE_UNLOCKED) {
+        if(!instance.MULE_DEAD && ConfigManager.getInstance().isTradeUnlocked()) {
             int invMoney = 0;
             int bankMoney = 0;
 
@@ -519,8 +519,8 @@ public class BankingTask implements WatTask {
                 bankMoney = Bank.get("Coins").getAmount();
             }
 
-            if((invMoney + bankMoney) >= instance.MULE_TRIGGER) {
-                int toWithdraw = (bankMoney - invMoney) - instance.MULE_SAFETY_NET;
+            if((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_trigger")) {
+                int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("mule_safety_net");
                 if(toWithdraw > 0) {
                     Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
                     if(Inventory.isFull() || Inventory.emptySlotCount() < 2) {
@@ -539,32 +539,6 @@ public class BankingTask implements WatTask {
         if(postTask != null && !(postTask instanceof MulingTask)) {
             depositNonRequired();
         }
-
-        // did we really need to double check here?
-        /*if(postTask != null) {
-            for (String s : postTask.clothesRequired().keySet()) {
-                if(!Equipment.contains(s)) {
-                    if (Bank.contains(s)) {
-                        Bank.withdraw(s, 1);
-                        Sleep.sleepUntil(() -> Inventory.contains(s), 1500);
-                    }
-
-                    if (Inventory.contains(s)) {
-                        Inventory.get(s).interact("Wear");
-                        Sleep.sleepUntil(() -> Equipment.contains(s), 1500);
-                    }
-                }
-            }
-        }
-
-        for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-            String itemName = entry.getKey();
-            int requiredQuantity = entry.getValue();
-            if (!Inventory.contains(itemName) || Inventory.count(itemName) < requiredQuantity) {
-                Bank.withdraw(itemName, requiredQuantity);
-                Sleep.sleepUntil(() -> Inventory.contains(itemName) && Inventory.count(itemName) == requiredQuantity, 1500);
-            }
-        }*/
 
         // calculate net worth
         if(instance.NET_WORTH_GENERATED == 0) {
@@ -605,7 +579,7 @@ public class BankingTask implements WatTask {
                 Bank.close();
             }
 
-            instance.currentTask = postTask;
+            TaskManager.getInstance().setCurrentTask(postTask);
         }
     }
 
