@@ -255,6 +255,16 @@ public class GenericUtils {
         }
     }
 
+    public static <K, V> Map<K, V> shuffleMap(Map<K, V> map) {
+        List<Map.Entry<K, V>> entryList = new ArrayList<>(map.entrySet());
+        Collections.shuffle(entryList);
+        Map<K, V> shuffledMap = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : entryList) {
+            shuffledMap.put(entry.getKey(), entry.getValue());
+        }
+        return shuffledMap;
+    }
+
     public static boolean isOnTutorial() {
         return (PlayerSettings.getConfig(281) != 1000);
     }
