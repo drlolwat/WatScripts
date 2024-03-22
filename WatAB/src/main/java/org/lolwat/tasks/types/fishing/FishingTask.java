@@ -13,6 +13,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.fishing.FishingUtils;
@@ -69,7 +70,7 @@ public class FishingTask implements WatTask {
         }
 
         if(!hasItems) {
-            instance.currentTask = new BankingTask(requiredItems, sellingItems, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, sellingItems, 1, this));
         }
         else {
             if (!Tab.INVENTORY.isOpen()) {
@@ -78,7 +79,7 @@ public class FishingTask implements WatTask {
 
             if(Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask(requiredItems, sellingItems, 1, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, sellingItems, 1, this));
                 return;
             }
 
@@ -88,7 +89,7 @@ public class FishingTask implements WatTask {
             }
 
             if(!area.contains(Players.getLocal())) {
-                instance.currentTask = new TraversalTask(area, this);
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
                 return;
             }
 

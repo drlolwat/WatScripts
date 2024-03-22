@@ -12,6 +12,7 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
@@ -72,7 +73,7 @@ public class RomeoJulietQuest implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(Inventory.isFull()) {
-            instance.currentTask = new BankingTask(null, null, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, this));
             return;
         }
 
@@ -85,7 +86,7 @@ public class RomeoJulietQuest implements WatTask {
                 }
 
                 if (!romeoArea.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(romeoArea, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(romeoArea, this));
                     return;
                 }
 
@@ -107,7 +108,7 @@ public class RomeoJulietQuest implements WatTask {
 
             case JULIET: {
                 if (!julietArea.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(julietArea, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(julietArea, this));
                     return;
                 }
 
@@ -132,7 +133,7 @@ public class RomeoJulietQuest implements WatTask {
 
             case ROMEO_LETTER: {
                 if (!romeoArea.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(romeoArea, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(romeoArea, this));
                     return;
                 }
 
@@ -159,7 +160,7 @@ public class RomeoJulietQuest implements WatTask {
 
             case FATHER_LAWRENCE: {
                 if (!lawrenceArea.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(lawrenceArea, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(lawrenceArea, this));
                     return;
                 }
 
@@ -184,12 +185,12 @@ public class RomeoJulietQuest implements WatTask {
                 HashMap<String, Integer> req = new HashMap<String, Integer>() { { put("Cadava berries", 1); } };
                 if(!Inventory.contains("Cadava potion")) {
                     if (!Inventory.contains("Cadava berries") || (Inventory.contains("Cadava berries") && Inventory.get("Cadava berries").isNoted())) {
-                        instance.currentTask = new BankingTask(req, null, 1,this);
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(req, null, 1,this));
                         return;
                     }
 
                     if (!potionArea.contains(Players.getLocal())) {
-                        instance.currentTask = new TraversalTask(potionArea, this);
+                        TaskManager.getInstance().setCurrentTask(new TraversalTask(potionArea, this));
                         return;
                     }
 
@@ -215,7 +216,7 @@ public class RomeoJulietQuest implements WatTask {
 
             case JULIET_POTION: {
                 if (!julietArea.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(julietArea, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(julietArea, this));
                     return;
                 }
 
@@ -248,7 +249,7 @@ public class RomeoJulietQuest implements WatTask {
 
             case CRYPT: {
                 if (!romeoArea.contains(Players.getLocal())) {
-                    instance.currentTask = new TraversalTask(romeoArea, this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(romeoArea, this));
                     return;
                 }
 
