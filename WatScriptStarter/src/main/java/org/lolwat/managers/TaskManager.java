@@ -282,6 +282,7 @@ public class TaskManager {
             }
         }
 
+        tasksUntilBreak--;
         Collections.shuffle(tasks);
         shuffleQuestTasks();
         return false;
