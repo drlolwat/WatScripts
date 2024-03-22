@@ -60,13 +60,14 @@ public class TaskManager {
     private double checkedHoursAt;
 
     public TaskManager(WatAIO instance) {
+        setInstance(this);
         watAIO = instance;
         setupAllTasks();
         resetBreaks();
         setCheckedHoursAt(0);
 
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks and " + getQuests().size() + " total quests.");
-        setInstance(this);
+        preTaskSelection();
     }
 
     public static TaskManager getInstance() {
