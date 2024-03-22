@@ -7,36 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="move some things.. have to use class injection still">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/AdvertiseTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/AdvertiseTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BondingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BondingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BreakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/BezierMouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/BezierMouse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/HopperTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/HopperTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/LogoutTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/LogoutTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/MulingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/TraversalTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/CooksAssistantQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/CooksAssistantQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/DoricsQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/DoricsQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/GoblinDiplomacyQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/ImpCatcherQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/ImpCatcherQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/RomeoJulietQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/RomeoJulietQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/SheepShearerQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/SheepShearerQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/TheRestlessGhostQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/TheRestlessGhostQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/WitchsPotionQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/quests/WitchsPotionQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/BrotherBraceTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/BrotherBraceTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/CombatInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/CombatInstructorTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/CookingInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/CookingInstructorTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/GuideTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/GuideTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/MagicInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/MagicInstructorTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/MiningInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/MiningInstructorTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/QuestGuideTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/QuestGuideTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/SelectAppearanceTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/SelectAppearanceTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/SelectUsernameTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/SelectUsernameTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/SurvivalInstructorTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/tutorial/SurvivalInstructorTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +151,7 @@
       <workItem from="1708189604594" duration="1842000" />
       <workItem from="1708235596190" duration="1419000" />
       <workItem from="1708301151554" duration="6460000" />
-      <workItem from="1710639896628" duration="23354000" />
+      <workItem from="1710639896628" duration="36321000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -519,7 +496,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="369" />
+    <option name="localTasksCounter" value="383" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -566,20 +543,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="SelectUsernameTask: use new Keyboard class" />
-    <MESSAGE value="SelectUsernameTask: remove commented old ger*an code" />
-    <MESSAGE value="WatAIO: new cfg variable faster_quests: double chance of questing task" />
-    <MESSAGE value="WatAIO: fix logic for MM task selection" />
-    <MESSAGE value="ScavengingTask: fix Skill" />
-    <MESSAGE value="SelectAppearanceTask: more humanlike" />
-    <MESSAGE value="AdvertiseTask: it is what it is, dev use only" />
-    <MESSAGE value="lolwat" />
-    <MESSAGE value="ConfigManager: refactor" />
-    <MESSAGE value="GenericUtils: add isOnTutorial method" />
-    <MESSAGE value="TaskManager: move all logic to class based non static accessors" />
-    <MESSAGE value="WatAIO: move logic to ConfigManager, TaskManager, TODO" />
-    <MESSAGE value="TaskManager: singleton" />
-    <MESSAGE value="ConfigManager: singleton" />
     <MESSAGE value="WatAIO project: Major framework update. Not finished, but compiling." />
     <MESSAGE value="Net worth calc: use ConfigManager" />
     <MESSAGE value="WatAIO: move singular_items, emergency_sell to ItemUtils" />
@@ -591,7 +554,21 @@
     <MESSAGE value="MulingTask: no longer print stack" />
     <MESSAGE value="no idea but intellij says theres diff" />
     <MESSAGE value="move some things.. have to use class injection still" />
-    <option name="LAST_COMMIT_MESSAGE" value="move some things.. have to use class injection still" />
+    <MESSAGE value="WatAIO: essential tasks cannot be stopped (traverse, banking, etc)" />
+    <MESSAGE value="ConfigManager: add helper for essentials" />
+    <MESSAGE value="TaskManager: fix checking hive profile each task" />
+    <MESSAGE value="TaskManager: fix not setting profile as loaded" />
+    <MESSAGE value="TaskManager: use the nice accessor" />
+    <MESSAGE value="BankingTask: new framework for conf" />
+    <MESSAGE value="ConfigManager: muling options" />
+    <MESSAGE value="GenericUtils: hashmap shuffler" />
+    <MESSAGE value="TaskManager: task evaluation / selection" />
+    <MESSAGE value="WoodcuttingTask: changes for moneymaking" />
+    <MESSAGE value="TaskManager: remove todos" />
+    <MESSAGE value="TaskManager: fix login manager" />
+    <MESSAGE value="MeleeUtils: fix profile json key" />
+    <MESSAGE value="fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

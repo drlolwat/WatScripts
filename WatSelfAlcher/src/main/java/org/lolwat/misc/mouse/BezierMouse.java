@@ -105,7 +105,6 @@ public class BezierMouse implements MouseAlgorithm {
     }
 
     private void sleep(int millis) {
-        millis += ConfigManager.getInstance().getConfigInt("mouse_diff");
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
