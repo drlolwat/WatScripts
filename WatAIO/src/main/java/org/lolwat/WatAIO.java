@@ -102,7 +102,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        //TODO a method for this
         if(WatConfig.getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
             if(!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof TraversalTask) &&
