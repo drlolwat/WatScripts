@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class ConfigManager {
@@ -25,16 +26,19 @@ public class ConfigManager {
     private boolean isTradeUnlocked;
     private int netWorth;
     private double netWorthGeneratedAt;
-    private boolean firstStart = true;
-    private boolean waitingForResponse = false;
+    private boolean firstStart;
+    private boolean waitingForResponse;
     private HashMap<String, Integer> levelUps;
-    private boolean muleConnectionFailed = false;
+    private boolean muleConnectionFailed;
 
     public ConfigManager(WatAIO instance) {
         watAIO = instance;
         config = new HashMap<>();
         hasLoaded = false;
-        setInstance(this);
+        levelUps = new HashMap<>();
+        firstStart = true;
+        waitingForResponse = false;
+        muleConnectionFailed = false;
     }
 
     private JsonObject getDefaultProfile() {
@@ -66,6 +70,12 @@ public class ConfigManager {
         defaultProfile.addProperty("faster_quests", false);
 
         return defaultProfile;
+    }
+
+    public void printConfigContents() {
+        for (Map.Entry<Object, Object> entry : config.entrySet()) {
+            Logger.log("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
     }
 
     public void loadFromProfile(String p) {
@@ -144,6 +154,7 @@ public class ConfigManager {
                     config.put("profile_" + key, jsonObject.get(key));
                 }
 
+                printConfigContents();
                 Logger.log(Color.green, (breaking > 0) ? "Updated account hivetime due to break" :"Loaded unique account profile from BotBuddy Hive");
 
             } else {
@@ -203,8 +214,8 @@ public class ConfigManager {
         return instance;
     }
 
-    private void setInstance(ConfigManager instance) {
-        ConfigManager.instance = instance;
+    public static void setInstance(ConfigManager inst) {
+        instance = inst;
     }
 
     public boolean hasLoadedProfile() {
