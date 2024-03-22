@@ -47,7 +47,6 @@ import java.awt.image.BufferedImage;
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
-    private String selectedProfile;
 
     @Override
     public void onStart(String... params) {
@@ -65,12 +64,24 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
-        selectedProfile = profile;
+        if (ConfigManager.getInstance() == null) {
+            Logger.log("Constructing ConfigManager singleton.");
+            ConfigManager.setInstance(new ConfigManager(this));
+            ConfigManager.getInstance().setLevelUps(new HashMap<>());
+            ConfigManager.getInstance().setNetWorth(0);
+            ConfigManager.getInstance().setNetWorthGeneratedAt(0);
+            ConfigManager.getInstance().loadFromProfile(profile);
+        }
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
         BezierMouse m = new BezierMouse();
         Mouse.setMouseAlgorithm(m);
+
+        if (TaskManager.getInstance() == null) {
+            Logger.log("Constructing TaskManager singleton.");
+            TaskManager.setInstance(new TaskManager(this));
+        }
 
         try {
             image = ImageIO.read(new URL("https://api.botbuddy.net/waio2.png")); //300x143
@@ -84,22 +95,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public int onLoop() {
-        if(ConfigManager.getInstance() == null) {
-            Logger.log("Constructing ConfigManager singleton.");
-            ConfigManager.setInstance(new ConfigManager(this));
-            ConfigManager.getInstance().setLevelUps(new HashMap<>());
-            ConfigManager.getInstance().setNetWorth(0);
-            ConfigManager.getInstance().setNetWorthGeneratedAt(0);
-            ConfigManager.getInstance().loadFromProfile(selectedProfile);
-            return 3000;
-        }
-
-        if(TaskManager.getInstance() == null) {
-            Logger.log("Constructing TaskManager singleton.");
-            TaskManager.setInstance(new TaskManager(this));
-            return 3000;
-        }
-
         if (!Client.isLoggedIn()) {
             if (TaskManager.getInstance().getCurrentTask() == null || !(TaskManager.getInstance().getCurrentTask() instanceof BreakingTask)) {
                 Logger.log("Enabling login manager");
@@ -113,8 +108,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        if(WatConfig.getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
-            if(!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
+        if (WatConfig.getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
+            if (!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof TraversalTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof BankingTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof MiningTask) &&
@@ -167,30 +162,25 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             return 2500;
         }
 
-        if(!Walking.isRunEnabled() && Walking.getRunEnergy() >= Calculations.random(75, 100)) {
+        if (!Walking.isRunEnabled() && Walking.getRunEnergy() >= Calculations.random(75, 100)) {
             Walking.toggleRun();
             Sleep.sleep(50, 120);
         }
 
         // double check here
         if (TaskManager.getInstance().getCurrentTask() != null) {
-            if(!Client.isLoggedIn() && TaskManager.getInstance().getCurrentTask().requiresLogin()) {
+            if (!Client.isLoggedIn() && TaskManager.getInstance().getCurrentTask().requiresLogin()) {
                 Logger.log("Waiting for login...");
                 return 1000;
             }
 
             TaskManager.getInstance().getCurrentTask().execute(this);
 
-            //if(!isBlockedTask()) {
-            //    GenericUtils.moveMouse();
-            //}
-
-            // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
             return TaskManager.getInstance().getCurrentTask() != null ? (TaskManager.getInstance().getCurrentTask().loopTime() > 0 ?
                     TaskManager.getInstance().getCurrentTask().loopTime() : 500) : 500;
         }
 
-        return 1000;
+        return 100;
     }
 
     @Override
