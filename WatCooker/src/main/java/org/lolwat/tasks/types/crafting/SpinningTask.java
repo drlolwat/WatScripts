@@ -14,6 +14,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.misc.types.crafting.CraftingType;
@@ -58,13 +59,13 @@ public class SpinningTask implements WatTask {
 
         for(String it : requiredItems.keySet()) {
             if(!Inventory.contains(it)) {
-                instance.currentTask = new BankingTask(requiredItems, toSell, inventoryLoads, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, toSell, inventoryLoads, this));
                 return;
             }
         }
 
         if(!selectedLocation.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(selectedLocation, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation, this));
             return;
         }
 

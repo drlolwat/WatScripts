@@ -7,6 +7,7 @@ import org.dreambot.api.input.mouse.algorithm.StandardMouseAlgorithm;
 import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.Calculations;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 
 import java.awt.*;
 
@@ -104,7 +105,7 @@ public class BezierMouse implements MouseAlgorithm {
     }
 
     private void sleep(int millis) {
-        millis += WatAIO.MOUSE_DIFF;
+        millis += ConfigManager.getInstance().getConfigInt("mouse_diff");
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

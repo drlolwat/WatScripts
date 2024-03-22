@@ -8,6 +8,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -40,7 +41,7 @@ public class BuryBonesTask implements WatTask {
         String name = PrayerUtils.getBonesFromType(buryingType);
         if(name != null) {
             if(!Inventory.contains(name)) {
-                instance.currentTask = new BankingTask(new HashMap<String, Integer>() { { put(name, 28); }}, null, inventoryLoads, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() { { put(name, 28); }}, null, inventoryLoads, this));
                 return;
             }
 
