@@ -239,7 +239,7 @@ public class ConfigManager {
         this.levelUps = levelUps;
     }
 
-    public boolean isMuleConnectionFailed() {
+    public boolean hasMuleConnectionFailed() {
         return muleConnectionFailed;
     }
 
