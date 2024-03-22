@@ -12,6 +12,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -37,7 +38,7 @@ public class QuestGuideTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(!area.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(area, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
             return;
         }
 
@@ -67,7 +68,7 @@ public class QuestGuideTask implements WatTask {
             else {
                 if(GameObjects.closest("Ladder").interact("Climb-down")) {
                     Sleep.sleep(300, 600);
-                    instance.currentTask = new MiningInstructorTask();
+                    TaskManager.getInstance().setCurrentTask(new MiningInstructorTask());
                 }
             }
         }

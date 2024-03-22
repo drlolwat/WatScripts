@@ -6,6 +6,7 @@ import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.combat.DefensiveItemType;
 import org.lolwat.misc.utils.GenericUtils;
 
@@ -33,8 +34,8 @@ public class RangedUtils {
         ret.put(EquipmentSlot.FEET, "Leather boots");
         ret.put(EquipmentSlot.HANDS, defensiveItemByType(DefensiveItemType.GLOVES, false));
 
-        if(WatAIO.WEAR_CAPES) {
-            ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        if(ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
+            ret.put(EquipmentSlot.CAPE, ConfigManager.getInstance().getConfigString("profile_cape_type"));
         }
 
         return ret;

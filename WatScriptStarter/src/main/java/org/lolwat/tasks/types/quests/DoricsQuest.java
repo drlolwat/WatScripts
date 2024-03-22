@@ -10,6 +10,7 @@ import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
@@ -40,14 +41,14 @@ public class DoricsQuest implements WatTask {
             if (!Inventory.contains(kv.getKey()) ||
                     (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
                     (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
-                instance.currentTask = new BankingTask(needed, null, 1, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(needed, null, 1, this));
                 return;
             }
         }
 
         //go to start location
         if (!startLocation.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(startLocation, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
             return;
         }
 

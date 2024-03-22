@@ -23,6 +23,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -52,7 +53,7 @@ public class CombatInstructorTask implements WatTask {
 
         if(GameObjects.closest("Ladder") != null) {
             if(GameObjects.closest("Ladder").hasAction("Climb-down")) {
-                instance.currentTask = new TutorialBankTask();
+                TaskManager.getInstance().setCurrentTask(new TutorialBankTask());
                 return;
             }
         }
@@ -60,7 +61,7 @@ public class CombatInstructorTask implements WatTask {
         Area a = new Tile(3104, 9506).getArea(3);
         if(!traversed) {
             traversed = true;
-            instance.currentTask = new TraversalTask(a, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(a, this));
             return;
         }
 
@@ -73,7 +74,7 @@ public class CombatInstructorTask implements WatTask {
                 if(NPCs.closest("Combat Instructor").getTile().equals(HintArrow.getTile())) {
                     NPC n = NPCs.closest(x -> x.getName().contains("Combat Instructor"));
                     if(!Players.getLocal().canReach(n.getTile())) {
-                        instance.currentTask = new TraversalTask(n.getTile().getArea(2), this);
+                        TaskManager.getInstance().setCurrentTask(new TraversalTask(n.getTile().getArea(2), this));
                         return;
                     }
 
@@ -92,7 +93,7 @@ public class CombatInstructorTask implements WatTask {
 
                             if(Equipment.getItemInSlot(EquipmentSlot.WEAPON).getName().equals("Bronze sword")) {
                                 if(!Players.getLocal().canReach(n.getTile())) {
-                                    instance.currentTask = new TraversalTask(n.getTile().getArea(5), this);
+                                    TaskManager.getInstance().setCurrentTask(new TraversalTask(n.getTile().getArea(5), this));
                                     return;
                                 }
 
@@ -115,18 +116,18 @@ public class CombatInstructorTask implements WatTask {
                         if (Map.isTileOnScreen(o.getTile())) {
                             if(o.interact("Climb-up")) {
                                 Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
-                                instance.currentTask = new TraversalTask(new Tile(3121, 3122).getArea(3), new TutorialBankTask());
+                                TaskManager.getInstance().setCurrentTask(new TraversalTask(new Tile(3121, 3122).getArea(3), new TutorialBankTask()));
                                 return;
                             }
                         } else {
-                            instance.currentTask = new TraversalTask(o.getTile().getArea(2), this);
+                            TaskManager.getInstance().setCurrentTask(new TraversalTask(o.getTile().getArea(2), this));
                             return;
                         }
                     }
                 }
 
                 if(Equipment.contains("Wooden shield") && Equipment.contains("Bronze sword")) {
-                    instance.currentTask = new TraversalTask(new Tile(3104, 9518).getArea(3), this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(new Tile(3104, 9518).getArea(3), this));
                 }
             }
         } else {

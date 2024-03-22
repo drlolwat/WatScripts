@@ -24,6 +24,7 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.BankingTask;
@@ -90,7 +91,7 @@ public class FightArmorSetTask implements WatTask {
                     }
 
                     Logger.log("We are missing " + f.getKey() + ", going to get it.");
-                    instance.currentTask = new BankingTask(inventoryReq, null, 1, this);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryReq, null, 1, this));
                     return;
                 }
             }
@@ -105,7 +106,7 @@ public class FightArmorSetTask implements WatTask {
 
         int foodCount = Inventory.count(x -> x != null && x.hasAction("Eat"));
         if(foodCount <= 0) {
-            instance.currentTask = new BankingTask(inventoryReq, null, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryReq, null, 1, this));
             return;
         }
 
@@ -117,16 +118,16 @@ public class FightArmorSetTask implements WatTask {
         }
 
         if (Inventory.count("Warrior guild token") >= 200) {
-            instance.currentTask = new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new FightCyclopsTask(trainingSkill, new HashMap<String, Integer>() {
                 {
                     put("Lobster", 20);
                 }
-            }, latest);
+            }, latest));
             return;
         }
 
         if (!fightingArea.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(fightingArea, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(fightingArea, this));
             return;
         }
 

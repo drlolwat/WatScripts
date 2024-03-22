@@ -14,6 +14,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.cooking.CookingUtils;
@@ -58,8 +59,8 @@ public class CookingFishTask implements WatTask {
     public void execute(WatAIO instance) {
         for (java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
             if (!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask(CookingUtils.getRequiredItems(fishType, true, 1),
-                        selling, inventoryCount, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(CookingUtils.getRequiredItems(fishType, true, 1),
+                        selling, inventoryCount, this));
 
                 return;
             }
@@ -70,7 +71,7 @@ public class CookingFishTask implements WatTask {
         }
 
         if (!usingArea.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(usingArea, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(usingArea, this));
             return;
         }
 

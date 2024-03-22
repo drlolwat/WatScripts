@@ -19,6 +19,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.mining.MiningUtils;
@@ -76,7 +77,7 @@ public class MiningTask implements WatTask {
         if ((!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) || (Inventory.contains(pickaxe) && Inventory.get(pickaxe).isNoted())) {
             WatConfig.incrementToolFailures();
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            instance.currentTask = new BankingTask(new HashMap<String, Integer>() { { put(pickaxe, 1); }}, sellingItems, 1, this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() { { put(pickaxe, 1); }}, sellingItems, 1, this));
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
@@ -92,14 +93,14 @@ public class MiningTask implements WatTask {
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
                 Logger.log("My inventory is full, to the bank!");
-                instance.currentTask = new BankingTask(new HashMap<>(), sellingItems, 1, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellingItems, 1, this));
                 lastSuccessfulRock = 0;
                 return;
             }
 
             if (!Map.isTileOnScreen(defaultSquare)) {
                 Logger.log("I need to traverse to the location.");
-                instance.currentTask = new TraversalTask(defaultSquare, false, this);
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(defaultSquare, false, this));
                 return;
             }
 
@@ -108,7 +109,7 @@ public class MiningTask implements WatTask {
             }
 
             if(GenericUtils.tooManyPlayers(3, 3)) {
-                instance.currentTask = new HopperTask(0, this);//
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
                 return;
             }
 
@@ -131,8 +132,10 @@ public class MiningTask implements WatTask {
 
                     gotRock = true;
                 } else {
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(GameObjects.all(n -> n.exists() &&
+                            n.canReach() && n.getName().equals(rockName)).get(0).getTile().getArea(3), this));
+
                     Logger.log("traversing to closer rocks");
-                    instance.currentTask = new TraversalTask(GameObjects.all(n -> n.exists() && n.canReach() && n.getName().equals(rockName)).get(0).getTile().getArea(3), this);
                     return;
                 }
 

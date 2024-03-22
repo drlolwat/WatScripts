@@ -11,6 +11,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
@@ -45,16 +46,16 @@ public class JewelryTask implements WatTask {
     public void execute(WatAIO instance) {
         for(java.util.Map.Entry<String, Integer> m : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue() || Inventory.get(m.getKey()).isNoted()) {
-                instance.currentTask = new BankingTask(
+                TaskManager.getInstance().setCurrentTask(new BankingTask(
                         CraftingUtils.getMaterialsForJewelry(craftingType, true, 1),
-                        toSell, totalLoads, this);
+                        toSell, totalLoads, this));
 
                 return;
             }
         }
 
         if (!selectedLocation.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(selectedLocation, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation, this));
             return;
         }
 

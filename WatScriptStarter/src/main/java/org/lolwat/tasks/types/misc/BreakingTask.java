@@ -6,6 +6,7 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 
 import java.time.Instant;
@@ -30,14 +31,14 @@ public class BreakingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(Client.isLoggedIn()) {
-            instance.currentTask = new LogoutTask(false, false,this);
+            TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false,this));
             return;
         }
 
         if(Instant.now().getEpochSecond() >= endsAt) {
             if(!Client.isLoggedIn()) {
                 instance.enableLoginManager();
-                instance.currentTask = null;
+                TaskManager.getInstance().getNewTask();
             }
         }
     }
