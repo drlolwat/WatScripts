@@ -56,13 +56,13 @@ public class TaskManager {
     private int tasksUntilBreak;
     private double taskSelectedAt;
     private int taskRunTime;
-    private double checkedHoursAt; // TODO
+    private double checkedHoursAt;
 
     public TaskManager(WatAIO instance) {
         watAIO = instance;
         setupAllTasks();
         resetBreaks();
-        checkedHoursAt = 0;
+        setCheckedHoursAt(0);
 
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks and " + getQuests().size() + " total quests.");
         setInstance(this);
@@ -135,6 +135,7 @@ public class TaskManager {
         if(!ConfigManager.getInstance().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
             watAIO.disableLoginManager();
             ConfigManager.getInstance().getWsProfile(0);
+            ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
             watAIO.enableLoginManager();
         }
