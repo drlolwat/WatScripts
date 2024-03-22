@@ -447,7 +447,7 @@ public class BankingTask implements WatTask {
                     }
 
                     if (needsMule) {
-                        if(!ConfigManager.getInstance().hasMuleConnectionFailed()) {
+                        if(!ConfigManager.getInstance().getConfigBoolean("disable_mule") || !ConfigManager.getInstance().hasMuleConnectionFailed()) {
                             if (Bank.contains("Coins")) {
                                 finalPrice -= Bank.count("Coins");
                             }
@@ -471,7 +471,7 @@ public class BankingTask implements WatTask {
                         }
                     }
                 } else {
-                    if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
+                    if (!ConfigManager.getInstance().getConfigBoolean("disable_mule") || !ConfigManager.getInstance().hasMuleConnectionFailed()) {
                         if(Bank.contains("Coins")) {
                             finalPrice -= Bank.count("Coins");
                         }
