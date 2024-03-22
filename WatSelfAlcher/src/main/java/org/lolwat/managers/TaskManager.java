@@ -47,8 +47,8 @@ public class TaskManager {
     private List<WatTask> tasks;
     private HashMap<Skill, List<WatTask>> tasksBySkill;
     private HashMap<Quest, WatTask> questTasks;
-    private List<WatTask> restrictedMoneyMakingTasks; // TODO
-    private List<WatTask> unrestrictedMoneyMakingTasks; // TODO
+    private List<WatTask> restrictedMoneyMakingTasks;
+    private List<WatTask> unrestrictedMoneyMakingTasks;
 
     // ---- RUNTIME VARIABLES ----
     private static TaskManager instance;
