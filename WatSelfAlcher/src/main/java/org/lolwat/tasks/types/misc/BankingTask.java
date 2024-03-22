@@ -447,7 +447,7 @@ public class BankingTask implements WatTask {
                     }
 
                     if (needsMule) {
-                        if(!ConfigManager.getInstance().isMuleConnectionFailed()) {
+                        if(!ConfigManager.getInstance().hasMuleConnectionFailed()) {
                             if (Bank.contains("Coins")) {
                                 finalPrice -= Bank.count("Coins");
                             }
@@ -471,7 +471,7 @@ public class BankingTask implements WatTask {
                         }
                     }
                 } else {
-                    if (!ConfigManager.getInstance().isMuleConnectionFailed()) {
+                    if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
                         if(Bank.contains("Coins")) {
                             finalPrice -= Bank.count("Coins");
                         }
@@ -508,7 +508,7 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Finished checks");
 
-        if(!ConfigManager.getInstance().isMuleConnectionFailed() && ConfigManager.getInstance().isTradeUnlocked()) {
+        if(!ConfigManager.getInstance().hasMuleConnectionFailed() && ConfigManager.getInstance().isTradeUnlocked()) {
             int invMoney = 0;
             int bankMoney = 0;
 
