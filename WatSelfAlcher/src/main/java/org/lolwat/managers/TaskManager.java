@@ -135,6 +135,7 @@ public class TaskManager {
         if(!ConfigManager.getInstance().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
             watAIO.disableLoginManager();
             ConfigManager.getInstance().getWsProfile(0);
+            setCheckedHoursAt(Instant.now().getEpochSecond());
             watAIO.enableLoginManager();
         }
 
@@ -1035,4 +1036,12 @@ public class TaskManager {
     public List<WatTask> getTasks() { return tasks; }
     public double getTaskSelectedAt() { return taskSelectedAt; }
     public int getTaskRunTime() { return taskRunTime; }
+
+    public double getCheckedHoursAt() {
+        return checkedHoursAt;
+    }
+
+    public void setCheckedHoursAt(double checkedHoursAt) {
+        this.checkedHoursAt = checkedHoursAt;
+    }
 }
