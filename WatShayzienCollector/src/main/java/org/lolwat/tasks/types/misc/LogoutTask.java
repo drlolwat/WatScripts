@@ -83,7 +83,7 @@ public class LogoutTask implements WatTask {
                 ScriptManager.getScriptManager().stop();
             }
         } else {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this), 0);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));
         }
     }
 
