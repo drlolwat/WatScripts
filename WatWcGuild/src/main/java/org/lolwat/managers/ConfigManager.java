@@ -103,6 +103,7 @@ public class ConfigManager {
                 config.put(key, jsonObject.get(key));
             }
 
+            config.put("hitpoints", 100);
             hasLoaded = true;
 
         } catch (IOException | JsonSyntaxException ignored) {
