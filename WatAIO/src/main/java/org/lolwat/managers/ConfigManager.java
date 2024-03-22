@@ -7,6 +7,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
+import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.ScriptManager;
@@ -19,6 +20,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -182,6 +184,10 @@ public class ConfigManager {
         return Integer.parseInt(config.get(key).toString());
     }
 
+    public double getConfigDouble(String key) {
+        return Double.parseDouble(config.get(key).toString());
+    }
+
     public int getSkillTarget(Skill sk) {
         String key = sk.getName().toLowerCase();
         if (config.containsKey(key)) {
@@ -192,11 +198,8 @@ public class ConfigManager {
     }
 
     public boolean isTradeUnlocked() {
-        return isTradeUnlocked;
-    }
-
-    public void setTradeUnlocked(boolean tradeUnlocked) {
-        isTradeUnlocked = tradeUnlocked;
+        return getConfigBoolean("ignore_trade_restriction") ||
+                (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 75600) && Quests.getQuestPoints() >= 10;
     }
 
     public int getNetWorth() {
