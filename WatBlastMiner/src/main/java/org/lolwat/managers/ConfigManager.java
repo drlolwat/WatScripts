@@ -167,7 +167,8 @@ public class ConfigManager {
         }
     }
     public String getConfigString(String key) {
-        return config.get(key).toString();
+        String value = config.get(key).toString();
+        return value.replace("\"", "");
     }
 
     public boolean getConfigBoolean(String key) {
