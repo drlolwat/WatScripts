@@ -427,7 +427,7 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                if (canSell && ConfigManager.getInstance().isTradeUnlocked()) {
+                if (canSell || ConfigManager.getInstance().isTradeUnlocked()) {
                     checkAndSet(BankMode.NOTE);
                     Logger.log("Exchanger: Need to sell items");
                     if (Inventory.isFull()) {
