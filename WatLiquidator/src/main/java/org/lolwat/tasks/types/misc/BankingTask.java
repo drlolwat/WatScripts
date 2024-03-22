@@ -69,9 +69,7 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
-        //if(postTask != null) {
-        //    Logger.error(postTask.getName());
-        //}
+        boolean runLiquidation = false;
 
         //TODO a list of chest names to use for ex. Duel arena/Castle wars chests
         if (NPCs.all("Banker").isEmpty() && GameObjects.all("Bank booth").isEmpty()) {
@@ -392,8 +390,13 @@ public class BankingTask implements WatTask {
 
             int finalPrice = 0;
             for (Map.Entry<String, Integer> entry : buyingRequired.entrySet()) {
+                String itemFinal = entry.getKey();
+                if(itemFinal.equals("Old school bond (untradeable)")) {
+                    itemFinal = "Old school bond";
+                }
+
                 int itemMultiplier = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                int initialPrice = NumUtils.getItemPrice(entry.getKey());
+                int initialPrice = NumUtils.getItemPrice(itemFinal);
                 int multipliedPrice = initialPrice * itemMultiplier;
                 finalPrice += multipliedPrice;
             }
@@ -428,13 +431,17 @@ public class BankingTask implements WatTask {
                     }
 
                     boolean needsMule = true;
-                    Collections.shuffle(ItemUtils.EMERGENCY_SELL);
-                    for (String n : ItemUtils.EMERGENCY_SELL) {
-                        if (!Inventory.contains(n) && Bank.contains(n)) {
-                            Bank.withdrawAll(n);
-                            Sleep.sleep(200, 400);
-                            m.put(n, -1);
+                    for(Item i : Bank.all()) {
+                        if(!i.isTradable())
+                            continue;
+
+                        int q = i.getAmount();
+                        int a = NumUtils.getItemPrice(i.getName()) * q;
+
+                        if(a >= 5000) {
                             needsMule = false;
+                            runLiquidation = true;
+                            break;
                         }
                     }
 
@@ -491,9 +498,9 @@ public class BankingTask implements WatTask {
                 }
             }
 
-            if (!m.isEmpty()) {
+            if (runLiquidation) {
                 Logger.log("Exchanger: Handing off to G.E task");
-                TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Selling at G.E", true, m, this));
+                TaskManager.getInstance().setCurrentTask(new LiquidationTask(this));
                 return;
             }
         }
