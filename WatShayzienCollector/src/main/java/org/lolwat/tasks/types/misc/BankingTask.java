@@ -419,15 +419,7 @@ public class BankingTask implements WatTask {
                 TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Buying required items", false, buyingRequired, this));
                 return;
             } else {
-                boolean canSell = false;
-
-                for (String s : ItemUtils.EMERGENCY_SELL) {
-                    if (Bank.contains(s)) {
-                        canSell = true;
-                    }
-                }
-
-                if (canSell || ConfigManager.getInstance().isTradeUnlocked()) {
+                if (ConfigManager.getInstance().isTradeUnlocked()) {
                     checkAndSet(BankMode.NOTE);
                     Logger.log("Exchanger: Need to sell items");
                     if (Inventory.isFull()) {
