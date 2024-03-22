@@ -60,7 +60,6 @@ public class TaskManager {
     private double checkedHoursAt;
 
     public TaskManager(WatAIO instance) {
-        setInstance(this);
         watAIO = instance;
         setupAllTasks();
         resetBreaks();
@@ -74,7 +73,7 @@ public class TaskManager {
         return instance;
     }
 
-    private static void setInstance(TaskManager value) {
+    public static void setInstance(TaskManager value) {
         instance = value;
     }
 
