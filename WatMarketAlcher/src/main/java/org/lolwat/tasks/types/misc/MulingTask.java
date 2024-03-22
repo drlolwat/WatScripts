@@ -14,6 +14,7 @@ import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
 
@@ -91,12 +92,12 @@ public class MulingTask implements WatTask {
         }
 
         if(NPCs.closest("Grand Exchange Clerk") == null) {
-            instance.currentTask = new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this));
             return;
         }
 
         if(completed) {
-            instance.currentTask = new HopperTask(originalWorld, postTask);
+            TaskManager.getInstance().setCurrentTask(new HopperTask(originalWorld, postTask));
             return;
         }
 
@@ -117,7 +118,7 @@ public class MulingTask implements WatTask {
                 }
 
                 if(!Inventory.contains("Coins")) {
-                    instance.currentTask = null;
+                    TaskManager.getInstance().getNewTask();
                 }
 
                 return;
@@ -157,7 +158,7 @@ public class MulingTask implements WatTask {
 
                     if(target != null && !target.isEmpty()) {
                         Logger.log("Good to go, hopping");
-                        instance.currentTask = new HopperTask(targetWorld, this);
+                        TaskManager.getInstance().setCurrentTask(new HopperTask(targetWorld, this));
                     }
                 }
             } catch (Exception e) {

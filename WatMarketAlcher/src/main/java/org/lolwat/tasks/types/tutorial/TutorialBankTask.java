@@ -11,6 +11,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -67,7 +68,7 @@ public class TutorialBankTask implements WatTask {
                     }
                     else if(obj.getName().equals("Door")) {
                         if(guide) {
-                            instance.currentTask = new BrotherBraceTask();
+                            TaskManager.getInstance().setCurrentTask(new BrotherBraceTask());
                             return;
                         }
 
