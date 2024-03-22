@@ -531,12 +531,4 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void mouseExited(MouseEvent e) {
 
     }
-
-    public TaskManager getTaskManager() {
-        return taskManager;
-    }
-
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
 }

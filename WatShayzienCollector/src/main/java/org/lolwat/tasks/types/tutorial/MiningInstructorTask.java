@@ -17,6 +17,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
@@ -47,7 +48,7 @@ public class MiningInstructorTask implements WatTask {
         };
 
         if(Inventory.contains("Bronze dagger")) {
-            instance.currentTask = new CombatInstructorTask();
+            TaskManager.getInstance().setCurrentTask(new CombatInstructorTask());
             return;
         }
 
@@ -61,7 +62,7 @@ public class MiningInstructorTask implements WatTask {
         if(HintArrow.exists() && HintArrow.getTile() != null) {
             if(HintArrow.getType().equals(HintArrowType.NPC)) {
                 if(!Map.isTileOnScreen(HintArrow.getTile())) {
-                    instance.currentTask = new TraversalTask(HintArrow.getTile().getArea(3), this);
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(HintArrow.getTile().getArea(3), this));
                     return;
                 }
 
@@ -113,7 +114,7 @@ public class MiningInstructorTask implements WatTask {
                     }
                 }
             } else {
-                instance.currentTask = new TraversalTask(new Tile(3081,  9506, 0).getArea(6), this);
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(new Tile(3081,  9506, 0).getArea(6), this));
             }
         }
     }

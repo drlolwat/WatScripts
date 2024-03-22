@@ -8,6 +8,7 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.combat.DefensiveItemType;
 import org.lolwat.misc.utils.GenericUtils;
 
@@ -36,14 +37,14 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
 
         ret.put(EquipmentSlot.HAT, defensiveItemByType(DefensiveItemType.HELMET, false));
         ret.put(EquipmentSlot.CHEST, defensiveItemByType(DefensiveItemType.CHEST, Skills.getRealLevel(Skill.DEFENCE) >= 40));
-        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, WatAIO.USE_SKIRT));
+        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, ConfigManager.getInstance().getConfigBoolean("config_use_plateskirt")));
         ret.put(EquipmentSlot.SHIELD, defensiveItemByType(DefensiveItemType.OFFHAND, false));
         ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
         ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
         ret.put(EquipmentSlot.FEET, defensiveItemByType(DefensiveItemType.FEET, false));
         ret.put(EquipmentSlot.HANDS, "Leather gloves"); //TODO handler for Combat bracelet....
-        if(WatAIO.WEAR_CAPES) {
-            ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        if(ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
+            ret.put(EquipmentSlot.CAPE, ConfigManager.getInstance().getConfigString("profile_cape_type"));
         }
 
         return ret;
@@ -74,7 +75,7 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
                 }
             }
             case CHEST: return material + (alternative ? " chainbody" : " platebody");
-            case LEGS: return material + (WatAIO.USE_SKIRT ? " plateskirt" : " platelegs");
+            case LEGS: return material + (ConfigManager.getInstance().getConfigBoolean("profile_use_plateskirt") ? " plateskirt" : " platelegs");
             case OFFHAND: {
                 if(GenericUtils.isMember()) {
                     int defLevel = Skills.getRealLevel(Skill.DEFENCE);

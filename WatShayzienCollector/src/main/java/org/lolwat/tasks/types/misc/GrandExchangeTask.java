@@ -18,6 +18,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Entity;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -196,7 +197,7 @@ public class GrandExchangeTask implements WatTask {
 
                     if(!GrandExchange.isBuyOpen() && !GrandExchange.openBuyScreen(slot)) {
                         Logger.error("Error opening buy screen in G.E, returning to postTask");
-                        instance.currentTask = postTask;
+                        TaskManager.getInstance().setCurrentTask(postTask);
                         return;
                     }
 
@@ -232,7 +233,7 @@ public class GrandExchangeTask implements WatTask {
                             int coins = Inventory.count("Coins");
                             if (itemCost > coins) {
                                 Logger.error("Didn't have enough coins to fulfill offer, breaking loop.");
-                                instance.currentTask = postTask;
+                                TaskManager.getInstance().setCurrentTask(postTask);
                                 return;
                             }
 
@@ -302,10 +303,10 @@ public class GrandExchangeTask implements WatTask {
             Sleep.sleepUntil(Bank::isOpen, 7500);
 
             Sleep.sleep(300, 800);
-            instance.currentTask = postTask;
+            TaskManager.getInstance().setCurrentTask(postTask);
         }
         else {
-            instance.currentTask = new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this));
         }
     }
 

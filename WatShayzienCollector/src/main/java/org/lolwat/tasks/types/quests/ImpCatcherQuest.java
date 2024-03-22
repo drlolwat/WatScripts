@@ -11,6 +11,7 @@ import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
@@ -48,14 +49,14 @@ public class ImpCatcherQuest implements WatTask {
         //check for items
         for (String i : needed.keySet()) {
             if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
-                instance.currentTask = new BankingTask(needed, null, 1, this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(needed, null, 1, this));
                 return;
             }
         }
 
         //go to start location
         if (!startLocation.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(startLocation, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
             return;
         }
 
