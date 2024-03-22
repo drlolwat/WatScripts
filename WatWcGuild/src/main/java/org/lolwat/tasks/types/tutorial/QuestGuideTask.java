@@ -91,7 +91,7 @@ public class QuestGuideTask implements WatTask {
 
     @Override
     public Skill trainsSkill() {
-        return null;
+        return Skill.HITPOINTS;
     }
 
     @Override
