@@ -21,6 +21,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.combat.warriorguild.FightArmorSetTask;
@@ -300,7 +301,7 @@ public class BankingTask implements WatTask {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
                 checkAndSet(BankMode.ITEM);
                 int amountRequired;
-                if (instance.SINGULAR_ITEMS.contains(entry.getKey()))
+                if (ItemUtils.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
                 else {
                     amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
@@ -364,7 +365,7 @@ public class BankingTask implements WatTask {
                     }
 
                     int amountToBuy = (entry.getValue() > 0 ? entry.getValue() : -entry.getValue()) * inventoriesWorth;
-                    for (String s : instance.SINGULAR_ITEMS) {
+                    for (String s : ItemUtils.SINGULAR_ITEMS) {
                         if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
                             amountToBuy = 1;
                             break;
@@ -420,7 +421,7 @@ public class BankingTask implements WatTask {
             } else {
                 boolean canSell = false;
 
-                for (String s : instance.EMERGENCY_SELL) {
+                for (String s : ItemUtils.EMERGENCY_SELL) {
                     if (Bank.contains(s)) {
                         canSell = true;
                     }
@@ -435,8 +436,8 @@ public class BankingTask implements WatTask {
                     }
 
                     boolean needsMule = true;
-                    Collections.shuffle(instance.EMERGENCY_SELL);
-                    for (String n : instance.EMERGENCY_SELL) {
+                    Collections.shuffle(ItemUtils.EMERGENCY_SELL);
+                    for (String n : ItemUtils.EMERGENCY_SELL) {
                         if (!Inventory.contains(n) && Bank.contains(n)) {
                             Bank.withdrawAll(n);
                             Sleep.sleep(200, 400);
@@ -541,16 +542,16 @@ public class BankingTask implements WatTask {
         }
 
         // calculate net worth
-        if(instance.NET_WORTH_GENERATED == 0) {
-            instance.NET_WORTH = 0;
+        if(ConfigManager.getInstance().getNetWorthGeneratedAt() == 0) {
+            int total = 0;
             for (Item i : Bank.all()) {
                 if (i == null)
                     continue;
 
                 if (i.getAmount() > 1) {
-                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                    total += LivePrices.get(i) * i.getAmount();
                 } else {
-                    instance.NET_WORTH += LivePrices.get(i);
+                    total += LivePrices.get(i);
                 }
             }
 
@@ -559,16 +560,17 @@ public class BankingTask implements WatTask {
                     continue;
 
                 if (i.getAmount() > 1) {
-                    instance.NET_WORTH += LivePrices.get(i) * i.getAmount();
+                    total += LivePrices.get(i) * i.getAmount();
                 } else {
-                    instance.NET_WORTH += LivePrices.get(i);
+                    total += LivePrices.get(i);
                 }
             }
 
-            instance.NET_WORTH_GENERATED = Instant.now().getEpochSecond();
+            ConfigManager.getInstance().setNetWorth(total);
+            ConfigManager.getInstance().setNetWorthGeneratedAt(Instant.now().getEpochSecond());
         } else {
-            if((Instant.now().getEpochSecond() - instance.NET_WORTH_GENERATED) >= 3600) {
-                instance.NET_WORTH_GENERATED = 0; // will generate net worth next time.
+            if((Instant.now().getEpochSecond() - ConfigManager.getInstance().getNetWorthGeneratedAt()) >= 3600) {
+                ConfigManager.getInstance().setNetWorthGeneratedAt(0); // will generate net worth next time.
             }
         }
 

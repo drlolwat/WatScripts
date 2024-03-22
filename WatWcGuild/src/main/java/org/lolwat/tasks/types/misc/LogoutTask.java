@@ -13,6 +13,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.WatTask;
 
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class LogoutTask implements WatTask {
                 if(muleWealth) {
                     this.muleWealth = false;
                     HashMap<String, Integer> li = new HashMap<>();
-                    for(String s : instance.EMERGENCY_SELL) {
+                    for(String s : ItemUtils.EMERGENCY_SELL) {
                         li.put(s, -1);
                     }
 
