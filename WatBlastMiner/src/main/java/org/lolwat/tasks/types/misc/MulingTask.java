@@ -103,7 +103,7 @@ public class MulingTask implements WatTask {
 
         if(!active) {
             if(retries > 5) {
-                instance.MULE_DEAD = true;
+                instance.muleConnectionFailed = true;
                 // put GP back
                 if(!Bank.isOpen()) {
                     Bank.open();

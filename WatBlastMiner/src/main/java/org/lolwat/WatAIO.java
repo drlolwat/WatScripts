@@ -1,8 +1,5 @@
 package org.lolwat;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
@@ -12,49 +9,37 @@ import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.Quests;
-import org.dreambot.api.methods.quest.book.Quest;
-import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
-import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
-import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.utilities.Timer;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.utils.WebUtils;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.tasks.WatTask;
 import org.lolwat.misc.utils.NumUtils;
-import org.lolwat.tasks.types.tutorial.*;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
 import java.util.*;
-import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
@@ -69,10 +54,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private boolean firstStart = true;
     private boolean waitingForResponse = false;
     private HashMap<String, Integer> levelUps;
-    public boolean MULE_DEAD = false;
+    public boolean muleConnectionFailed = false;
     private static BufferedImage image;
     private Map<Skill, Rectangle> invisibleButtons;
-    private static boolean ADVERTISE_MODE = false;
 
     @Override
     public void onStart(String... params) {
