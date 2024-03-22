@@ -66,7 +66,6 @@ public class TaskManager {
         setCheckedHoursAt(0);
 
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks and " + getQuests().size() + " total quests.");
-        preTaskSelection();
     }
 
     public static TaskManager getInstance() {
@@ -153,7 +152,7 @@ public class TaskManager {
     }
 
     public void setCurrentTask(WatTask task) {
-        setCurrentTask(task, 0);
+        getInstance().setCurrentTask(task, 0);
     }
 
     public void setCurrentTask(WatTask value, int runtime) {
@@ -206,8 +205,10 @@ public class TaskManager {
     }
 
     private void preTaskSelection() {
-        if(!ConfigManager.getInstance().hasLoadedProfile() || (getCheckedHoursAt() == 0 || (Instant.now().getEpochSecond() - getCheckedHoursAt()) >= 3600)) {
-            watAIO.disableLoginManager();
+        if(!ConfigManager.getInstance().hasLoadedProfile() ||
+                (getInstance().getCheckedHoursAt() == 0 ||
+                        (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
+
             ConfigManager.getInstance().getWsProfile(0);
             ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
@@ -216,7 +217,6 @@ public class TaskManager {
 
         if(!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
-            watAIO.enableLoginManager();
             return;
         }
 
