@@ -37,6 +37,7 @@ import org.lolwat.tasks.types.smithing.SmithingItemTask;
 import org.lolwat.tasks.types.tutorial.SelectUsernameTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
+import sun.net.www.content.text.Generic;
 
 import java.awt.*;
 import java.time.Instant;
@@ -131,6 +132,7 @@ public class TaskManager {
             }
         }
         else {
+            GenericUtils.shuffleHashMap(tasksBySkill);
             for(WatTask t : tasksBySkill.get(sk)) {
                 if(ConfigManager.getInstance().getSkillTarget(t.trainsSkill()) > Skills.getRealLevel(t.trainsSkill()) &&
                         t.canPerformTask()) {
