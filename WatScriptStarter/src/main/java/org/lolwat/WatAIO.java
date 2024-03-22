@@ -82,9 +82,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Logger.log(Color.green, "WatAIO is starting...");
         getRandomManager().disableSolver(RandomEvent.DISMISS);
 
-        ConfigManager.getInstance().getInstance().setLevelUps(new HashMap<>());
-        ConfigManager.getInstance().getInstance().setNetWorth(0);
-        ConfigManager.getInstance().getInstance().setNetWorthGeneratedAt(0);
+        ConfigManager.getInstance().setLevelUps(new HashMap<>());
+        ConfigManager.getInstance().setNetWorth(0);
+        ConfigManager.getInstance().setNetWorthGeneratedAt(0);
     }
 
     @Override
@@ -97,9 +97,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        if (ConfigManager.getInstance().getInstance().isFirstStart()) {
+        if (ConfigManager.getInstance().isFirstStart()) {
             Sleep.sleep(5000);
-            ConfigManager.getInstance().getInstance().setFirstStart(false);
+            ConfigManager.getInstance().setFirstStart(false);
         }
 
         //TODO a method for this
@@ -192,11 +192,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onLevelUp(ExperienceEvent ev) {
-        if(ConfigManager.getInstance().getInstance().getLevelUps().containsKey(ev.getSkill().getName())) {
-            ConfigManager.getInstance().getInstance().getLevelUps().put(ev.getSkill().getName(),
-                    ConfigManager.getInstance().getInstance().getLevelUps().get(ev.getSkill().getName()) + 1);
+        if(ConfigManager.getInstance().getLevelUps().containsKey(ev.getSkill().getName())) {
+            ConfigManager.getInstance().getLevelUps().put(ev.getSkill().getName(),
+                    ConfigManager.getInstance().getLevelUps().get(ev.getSkill().getName()) + 1);
         } else {
-            ConfigManager.getInstance().getInstance().getLevelUps().put(ev.getSkill().getName(), 1);
+            ConfigManager.getInstance().getLevelUps().put(ev.getSkill().getName(), 1);
         }
     }
 
@@ -221,11 +221,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        if(ConfigManager.getInstance().getInstance().getLevelUps() == null)
-            ConfigManager.getInstance().getInstance().setLevelUps(new HashMap<>());
+        if(ConfigManager.getInstance().getLevelUps() == null)
+            ConfigManager.getInstance().setLevelUps(new HashMap<>());
 
         int totalLevelsGained = 0;
-        for (int i : ConfigManager.getInstance().getInstance().getLevelUps().values()) {
+        for (int i : ConfigManager.getInstance().getLevelUps().values()) {
             totalLevelsGained += i;
         }
 
@@ -240,7 +240,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // main
         g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
-        g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getInstance().getNetWorth()), 135, 40);
+        g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
         g2d.drawString(taskTime, 77, 40);
 
         if(totalLevelsGained > 0) {
@@ -275,9 +275,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void drawLevelUp(Graphics2D g2d, Skill sk, int x, int y) {
-        if(ConfigManager.getInstance().getInstance().getLevelUps().containsKey(sk.getName())) {
+        if(ConfigManager.getInstance().getLevelUps().containsKey(sk.getName())) {
             g2d.setColor(Color.GREEN);
-            g2d.drawString("+" + ConfigManager.getInstance().getInstance().getLevelUps().get(sk.getName()), x, y);
+            g2d.drawString("+" + ConfigManager.getInstance().getLevelUps().get(sk.getName()), x, y);
             g2d.setColor(Color.WHITE);
         }
     }
@@ -301,17 +301,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
-            if(!ConfigManager.getInstance().getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+            if(!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
                 boolean enableGpt = false; // change at compile time
                 if(enableGpt) {
                     if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
-                        ConfigManager.getInstance().getInstance().setWaitingForResponse(true);
+                        ConfigManager.getInstance().setWaitingForResponse(true);
                         new Thread(() -> {
                             String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
                             if(!response.isEmpty()) {
                                 Keyboard.type(response, true);
                             }
-                            ConfigManager.getInstance().getInstance().setWaitingForResponse(false);
+                            ConfigManager.getInstance().setWaitingForResponse(false);
                         }).start();
                     }
                 }
@@ -329,6 +329,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     public void enableLoginManager() {
         getRandomManager().enableSolver(RandomEvent.LOGIN);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
