@@ -222,6 +222,7 @@ public class GrandExchangeTask implements WatTask {
 
                             if(!GrandExchange.isBuyOpen()) {
                                 Logger.log("Buy screen was not open when it was meant to be.");
+                                retries++;
                                 continue;
                             }
                         }
