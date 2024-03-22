@@ -8,6 +8,7 @@ import org.dreambot.api.methods.magic.cost.Rune;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.combat.DefensiveItemType;
 import org.lolwat.misc.utils.GenericUtils;
 
@@ -36,8 +37,8 @@ public class MagicUtils {
             ret.put(EquipmentSlot.HANDS, "Leather gloves");
         }
 
-        if (WatAIO.WEAR_CAPES) {
-            ret.put(EquipmentSlot.CAPE, WatAIO.CAPE_TYPE);
+        if (ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
+            ret.put(EquipmentSlot.CAPE, ConfigManager.getInstance().getConfigString("profile_cape_type"));
         }
 
         return ret;

@@ -15,6 +15,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
@@ -50,9 +51,9 @@ public class SmithingIngotTask implements WatTask {
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                instance.currentTask = new BankingTask(
+                TaskManager.getInstance().setCurrentTask(new BankingTask(
                         SmithingUtils.getMaterialsForBar(smithingType, true, 1),
-                        toSell, totalLoads, this);
+                        toSell, totalLoads, this));
 
                 return;
             }
@@ -69,7 +70,7 @@ public class SmithingIngotTask implements WatTask {
                 return;
             }
 
-            instance.currentTask = new TraversalTask(selectedLocation, false, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation, false, this));
             return;
         }
 
