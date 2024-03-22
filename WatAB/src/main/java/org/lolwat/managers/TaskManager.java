@@ -109,8 +109,6 @@ public class TaskManager {
             Logger.log(Color.red, "TaskManager: no quest tasks available, selecting a regular task");
             getNewTask(true);
         }
-
-        Logger.error("TaskManager: could not select a task");
     }
 
     public void getSpecificSkillTask(Skill sk) {
