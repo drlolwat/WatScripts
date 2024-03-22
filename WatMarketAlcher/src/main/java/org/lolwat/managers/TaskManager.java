@@ -50,6 +50,7 @@ public class TaskManager {
     private List<WatTask> unrestrictedMoneyMakingTasks; // TODO
 
     // ---- RUNTIME VARIABLES ----
+    private static TaskManager instance;
     private final WatAIO watAIO;
     private WatTask currentTask;
     private int tasksUntilBreak;
@@ -64,6 +65,15 @@ public class TaskManager {
         checkedHoursAt = 0;
 
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks and " + getQuests().size() + " total quests.");
+        setInstance(this);
+    }
+
+    public static TaskManager getInstance() {
+        return instance;
+    }
+
+    private static void setInstance(TaskManager value) {
+        instance = value;
     }
 
     public void getNewTask() {
@@ -89,10 +99,10 @@ public class TaskManager {
     }
 
     private boolean evaluateBreak() {
-        if(watAIO.getConfigManager().getConfigBoolean("breaks_enabled") && tasksUntilBreak < 0) {
+        if(ConfigManager.getInstance().getConfigBoolean("breaks_enabled") && tasksUntilBreak < 0) {
             resetBreaks();
             setCurrentTask(new BreakingTask((Instant.now().getEpochSecond() + taskRunTime)), Calculations.random(28800, 43200));
-            watAIO.getConfigManager().getWsProfile(taskRunTime);
+            ConfigManager.getInstance().getWsProfile(taskRunTime);
 
             Logger.log("TaskManager: Going on break");
             return true;
@@ -103,14 +113,13 @@ public class TaskManager {
     private boolean evaluateGoals() {
         boolean goalsMet = true;
         for(Skill sk : Skill.values()) {
-            if(Skills.getRealLevel(sk) < watAIO.getConfigManager().getSkillTarget(sk))
+            if(Skills.getRealLevel(sk) < ConfigManager.getInstance().getSkillTarget(sk))
                 goalsMet = false;
         }
 
         if(goalsMet) {
-            Logger.log("WAIO: Reached target ttl and qp");
-            setCurrentTask(new LogoutTask(true, true, null), 0);
             Logger.log("We are going to the bank to log out");
+            setCurrentTask(new LogoutTask(true, true, null), 0);
             Sleep.sleep(1000, 3000);
             return true;
         }
@@ -119,9 +128,9 @@ public class TaskManager {
     }
 
     private void evaluate() {
-        if(!watAIO.getConfigManager().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
+        if(!ConfigManager.getInstance().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
             watAIO.disableLoginManager();
-            watAIO.getConfigManager().getWsProfile(0);
+            ConfigManager.getInstance().getWsProfile(0);
             watAIO.enableLoginManager();
         }
 
@@ -144,8 +153,8 @@ public class TaskManager {
             return;
         }
 
-        if (!GenericUtils.isMember() && (watAIO.getConfigManager().getConfigInt("bond_min_ttl") > 0
-                && Skills.getTotalLevel() >= watAIO.getConfigManager().getConfigInt("bond_min_ttl"))) {
+        if (!GenericUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
+                && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("bond_min_ttl"))) {
 
             setCurrentTask(new BondingTask(null), 0);
             Logger.log("We are making our account a member");
@@ -163,15 +172,15 @@ public class TaskManager {
             return;
         }
 
-        if(!watAIO.getConfigManager().isTradeUnlocked()
-                && watAIO.getConfigManager().getConfigBoolean("logout_after_unrestricted")) {
+        if(!ConfigManager.getInstance().isTradeUnlocked()
+                && ConfigManager.getInstance().getConfigBoolean("logout_after_unrestricted")) {
 
             setCurrentTask(new LogoutTask(true, true,null), 0);
             Logger.log("We are going to the bank to log out");
             return;
         }
 
-        if(watAIO.getConfigManager().getConfigBoolean("breaks_enabled")) {
+        if(ConfigManager.getInstance().getConfigBoolean("breaks_enabled")) {
             Logger.log("Evaluating for breaks");
             if (!evaluateBreak()) {
                 Logger.log("Going on break after " + tasksUntilBreak + " more completed task(s)");
