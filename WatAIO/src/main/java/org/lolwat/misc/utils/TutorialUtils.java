@@ -34,7 +34,7 @@ public class TutorialUtils {
     }
 
     public static void handleTab() {
-        if(WatAIO.RUNNING_TUT) {
+        if(GenericUtils.isOnTutorial()) {
             final Tab t = getTab();
             if (t == null) {
                 log("Tab is null?");

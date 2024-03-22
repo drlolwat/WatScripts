@@ -12,6 +12,7 @@ import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 
 import java.util.HashMap;
@@ -61,29 +62,27 @@ public class LogoutTask implements WatTask {
                 }
 
                 Sleep.sleep(100, 200);
-                instance.currentTask = postScript;
+                TaskManager.getInstance().setCurrentTask(postScript, 0);
                 return;
             }
 
             if(endingScript) {
                 if(muleWealth) {
                     this.muleWealth = false;
-                    instance.MULE_SAFETY_NET = 0;
-                    instance.MULE_TRIGGER = 1;
                     HashMap<String, Integer> li = new HashMap<>();
                     for(String s : instance.EMERGENCY_SELL) {
                         li.put(s, -1);
                     }
 
-                    instance.currentTask = new BankingTask(null, li, 1, this);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(null, li, 1, this), 0);
                     return;
                 }
 
                 ScriptManager.getScriptManager().stop();
-                Logger.log("WAIO: Trade unrestricted, stopping");
+                Logger.log("WAIO: job done");
             }
         } else {
-            instance.currentTask = new TraversalTask(loc, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this), 0);
         }
     }
 

@@ -15,6 +15,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
@@ -64,12 +65,12 @@ public class GoblinDiplomacyQuest implements WatTask {
 
         if(GenericUtils.notedOrNull("Orange goblin mail") && !traversed) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Orange dye")) {
-                instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                     {
                         put("Goblin mail", 1);
                         put("Orange dye", 1);
                     }
-                }, null, 1, this);
+                }, null, 1, this));
                 return;
             } else {
                 if(Inventory.interact("Orange dye")) {
@@ -87,13 +88,13 @@ public class GoblinDiplomacyQuest implements WatTask {
         if(GenericUtils.notedOrNull("Orange goblin mail") && !traversed) return;
         if(GenericUtils.notedOrNull("Blue goblin mail") && !traversed) {
             if(GenericUtils.notedOrNull("Goblin mail") && GenericUtils.notedOrNull("Blue dye")) {
-                instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                     {
                         put("Orange goblin mail", 1);
                         put("Goblin mail", 1);
                         put("Blue dye", 1);
                     }
-                }, null, 1, this);
+                }, null, 1, this));
                 return;
             } else {
                 if(Inventory.interact("Blue dye")) {
@@ -109,18 +110,18 @@ public class GoblinDiplomacyQuest implements WatTask {
         Sleep.sleep(200, 500);
         if(GenericUtils.notedOrNull("Blue goblin mail") && !traversed) return;
         if(GenericUtils.notedOrNull("Goblin mail") && !traversed) {
-            instance.currentTask = new BankingTask(new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                 {
                     put("Orange goblin mail", 1);
                     put("Blue goblin mail", 1);
                     put("Goblin mail", 1);
                 }
-            }, null, 1, this);
+            }, null, 1, this));
             return;
         }
 
         if (NPCs.closest("General Bentnoze") == null) {
-            instance.currentTask = new TraversalTask(startLocation, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
         } else {
             if (!Dialogues.inDialogue()) {
                 NPCs.closest("General Bentnoze").interact();
