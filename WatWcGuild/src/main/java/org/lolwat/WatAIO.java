@@ -1,5 +1,6 @@
 package org.lolwat;
 
+import javafx.concurrent.Task;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
@@ -46,6 +47,7 @@ import java.awt.image.BufferedImage;
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
+    private String selectedProfile;
 
     @Override
     public void onStart(String... params) {
@@ -63,13 +65,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
-        new TaskManager(this);
-        new ConfigManager(this);
+        selectedProfile = profile;
 
-        ConfigManager.getInstance().loadFromProfile(profile);
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
-
         BezierMouse m = new BezierMouse();
         Mouse.setMouseAlgorithm(m);
 
@@ -81,14 +80,26 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Logger.log(Color.green, "WatAIO is starting...");
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-
-        ConfigManager.getInstance().setLevelUps(new HashMap<>());
-        ConfigManager.getInstance().setNetWorth(0);
-        ConfigManager.getInstance().setNetWorthGeneratedAt(0);
     }
 
     @Override
     public int onLoop() {
+        if(ConfigManager.getInstance() == null) {
+            Logger.log("Constructing ConfigManager singleton.");
+            ConfigManager.setInstance(new ConfigManager(this));
+            ConfigManager.getInstance().setLevelUps(new HashMap<>());
+            ConfigManager.getInstance().setNetWorth(0);
+            ConfigManager.getInstance().setNetWorthGeneratedAt(0);
+            ConfigManager.getInstance().loadFromProfile(selectedProfile);
+            return 3000;
+        }
+
+        if(TaskManager.getInstance() == null) {
+            Logger.log("Constructing TaskManager singleton.");
+            TaskManager.setInstance(new TaskManager(this));
+            return 3000;
+        }
+
         if (!Client.isLoggedIn()) {
             if (TaskManager.getInstance().getCurrentTask() == null || !(TaskManager.getInstance().getCurrentTask() instanceof BreakingTask)) {
                 Logger.log("Enabling login manager");
@@ -201,6 +212,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onPaint(Graphics g) {
+        if(TaskManager.getInstance() == null || ConfigManager.getInstance() == null) {
+            return;
+        }
+
         // calculate task time
         String taskTime = "";
         if (TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getTaskSelectedAt() > 0) {
@@ -282,19 +297,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void drawSkill(Graphics2D g2d, Skill sk, String msg, int x, int y) {
-        try {
-            if(TaskManager.getInstance().getCurrentTask() != null) {
-                if (TaskManager.getInstance().getCurrentTask().trainsSkill().equals(sk))
-                    g2d.setColor(Color.CYAN);
+        if (TaskManager.getInstance().getCurrentTask() != null) {
+            if (TaskManager.getInstance().getCurrentTask().trainsSkill().equals(sk))
+                g2d.setColor(Color.CYAN);
 
-                if (Skills.getRealLevel(sk) >= ConfigManager.getInstance().getSkillTarget(sk))
-                    g2d.setColor(Color.GREEN);
+            if (Skills.getRealLevel(sk) >= ConfigManager.getInstance().getSkillTarget(sk))
+                g2d.setColor(Color.GREEN);
 
-                g2d.drawString(msg, x, y);
-                g2d.setColor(Color.WHITE);
-                drawLevelUp(g2d, sk, x + 15, y);
-            }
-        } catch (Exception ignored) { }
+            g2d.drawString(msg, x, y);
+            g2d.setColor(Color.WHITE);
+            drawLevelUp(g2d, sk, x + 15, y);
+        }
     }
 
     @Override
