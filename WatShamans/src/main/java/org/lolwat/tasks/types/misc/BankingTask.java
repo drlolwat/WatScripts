@@ -507,23 +507,24 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Finished checks");
 
-        if(!ConfigManager.getInstance().hasMuleConnectionFailed() && ConfigManager.getInstance().isTradeUnlocked()) {
+        if(!ConfigManager.getInstance().hasMuleConnectionFailed() && ConfigManager.getInstance().isTradeUnlocked()
+                && !ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
             int invMoney = 0;
             int bankMoney = 0;
 
-            if(Inventory.contains("Coins")) {
+            if (Inventory.contains("Coins")) {
                 invMoney = Inventory.get("Coins").getAmount();
             }
 
-            if(Bank.contains("Coins")) {
+            if (Bank.contains("Coins")) {
                 bankMoney = Bank.get("Coins").getAmount();
             }
 
-            if((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_trigger")) {
+            if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_trigger")) {
                 int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("mule_safety_net");
-                if(toWithdraw > 0) {
+                if (toWithdraw > 0) {
                     Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                    if(Inventory.isFull() || Inventory.emptySlotCount() < 2) {
+                    if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
                         Bank.depositAllExcept("Coins");
                     }
                     Sleep.sleep(100, 200);
