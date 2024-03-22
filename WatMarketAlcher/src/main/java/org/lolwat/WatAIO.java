@@ -69,135 +69,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     private boolean firstStart = true;
     private boolean waitingForResponse = false;
     private HashMap<String, Integer> levelUps;
-    public double CHECKED_HOURS_AT = 0;
-    public int NET_WORTH = 0;
-    public double NET_WORTH_GENERATED = 0;
     public boolean MULE_DEAD = false;
-    public List<String> SINGULAR_ITEMS = Arrays.asList("Hammer", "Amulet mould", "Bracelet mould", "Ring mould", "Necklace mould");
-    public List<String> EMERGENCY_SELL = Arrays.asList("Adamant arrow",
-            "Adamant axe",
-            "Adamant full helm",
-            "Adamant kiteshield",
-            "Adamant pickaxe",
-            "Adamant platebody",
-            "Adamant platelegs",
-            "Adamant plateskirt",
-            "Adamant scimitar",
-            "Air rune",
-            "Amulet of strength",
-            "Black ore",
-            "Black arrow",
-            "Black full helm",
-            "Black kiteshield",
-            "Black pickaxe",
-            "Black platebody",
-            "Black platelegs",
-            "Black plateskirt",
-            "Black scimitar",
-            "Blue wizard robe",
-            "Big bones",
-            "Body rune",
-            "Bronze bar",
-            "Chaos rune",
-            "Clay",
-            "Coal",
-            "Copper ore",
-            "Cowhide",
-            "Death rune",
-            "Diamond",
-            "Diamond amulet (u)",
-            "Diamond necklace",
-            "Earth rune",
-            "Emerald",
-            "Emerald amulet (u)",
-            "Emerald necklace",
-            "Emerald ring",
-            "Fire rune",
-            "Gold amulet (u)",
-            "Gold bar",
-            "Gold necklace",
-            "Gold ring",
-            "Green d'hide chaps",
-            "Green d'hide vambraces",
-            "Herring",
-            "Iron ore",
-            "Iron arrow",
-            "Iron full helm",
-            "Iron kiteshield",
-            "Iron pickaxe",
-            "Iron platebody",
-            "Iron platelegs",
-            "Iron plateskirt",
-            "Steel scimitar",
-            "Leather",
-            "Lobster",
-            "Logs",
-            "Maple shortbow",
-            "Mind rune",
-            "Mithril arrow",
-            "Mithril axe",
-            "Mithril bar",
-            "Mithril full helm",
-            "Mithril kiteshield",
-            "Mithril pickaxe",
-            "Mithril platebody",
-            "Mithril platelegs",
-            "Mithril plateskirt",
-            "Mithril scimitar",
-            "Nature rune",
-            "Oak logs",
-            "Oak shortbow",
-            "Pike",
-            "Raw herring",
-            "Raw lobster",
-            "Raw pike",
-            "Raw salmon",
-            "Raw sardine",
-            "Raw shrimps",
-            "Raw trout",
-            "Raw tuna",
-            "Ruby",
-            "Ruby amulet (u)",
-            "Ruby necklace",
-            "Rune arrow",
-            "Rune axe",
-            "Rune chainbody",
-            "Rune full helm",
-            "Rune kiteshield",
-            "Rune pickaxe",
-            "Rune platelegs",
-            "Rune plateskirt",
-            "Rune scimitar",
-            "Salmon",
-            "Sapphire",
-            "Sapphire ring",
-            "Sardine",
-            "Shrimps",
-            "Soft clay",
-            "Staff of air",
-            "Staff of fire",
-            "Steel arrow",
-            "Steel bar",
-            "Steel full helm",
-            "Steel kiteshield",
-            "Steel pickaxe",
-            "Steel platebody",
-            "Steel platelegs",
-            "Steel plateskirt",
-            "Steel scimitar",
-            "Tin ore",
-            "Trout",
-            "Tuna",
-            "Uncut diamond",
-            "Uncut emerald",
-            "Uncut ruby",
-            "Uncut sapphire",
-            "Water rune",
-            "Willow logs",
-            "Willow shortbow",
-            "Yew logs",
-            "Zamarok monk bottom");
-
     private static BufferedImage image;
     private Map<Skill, Rectangle> invisibleButtons;
     private static boolean ADVERTISE_MODE = false;
@@ -255,7 +127,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         Logger.log(Color.green, "WatAIO is starting...");
         getRandomManager().disableSolver(RandomEvent.DISMISS);
         levelUps = new HashMap<>();
-        NET_WORTH = 0;
+
+        ConfigManager.getInstance().setNetWorth(0);
+        ConfigManager.getInstance().setNetWorthGeneratedAt(0);
     }
 
     @Override
@@ -410,7 +284,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // main
         g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
-        g2d.drawString(NumUtils.simplifyNumber(NET_WORTH), 135, 40);
+        g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
         g2d.drawString(taskTime, 77, 40);
 
         if(totalLevelsGained > 0) {
