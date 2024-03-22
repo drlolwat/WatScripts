@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
-import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.AccountManager;
@@ -15,7 +14,6 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -177,10 +175,6 @@ public class ConfigManager {
         }
     }
 
-    public boolean hasLoadedProfile() {
-        return hasLoaded;
-    }
-
     public boolean isTradeUnlocked() {
         return isTradeUnlocked;
     }
@@ -213,11 +207,11 @@ public class ConfigManager {
         ConfigManager.instance = instance;
     }
 
-    public boolean isHasLoaded() {
+    public boolean hasLoadedProfile() {
         return hasLoaded;
     }
 
-    public void setHasLoaded(boolean hasLoaded) {
+    public void setHasLoadedProfile(boolean hasLoaded) {
         this.hasLoaded = hasLoaded;
     }
 
