@@ -21,17 +21,16 @@ import java.util.Objects;
 
 public class ConfigManager {
     private static ConfigManager instance;
-    private WatAIO watAIO;
+    private final WatAIO watAIO;
     private HashMap<Object, Object> config;
     private boolean hasLoaded;
     private boolean isTradeUnlocked;
     private int netWorth;
     private double netWorthGeneratedAt;
-
     private boolean firstStart = true;
     private boolean waitingForResponse = false;
     private HashMap<String, Integer> levelUps;
-    public boolean muleConnectionFailed = false;
+    private boolean muleConnectionFailed = false;
 
     public ConfigManager(WatAIO instance) {
         watAIO = instance;
