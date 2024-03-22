@@ -14,6 +14,7 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -35,6 +36,7 @@ import java.net.URL;
 import java.util.*;
 
 public class GenericUtils {
+
     private static HashMap<String, Integer> levels = new HashMap<String, Integer>() {
         {
             // picks
