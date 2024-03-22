@@ -37,7 +37,7 @@ public class MeleeUtils { //FAT TODO: P2P UTILS!!!! KEEP THIS FOR F2P!!
 
         ret.put(EquipmentSlot.HAT, defensiveItemByType(DefensiveItemType.HELMET, false));
         ret.put(EquipmentSlot.CHEST, defensiveItemByType(DefensiveItemType.CHEST, Skills.getRealLevel(Skill.DEFENCE) >= 40));
-        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, ConfigManager.getInstance().getConfigBoolean("config_use_plateskirt")));
+        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, ConfigManager.getInstance().getConfigBoolean("profile_use_plateskirt")));
         ret.put(EquipmentSlot.SHIELD, defensiveItemByType(DefensiveItemType.OFFHAND, false));
         ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
         ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
