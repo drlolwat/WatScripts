@@ -45,18 +45,7 @@ import java.awt.image.BufferedImage;
 
 @ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
-    // DOING NEW V1 HANDLING
-    private TaskManager taskManager;
-    private ConfigManager configManager;
-
-    // TODO
-    // TODO /////// --------------------- OLD SHIT WE ARE GONNA REFACTOR/GET RID OF
-    private boolean firstStart = true;
-    private boolean waitingForResponse = false;
-    private HashMap<String, Integer> levelUps;
-    public boolean muleConnectionFailed = false;
     private static BufferedImage image;
-    private Map<Skill, Rectangle> invisibleButtons;
 
     @Override
     public void onStart(String... params) {
@@ -74,28 +63,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
-        taskManager = new TaskManager(this);
-        configManager = new ConfigManager(this);
+        new TaskManager(this);
+        new ConfigManager(this);
 
-
-        int height = 10;
-        int width = 10;
-        invisibleButtons = new HashMap<>();
-        invisibleButtons.put(Skill.ATTACK, new Rectangle(158, 22, width, height));
-        invisibleButtons.put(Skill.STRENGTH, new Rectangle(158, 40, width, height));
-        invisibleButtons.put(Skill.DEFENCE, new Rectangle(158, 56, width, height));
-        invisibleButtons.put(Skill.RANGED, new Rectangle(158, 76, width, height));
-        invisibleButtons.put(Skill.PRAYER, new Rectangle(158, 96, width, height));
-        invisibleButtons.put(Skill.MAGIC, new Rectangle(158, 114, width, height));
-        invisibleButtons.put(Skill.CRAFTING, new Rectangle(245, 23, width, height));
-        invisibleButtons.put(Skill.MINING, new Rectangle(246, 40, width, height));
-        invisibleButtons.put(Skill.SMITHING, new Rectangle(246, 58, width, height));
-        invisibleButtons.put(Skill.FISHING, new Rectangle(246, 78, width, height));
-        invisibleButtons.put(Skill.COOKING, new Rectangle(247, 96, width, height));
-        invisibleButtons.put(Skill.FIREMAKING, new Rectangle(246, 113, width, height));
-        invisibleButtons.put(Skill.WOODCUTTING, new Rectangle(247, 132, width, height));
-
-        configManager.loadFromProfile(profile);
+        ConfigManager.getInstance().loadFromProfile(profile);
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
 
@@ -110,79 +81,79 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Logger.log(Color.green, "WatAIO is starting...");
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        levelUps = new HashMap<>();
 
-        ConfigManager.getInstance().setNetWorth(0);
-        ConfigManager.getInstance().setNetWorthGeneratedAt(0);
+        ConfigManager.getInstance().getInstance().setLevelUps(new HashMap<>());
+        ConfigManager.getInstance().getInstance().setNetWorth(0);
+        ConfigManager.getInstance().getInstance().setNetWorthGeneratedAt(0);
     }
 
     @Override
     public int onLoop() {
         if (!Client.isLoggedIn()) {
-            if (taskManager.getCurrentTask() == null || !(taskManager.getCurrentTask() instanceof BreakingTask)) {
+            if (TaskManager.getInstance().getCurrentTask() == null || !(TaskManager.getInstance().getCurrentTask() instanceof BreakingTask)) {
                 Logger.log("Enabling login manager");
                 enableLoginManager();
                 return 3000;
             }
         }
 
-        if (firstStart) {
+        if (ConfigManager.getInstance().getInstance().isFirstStart()) {
             Sleep.sleep(5000);
-            firstStart = false;
+            ConfigManager.getInstance().getInstance().setFirstStart(false);
         }
 
         //TODO a method for this
-        if(WatConfig.getToolFailures() >= 3 && taskManager.getCurrentTask() != null) {
-            if(!(taskManager.getCurrentTask() instanceof GrandExchangeTask) &&
-                    !(taskManager.getCurrentTask() instanceof TraversalTask) &&
-                    !(taskManager.getCurrentTask() instanceof BankingTask) &&
-                    !(taskManager.getCurrentTask() instanceof MiningTask) &&
-                    !(taskManager.getCurrentTask() instanceof WoodcuttingTask)) {
+        if(WatConfig.getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
+            if(!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
+                    !(TaskManager.getInstance().getCurrentTask() instanceof TraversalTask) &&
+                    !(TaskManager.getInstance().getCurrentTask() instanceof BankingTask) &&
+                    !(TaskManager.getInstance().getCurrentTask() instanceof MiningTask) &&
+                    !(TaskManager.getInstance().getCurrentTask() instanceof WoodcuttingTask)) {
 
-                Logger.log(taskManager.getCurrentTask().getName() + ": Resetting tool failures, no longer on task");
+                Logger.log(TaskManager.getInstance().getCurrentTask().getName() + ": Resetting tool failures, no longer on task");
                 WatConfig.resetToolFailures();
             }
         }
 
-        if (taskManager.getCurrentTask() != null) {
-            if (!(taskManager.getCurrentTask() instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
+            if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {
                 Tabs.open(Tab.INVENTORY);
             }
 
-            if (taskManager.getTaskSelectedAt() > 0 &&
-                    (Instant.now().getEpochSecond() - taskManager.getTaskSelectedAt()) >= taskManager.getTaskRunTime()) {
+            if (TaskManager.getInstance().getTaskSelectedAt() > 0 &&
+                    (Instant.now().getEpochSecond() - TaskManager.getInstance().getTaskSelectedAt()) >= TaskManager.getInstance().getTaskRunTime()) {
 
                 Logger.log("Picking a new task due to expiry");
-                taskManager.getNewTask();
+                TaskManager.getInstance().getNewTask();
                 return 1000;
             }
 
-            if (taskManager.getCurrentTask().completesQuest() == null) {
-                if (taskManager.getCurrentTask().trainsSkill() != null) {
-                    if (Skills.getRealLevel(taskManager.getCurrentTask().trainsSkill()) > taskManager.getCurrentTask().avoidAfterLevel()) {
-                        Logger.log("We are now avoiding this task " + taskManager.getCurrentTask().getName() + " due to level, picking new task..");
-                        taskManager.getSpecificSkillTask(taskManager.getCurrentTask().trainsSkill());
+            if (TaskManager.getInstance().getCurrentTask().completesQuest() == null) {
+                if (TaskManager.getInstance().getCurrentTask().trainsSkill() != null) {
+                    if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) > TaskManager.getInstance().getCurrentTask().avoidAfterLevel()) {
+                        Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to level, picking new task..");
+                        TaskManager.getInstance().getSpecificSkillTask(TaskManager.getInstance().getCurrentTask().trainsSkill());
                         return 1000;
                     }
 
-                    if (Skills.getRealLevel(taskManager.getCurrentTask().trainsSkill()) >=
-                            configManager.getSkillTarget(taskManager.getCurrentTask().trainsSkill())) {
+                    if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) >=
+                            ConfigManager.getInstance().getSkillTarget(TaskManager.getInstance().getCurrentTask().trainsSkill())) {
 
-                        Logger.log("We are now avoiding this task " + taskManager.getCurrentTask().getName() + " due to (target) level, picking new task..");
-                        taskManager.getNewTask();
+                        Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (target) level, picking new task..");
+                        TaskManager.getInstance().getNewTask();
                         return 1000;
                     }
                 }
             } else {
-                if (Quests.isFinished(taskManager.getCurrentTask().completesQuest())) {
+                if (Quests.isFinished(TaskManager.getInstance().getCurrentTask().completesQuest())) {
                     Logger.log("We are now avoiding this quest, it's completed, picking new task..");
-                    taskManager.getNewTask();
+                    TaskManager.getInstance().getNewTask();
                     return 1000;
                 }
             }
         } else {
             Logger.log("Task was null, finding a new one...");
-            taskManager.getNewTask();
+            TaskManager.getInstance().getNewTask();
             return 2500;
         }
 
@@ -192,21 +163,21 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         // double check here
-        if (taskManager.getCurrentTask() != null) {
-            if(!Client.isLoggedIn() && taskManager.getCurrentTask().requiresLogin()) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
+            if(!Client.isLoggedIn() && TaskManager.getInstance().getCurrentTask().requiresLogin()) {
                 Logger.log("Waiting for login...");
                 return 1000;
             }
 
-            taskManager.getCurrentTask().execute(this);
+            TaskManager.getInstance().getCurrentTask().execute(this);
 
             //if(!isBlockedTask()) {
             //    GenericUtils.moveMouse();
             //}
 
             // We have to triple check below, because sometimes we rid ourselves of the task before the loop will complete.
-            return taskManager.getCurrentTask() != null ? (taskManager.getCurrentTask().loopTime() > 0 ?
-                    taskManager.getCurrentTask().loopTime() : 500) : 500;
+            return TaskManager.getInstance().getCurrentTask() != null ? (TaskManager.getInstance().getCurrentTask().loopTime() > 0 ?
+                    TaskManager.getInstance().getCurrentTask().loopTime() : 500) : 500;
         }
 
         return 1000;
@@ -214,17 +185,18 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onGained(ExperienceEvent ev) {
-        if(taskManager.getCurrentTask() != null) {
-            taskManager.getCurrentTask().onExpGained(ev.getSkill(), ev.getChange(), this);
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            TaskManager.getInstance().getCurrentTask().onExpGained(ev.getSkill(), ev.getChange(), this);
         }
     }
 
     @Override
     public void onLevelUp(ExperienceEvent ev) {
-        if(levelUps.containsKey(ev.getSkill().getName())) {
-            levelUps.put(ev.getSkill().getName(), levelUps.get(ev.getSkill().getName()) + 1);
+        if(ConfigManager.getInstance().getInstance().getLevelUps().containsKey(ev.getSkill().getName())) {
+            ConfigManager.getInstance().getInstance().getLevelUps().put(ev.getSkill().getName(),
+                    ConfigManager.getInstance().getInstance().getLevelUps().get(ev.getSkill().getName()) + 1);
         } else {
-            levelUps.put(ev.getSkill().getName(), 1);
+            ConfigManager.getInstance().getInstance().getLevelUps().put(ev.getSkill().getName(), 1);
         }
     }
 
@@ -232,10 +204,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void onPaint(Graphics g) {
         // calculate task time
         String taskTime = "";
-        if (taskManager.getCurrentTask() != null && taskManager.getTaskSelectedAt() > 0) {
+        if (TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getTaskSelectedAt() > 0) {
             long currentTime = Instant.now().getEpochSecond();
-            long elapsedTime = (long) (currentTime - taskManager.getTaskSelectedAt());
-            long remainingTime = taskManager.getTaskRunTime() - elapsedTime;
+            long elapsedTime = (long) (currentTime - TaskManager.getInstance().getTaskSelectedAt());
+            long remainingTime = TaskManager.getInstance().getTaskRunTime() - elapsedTime;
 
             if (remainingTime > 0) {
                 if (remainingTime >= 120) {
@@ -249,11 +221,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             }
         }
 
-        if(levelUps == null)
-            levelUps = new HashMap<>();
+        if(ConfigManager.getInstance().getInstance().getLevelUps() == null)
+            ConfigManager.getInstance().getInstance().setLevelUps(new HashMap<>());
 
         int totalLevelsGained = 0;
-        for (int i : levelUps.values()) {
+        for (int i : ConfigManager.getInstance().getInstance().getLevelUps().values()) {
             totalLevelsGained += i;
         }
 
@@ -268,7 +240,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // main
         g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
-        g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
+        g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getInstance().getNetWorth()), 135, 40);
         g2d.drawString(taskTime, 77, 40);
 
         if(totalLevelsGained > 0) {
@@ -278,7 +250,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         // row 1
-        g2d.drawString((taskManager.getCurrentTask() != null && taskManager.getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 38, 59);
+        g2d.drawString((TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 38, 59);
         drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 38, 77);
         drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 38, 95);
         drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 38, 113);
@@ -303,20 +275,20 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void drawLevelUp(Graphics2D g2d, Skill sk, int x, int y) {
-        if(levelUps.containsKey(sk.getName())) {
+        if(ConfigManager.getInstance().getInstance().getLevelUps().containsKey(sk.getName())) {
             g2d.setColor(Color.GREEN);
-            g2d.drawString("+" + levelUps.get(sk.getName()), x, y);
+            g2d.drawString("+" + ConfigManager.getInstance().getInstance().getLevelUps().get(sk.getName()), x, y);
             g2d.setColor(Color.WHITE);
         }
     }
 
     private void drawSkill(Graphics2D g2d, Skill sk, String msg, int x, int y) {
         try {
-            if(taskManager.getCurrentTask() != null) {
-                if (taskManager.getCurrentTask().trainsSkill().equals(sk))
+            if(TaskManager.getInstance().getCurrentTask() != null) {
+                if (TaskManager.getInstance().getCurrentTask().trainsSkill().equals(sk))
                     g2d.setColor(Color.CYAN);
 
-                if (Skills.getRealLevel(sk) >= configManager.getSkillTarget(sk))
+                if (Skills.getRealLevel(sk) >= ConfigManager.getInstance().getSkillTarget(sk))
                     g2d.setColor(Color.GREEN);
 
                 g2d.drawString(msg, x, y);
@@ -328,18 +300,18 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     @Override
     public void onMessage(Message m) {
-        if (taskManager.getCurrentTask() != null) {
-            if(!waitingForResponse && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
+            if(!ConfigManager.getInstance().getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
                 boolean enableGpt = false; // change at compile time
                 if(enableGpt) {
                     if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
-                        waitingForResponse = true;
+                        ConfigManager.getInstance().getInstance().setWaitingForResponse(true);
                         new Thread(() -> {
-                            String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), taskManager.getCurrentTask().getName());
+                            String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
                             if(!response.isEmpty()) {
                                 Keyboard.type(response, true);
                             }
-                            waitingForResponse = false;
+                            ConfigManager.getInstance().getInstance().setWaitingForResponse(false);
                         }).start();
                     }
                 }
@@ -347,7 +319,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             boolean tenOrThirty = Calculations.random(1, 3) == 1;
             if (m.toString().contains("approximately " + (tenOrThirty ? "10" : "30") + " minutes"))
-                taskManager.setCurrentTask(new LogoutTask(false, false, taskManager.getCurrentTask()), 0);
+                TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false, TaskManager.getInstance().getCurrentTask()), 0);
         }
     }
 
@@ -357,17 +329,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     public void enableLoginManager() {
         getRandomManager().enableSolver(RandomEvent.LOGIN);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        /*
-        for (Map.Entry<Skill, Rectangle> entry : invisibleButtons.entrySet()) {
-            if (entry.getValue().contains(e.getX(), e.getY())) {
-                runSkillFunction(entry.getKey());
-                break;
-            }
-        }*/
     }
 
     @Override

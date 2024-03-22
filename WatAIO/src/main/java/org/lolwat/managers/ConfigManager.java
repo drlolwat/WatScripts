@@ -28,6 +28,11 @@ public class ConfigManager {
     private int netWorth;
     private double netWorthGeneratedAt;
 
+    private boolean firstStart = true;
+    private boolean waitingForResponse = false;
+    private HashMap<String, Integer> levelUps;
+    public boolean muleConnectionFailed = false;
+
     public ConfigManager(WatAIO instance) {
         watAIO = instance;
         config = new HashMap<>();
@@ -206,5 +211,45 @@ public class ConfigManager {
 
     private void setInstance(ConfigManager instance) {
         ConfigManager.instance = instance;
+    }
+
+    public boolean isHasLoaded() {
+        return hasLoaded;
+    }
+
+    public void setHasLoaded(boolean hasLoaded) {
+        this.hasLoaded = hasLoaded;
+    }
+
+    public boolean isFirstStart() {
+        return firstStart;
+    }
+
+    public void setFirstStart(boolean firstStart) {
+        this.firstStart = firstStart;
+    }
+
+    public boolean isWaitingForResponse() {
+        return waitingForResponse;
+    }
+
+    public void setWaitingForResponse(boolean waitingForResponse) {
+        this.waitingForResponse = waitingForResponse;
+    }
+
+    public HashMap<String, Integer> getLevelUps() {
+        return levelUps;
+    }
+
+    public void setLevelUps(HashMap<String, Integer> levelUps) {
+        this.levelUps = levelUps;
+    }
+
+    public boolean isMuleConnectionFailed() {
+        return muleConnectionFailed;
+    }
+
+    public void setMuleConnectionFailed(boolean muleConnectionFailed) {
+        this.muleConnectionFailed = muleConnectionFailed;
     }
 }
