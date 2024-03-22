@@ -323,14 +323,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
     }
 
-    public void disableLoginManager() {
-        getRandomManager().disableSolver(RandomEvent.LOGIN);
-    }
-
-    public void enableLoginManager() {
-        getRandomManager().enableSolver(RandomEvent.LOGIN);
-    }
-
     @Override
     public void mouseClicked(MouseEvent e) {
     }
@@ -353,5 +345,13 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public void disableLoginManager() {
+        getRandomManager().disableSolver(RandomEvent.LOGIN);
+    }
+
+    public void enableLoginManager() {
+        getRandomManager().enableSolver(RandomEvent.LOGIN);
     }
 }
