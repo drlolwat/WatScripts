@@ -1,11 +1,18 @@
 package org.lolwat.managers;
 
+import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
+import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.world.Worlds;
+import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.types.combat.MagicCombatTask;
 import org.lolwat.tasks.types.combat.MeleeCombatTask;
 import org.lolwat.tasks.types.combat.RangedCombatTask;
@@ -14,7 +21,7 @@ import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.tasks.types.firemaking.FiremakingTask;
 import org.lolwat.tasks.types.magic.HighAlchemyTask;
-import org.lolwat.tasks.types.misc.ScavengingTask;
+import org.lolwat.tasks.types.misc.*;
 import org.lolwat.tasks.types.prayer.BuryBonesTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
@@ -26,40 +33,172 @@ import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.quests.*;
 import org.lolwat.tasks.types.smithing.SmithingItemTask;
+import org.lolwat.tasks.types.tutorial.SelectUsernameTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
 
+import java.awt.*;
+import java.time.Instant;
 import java.util.*;
+import java.util.List;
 
 public class TaskManager {
-    private static List<WatTask> allTasks;
-    private static HashMap<Skill, List<WatTask>> tasksBySkill;
-    private static HashMap<Quest, WatTask> questTasks;
-    private static WatAIO instance;
-    private static List<WatTask> restrictedMoneyMakingTasks;
-    private static List<WatTask> unrestrictedMoneyMakingTasks;
+    private List<WatTask> tasks;
+    private HashMap<Skill, List<WatTask>> tasksBySkill;
+    private HashMap<Quest, WatTask> questTasks;
+    private List<WatTask> restrictedMoneyMakingTasks; // TODO
+    private List<WatTask> unrestrictedMoneyMakingTasks; // TODO
 
-    public static void setupAllTasks(WatAIO core) {
-        allTasks = new ArrayList<>();
+    // ---- RUNTIME VARIABLES ----
+    private final WatAIO watAIO;
+    private WatTask currentTask;
+    private int tasksUntilBreak;
+    private double taskSelectedAt;
+    private int taskRunTime;
+    private double checkedHoursAt; // TODO
+
+    public TaskManager(WatAIO instance) {
+        watAIO = instance;
+        setupAllTasks();
+        resetBreaks();
+        checkedHoursAt = 0;
+
+        Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks and " + getQuests().size() + " total quests.");
+    }
+
+    public void getNewTask() {
+
+    }
+
+    public void getSpecificSkillTask(Skill sk) {
+
+    }
+
+    public WatTask getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(WatTask value, int runtime) {
+        currentTask = value;
+        taskSelectedAt = Instant.now().getEpochSecond();
+        taskRunTime = runtime > 0 ? runtime : Calculations.random(1200, 6750);
+    }
+
+    public void resetBreaks() {
+        tasksUntilBreak = Calculations.random(8, 15);
+    }
+
+    private boolean evaluateBreak() {
+        if(watAIO.getConfigManager().getConfigBoolean("breaks_enabled") && tasksUntilBreak < 0) {
+            resetBreaks();
+            setCurrentTask(new BreakingTask((Instant.now().getEpochSecond() + taskRunTime)), Calculations.random(28800, 43200));
+            watAIO.getConfigManager().getWsProfile(taskRunTime);
+
+            Logger.log("TaskManager: Going on break");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean evaluateGoals() {
+        boolean goalsMet = true;
+        for(Skill sk : Skill.values()) {
+            if(Skills.getRealLevel(sk) < watAIO.getConfigManager().getSkillTarget(sk))
+                goalsMet = false;
+        }
+
+        if(goalsMet) {
+            Logger.log("WAIO: Reached target ttl and qp");
+            setCurrentTask(new LogoutTask(true, true, null), 0);
+            Logger.log("We are going to the bank to log out");
+            Sleep.sleep(1000, 3000);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void evaluate() {
+        if(!watAIO.getConfigManager().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
+            watAIO.disableLoginManager();
+            watAIO.getConfigManager().getWsProfile(0);
+            watAIO.enableLoginManager();
+        }
+
+        if(!Client.isLoggedIn()) {
+            Logger.log("Awaiting login...");
+            watAIO.enableLoginManager();
+            return;
+        }
+
+        if (PlayerSettings.getConfig(281) != 1000) {
+            setCurrentTask(new SelectUsernameTask(), 0);
+            Logger.log("We are performing Tutorial Island");
+            return;
+        }
+
+        boolean devMode = false; // change at compile time
+        if(devMode) {
+            setCurrentTask(new AdvertiseTask(), 0);
+            Logger.log("We are going to spam BotBuddy at the G.E");
+            return;
+        }
+
+        if (!GenericUtils.isMember() && (watAIO.getConfigManager().getConfigInt("bond_min_ttl") > 0
+                && Skills.getTotalLevel() >= watAIO.getConfigManager().getConfigInt("bond_min_ttl"))) {
+
+            setCurrentTask(new BondingTask(null), 0);
+            Logger.log("We are making our account a member");
+            return;
+        }
+
+        if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+            setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
+            Logger.log("We are hopping into a P2P world");
+            return;
+        }
+
+        Logger.log("Evaluating goals for stop conditions");
+        if(evaluateGoals()) {
+            return;
+        }
+
+        if(!watAIO.getConfigManager().isTradeUnlocked()
+                && watAIO.getConfigManager().getConfigBoolean("logout_after_unrestricted")) {
+
+            setCurrentTask(new LogoutTask(true, true,null), 0);
+            Logger.log("We are going to the bank to log out");
+            return;
+        }
+
+        if(watAIO.getConfigManager().getConfigBoolean("breaks_enabled")) {
+            Logger.log("Evaluating for breaks");
+            if (!evaluateBreak()) {
+                Logger.log("Going on break after " + tasksUntilBreak + " more completed task(s)");
+            }
+        }
+    }
+
+    private void setupAllTasks() {
+        tasks = new ArrayList<>();
         tasksBySkill = new HashMap<>();
         questTasks = new HashMap<>();
         restrictedMoneyMakingTasks = new ArrayList<>();
         unrestrictedMoneyMakingTasks = new ArrayList<>();
-        instance = core;
 
-        allTasks.addAll(createMiningTasks());
-        allTasks.addAll(createSmithingTasks());
-        allTasks.addAll(createWoodcuttingTasks());
-        allTasks.addAll(createFishingTasks());
-        allTasks.addAll(createCraftingTasks());
-        allTasks.addAll(createFiremakingTasks());//
-        allTasks.addAll(createPrayerTasks());
-        allTasks.addAll(createCookingTasks());
-        allTasks.addAll(createMeleeTasks());
-        allTasks.addAll(createRangedTasks());
-        allTasks.addAll(createMagicTasks());
+        tasks.addAll(createMiningTasks());
+        tasks.addAll(createSmithingTasks());
+        tasks.addAll(createWoodcuttingTasks());
+        tasks.addAll(createFishingTasks());
+        tasks.addAll(createCraftingTasks());
+        tasks.addAll(createFiremakingTasks());//
+        tasks.addAll(createPrayerTasks());
+        tasks.addAll(createCookingTasks());
+        tasks.addAll(createMeleeTasks());
+        tasks.addAll(createRangedTasks());
+        tasks.addAll(createMagicTasks());
 
-        for(WatTask task : allTasks) {
+        for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
                 if(!tasksBySkill.get(task.trainsSkill()).contains(task)) {
                     tasksBySkill.get(task.trainsSkill()).add(task);
@@ -75,7 +214,7 @@ public class TaskManager {
         unrestrictedMoneyMakingTasks.addAll(createUnrestrictedMMTasks());
     }
 
-    private static List<WatTask> createUnrestrictedMMTasks() {
+    private List<WatTask> createUnrestrictedMMTasks() {
         List<WatTask> tasks = new ArrayList<>();
         List<Skill> mmSkills = new ArrayList<Skill>() { { add(Skill.WOODCUTTING); add(Skill.FISHING); add(Skill.MINING); }};
 
@@ -88,7 +227,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createRestrictedMMTasks() {
+    private List<WatTask> createRestrictedMMTasks() {
         List<WatTask> tasks = new ArrayList<>();
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
@@ -97,7 +236,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static HashMap<Quest, WatTask> createQuestTasks() {
+    private  HashMap<Quest, WatTask> createQuestTasks() {
         HashMap<Quest, WatTask> tasks = new HashMap<>();
 
         tasks.put(FreeQuest.IMP_CATCHER, new ImpCatcherQuest());
@@ -106,13 +245,12 @@ public class TaskManager {
         tasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
         tasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
         tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
-        //tasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
         tasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
 
         return tasks;
     }
 
-    private static List<WatTask> createMagicTasks() {
+    private List<WatTask> createMagicTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         tasks.add(new MagicCombatTask(1, 5, new Area(
@@ -257,7 +395,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createRangedTasks() {
+    private List<WatTask> createRangedTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         tasks.add(new RangedCombatTask(1, 10, new Area(
@@ -435,7 +573,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createMeleeTasks() {
+    private List<WatTask> createMeleeTasks() {
         List<WatTask> tasks = new ArrayList<>();
         List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
         for (Skill sk : s) {
@@ -629,7 +767,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createCookingTasks() {
+    private List<WatTask> createCookingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         tasks.add(new CookingFishTask(FishType.SHRIMPS, 1, 5, 15, new HashMap<String, Integer>() {{
@@ -685,7 +823,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createPrayerTasks() {
+    private List<WatTask> createPrayerTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         tasks.add(new BuryBonesTask(BoneType.BIGBONES, 99,20));
@@ -693,7 +831,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createFiremakingTasks() {
+    private List<WatTask> createFiremakingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         tasks.add(new FiremakingTask(TreeType.TREE, 1, 15, 20, new HashMap<>()));
@@ -703,7 +841,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createCraftingTasks() {
+    private List<WatTask> createCraftingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         // wool, only uses lumbridge castle at the moment
@@ -720,7 +858,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createFishingTasks() {
+    private List<WatTask> createFishingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         // lumbridge
@@ -733,7 +871,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createWoodcuttingTasks() {
+    private List<WatTask> createWoodcuttingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         // regular logs
@@ -756,7 +894,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createSmithingTasks() {
+    private List<WatTask> createSmithingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         // actual items, followed wiki for most efficient leveling
@@ -853,7 +991,7 @@ public class TaskManager {
         return tasks;
     }
 
-    private static List<WatTask> createMiningTasks() {
+    private List<WatTask> createMiningTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
         // Varrock East Copper
@@ -879,22 +1017,8 @@ public class TaskManager {
         return tasks;
     }
 
-    public static HashMap<Quest, WatTask> getQuests() { return questTasks; }
-    public static List<WatTask> getAllTasks() { return allTasks; }
-    public static List<WatTask> getTasksBySkill(Skill skill) {
-        if(tasksBySkill.containsKey(skill)) {
-            return tasksBySkill.get(skill);
-        }
-        else {
-            return new ArrayList<>();
-        }
-    }
-
-    public static List<WatTask> getUnrestrictedTasks() {
-        return unrestrictedMoneyMakingTasks;
-    }
-
-    public static List<WatTask> getRestrictedTasks() {
-        return restrictedMoneyMakingTasks;
-    }
+    public HashMap<Quest, WatTask> getQuests() { return questTasks; }
+    public List<WatTask> getTasks() { return tasks; }
+    public double getTaskSelectedAt() { return taskSelectedAt; }
+    public int getTaskRunTime() { return taskRunTime; }
 }
