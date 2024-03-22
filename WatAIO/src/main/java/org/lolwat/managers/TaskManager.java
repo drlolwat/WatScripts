@@ -82,7 +82,10 @@ public class TaskManager {
     }
 
     public void getNewTask(boolean noQuest) {
-        preTaskSelection();
+        if(preTaskSelection()) {
+            return;
+        }
+
         boolean quest = !noQuest && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3;
 
         if(!quest) {
@@ -113,7 +116,10 @@ public class TaskManager {
     }
 
     public void getSpecificSkillTask(Skill sk) {
-        preTaskSelection();
+        if(preTaskSelection()) {
+            return;
+        }
+
         if(sk.equals(Skill.HITPOINTS)) {
             List<WatTask> pool;
             if(ConfigManager.getInstance().isTradeUnlocked()) {
@@ -209,7 +215,7 @@ public class TaskManager {
         return false;
     }
 
-    private void preTaskSelection() {
+    private boolean preTaskSelection() {
         if(!ConfigManager.getInstance().hasLoadedProfile() ||
                 (getInstance().getCheckedHoursAt() == 0 ||
                         (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
@@ -222,20 +228,20 @@ public class TaskManager {
 
         if(!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
-            return;
+            return true;
         }
 
         if (PlayerSettings.getConfig(281) != 1000) {
             setCurrentTask(new SelectUsernameTask(), 0);
             Logger.log("We are performing Tutorial Island");
-            return;
+            return true;
         }
 
         boolean devMode = false; // change at compile time
         if(devMode) {
             setCurrentTask(new AdvertiseTask(), 0);
             Logger.log("We are going to spam BotBuddy at the G.E");
-            return;
+            return true;
         }
 
         if (!GenericUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
@@ -243,19 +249,19 @@ public class TaskManager {
 
             setCurrentTask(new BondingTask(null), 0);
             Logger.log("We are making our account a member");
-            return;
+            return true;
         }
 
         if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
             setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
             Logger.log("We are hopping into a P2P world");
-            return;
+            return true;
         }
 
         Logger.log("Evaluating goals for stop conditions");
         if(evaluateGoals()) {
             Logger.log("Goals have been met..");
-            return;
+            return true;
         }
 
         if(!ConfigManager.getInstance().isTradeUnlocked()
@@ -263,18 +269,22 @@ public class TaskManager {
 
             setCurrentTask(new LogoutTask(true, true,null), 0);
             Logger.log("We are going to the bank to log out");
-            return;
+            return true;
         }
 
         if(ConfigManager.getInstance().getConfigBoolean("breaks_enabled")) {
             Logger.log("Evaluating for breaks");
-            if (!evaluateBreak()) {
+            if (evaluateBreak()) {
+                return true;
+            }
+            else {
                 Logger.log("Going on break after " + tasksUntilBreak + " more completed task(s)");
             }
         }
 
         Collections.shuffle(tasks);
         shuffleQuestTasks();
+        return false;
     }
 
     private void setupAllTasks() {
