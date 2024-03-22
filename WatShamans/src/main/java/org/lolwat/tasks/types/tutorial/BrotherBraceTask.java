@@ -15,6 +15,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -49,7 +50,7 @@ public class BrotherBraceTask implements WatTask {
 
         if(!started && !loc.contains(Players.getLocal())) {
             started = true;
-            instance.currentTask = new TraversalTask(loc, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));
         }
 
         if(HintArrow.exists()) {
@@ -62,7 +63,7 @@ public class BrotherBraceTask implements WatTask {
                         Sleep.sleep(300, 600);
 
                         if(door)
-                            instance.currentTask = new MagicInstructorTask();
+                            TaskManager.getInstance().setCurrentTask(new MagicInstructorTask());
                         else
                             door = true;
                     }

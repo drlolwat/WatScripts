@@ -22,6 +22,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -61,7 +62,7 @@ public class MagicInstructorTask implements WatTask {
 
         if(!started && !loc.contains(Players.getLocal())) {
             started = true;
-            instance.currentTask = new TraversalTask(loc, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));
         }
 
         List<String> answers = new ArrayList<String>() {
@@ -87,7 +88,7 @@ public class MagicInstructorTask implements WatTask {
                             Area location = new Area(3138, 3091, 3141, 3091);
 
                             if (!location.contains(Players.getLocal())) {
-                                instance.currentTask = new TraversalTask(location, this);
+                                TaskManager.getInstance().setCurrentTask(new TraversalTask(location, this));
                                 return;
                             }
 
@@ -104,8 +105,7 @@ public class MagicInstructorTask implements WatTask {
         }
 
         if (PlayerSettings.getConfig(281) == 1000) {
-            instance.currentTask = null;
-            WatAIO.RUNNING_TUT = false;
+            TaskManager.getInstance().getNewTask();
         }
     }
 

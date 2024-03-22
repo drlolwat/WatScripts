@@ -136,7 +136,7 @@ public class ConfigManager {
                 JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
 
                 for (String key : jsonObject.keySet()) {
-                    config.put(key, jsonObject.get(key));
+                    config.put("profile_" + key, jsonObject.get(key));
                 }
 
                 Logger.log(Color.green, (breaking > 0) ? "Updated account hivetime due to break" :"Loaded unique account profile from BotBuddy Hive");

@@ -77,15 +77,19 @@ public class TaskManager {
     }
 
     public void getNewTask() {
-
+        preTaskSelection();
     }
 
     public void getSpecificSkillTask(Skill sk) {
-
+        preTaskSelection();
     }
 
     public WatTask getCurrentTask() {
         return currentTask;
+    }
+
+    public void setCurrentTask(WatTask task) {
+        setCurrentTask(task, 0);
     }
 
     public void setCurrentTask(WatTask value, int runtime) {
@@ -127,7 +131,7 @@ public class TaskManager {
         return false;
     }
 
-    private void evaluate() {
+    private void preTaskSelection() {
         if(!ConfigManager.getInstance().hasLoadedProfile() || (checkedHoursAt == 0 || (Instant.now().getEpochSecond() - checkedHoursAt) >= 3600)) {
             watAIO.disableLoginManager();
             ConfigManager.getInstance().getWsProfile(0);
@@ -169,6 +173,7 @@ public class TaskManager {
 
         Logger.log("Evaluating goals for stop conditions");
         if(evaluateGoals()) {
+            Logger.log("Goals have been met..");
             return;
         }
 

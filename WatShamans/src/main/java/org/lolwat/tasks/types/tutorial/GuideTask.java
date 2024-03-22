@@ -7,6 +7,7 @@ import org.dreambot.api.methods.hint.HintArrowType;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -27,7 +28,7 @@ public class GuideTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(HintArrow.exists() && HintArrow.getType() != HintArrowType.NPC) {
-            instance.currentTask = new SurvivalInstructorTask();
+            TaskManager.getInstance().setCurrentTask(new SurvivalInstructorTask());
             return;
         }
 
