@@ -4,17 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
-import org.dreambot.api.input.Mouse;
-import org.dreambot.api.methods.input.Camera;
-import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatAIO;
-import org.lolwat.misc.mouse.BezierMouse;
 
 import java.awt.*;
 import java.io.*;
@@ -30,7 +25,6 @@ public class ConfigManager {
     private final WatAIO watAIO;
     private HashMap<Object, Object> config;
     private boolean hasLoaded;
-    private boolean isTradeUnlocked;
     private int netWorth;
     private double netWorthGeneratedAt;
     private boolean firstStart;
