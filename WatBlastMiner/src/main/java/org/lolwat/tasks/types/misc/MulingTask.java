@@ -37,7 +37,7 @@ public class MulingTask implements WatTask {
     int retries = 0;
     boolean reverse;
     HashMap<String, Integer> reverseRequest;
-    private WatTask postTask;
+    private final WatTask postTask;
 
     public MulingTask(String taskName, int currentWorld, WatTask post) {
         name = taskName;
@@ -162,8 +162,7 @@ public class MulingTask implements WatTask {
                         TaskManager.getInstance().setCurrentTask(new HopperTask(targetWorld, this));
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ignored) {
             }
             retries++;
         }
