@@ -190,8 +190,10 @@ public class TaskManager {
     private boolean evaluateGoals() {
         boolean goalsMet = true;
         for(Skill sk : Skill.values()) {
-            if(Skills.getRealLevel(sk) < ConfigManager.getInstance().getSkillTarget(sk))
+            if(Skills.getRealLevel(sk) < ConfigManager.getInstance().getSkillTarget(sk)) {
+                Logger.log("Goal not met for: " + sk.getName() + " (" + Skills.getRealLevel(sk) + "/" + ConfigManager.getInstance().getSkillTarget(sk) + ")");
                 goalsMet = false;
+            }
         }
 
         if(goalsMet) {
