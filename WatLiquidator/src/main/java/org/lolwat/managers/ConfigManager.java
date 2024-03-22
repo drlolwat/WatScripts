@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class ConfigManager {
+    private static ConfigManager instance;
     private WatAIO watAIO;
     private HashMap<Object, Object> config;
     private boolean hasLoaded;
@@ -29,6 +30,7 @@ public class ConfigManager {
         watAIO = instance;
         config = new HashMap<>();
         hasLoaded = false;
+        setInstance(this);
     }
 
     private JsonObject getDefaultProfile() {
@@ -178,5 +180,13 @@ public class ConfigManager {
 
     public void setTradeUnlocked(boolean tradeUnlocked) {
         isTradeUnlocked = tradeUnlocked;
+    }
+
+    public static ConfigManager getInstance() {
+        return instance;
+    }
+
+    private void setInstance(ConfigManager instance) {
+        ConfigManager.instance = instance;
     }
 }
