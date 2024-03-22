@@ -1,6 +1,7 @@
 package org.lolwat.tasks.types.misc;
 
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -8,10 +9,12 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.WatTask;
@@ -59,18 +62,23 @@ public class LogoutTask implements WatTask {
             if(endingScript) {
                 if(muleWealth) {
                     this.muleWealth = false;
-                    HashMap<String, Integer> li = new HashMap<>();
-                    for(String s : ItemUtils.EMERGENCY_SELL) {
-                        li.put(s, -1);
-                    }
-
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(null, li, 1, this), 0);
+                    TaskManager.getInstance().setCurrentTask(
+                            new LiquidationTask(
+                                    (!ConfigManager.getInstance().hasMuleConnectionFailed()
+                                            && !ConfigManager.getInstance().getConfigBoolean("disable_mule")) ?
+                                            new MulingTask("Muling wealth", Worlds.getCurrentWorld(), this) :
+                                            new LogoutTask(true, false, this)
+                            )
+                    );
                     return;
                 }
 
-                Logger.log("WAIO: job done");
-                ScriptManager.getScriptManager().stop();
-                return;
+                if(Bank.isOpen()) {
+                    Bank.close();
+                    Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+                }
+
+
             }
 
             if(Client.isLoggedIn()) {
@@ -82,6 +90,11 @@ public class LogoutTask implements WatTask {
                 instance.disableLoginManager();
                 Sleep.sleep(100, 200);
                 Tabs.logout();
+            }
+
+            if(endingScript) {
+                Logger.log("WAIO: job done");
+                ScriptManager.getScriptManager().stop();
             }
 
         } else {
