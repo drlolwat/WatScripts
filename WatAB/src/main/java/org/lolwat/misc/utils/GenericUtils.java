@@ -251,4 +251,8 @@ public class GenericUtils {
             }
         }
     }
+
+    public static boolean isOnTutorial() {
+        return (PlayerSettings.getConfig(281) != 1000);
+    }
 }
