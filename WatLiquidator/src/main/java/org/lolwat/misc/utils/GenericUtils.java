@@ -21,6 +21,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.types.misc.HopperTask;
@@ -156,8 +157,8 @@ public class GenericUtils {
         HashMap<String, Integer> ret = new HashMap<>();
         if(Skills.getTotalLevel() >= 75) {
             ret.put("Leather boots", 1);
-            if(WatAIO.WEAR_CAPES) {
-                ret.put(WatAIO.CAPE_TYPE, 1);
+            if(ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
+                ret.put(ConfigManager.getInstance().getConfigString("profile_cape_type"), 1);
             }
         }
         return ret;

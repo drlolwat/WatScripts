@@ -15,6 +15,7 @@ import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -53,7 +54,7 @@ public class ScavengingTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if(!scavengingZone.contains(Players.getLocal())) {
-            instance.currentTask = new TraversalTask(scavengingZone, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(scavengingZone, this));
             return;
         }
 
@@ -75,7 +76,7 @@ public class ScavengingTask implements WatTask {
 
         if(Inventory.isFull() || worth > maxScavenge) {
             itemsTaken.clear();
-            instance.currentTask = new BankingTask(new HashMap<>(), sellList, 1, (worth > maxScavenge) ? null : this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellList, 1, (worth > maxScavenge) ? null : this));
             return;
         }
 

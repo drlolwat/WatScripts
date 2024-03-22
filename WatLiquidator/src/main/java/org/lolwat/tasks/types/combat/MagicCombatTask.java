@@ -22,6 +22,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
 import org.lolwat.tasks.WatTask;
@@ -81,20 +82,20 @@ public class MagicCombatTask implements WatTask {
 
         if(Equipment.isEmpty() || Equipment.all(x -> x.getName().toLowerCase().contains("staff")).isEmpty()) {
             Logger.log("We need to grab runes and staff...");
-            instance.currentTask = new BankingTask(requiredItems, null, 1,this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1,this));
             return;
         }
 
         if(!MagicUtils.canAffordCast(toCast)) {
             Logger.log("We need to grab runes...");
-            instance.currentTask = new BankingTask(requiredItems, null, 1,this);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1,this));
             return;
         }
 
         if(!food.isEmpty()) {
             if(Inventory.isEmpty() || Inventory.all(x -> x.hasAction("Eat")).isEmpty()) {
                 Logger.log("We need to grab food...");
-                instance.currentTask = new BankingTask(requiredItems, null, 2,this);
+                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 2,this));
                 return;
             }
         }
@@ -123,7 +124,7 @@ public class MagicCombatTask implements WatTask {
         }
 
         if (!zone.contains(Players.getLocal()) && !Players.getLocal().isInCombat()) {
-            instance.currentTask = new TraversalTask(zone, this);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(zone, this));
             return;
         }
 
