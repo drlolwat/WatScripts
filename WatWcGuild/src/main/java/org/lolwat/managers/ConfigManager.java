@@ -199,7 +199,7 @@ public class ConfigManager {
 
     public boolean isTradeUnlocked() {
         return getConfigBoolean("ignore_trade_restriction") ||
-                (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 75600) && Quests.getQuestPoints() >= 10;
+                (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 75600 && Quests.getQuestPoints() >= 10);
     }
 
     public int getNetWorth() {
