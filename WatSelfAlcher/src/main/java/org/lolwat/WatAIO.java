@@ -321,7 +321,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
             boolean tenOrThirty = Calculations.random(1, 3) == 1;
             if (m.toString().contains("approximately " + (tenOrThirty ? "10" : "30") + " minutes"))
-                TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false, TaskManager.getInstance().getCurrentTask()), 0);
+                TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false, TaskManager.getInstance().getCurrentTask()));
         }
     }
 
