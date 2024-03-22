@@ -101,7 +101,7 @@ public class TaskManager {
             for (Map.Entry<Quest, WatTask> questTask : questTasks.entrySet()) {
                 if (questTask.getValue().canPerformTask() && Quests.isFinished(questTask.getValue().completesQuest())) {
                     Logger.log("TaskManager: Selected quest task: " + questTask.getValue().getName());
-                    setCurrentTask(questTask.getValue());
+                    setCurrentTask(questTask.getValue(), 0);
                     return;
                 }
             }
@@ -127,7 +127,7 @@ public class TaskManager {
             for(WatTask t : pool) {
                 if(t.canPerformTask()) {
                     Logger.log(Color.green, "TaskManager: Selected money making task: " + t.getName());
-                    setCurrentTask(t);
+                    setCurrentTask(t, 0);
                     return;
                 }
             }
@@ -138,7 +138,7 @@ public class TaskManager {
                         t.canPerformTask()) {
 
                     Logger.log(Color.green, "TaskManager: Selected task for skill: " + sk.getName() + " - " + t.getName());
-                    setCurrentTask(t);
+                    setCurrentTask(t, 0);
                     return;
                 }
             }
@@ -152,7 +152,7 @@ public class TaskManager {
     }
 
     public void setCurrentTask(WatTask task) {
-        getInstance().setCurrentTask(task, 0);
+        getInstance().setCurrentTask(task, getTaskRunTime());
     }
 
     public void setCurrentTask(WatTask value, int runtime) {
