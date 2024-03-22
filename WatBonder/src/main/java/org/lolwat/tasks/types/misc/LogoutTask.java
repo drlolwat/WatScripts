@@ -46,17 +46,6 @@ public class LogoutTask implements WatTask {
 
         Area loc = BankLocation.getNearest().getArea(5);
         if(loc.contains(Players.getLocal())) {
-            if(Client.isLoggedIn()) {
-                if(!Tabs.open(Tab.LOGOUT)) {
-                    Tabs.open(Tab.LOGOUT);
-                    Sleep.sleep(100, 200);
-                }
-
-                instance.disableLoginManager();
-                Sleep.sleep(100, 200);
-                Tabs.logout();
-            }
-
             if(postScript != null) {
                 if(!(postScript instanceof BreakingTask)) {
                     instance.enableLoginManager();
@@ -81,7 +70,20 @@ public class LogoutTask implements WatTask {
 
                 Logger.log("WAIO: job done");
                 ScriptManager.getScriptManager().stop();
+                return;
             }
+
+            if(Client.isLoggedIn()) {
+                if(!Tabs.open(Tab.LOGOUT)) {
+                    Tabs.open(Tab.LOGOUT);
+                    Sleep.sleep(100, 200);
+                }
+
+                instance.disableLoginManager();
+                Sleep.sleep(100, 200);
+                Tabs.logout();
+            }
+
         } else {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));
         }
