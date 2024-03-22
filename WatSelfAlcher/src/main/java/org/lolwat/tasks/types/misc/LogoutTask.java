@@ -79,8 +79,8 @@ public class LogoutTask implements WatTask {
                     return;
                 }
 
-                ScriptManager.getScriptManager().stop();
                 Logger.log("WAIO: job done");
+                ScriptManager.getScriptManager().stop();
             }
         } else {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this), 0);
