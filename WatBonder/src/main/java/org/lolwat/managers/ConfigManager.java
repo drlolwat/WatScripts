@@ -25,6 +25,8 @@ public class ConfigManager {
     private HashMap<Object, Object> config;
     private boolean hasLoaded;
     private boolean isTradeUnlocked;
+    private int netWorth;
+    private double netWorthGeneratedAt;
 
     public ConfigManager(WatAIO instance) {
         watAIO = instance;
@@ -180,6 +182,22 @@ public class ConfigManager {
 
     public void setTradeUnlocked(boolean tradeUnlocked) {
         isTradeUnlocked = tradeUnlocked;
+    }
+
+    public int getNetWorth() {
+        return netWorth;
+    }
+
+    public void setNetWorth(int netWorth) {
+        this.netWorth = netWorth;
+    }
+
+    public double getNetWorthGeneratedAt() {
+        return netWorthGeneratedAt;
+    }
+
+    public void setNetWorthGeneratedAt(double netWorthGeneratedAt) {
+        this.netWorthGeneratedAt = netWorthGeneratedAt;
     }
 
     public static ConfigManager getInstance() {

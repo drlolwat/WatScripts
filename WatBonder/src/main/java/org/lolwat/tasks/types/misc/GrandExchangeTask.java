@@ -19,6 +19,7 @@ import org.dreambot.api.wrappers.interactive.Entity;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.WatAIO;
@@ -243,7 +244,7 @@ public class GrandExchangeTask implements WatTask {
 
                             Sleep.sleep(100, 300);
 
-                            if (item.getValue() != 1 && !instance.SINGULAR_ITEMS.contains(itemFinal)) {
+                            if (item.getValue() != 1 && !ItemUtils.SINGULAR_ITEMS.contains(itemFinal)) {
                                 GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
                                 Sleep.sleep(100, 300);
                             }
