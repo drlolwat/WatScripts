@@ -332,7 +332,7 @@ public class TaskManager {
         //        tasks.addAll(e.getValue());
         //    }
         //}
-        tasks.add(new TanningTask());
+        tasks.add(new CowhideCollectorTask());
 
         return tasks;
     }
