@@ -436,15 +436,7 @@ public class BankingTask implements WatTask {
                             continue;
 
                         int q = i.getAmount();
-                        String itemName = i.getName();
-                        if(itemName == null)
-                            continue;
-
-                        Integer itemPrice = NumUtils.getItemPrice(itemName);
-                        if(itemPrice == null)
-                            continue;
-
-                        int a = itemPrice * q;
+                        int a = NumUtils.getItemPrice(i.getName()) * q;
 
                         if(a >= 5000) {
                             needsMule = false;
