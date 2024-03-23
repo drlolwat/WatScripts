@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
@@ -89,6 +90,11 @@ public class GenericUtils {
     }
 
     public static void handlePickup(List<String> items) {
+        if(ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
+            items.add("Bones");
+            items.add("Big bones");
+        }
+
         for(GroundItem i : GroundItems.all()) {
             if(i == null || i.getTile() == null || i.getName() == null)
                 continue;
@@ -97,6 +103,18 @@ public class GenericUtils {
                 if(i.interact("Take")) {
                     Logger.log("GenericUtils: Picked up item: " + i.getName());
                     Sleep.sleepUntil(() -> !i.exists(), 5000);
+                }
+            }
+        }
+
+        if(ConfigManager.getInstance().getConfigBoolean("pickup_bones") && Inventory.isFull()) {
+            for(Item i : Inventory.all(x -> x.hasAction("Bury"))) {
+                if(i == null)
+                    continue;
+
+                if(!i.interact("Bury")) {
+                    Logger.error("GenericUtils: Failed to bury item: " + i.getName());
+                    Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(50, 120));
                 }
             }
         }
