@@ -432,11 +432,19 @@ public class BankingTask implements WatTask {
 
                     boolean needsMule = true;
                     for(Item i : Bank.all()) {
-                        if(!i.isTradable())
+                        if(i == null || !i.isTradable())
                             continue;
 
                         int q = i.getAmount();
-                        int a = NumUtils.getItemPrice(i.getName()) * q;
+                        String itemName = i.getName();
+                        if(itemName == null)
+                            continue;
+
+                        Integer itemPrice = NumUtils.getItemPrice(itemName);
+                        if(itemPrice == null)
+                            continue;
+
+                        int a = itemPrice * q;
 
                         if(a >= 5000) {
                             needsMule = false;
