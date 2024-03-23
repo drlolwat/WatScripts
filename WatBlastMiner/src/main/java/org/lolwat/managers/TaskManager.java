@@ -327,11 +327,12 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         List<Skill> mmSkills = new ArrayList<Skill>() { { add(Skill.WOODCUTTING); add(Skill.FISHING); add(Skill.MINING); }};
 
-        for(Map.Entry<Skill, List<WatTask>> e : tasksBySkill.entrySet()) {
-            if(mmSkills.contains(e.getKey())) {
-                tasks.addAll(e.getValue());
-            }
-        }
+        //for(Map.Entry<Skill, List<WatTask>> e : tasksBySkill.entrySet()) {
+        //    if(mmSkills.contains(e.getKey())) {
+        //        tasks.addAll(e.getValue());
+        //    }
+        //}
+        tasks.add(new TanningTask());
 
         return tasks;
     }
