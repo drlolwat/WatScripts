@@ -169,12 +169,15 @@ public class TaskManager {
     }
 
     public void setCurrentTask(WatTask task) {
-        getInstance().setCurrentTask(task, getTaskRunTime());
+        setCurrentTask(task, getTaskRunTime());
     }
 
     public void setCurrentTask(WatTask value, int runtime) {
         currentTask = value;
-        taskSelectedAt = Instant.now().getEpochSecond();
+
+        if(runtime == 0)
+            taskSelectedAt = Instant.now().getEpochSecond();
+
         taskRunTime = runtime > 0 ? runtime : Calculations.random(1200, 6750);
     }
 
