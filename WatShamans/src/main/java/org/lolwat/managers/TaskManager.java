@@ -2,6 +2,7 @@ package org.lolwat.managers;
 
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
@@ -14,6 +15,8 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.types.agility.AgilityCourseTask;
+import org.lolwat.tasks.types.agility.types.Obstacle;
 import org.lolwat.tasks.types.combat.MagicCombatTask;
 import org.lolwat.tasks.types.combat.MeleeCombatTask;
 import org.lolwat.tasks.types.combat.RangedCombatTask;
@@ -314,6 +317,7 @@ public class TaskManager {
         tasks.addAll(createMeleeTasks());
         tasks.addAll(createRangedTasks());
         tasks.addAll(createMagicTasks());
+        tasks.addAll(createAgilityTasks());
 
         for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -343,6 +347,31 @@ public class TaskManager {
 
         tasks.add(new CowhideCollectorTask());
         tasks.add(new ScavengingTask());
+
+        return tasks;
+    }
+
+    private List<WatTask> createAgilityTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+        tasks.add(new AgilityCourseTask("Gnome", new Area(2471, 3436, 2477, 3438), new ArrayList<Obstacle>() { {
+            add(new Obstacle("Log balance", "Walk-across"));
+            add(new Obstacle("Obstacle net", "Climb-over"));
+            add(new Obstacle("Tree branch", "Climb"));
+            add(new Obstacle("Balancing rope", "Walk-on"));
+            add(new Obstacle("Tree branch", "Climb-down"));
+            add(new Obstacle("Obstacle net", "Climb-over"));
+            add(new Obstacle("Obstacle pipe", "Squeeze-through"));
+        }}, 1, 10, BankLocation.GNOME_STRONGHOLD));
+
+        tasks.add(new AgilityCourseTask("Draynor", new Area(3103, 3281, 3105, 3274), new ArrayList<Obstacle>() { {
+            add(new Obstacle("Rough wall", "Climb"));
+            add(new Obstacle("Tightrope", "Cross"));
+            add(new Obstacle("Tightrope", "Cross"));
+            add(new Obstacle("Narrow wall", "Balance"));
+            add(new Obstacle("Wall", "Jump-up"));
+            add(new Obstacle("Gap", "Jump"));
+            add(new Obstacle("Crate", "Climb-down"));
+        }}, 10, 99, BankLocation.DRAYNOR));
 
         return tasks;
     }
