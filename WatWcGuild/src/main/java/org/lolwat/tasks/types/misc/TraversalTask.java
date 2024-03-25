@@ -109,7 +109,7 @@ public class TraversalTask implements WatTask {
                             Logger.log("Traversal: missing teleport item " + teleportItem);
                             TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                                 {
-                                    put(TeleportItemUtils.getChargedItemName(teleportItem), 1);
+                                    put(TeleportItemUtils.getChargedItemName(teleportItem), Calculations.random(2, 6));
                                 }
                             }, new HashMap<>(), 1, this));
 
