@@ -519,7 +519,7 @@ public class BankingTask implements WatTask {
 
             if (runLiquidation) {
                 Logger.log("Exchanger: Handing off to G.E task");
-                TaskManager.getInstance().setCurrentTask(new LiquidationTask(this));
+                TaskManager.getInstance().setCurrentTask(new LiquidationTask(this, toWithdraw));
                 return;
             }
         }
