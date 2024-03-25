@@ -58,7 +58,6 @@ public class AgilityCourseTask implements WatTask {
         }
 
         if (!started) {
-            Logger.log("Starting agility course");
             started = true;
         }
 
@@ -75,7 +74,7 @@ public class AgilityCourseTask implements WatTask {
             GameObject obstacle = GameObjects.closest(x -> x.getName().equalsIgnoreCase(ob.getName()));
             if (obstacle == null || !obstacle.canReach()) {
                 Logger.log("Could not find obstacle: " + ob.getName() + " with action: " + ob.getAction());
-                break;
+                continue;
             }
 
             if (obstacle.interact(ob.getAction())) {
