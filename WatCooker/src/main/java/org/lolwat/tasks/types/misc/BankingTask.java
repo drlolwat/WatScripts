@@ -99,7 +99,9 @@ public class BankingTask implements WatTask {
 
         Logger.log("Sell Checker: starting");
 
-        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked() || (postTask != null && postTask.data().containsKey("gp_to_generate"));
+        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked()
+                || (postTask != null && postTask.data().containsKey("gp_to_generate"))
+                || GenericUtils.isMember();
 
         Logger.log("Trade unrestricted: " + allowedToSell + ", sell enabled for task: " +
                 (postTask != null && postTask.data().containsKey("gp_to_generate")));
