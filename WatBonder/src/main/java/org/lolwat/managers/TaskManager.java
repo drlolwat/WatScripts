@@ -340,7 +340,9 @@ public class TaskManager {
                 tasks.addAll(e.getValue());
             }
         }
+
         tasks.add(new CowhideCollectorTask());
+        tasks.add(new ScavengingTask());
 
         return tasks;
     }
@@ -349,7 +351,6 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
-        tasks.add(new ScavengingTask());
 
         return tasks;
     }
