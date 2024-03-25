@@ -19,6 +19,7 @@ import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.agility.types.Obstacle;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,8 +63,15 @@ public class AgilityCourseTask implements WatTask {
             started = true;
         }
 
-        int lastObject = -1;
+        List<Integer> clicked = new ArrayList<>();
         for (Obstacle ob : obs) {
+            if(Players.getLocal().isHealthBarVisible()) {
+                nextObstacle = true;
+                Logger.log("We fell off the course, starting again");
+                Sleep.sleep(100, 400);
+                break;
+            }
+
             GroundItem mark = GroundItems.closest(x -> x.getName().equalsIgnoreCase("Mark of grace"));
             if(mark != null) {
                 if(mark.canReach() && mark.interact()) {
@@ -79,16 +87,8 @@ public class AgilityCourseTask implements WatTask {
                         && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
             }
 
-            if(Players.getLocal().isHealthBarVisible()) {
-                nextObstacle = true;
-                Logger.log("We fell off the course, starting again");
-                Sleep.sleep(100, 400);
-                break;
-            }
-
             nextObstacle = false;
-            int finalLastObject = lastObject;
-            GameObject obstacle = GameObjects.closest(x -> x.exists() && x.getID() != finalLastObject
+            GameObject obstacle = GameObjects.closest(x -> x.exists() && !clicked.contains(x.getID())
                     && x.getName().equalsIgnoreCase(ob.getName()) && x.hasAction(ob.getAction()));
 
             if (obstacle == null) {
@@ -97,15 +97,16 @@ public class AgilityCourseTask implements WatTask {
             }
 
             if (obstacle.interact(ob.getAction())) {
-                lastObject = obstacle.getID();
-                Sleep.sleepUntil(() -> nextObstacle && !Players.getLocal().isMoving()
-                        && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
+                clicked.add(obstacle.getID());
+                Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
+                        && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 15000);
             }
         }
 
-        Sleep.sleepUntil(() -> nextObstacle && !Players.getLocal().isMoving()
-                && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
+        Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
+                && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 15000);
 
+        clicked.clear();
         started = false;
     }
 
