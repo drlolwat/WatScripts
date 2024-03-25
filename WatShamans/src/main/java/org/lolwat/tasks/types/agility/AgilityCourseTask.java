@@ -81,7 +81,7 @@ public class AgilityCourseTask implements WatTask {
 
             if(Players.getLocal().isHealthBarVisible()) {
                 Logger.log("We fell off the course, starting again");
-                return;
+                break;
             }
 
             nextObstacle = false;
