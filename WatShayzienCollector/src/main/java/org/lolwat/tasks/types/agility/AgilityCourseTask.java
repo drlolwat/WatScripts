@@ -5,6 +5,7 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -32,6 +33,9 @@ public class AgilityCourseTask implements WatTask {
     int minimumLevel;
     int maximumLevel;
     BankLocation favoredBank;
+    List<Integer> safelyIgnore = new ArrayList<Integer>() { {
+        add(14923);
+    }};
 
     public AgilityCourseTask(String course, Area start, List<Obstacle> obstacles, int min, int max, BankLocation bankLoc) {
         courseName = course;
@@ -77,6 +81,7 @@ public class AgilityCourseTask implements WatTask {
                 if(mark.canReach() && mark.interact()) {
                     Logger.log("Picking up mark of grace");
                     Sleep.sleepUntil(() -> !mark.exists(), 5000);
+                    Sleep.sleep(100, 200);
                 }
             }
 
@@ -88,7 +93,7 @@ public class AgilityCourseTask implements WatTask {
             }
 
             nextObstacle = false;
-            GameObject obstacle = GameObjects.closest(x -> x.exists() && !clicked.contains(x.getID())
+            GameObject obstacle = GameObjects.closest(x -> x.exists() && !safelyIgnore.contains(x.getRealID()) && !clicked.contains(x.getRealID())
                     && x.getName().equalsIgnoreCase(ob.getName()) && x.hasAction(ob.getAction()));
 
             if (obstacle == null) {
@@ -97,7 +102,7 @@ public class AgilityCourseTask implements WatTask {
             }
 
             if (obstacle.interact(ob.getAction())) {
-                clicked.add(obstacle.getID());
+                clicked.add(obstacle.getRealID());
                 Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
                         && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 15000);
             }
@@ -106,7 +111,6 @@ public class AgilityCourseTask implements WatTask {
         Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
                 && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 15000);
 
-        clicked.clear();
         started = false;
     }
 
