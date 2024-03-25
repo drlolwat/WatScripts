@@ -99,7 +99,7 @@ public class TaskManager {
                 if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
                     if (task.canPerformTask()) {
                         Logger.log("TaskManager: Selected task: " + task.getName());
-                        setCurrentTask(task);
+                        setCurrentTask(task, 0);
                         return;
                     }
                 }
