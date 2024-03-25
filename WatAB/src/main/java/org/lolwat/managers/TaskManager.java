@@ -116,6 +116,10 @@ public class TaskManager {
     }
 
     public void getSpecificSkillTask(Skill sk) {
+        getSpecificSkillTask(sk, 0);
+    }
+
+    public void getSpecificSkillTask(Skill sk, int gpToGenerate) {
         if(preTaskSelection()) {
             return;
         }
@@ -131,6 +135,7 @@ public class TaskManager {
             Collections.shuffle(pool);
             for(WatTask t : pool) {
                 if(t.canPerformTask()) {
+                    t.data().put("gp_to_generate", gpToGenerate);
                     Logger.log(Color.green, "TaskManager: Selected money making task: " + t.getName());
                     setCurrentTask(t, 0);
                     return;
