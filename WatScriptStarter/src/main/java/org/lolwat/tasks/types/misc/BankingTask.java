@@ -99,9 +99,10 @@ public class BankingTask implements WatTask {
 
         Logger.log("Sell Checker: starting");
 
-        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked();
+        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked() || (postTask != null && postTask.data().containsKey("gp_to_generate"));
 
-        Logger.log("Trade unrestricted: " + allowedToSell);
+        Logger.log("Trade unrestricted: " + allowedToSell + ", sell enabled for task: " +
+                (postTask != null && postTask.data().containsKey("gp_to_generate")));
 
         List<String> toRemove = new ArrayList<>();
         if(!allowedToSell) {
@@ -130,7 +131,25 @@ public class BankingTask implements WatTask {
 
                 for (Map.Entry<String, Integer> entry : sellingItems.entrySet()) {
                     int triggerAmount = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                    if (Bank.contains(entry.getKey()) && Bank.get(entry.getKey()).getAmount() >= triggerAmount) {
+                    boolean triggered = Bank.contains(entry.getKey()) && Bank.get(entry.getKey()).getAmount() >= triggerAmount;
+                    int toWithdraw = entry.getValue();
+
+                    if(!triggered && postTask != null && postTask.data().containsKey("gp_to_generate")) {
+                        if(Integer.parseInt(postTask.data().get("gp_to_generate").toString()) > 0) {
+                            int toGen = Integer.parseInt(postTask.data().get("gp_to_generate").toString());
+                            int weHave = NumUtils.getItemPrice(entry.getKey()) * Bank.count(entry.getKey());
+                            if(weHave >= toGen) {
+                                postTask.data().remove("gp_to_generate");
+                                Logger.log("BankingTask: Wealth generation goals met");
+                                triggered = true;
+                                toWithdraw = toGen / NumUtils.getItemPrice(entry.getKey());
+                            } else {
+                                Logger.log("BankingTask: Wealth generation goals not met");
+                            }
+                        }
+                    }
+
+                    if (triggered) {
                         checkAndSet(BankMode.NOTE);
                         Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName());
                         if(!Inventory.isFull()) {
@@ -139,8 +158,8 @@ public class BankingTask implements WatTask {
                                 if (Inventory.contains(entry.getKey()))
                                     reduceBy = Inventory.count(entry.getKey());
 
-                                Logger.log("Taking " + (entry.getValue() - reduceBy) + " of " + entry.getKey());
-                                Bank.withdraw(entry.getKey(), (entry.getValue() - reduceBy));
+                                Logger.log("Taking " + (toWithdraw - reduceBy) + " of " + entry.getKey());
+                                Bank.withdraw(entry.getKey(), (toWithdraw - reduceBy));
                             } else {
                                 Logger.log("Taking " + entry.getKey());
                                 Bank.withdrawAll(entry.getKey());
@@ -465,7 +484,7 @@ public class BankingTask implements WatTask {
                             return;
                         } else {
                             Logger.log("We are out of GP, time to go and make some.");
-                            TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS);
+                            TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
                             return;
                         }
                     }
@@ -492,7 +511,7 @@ public class BankingTask implements WatTask {
                     } else {
                         // Restricted moneymaker time...
                         Logger.log("We are out of GP, time to go and make some. (Restricted)");
-                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS);
+                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
                         return;
                     }
                 }
