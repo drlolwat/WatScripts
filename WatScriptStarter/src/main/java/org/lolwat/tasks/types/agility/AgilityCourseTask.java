@@ -53,7 +53,7 @@ public class AgilityCourseTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (!started && !startingArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(startingArea, this), 0);
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(startingArea, this));
             return;
         }
 
@@ -66,10 +66,8 @@ public class AgilityCourseTask implements WatTask {
             GroundItem mark = GroundItems.closest(x -> x.getName().equalsIgnoreCase("Mark of grace"));
             if(mark != null) {
                 if(mark.canReach() && mark.interact()) {
+                    Logger.log("Picking up mark of grace");
                     Sleep.sleepUntil(() -> !mark.exists(), 5000);
-                } else {
-                    Logger.log("Could not pick up mark of grace");
-                    continue;
                 }
             }
 
