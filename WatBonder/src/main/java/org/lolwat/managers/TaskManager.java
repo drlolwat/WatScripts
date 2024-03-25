@@ -374,7 +374,18 @@ public class TaskManager {
             add(new Obstacle("Wall", "Jump-up"));
             add(new Obstacle("Gap", "Jump"));
             add(new Obstacle("Crate", "Climb-down"));
-        }}, 10, 99, BankLocation.DRAYNOR));
+        }}, 10, 20, BankLocation.DRAYNOR));
+
+        tasks.add(new AgilityCourseTask("AlKharid", new Area(3270, 3197, 3277, 3195), new ArrayList<Obstacle>() { {
+            add(new Obstacle("Rough wall", "Climb"));
+            add(new Obstacle("Tightrope", "Cross"));
+            add(new Obstacle("Cable", "Swing-across"));
+            add(new Obstacle("Zip line", "Teeth-grip", new Tile(3297, 3164, 3).getArea(3)));
+            add(new Obstacle("Tropical tree", "Swing-across"));
+            add(new Obstacle("Roof top beams", "Climb"));
+            add(new Obstacle("Tightrope", "Cross"));
+            add(new Obstacle("Gap", "Jump"));
+        }}, 20, 99, BankLocation.AL_KHARID));
 
         return tasks;
     }
