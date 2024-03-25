@@ -135,7 +135,10 @@ public class TaskManager {
             Collections.shuffle(pool);
             for(WatTask t : pool) {
                 if(t.canPerformTask()) {
-                    t.data().put("gp_to_generate", gpToGenerate);
+                    if(gpToGenerate > 0) {
+                        t.data().put("gp_to_generate", gpToGenerate);
+                    }
+
                     Logger.log(Color.green, "TaskManager: Selected money making task: " + t.getName());
                     setCurrentTask(t, 0);
                     return;
