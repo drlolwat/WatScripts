@@ -8,6 +8,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
@@ -47,7 +48,7 @@ public class AgilityCourseTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.AGILITY) >= minimumLevel;
+        return Skills.getRealLevel(Skill.AGILITY) >= minimumLevel && Skills.getRealLevel(Skill.AGILITY) <= maximumLevel;
     }
 
     @Override
@@ -70,10 +71,18 @@ public class AgilityCourseTask implements WatTask {
                 }
             }
 
+            if (ob.getBackupArea() != null) {
+                Walking.walk(ob.getBackupArea().getRandomTile());
+                Sleep.sleep(100, 200);
+                Sleep.sleepUntil(() -> !Players.getLocal().isMoving()
+                        && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
+            }
+
             nextObstacle = false;
+
             GameObject obstacle = GameObjects.closest(x -> x.getName().equalsIgnoreCase(ob.getName()));
             if (obstacle == null || !obstacle.canReach()) {
-                Logger.log("Could not find obstacle: " + ob.getName() + " with action: " + ob.getAction());
+                Logger.log("Could not find obstacle: " + ob.getName() + ", no backup available");
                 continue;
             }
 
