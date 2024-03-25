@@ -30,12 +30,13 @@ import java.util.Map;
 
 public class LiquidationTask implements WatTask {
     WatTask postScript;
-    int toLiquidate = 0;
+    int toLiquidate;
 
     public LiquidationTask(WatTask post, int amount) {
         postScript = post;
         toLiquidate = amount;
     }
+
     @Override
     public String getName() {
         return "Liquidating";
