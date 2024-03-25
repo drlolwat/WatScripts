@@ -62,6 +62,7 @@ public class AgilityCourseTask implements WatTask {
             started = true;
         }
 
+        int lastObject = -1;
         for (Obstacle ob : obs) {
             GroundItem mark = GroundItems.closest(x -> x.getName().equalsIgnoreCase("Mark of grace"));
             if(mark != null) {
@@ -78,15 +79,23 @@ public class AgilityCourseTask implements WatTask {
                         && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
             }
 
-            nextObstacle = false;
+            if(Players.getLocal().isHealthBarVisible()) {
+                Logger.log("We fell off the course, starting again");
+                return;
+            }
 
-            GameObject obstacle = GameObjects.closest(x -> x.getName().equalsIgnoreCase(ob.getName()));
-            if (obstacle == null || !obstacle.canReach()) {
+            nextObstacle = false;
+            int finalLastObject = lastObject;
+            GameObject obstacle = GameObjects.closest(x -> x.exists() && x.getID() != finalLastObject
+                    && x.getName().equalsIgnoreCase(ob.getName()) && x.hasAction(ob.getAction()));
+
+            if (obstacle == null) {
                 Logger.log("Could not find obstacle: " + ob.getName() + ", no backup available");
                 continue;
             }
 
             if (obstacle.interact(ob.getAction())) {
+                lastObject = obstacle.getID();
                 Sleep.sleepUntil(() -> nextObstacle && !Players.getLocal().isMoving()
                         && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
             }
@@ -94,6 +103,7 @@ public class AgilityCourseTask implements WatTask {
 
         Sleep.sleepUntil(() -> nextObstacle && !Players.getLocal().isMoving()
                 && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill(), 15000);
+
         started = false;
     }
 
