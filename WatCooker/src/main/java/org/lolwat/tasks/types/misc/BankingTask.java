@@ -340,8 +340,13 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
-                    int toWithdraw = entry.getValue() > 0 ? entry.getValue() : Bank.count(entry.getKey());
+                if (Bank.contains(x -> x != null && x.getName().contains(entry.getKey()))
+                        && Bank.count(x -> x != null && x.getName().contains(entry.getKey())) >= amountRequired) {
+
+                    int toWithdraw = entry.getValue() > 0
+                            ? entry.getValue()
+                            : Bank.count(x -> x != null && x.getName().contains(entry.getKey()));
+
                     if (Inventory.isFull()) {
                         Logger.log("Inventory: Depositing all items, reason: Full, need space");
                         Bank.depositAllItems();
@@ -349,8 +354,8 @@ public class BankingTask implements WatTask {
                     }
 
                     int reduceBy = 0;
-                    if (Inventory.contains(entry.getKey())) {
-                        reduceBy = Inventory.count(entry.getKey());
+                    if (Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()))) {
+                        reduceBy = Inventory.count(x -> x != null && x.getName().contains(entry.getKey()));
                     }
 
                     toWithdraw -= reduceBy;
@@ -359,7 +364,7 @@ public class BankingTask implements WatTask {
                         checkAndSet(BankMode.NOTE);
                     }
 
-                    Item i = Bank.get(entry.getKey());
+                    Item i = Bank.get(x -> x != null && x.getName().contains(entry.getKey()));
                     if(i != null) {
                         if(Bank.needToScroll(i)) {
                             Bank.scroll(entry.getKey());
@@ -368,12 +373,13 @@ public class BankingTask implements WatTask {
                     }
 
                     if (buyingRequired.isEmpty()) {
-                        if(!Bank.withdraw(entry.getKey(), toWithdraw)) {
+                        if(!Bank.withdraw(x -> x != null && x.getName().contains(entry.getKey()), toWithdraw)) {
                             Logger.error("Inventory: Issue withdrawing " + entry.getKey());
                         } else {
                             Logger.log("Inventory: Withdrew " + toWithdraw + " of: " + entry.getKey());
-                            Sleep.sleepUntil(() -> Inventory.contains(entry.getKey()), Calculations.random(5000, 10000));
                         }
+
+                        Sleep.sleepUntil(() -> Inventory.contains(x -> x != null && x.getName().contains(entry.getKey())), Calculations.random(5000, 10000));
                     }
                 } else {
                     if(Inventory.contains(entry.getKey()) && (Inventory.count(entry.getKey()) >= amountRequired || Inventory.get(entry.getKey()).getAmount() >= amountRequired)) {
