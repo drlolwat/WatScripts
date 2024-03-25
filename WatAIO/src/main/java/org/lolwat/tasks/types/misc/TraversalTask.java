@@ -81,10 +81,9 @@ public class TraversalTask implements WatTask {
 
         if(postTask != null && needsTeleport) {
             if(postTask.favoredBank() != BankLocation.GRAND_EXCHANGE) {
-                Logger.log("Needs to teleport");
-                Logger.log("Distance is: " + Players.getLocal().walkingDistance(postTask.favoredBank().getCenter()) + " to " + postTask.favoredBank().getCenter());
                 String teleportItem = TeleportItemUtils.getTeleportForBank(postTask.favoredBank());
                 if(!teleportItem.isEmpty()) {
+                    Logger.log("Needs to teleport");
                     if(!Inventory.contains(x -> x.getName().contains(teleportItem))) {
                         if(Equipment.contains(x -> x.getName().contains(teleportItem))) {
                             if(Bank.isOpen()) {
