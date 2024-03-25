@@ -30,10 +30,11 @@ import java.util.Map;
 
 public class LiquidationTask implements WatTask {
     WatTask postScript;
+    int toLiquidate = 0;
 
-    public LiquidationTask(WatTask post) {
+    public LiquidationTask(WatTask post, int amount) {
         postScript = post;
-
+        toLiquidate = amount;
     }
     @Override
     public String getName() {
@@ -55,16 +56,28 @@ public class LiquidationTask implements WatTask {
                 return;
             }
 
+            int currentValue = 0;
             HashMap<String, Integer> toWithdraw = new HashMap<>();
             for(Item i : Bank.all()) {
                 if(i == null || !i.isTradable() || i.getName().equals("Coins"))
                     continue;
+
+                if(postScript != null) {
+                    if(postScript.clothesRequired().containsKey(i.getName()) || postScript.inventoryRequired().containsKey(i.getName())) {
+                        continue;
+                    }
+                }
+
+                if(toLiquidate > 0 && currentValue >= toLiquidate) {
+                    break;
+                }
 
                 int q = i.getAmount();
                 int a = NumUtils.getItemPrice(i.getName()) * q;
 
                 if(a >= 5000) {
                     toWithdraw.put(i.getName(), q);
+                    currentValue += a;
                 }
             }
 
