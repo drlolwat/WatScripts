@@ -71,6 +71,12 @@ public class LiquidationTask implements WatTask {
             if(!toWithdraw.isEmpty()) {
                 HashMap<String, Integer> currentlySelling = new HashMap<>();
                 for (Map.Entry<String, Integer> m : toWithdraw.entrySet()) {
+                    if(postScript != null) {
+                        if(postScript.clothesRequired().containsKey(m.getKey()) || postScript.inventoryRequired().containsKey(m.getKey())) {
+                            continue;
+                        }
+                    }
+
                     checkAndSet(BankMode.NOTE);
                     if (!Bank.withdraw(m.getKey(), m.getValue())) {
                         Logger.error("Failed to withdraw " + m.getKey() + " x" + m.getValue());
