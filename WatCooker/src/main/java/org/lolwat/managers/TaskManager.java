@@ -399,7 +399,28 @@ public class TaskManager {
                 add(new Obstacle("Ledge", "Hurdle"));
                 add(new Obstacle("Edge", "Jump-off"));
             }
-        }, 30, 99, BankLocation.VARROCK_EAST));
+        }, 30, 40, BankLocation.VARROCK_EAST));
+
+        //TODO CANIFIS
+        //TODO CANIFIS
+
+        tasks.add(new AgilityCourseTask("Falador", new Area(3031, 3340, 3036, 3336), new ArrayList<Obstacle>() {
+            {
+                add(new Obstacle("Rough wall", "Climb"));
+                add(new Obstacle("Tightrope", "Cross"));
+                add(new Obstacle("Hand holds", "Cross"));
+                add(new Obstacle("Gap", "Jump"));
+                add(new Obstacle("Gap", "Jump"));
+                add(new Obstacle("Tightrope", "Cross"));
+                add(new Obstacle("Tightrope", "Cross"));
+                add(new Obstacle("Gap", "Jump"));
+                add(new Obstacle("Ledge", "Jump"));
+                add(new Obstacle("Ledge", "Jump"));
+                add(new Obstacle("Ledge", "Jump"));
+                add(new Obstacle("Ledge", "Jump"));
+                add(new Obstacle("Edge", "Jump"));
+            }
+        }, 50, 99, BankLocation.FALADOR_EAST));
 
         return tasks;
     }
