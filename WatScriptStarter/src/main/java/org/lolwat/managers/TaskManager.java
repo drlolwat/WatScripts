@@ -264,7 +264,7 @@ public class TaskManager {
             return true;
         }
 
-        if(!ConfigManager.getInstance().isTradeUnlocked()
+        if(ConfigManager.getInstance().isTradeUnlocked()
                 && ConfigManager.getInstance().getConfigBoolean("logout_after_unrestricted")) {
 
             setCurrentTask(new LogoutTask(true, true,null), 0);
