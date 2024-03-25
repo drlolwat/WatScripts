@@ -385,7 +385,21 @@ public class TaskManager {
             add(new Obstacle("Roof top beams", "Climb"));
             add(new Obstacle("Tightrope", "Cross"));
             add(new Obstacle("Gap", "Jump"));
-        }}, 20, 99, BankLocation.AL_KHARID));
+        }}, 20, 30, BankLocation.AL_KHARID));
+
+        tasks.add(new AgilityCourseTask("Varrock", new Area(3221, 3411, 3224, 3419), new ArrayList<Obstacle>() {
+            {
+                add(new Obstacle("Rough wall", "Climb"));
+                add(new Obstacle("Clothes line", "Cross"));
+                add(new Obstacle("Gap", "Leap"));
+                add(new Obstacle("Wall", "Balance"));
+                add(new Obstacle("Gap", "Leap"));
+                add(new Obstacle("Gap", "Leap", new Tile(3201, 3397, 3).getArea(1)));
+                add(new Obstacle("Gap", "Leap", new Tile(3228, 3402, 3).getArea(1)));
+                add(new Obstacle("Ledge", "Hurdle"));
+                add(new Obstacle("Edge", "Jump-off"));
+            }
+        }, 30, 99, BankLocation.VARROCK_EAST));
 
         return tasks;
     }
