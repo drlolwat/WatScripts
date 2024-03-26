@@ -309,7 +309,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if(!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
-                boolean enableGpt = true; // change at compile time
+                boolean enableGpt = false; // change at compile time
                 if(enableGpt) {
                     if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
                         ConfigManager.getInstance().setWaitingForResponse(true);
