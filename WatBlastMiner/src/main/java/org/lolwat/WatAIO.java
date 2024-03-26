@@ -309,7 +309,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if(!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
-                boolean enableGpt = false; // change at compile time
+                boolean enableGpt = true; // change at compile time
                 if(enableGpt) {
                     if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
                         ConfigManager.getInstance().setWaitingForResponse(true);
@@ -322,11 +322,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                         }).start();
                     }
                 }
-            }
-
-            boolean tenOrThirty = Calculations.random(1, 3) == 1;
-            if (m.toString().contains("approximately " + (tenOrThirty ? "10" : "30") + " minutes"))
-                TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false, TaskManager.getInstance().getCurrentTask()));
+            };
         }
     }
 
