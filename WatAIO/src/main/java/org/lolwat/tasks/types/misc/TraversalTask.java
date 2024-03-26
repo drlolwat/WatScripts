@@ -77,9 +77,10 @@ public class TraversalTask implements WatTask {
             TutorialUtils.handleTab();
         }
 
-        boolean needsTeleport = Players.getLocal().walkingDistance(postTask.favoredBank().getCenter()) >= 1500;
+        double targetDistance = Players.getLocal().walkingDistance(postTask.favoredBank().getCenter());
+        double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
-        if(postTask != null && needsTeleport) {
+        if(postTask != null && targetDistance >= 1500) {
             if(postTask.favoredBank() != BankLocation.GRAND_EXCHANGE) {
                 String teleportItem = TeleportItemUtils.getTeleportForBank(postTask.favoredBank());
                 if(!teleportItem.isEmpty()) {
@@ -106,14 +107,17 @@ public class TraversalTask implements WatTask {
                             Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
                             return;
                         } else {
-                            Logger.log("Traversal: missing teleport item " + teleportItem);
-                            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
-                                {
-                                    put(TeleportItemUtils.getChargedItemName(teleportItem), Calculations.random(2, 6));
-                                }
-                            }, new HashMap<>(), 1, this));
-
-                            return;
+                            if(targetDistance > exchangeDistance) {
+                                Logger.log("Traversal: missing teleport item " + teleportItem);
+                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                                    {
+                                        put(TeleportItemUtils.getChargedItemName(teleportItem), Calculations.random(2, 6));
+                                    }
+                                }, new HashMap<>(), 1, this));
+                                return;
+                            } else {
+                                Logger.log("Traversal: missing teleport item, but closer to target than exchange");
+                            }
                         }
                     } else {
                         if(Bank.isOpen()) {
@@ -126,19 +130,25 @@ public class TraversalTask implements WatTask {
                             Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
                         }
 
-                        if(!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Rub")) {
-                            Logger.log("Traversal: failed to use teleport item: " + teleportItem);
-                            return;
-                        }
+                        if(teleportItem.contains("teleport")) {
+                            if(!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Break")) {
+                                Logger.log("Traversal: failed to use teleport tab: " + teleportItem);
+                                return;
+                            }
+                        } else {
+                            if (!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Rub")) {
+                                Logger.log("Traversal: failed to use teleport item: " + teleportItem);
+                                return;
+                            }
 
-                        Sleep.sleepUntil(Dialogues::inDialogue, 5000);
+                            Sleep.sleepUntil(Dialogues::inDialogue, 5000);
 
-                        if(!Dialogues.inDialogue()) {
-                            Logger.log("Traversal: did not find dialogue for teleport item: " + teleportItem);
-                            return;
-                        }
-                        else {
-                            Dialogues.clickOption(TeleportItemUtils.getDialogueOption(teleportItem, false));
+                            if (!Dialogues.inDialogue()) {
+                                Logger.log("Traversal: did not find dialogue for teleport item: " + teleportItem);
+                                return;
+                            } else {
+                                Dialogues.clickOption(TeleportItemUtils.getDialogueOption(teleportItem, false));
+                            }
                         }
 
                         Tile currentTile = Players.getLocal().getTile();
