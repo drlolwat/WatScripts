@@ -5,6 +5,7 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
@@ -59,8 +60,14 @@ public class AgilityCourseTask implements WatTask {
     @Override
     public void execute(WatAIO instance) {
         if (!started && !startingArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(startingArea, this));
-            return;
+            Obstacle first = obs.get(0);
+            GameObject ob = GameObjects.closest(x -> x.exists() && !safelyIgnore.contains(x.getRealID())
+                    && x.getName().equalsIgnoreCase(first.getName()) && x.hasAction(first.getAction()));
+
+            if(ob == null || !ob.exists() || !ob.canReach()) {
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(startingArea, this));
+                return;
+            }
         }
 
         if (!started) {
@@ -80,7 +87,8 @@ public class AgilityCourseTask implements WatTask {
             if(mark != null) {
                 if(mark.canReach() && mark.interact()) {
                     Logger.log("Picking up mark of grace");
-                    Sleep.sleepUntil(() -> !mark.exists(), 5000);
+                    Sleep.sleepUntil(() -> !mark.exists() && (!Players.getLocal().isMoving()
+                            && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 5000);
                     Sleep.sleep(100, 200);
                 }
             }
@@ -93,18 +101,22 @@ public class AgilityCourseTask implements WatTask {
             }
 
             nextObstacle = false;
-            GameObject obstacle = GameObjects.closest(x -> x.exists() && !safelyIgnore.contains(x.getRealID()) && !clicked.contains(x.getRealID())
-                    && x.getName().equalsIgnoreCase(ob.getName()) && x.hasAction(ob.getAction()));
+            while(!nextObstacle && !Players.getLocal().isHealthBarVisible()) {
+                GameObject obstacle = GameObjects.closest(x -> x.exists() && !safelyIgnore.contains(x.getRealID()) && !clicked.contains(x.getRealID())
+                        && x.getName().equalsIgnoreCase(ob.getName()) && x.hasAction(ob.getAction()));
 
-            if (obstacle == null) {
-                Logger.log("Could not find obstacle: " + ob.getName() + ", no backup available");
-                continue;
-            }
+                if (obstacle == null) {
+                    Logger.log("Could not find obstacle: " + ob.getName() + ", no backup available");
+                    continue;
+                }
 
-            if (obstacle.interact(ob.getAction())) {
-                clicked.add(obstacle.getRealID());
-                Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
-                        && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 15000);
+
+                if (obstacle.interact(ob.getAction())) {
+                    Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
+                            && !Players.getLocal().isAnimating() && Players.getLocal().isStandingStill()), 15000);
+                    Sleep.sleep(100, 200);
+                    clicked.add(obstacle.getRealID());
+                }
             }
         }
 
