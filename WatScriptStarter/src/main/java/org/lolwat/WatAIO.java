@@ -252,11 +252,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
         g2d.drawString(taskTime, 77, 40);
 
-        if(totalLevelsGained > 0) {
-            g2d.setColor(new Color(0, 200, 0));
-            g2d.drawString("+" + totalLevelsGained, 277, 40);
-            g2d.setColor(Color.WHITE);
-        }
+        //if(totalLevelsGained > 0) {
+        //    g2d.setColor(new Color(0, 200, 0));
+        //    g2d.drawString("+" + totalLevelsGained, 277, 40);
+        //    g2d.setColor(Color.WHITE);
+        //}
 
         // row 1
         g2d.drawString((TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 38, 59);
