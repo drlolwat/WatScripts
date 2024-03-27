@@ -61,7 +61,7 @@ public class AgilityCourseTask implements WatTask {
     public void execute(WatAIO instance) {
         if (!started && !startingArea.contains(Players.getLocal())) {
             Obstacle first = obs.get(0);
-            GameObject ob = GameObjects.closest(x -> x.exists() && !safelyIgnore.contains(x.getRealID())
+            GameObject ob = GameObjects.closest(x -> x.exists() && x.distance() <= 7 && !safelyIgnore.contains(x.getRealID())
                     && x.getName().equalsIgnoreCase(first.getName()) && x.hasAction(first.getAction()));
 
             if(ob == null || !ob.exists() || !ob.canReach()) {
@@ -101,7 +101,12 @@ public class AgilityCourseTask implements WatTask {
             }
 
             nextObstacle = false;
+            long startTime = System.currentTimeMillis();
             while(!nextObstacle && !Players.getLocal().isHealthBarVisible()) {
+                if ((System.currentTimeMillis() - startTime) >= 30000) {
+                    Logger.log("Couldn't find obstacle in a reasonable time, moving on");
+                    break;
+                }
                 GameObject obstacle = GameObjects.closest(x -> x.exists() && !safelyIgnore.contains(x.getRealID()) && !clicked.contains(x.getRealID())
                         && x.getName().equalsIgnoreCase(ob.getName()) && x.hasAction(ob.getAction()));
 
@@ -109,7 +114,6 @@ public class AgilityCourseTask implements WatTask {
                     Logger.log("Could not find obstacle: " + ob.getName() + ", no backup available");
                     continue;
                 }
-
 
                 if (obstacle.interact(ob.getAction())) {
                     Sleep.sleepUntil(() -> Players.getLocal().isHealthBarVisible() || (nextObstacle && !Players.getLocal().isMoving()
