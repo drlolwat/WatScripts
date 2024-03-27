@@ -23,6 +23,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TeleportItemUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
@@ -80,7 +81,7 @@ public class TraversalTask implements WatTask {
         double targetDistance = Players.getLocal().walkingDistance(postTask.favoredBank().getCenter());
         double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
-        if(postTask != null && targetDistance >= 1500) {
+        if(GenericUtils.isMember() && postTask != null && targetDistance >= 1500) {
             if(postTask.favoredBank() != BankLocation.GRAND_EXCHANGE) {
                 String teleportItem = TeleportItemUtils.getTeleportForBank(postTask.favoredBank());
                 if(!teleportItem.isEmpty()) {
