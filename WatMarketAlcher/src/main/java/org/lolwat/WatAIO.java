@@ -1,6 +1,5 @@
 package org.lolwat;
 
-import javafx.concurrent.Task;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
