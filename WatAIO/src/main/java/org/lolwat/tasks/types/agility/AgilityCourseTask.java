@@ -1,5 +1,7 @@
 package org.lolwat.tasks.types.agility;
 
+import org.dreambot.api.methods.combat.Combat;
+import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -19,6 +21,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.agility.types.Obstacle;
+import org.lolwat.tasks.types.misc.BankingTask;
 import org.lolwat.tasks.types.misc.TraversalTask;
 
 import java.util.ArrayList;
@@ -34,16 +37,19 @@ public class AgilityCourseTask implements WatTask {
     int minimumLevel;
     int maximumLevel;
     BankLocation favoredBank;
+    boolean needsEat;
+
     List<Integer> safelyIgnore = new ArrayList<Integer>() { {
         add(14923);
     }};
 
-    public AgilityCourseTask(String course, Area start, List<Obstacle> obstacles, int min, int max, BankLocation bankLoc) {
+    public AgilityCourseTask(String course, Area start, List<Obstacle> obstacles, int min, int max, boolean eat, BankLocation bankLoc) {
         courseName = course;
         startingArea = start;
         obs = obstacles;
         minimumLevel = min;
         maximumLevel = max;
+        needsEat = eat;
         favoredBank = bankLoc;
     }
 
@@ -59,6 +65,18 @@ public class AgilityCourseTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if(needsEat) {
+            if(Inventory.count(x -> x != null && x.hasAction("Eat")) > 0) {
+                if(Combat.getHealthPercent() <= 50 && !Inventory.interact(x -> x != null && x.hasAction("Eat"))) {
+                    Logger.log("Issue eating food during agility task");
+                    return;
+                }
+            } else {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(null, new HashMap<>(), 1, this));
+                return;
+            }
+        }
+
         if (!started && !startingArea.contains(Players.getLocal())) {
             Obstacle first = obs.get(0);
             GameObject ob = GameObjects.closest(x -> x.exists() && x.distance() <= 7 && !safelyIgnore.contains(x.getRealID())
@@ -167,7 +185,13 @@ public class AgilityCourseTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        HashMap<String, Integer> ret = new HashMap<>();
+
+        if(needsEat) {
+            ret.put("Monkfish", 10);
+        }
+
+        return ret;
     }
 
     @Override
