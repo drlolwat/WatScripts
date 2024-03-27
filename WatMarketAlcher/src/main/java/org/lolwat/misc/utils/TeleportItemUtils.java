@@ -1,15 +1,13 @@
 package org.lolwat.misc.utils;
 
-import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
-import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.wrappers.items.Item;
 
 public class TeleportItemUtils {
     public static final String RING_OF_DUELING = "Ring of dueling";
     public static final String LUMBRIDGE_TELEPORT = "Lumbridge teleport";
     public static final String FALADOR_TELEPORT = "Falador teleport";
     public static final String CAMELOT_TELEPORT = "Camelot teleport";
+    public static final String VARROCK_TELEPORT = "Varrock teleport";
 
     public static String getTeleportForBank(BankLocation loc) {
         switch(loc) {
@@ -30,6 +28,10 @@ public class TeleportItemUtils {
             case FALADOR_EAST:
             case FALADOR_WEST: {
                 return FALADOR_TELEPORT;
+            }
+
+            case GRAND_EXCHANGE: {
+                return VARROCK_TELEPORT;
             }
         }
         return "";
@@ -59,6 +61,10 @@ public class TeleportItemUtils {
 
             case CAMELOT_TELEPORT: {
                 return "Camelot teleport";
+            }
+
+            case VARROCK_TELEPORT: {
+                return "Varrock teleport";
             }
         }
 
