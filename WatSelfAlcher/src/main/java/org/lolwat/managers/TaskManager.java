@@ -420,7 +420,18 @@ public class TaskManager {
                 add(new Obstacle("Ledge", "Jump"));
                 add(new Obstacle("Edge", "Jump"));
             }
-        }, 50, 99, BankLocation.FALADOR_EAST));
+        }, 50, 60, BankLocation.FALADOR_EAST));
+
+        tasks.add(new AgilityCourseTask("Seers", new Area(2727, 3486, 2733, 3484), new ArrayList<Obstacle>() {
+            {
+                add(new Obstacle("Wall", "Climb-up"));
+                add(new Obstacle("Gap", "Jump"));
+                add(new Obstacle("Tightrope", "Cross"));
+                add(new Obstacle("Gap", "Jump"));
+                add(new Obstacle("Gap", "Jump"));
+                add(new Obstacle("Edge", "Jump"));
+            }
+        }, 60, 70, BankLocation.SEERS));
 
         return tasks;
     }
