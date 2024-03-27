@@ -364,7 +364,7 @@ public class TaskManager {
             add(new Obstacle("Tree branch", "Climb-down"));
             add(new Obstacle("Obstacle net", "Climb-over"));
             add(new Obstacle("Obstacle pipe", "Squeeze-through"));
-        }}, 1, 10, BankLocation.GNOME_STRONGHOLD));
+        }}, 1, 10, false, BankLocation.GNOME_STRONGHOLD));
 
         tasks.add(new AgilityCourseTask("Draynor", new Area(3103, 3281, 3105, 3274), new ArrayList<Obstacle>() { {
             add(new Obstacle("Rough wall", "Climb"));
@@ -374,7 +374,7 @@ public class TaskManager {
             add(new Obstacle("Wall", "Jump-up"));
             add(new Obstacle("Gap", "Jump"));
             add(new Obstacle("Crate", "Climb-down"));
-        }}, 10, 20, BankLocation.DRAYNOR));
+        }}, 10, 20, false, BankLocation.DRAYNOR));
 
         tasks.add(new AgilityCourseTask("AlKharid", new Area(3270, 3197, 3277, 3195), new ArrayList<Obstacle>() { {
             add(new Obstacle("Rough wall", "Climb"));
@@ -385,7 +385,7 @@ public class TaskManager {
             add(new Obstacle("Roof top beams", "Climb"));
             add(new Obstacle("Tightrope", "Cross"));
             add(new Obstacle("Gap", "Jump"));
-        }}, 20, 30, BankLocation.AL_KHARID));
+        }}, 20, 30, false, BankLocation.AL_KHARID));
 
         tasks.add(new AgilityCourseTask("Varrock", new Area(3221, 3411, 3224, 3419), new ArrayList<Obstacle>() {
             {
@@ -399,7 +399,7 @@ public class TaskManager {
                 add(new Obstacle("Ledge", "Hurdle"));
                 add(new Obstacle("Edge", "Jump-off"));
             }
-        }, 30, 40, BankLocation.VARROCK_EAST));
+        }, 30, 40, false, BankLocation.VARROCK_EAST));
 
         //TODO CANIFIS
         //TODO CANIFIS
@@ -420,7 +420,7 @@ public class TaskManager {
                 add(new Obstacle("Ledge", "Jump"));
                 add(new Obstacle("Edge", "Jump"));
             }
-        }, 50, 60, BankLocation.FALADOR_EAST));
+        }, 50, 60, false, BankLocation.FALADOR_EAST));
 
         tasks.add(new AgilityCourseTask("Seers", new Area(2727, 3486, 2733, 3484), new ArrayList<Obstacle>() {
             {
@@ -431,7 +431,7 @@ public class TaskManager {
                 add(new Obstacle("Gap", "Jump"));
                 add(new Obstacle("Edge", "Jump"));
             }
-        }, 60, 70, BankLocation.SEERS));
+        }, 60, 70, true, BankLocation.SEERS));
 
         return tasks;
     }
