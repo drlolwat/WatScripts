@@ -82,7 +82,7 @@ public class TraversalTask implements WatTask {
         double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
         if(GenericUtils.isMember() && postTask != null && targetDistance >= 1500) {
-            if(postTask.favoredBank() != BankLocation.GRAND_EXCHANGE) {
+            if(postTask.favoredBank() != BankLocation.GRAND_EXCHANGE || postTask instanceof GrandExchangeTask) {
                 String teleportItem = TeleportItemUtils.getTeleportForBank(postTask.favoredBank());
                 if(!teleportItem.isEmpty()) {
                     Logger.log("Needs to teleport");
@@ -157,9 +157,6 @@ public class TraversalTask implements WatTask {
                         return;
                     }
                 }
-            } else {
-                Sleep.sleep(Calculations.random(1500, 3000));
-                return;
             }
         }
 
