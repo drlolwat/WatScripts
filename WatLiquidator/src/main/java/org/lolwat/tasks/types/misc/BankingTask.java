@@ -20,6 +20,7 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.OutfitUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
@@ -201,7 +202,7 @@ public class BankingTask implements WatTask {
                         continue;
                     }
 
-                    if(Inventory.count(entry.getKey()) > amountRequired) {
+                    if (Inventory.count(entry.getKey()) > amountRequired) {
                         Logger.log("Equipment: Depositing extras of: " + entry.getKey());
                         Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
                         Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
@@ -228,12 +229,12 @@ public class BankingTask implements WatTask {
 
                     } else {
                         //TODO a path to obtaining untradeables that isnt hardcoded per shit
-                        if(entry.getKey().contains("defender")) {
+                        if (entry.getKey().contains("defender")) {
                             Logger.log("We are going to go and obtain a " + entry.getKey() + " first. Restarting loop.");
 
                             String latestObtained = "";
 
-                            if(!Equipment.contains(x -> x.getName().contains("defender"))) {
+                            if (!Equipment.contains(x -> x.getName().contains("defender"))) {
                                 if (Bank.contains("Rune defender"))
                                     latestObtained = "Rune defender";
                                 else if (Bank.contains("Adamant defender"))
@@ -253,15 +254,14 @@ public class BankingTask implements WatTask {
                             }
 
                             int tokens = Bank.count("Warrior guild token") + Inventory.count("Warrior guild token");
-                            if(tokens >= 200) {
+                            if (tokens >= 200) {
                                 TaskManager.getInstance().setCurrentTask(new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                     {
                                         put("Lobster", 20);
                                     }
                                 }, latestObtained));
                                 return;
-                            }
-                            else {
+                            } else {
                                 TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                     {
                                         put("Lobster", 20);
@@ -269,11 +269,47 @@ public class BankingTask implements WatTask {
                                 }, latestObtained));
                             }
                             return;
-                        }
+                        } else {
+                            if (OutfitUtils.isOutfitItem(entry.getKey())) {
+                                if (OutfitUtils.isGracefulItem(entry.getKey())) {
+                                    if (Bank.contains("Mark of grace")) {
+                                        // calculate total cost of missing pieces, and then see which ones we can get
+                                        // using the marks that we have.
+                                        int totalCost = 0;
+                                        int totalMarks = Bank.count("Mark of grace") + Inventory.count("Mark of grace");
+                                        List<String> gracefulItems = new ArrayList<>();
+                                        for (Map.Entry<String, Integer> e : OutfitUtils.gracefulItems.entrySet()) {
+                                            if (!Bank.contains(e.getKey()) && !Inventory.contains(e.getKey())
+                                                    && !Equipment.contains(e.getKey())) {
 
-                        // need to buy.
-                        buyingRequired.put(entry.getKey(), amountRequired);
-                        Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                                                if ((totalCost + e.getValue()) > totalMarks)
+                                                    break;
+
+                                                Logger.log("We need to get: " + e.getKey() + " for " + e.getValue() + " marks");
+                                                gracefulItems.add(e.getKey());
+                                                totalCost += e.getValue();
+                                            }
+                                        }
+
+                                        if(!gracefulItems.isEmpty()) {
+                                            if(!Bank.withdraw("Mark of grace", totalCost)) {
+                                                Logger.error("Failed to withdraw marks of grace");
+                                                return;
+                                            }
+
+                                            TaskManager.getInstance().setCurrentTask(new BuyGracefulOutfitTask(this, gracefulItems));
+                                            return;
+                                        }
+                                    } else {
+                                        Logger.log("No marks of grace, can't be buying the outfit..");
+                                    }
+                                }
+                            } else { // probably a else if untradeable, obtain path here. similar to defenders but less hardcoded lol
+                                // need to buy.
+                                buyingRequired.put(entry.getKey(), amountRequired);
+                                Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                            }
+                        }
                     }
                 }
             }
@@ -371,6 +407,13 @@ public class BankingTask implements WatTask {
                         if(Bank.needToScroll(i)) {
                             Bank.scroll(entry.getKey());
                             Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
+                        }
+                    }
+
+                    for(String s : ItemUtils.SINGULAR_ITEMS) {
+                        if(s.toLowerCase().contains(entry.getKey().toLowerCase())) {
+                            toWithdraw = 1;
+                            break;
                         }
                     }
 
