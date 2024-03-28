@@ -10,6 +10,8 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.magic.Magic;
+import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
@@ -22,6 +24,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TeleportItemUtils;
@@ -32,6 +35,7 @@ import org.lolwat.tasks.types.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.types.combat.warriorguild.FightCyclopsTask;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +47,7 @@ public class TraversalTask implements WatTask {
     double lastWalk;
     boolean usingArea;
     Area area;
+    boolean hasTeleported = false;
 
     @Override
     public String getName() {
@@ -60,7 +65,7 @@ public class TraversalTask implements WatTask {
         lastWalk = 0;
         usingArea = false;
 
-        Logger.log("Walking to coords");
+        Logger.log("Walking to coords for task " + post.getName());
     }
 
     public TraversalTask(Area using, WatTask post) {
@@ -78,14 +83,16 @@ public class TraversalTask implements WatTask {
             TutorialUtils.handleTab();
         }
 
-        double targetDistance = Players.getLocal().walkingDistance(postTask.favoredBank().getCenter());
-        double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
+        if(GenericUtils.isMember() && postTask != null) {
+            double targetDistance = Players.getLocal().walkingDistance(postTask.favoredBank().getCenter());
+            double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
-        if(GenericUtils.isMember() && postTask != null && targetDistance >= 1500) {
-            if(postTask.favoredBank() != BankLocation.GRAND_EXCHANGE || postTask instanceof GrandExchangeTask) {
+            //Logger.log("task: " + postTask + ", distance: " + targetDistance + ", exchange: " + exchangeDistance);
+            //Logger.log("target bank: " + postTask.favoredBank().name());
+
+            if(targetDistance >= 1000 && !hasTeleported) {
                 String teleportItem = TeleportItemUtils.getTeleportForBank(postTask.favoredBank());
                 if(!teleportItem.isEmpty()) {
-                    Logger.log("Needs to teleport");
                     if(!Inventory.contains(x -> x.getName().contains(teleportItem))) {
                         if(Equipment.contains(x -> x.getName().contains(teleportItem))) {
                             if(Bank.isOpen()) {
@@ -105,19 +112,38 @@ public class TraversalTask implements WatTask {
                             }
 
                             Tile currentTile = Players.getLocal().getTile();
-                            Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
+                            Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile
+                                    && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
+                            hasTeleported = true;
                             return;
                         } else {
-                            if(targetDistance > exchangeDistance) {
-                                Logger.log("Traversal: missing teleport item " + teleportItem);
+                            if(targetDistance > exchangeDistance
+                                    && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
+
+                                if(Magic.canCast(Normal.HOME_TELEPORT)) {
+                                    if(!Tabs.isOpen(Tab.MAGIC)) {
+                                        Tabs.open(Tab.MAGIC);
+                                        Sleep.sleepUntil(() -> Tabs.isOpen(Tab.MAGIC), Calculations.random(200, 300));
+                                    }
+
+                                    if(Magic.castSpell(Normal.HOME_TELEPORT)) {
+                                        Tile currentTile = Players.getLocal().getTile();
+                                        Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), 5000);
+                                    }
+
+                                    if(!Tabs.isOpen(Tab.INVENTORY)) {
+                                        Tabs.open(Tab.INVENTORY);
+                                        Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
+                                    }
+                                }
+
                                 TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                                     {
                                         put(TeleportItemUtils.getChargedItemName(teleportItem), Calculations.random(2, 6));
                                     }
                                 }, new HashMap<>(), 1, this));
+                                Logger.log("Traversal: missing teleport item " + teleportItem);
                                 return;
-                            } else {
-                                Logger.log("Traversal: missing teleport item, but closer to target than exchange");
                             }
                         }
                     } else {
@@ -154,8 +180,11 @@ public class TraversalTask implements WatTask {
 
                         Tile currentTile = Players.getLocal().getTile();
                         Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
+                        hasTeleported = true;
                         return;
                     }
+                } else {
+                    Logger.log("Traversal: no teleport item found for bank " + postTask.favoredBank().name());
                 }
             }
         }
@@ -277,5 +306,18 @@ public class TraversalTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        List<String> ret = new ArrayList<>();
+        for(Item i : Inventory.all()) {
+            if(i == null)
+                continue;
+
+            ret.add(i.getName());
+        }
+
+        return ret;
     }
 }
