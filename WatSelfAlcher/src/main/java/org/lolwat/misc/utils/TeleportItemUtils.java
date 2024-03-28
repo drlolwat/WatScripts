@@ -8,6 +8,7 @@ public class TeleportItemUtils {
     public static final String FALADOR_TELEPORT = "Falador teleport";
     public static final String CAMELOT_TELEPORT = "Camelot teleport";
     public static final String VARROCK_TELEPORT = "Varrock teleport";
+    public static final String ROGUES_DEN_TELEPORT = "Games necklace";
 
     public static String getTeleportForBank(BankLocation loc) {
         switch(loc) {
@@ -33,6 +34,10 @@ public class TeleportItemUtils {
             case GRAND_EXCHANGE: {
                 return VARROCK_TELEPORT;
             }
+
+            case ROGUES_DEN: {
+                return ROGUES_DEN_TELEPORT;
+            }
         }
         return "";
     }
@@ -40,6 +45,9 @@ public class TeleportItemUtils {
     public static String getDialogueOption(String item, boolean equipped) {
         if (item.equals(RING_OF_DUELING)) {
             return equipped ? "Castle Wars" : "Castle Wars Arena.";
+        }
+        else if(item.equals(ROGUES_DEN_TELEPORT)) {
+            return equipped ? "Burthorpe" : "Burthorpe.";
         }
 
         return "";
@@ -65,6 +73,10 @@ public class TeleportItemUtils {
 
             case VARROCK_TELEPORT: {
                 return "Varrock teleport";
+            }
+
+            case ROGUES_DEN_TELEPORT: {
+                return "Games necklace(8)";
             }
         }
 
