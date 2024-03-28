@@ -60,7 +60,7 @@ public class AgilityCourseTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.AGILITY) >= minimumLevel && Skills.getRealLevel(Skill.AGILITY) <= maximumLevel;
+        return Skills.getRealLevel(Skill.AGILITY) >= minimumLevel && Skills.getRealLevel(Skill.AGILITY) < maximumLevel;
     }
 
     @Override
@@ -180,7 +180,14 @@ public class AgilityCourseTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
+        return new HashMap<String, Integer>() { {
+            put("Graceful hood", 1);
+            put("Graceful top", 1);
+            put("Graceful legs", 1);
+            put("Graceful gloves", 1);
+            put("Graceful boots", 1);
+            put("Graceful cape", 1);
+        } };
     }
 
     @Override
@@ -188,7 +195,7 @@ public class AgilityCourseTask implements WatTask {
         HashMap<String, Integer> ret = new HashMap<>();
 
         if(needsEat) {
-            ret.put("Monkfish", 10);
+            ret.put("Monkfish", -10);
         }
 
         return ret;
