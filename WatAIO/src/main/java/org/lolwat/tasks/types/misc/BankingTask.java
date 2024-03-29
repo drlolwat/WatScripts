@@ -827,11 +827,28 @@ public class BankingTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
+        if(postTask != null) {
+            return postTask.clothesRequired();
+        }
+
         return new HashMap<>();
     }
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
+        if(postTask != null) {
+            return postTask.inventoryRequired();
+        }
+
         return new HashMap<>();
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        if(postTask != null) {
+            return postTask.inventoryTolerated();
+        }
+
+        return new ArrayList<>();
     }
 }
