@@ -27,5 +27,4 @@ public interface WatTask {
     default HashMap<String, Object> data() {
         return new HashMap<>();
     }
-    default BankLocation favoredBank() { return BankLocation.getNearest(); }
 }
