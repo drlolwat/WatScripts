@@ -12,6 +12,8 @@ import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -344,9 +346,7 @@ public class BankingTask implements WatTask {
                 }
             }*/
 
-            if (postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
-                Bank.depositAllEquipment();
-            }
+            handleEquipmentDeposit();
         }
 
         Logger.log("Equipment: Finished checking");
@@ -655,13 +655,64 @@ public class BankingTask implements WatTask {
         }
     }
 
+    private void handleEquipmentDeposit() {
+        List<String> toUnequip = new ArrayList<>();
+        if (postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
+            for(Item i : Equipment.all()) {
+                if(i == null) continue;
+                if(!postTask.clothesRequired().containsKey(i.getName())) {
+                    Logger.log("Task " + postTask.getName() + " does not require: " + i.getName() + ", adding to list");
+                    toUnequip.add(i.getName());
+                }
+            }
+
+            if(toUnequip.size() == Equipment.all(Objects::nonNull).size()) {
+                Logger.log("Depositing all gear due to task: " + postTask.getName() + " not requiring any of it");
+                Bank.depositAllEquipment();
+            }
+            else {
+                if(Bank.isOpen()) {
+                    Bank.close();
+                    Sleep.sleepUntil(() -> !Bank.isOpen(), Calculations.random(5000, 10000));
+                }
+
+                if(!Tabs.isOpen(Tab.EQUIPMENT)) {
+                    Tabs.open(Tab.EQUIPMENT);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.EQUIPMENT), Calculations.random(5000, 10000));
+                }
+
+                for(String s : toUnequip) {
+                    Item i = Equipment.get(s);
+                    if(i != null) {
+                        if(!Equipment.unequip(x -> x != null && x.getName().equals(i.getName()))) {
+                            Logger.error("Equipment: Error unequipping item");
+                        }
+                    }
+                }
+
+                if(!Tabs.isOpen(Tab.INVENTORY)) {
+                    Tabs.open(Tab.INVENTORY);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(5000, 10000));
+                }
+
+                if(!Bank.isOpen()) {
+                    Bank.open();
+                    Sleep.sleepUntil(Bank::isOpen, Calculations.random(5000, 10000));
+                }
+
+                Bank.deposit(x -> x != null && toUnequip.contains(x.getName()));
+                Sleep.sleepUntil(() -> !Inventory.contains(x -> x != null && toUnequip.contains(x.getName())), Calculations.random(5000, 10000));
+            }
+        }
+    }
+
     private void depositNonRequired() {
         if(Inventory.isEmpty()) {
             return;
         }
 
         if(postTask != null) {
-            if(!postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
+            /*if(!postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
                 for(Item i : Equipment.all()) {
                     if(i == null) continue;
                     if(!postTask.clothesRequired().containsKey(i.getName())) {
@@ -671,7 +722,8 @@ public class BankingTask implements WatTask {
                         break;
                     }
                 }
-            }
+            }*/
+            handleEquipmentDeposit();
         }
 
         if(!inventoryRequired.isEmpty()) {
