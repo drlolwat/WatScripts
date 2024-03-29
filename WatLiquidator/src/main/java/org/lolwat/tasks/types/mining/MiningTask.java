@@ -100,7 +100,7 @@ public class MiningTask implements WatTask {
 
             if (!Map.isTileOnScreen(defaultSquare)) {
                 Logger.log("I need to traverse to the location.");
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(defaultSquare, false, this));
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(defaultSquare.getArea(3), this));
                 return;
             }
 
