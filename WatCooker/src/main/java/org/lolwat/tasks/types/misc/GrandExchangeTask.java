@@ -6,19 +6,16 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.grandexchange.GrandExchangeItem;
-import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
-import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.Entity;
-import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.WatTask;
@@ -193,6 +190,9 @@ public class GrandExchangeTask implements WatTask {
                     if(itemFinal.equals("Old school bond (untradeable)")) {
                         itemFinal = "Old school bond";
                     }
+                    else if(TeleportManager.getInstance().isTeleportItem(itemFinal)) {
+                        itemFinal = TeleportManager.getInstance().getChargedItemName(itemFinal);
+                    }
 
                     Logger.log("Buying: " + itemFinal);
 
@@ -245,8 +245,14 @@ public class GrandExchangeTask implements WatTask {
 
                             Sleep.sleep(100, 300);
 
-                            if (item.getValue() != 1 && !ItemUtils.SINGULAR_ITEMS.contains(itemFinal)) {
-                                GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
+                            if (item.getValue() != 1) {
+                                if(!TeleportManager.getInstance().isTeleportItem(item.getKey()) &&
+                                        ItemUtils.SINGULAR_ITEMS.contains(item.getKey())) {
+                                    GrandExchange.setQuantity(1);
+                                } else {
+                                    GrandExchange.setQuantity(item.getValue() >= 1 ? item.getValue() : -item.getValue());
+                                }
+
                                 Sleep.sleep(100, 300);
                             }
 
@@ -308,7 +314,7 @@ public class GrandExchangeTask implements WatTask {
             TaskManager.getInstance().setCurrentTask(postTask);
         }
         else {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this));
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
         }
     }
 
@@ -350,10 +356,5 @@ public class GrandExchangeTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
-    }
-
-    @Override
-    public BankLocation favoredBank() {
-        return BankLocation.GRAND_EXCHANGE;
     }
 }
