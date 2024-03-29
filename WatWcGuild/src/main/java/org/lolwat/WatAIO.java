@@ -26,6 +26,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.config.WatConfig;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.tasks.types.mining.MiningTask;
@@ -71,6 +72,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             ConfigManager.getInstance().setNetWorth(0);
             ConfigManager.getInstance().setNetWorthGeneratedAt(0);
             ConfigManager.getInstance().loadFromProfile(profile);
+        }
+
+        if(TeleportManager.getInstance() == null) {
+            Logger.log("Constructing TeleportManager singleton.");
+            TeleportManager.setInstance(new TeleportManager());
         }
 
         Walking.setMinimapTargetSize(15);
