@@ -70,7 +70,7 @@ public class SmithingIngotTask implements WatTask {
                 return;
             }
 
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation, false, this));
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation.getArea(3),this));
             return;
         }
 
