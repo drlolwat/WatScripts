@@ -148,9 +148,4 @@ public class BuyGracefulOutfitTask implements WatTask {
             add("Mark of grace");
         } };
     }
-
-    @Override
-    public BankLocation favoredBank() {
-        return BankLocation.ROGUES_DEN;
-    }
 }
