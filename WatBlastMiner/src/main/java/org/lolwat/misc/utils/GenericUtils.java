@@ -11,10 +11,14 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
+import org.dreambot.api.methods.magic.Magic;
+import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -285,5 +289,24 @@ public class GenericUtils {
 
     public static boolean isOnTutorial() {
         return (PlayerSettings.getConfig(281) != 1000);
+    }
+
+    public static void castHomeTeleport() {
+        if(Magic.canCast(Normal.HOME_TELEPORT)) {
+            if(!Tabs.isOpen(Tab.MAGIC)) {
+                Tabs.open(Tab.MAGIC);
+                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.MAGIC), Calculations.random(200, 300));
+            }
+
+            if(Magic.castSpell(Normal.HOME_TELEPORT)) {
+                Tile currentTile = Players.getLocal().getTile();
+                Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), 5000);
+            }
+
+            if(!Tabs.isOpen(Tab.INVENTORY)) {
+                Tabs.open(Tab.INVENTORY);
+                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
+            }
+        }
     }
 }
