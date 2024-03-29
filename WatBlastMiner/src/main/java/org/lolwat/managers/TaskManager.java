@@ -431,7 +431,11 @@ public class TaskManager {
                 add(new Obstacle("Gap", "Jump"));
                 add(new Obstacle("Edge", "Jump"));
             }
-        }, 60, 70, true, BankLocation.SEERS));
+        }, 60, 80, true, BankLocation.SEERS));
+
+        // we skip pol
+
+
 
         return tasks;
     }
