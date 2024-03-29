@@ -77,7 +77,7 @@ public class AgilityCourseTask implements WatTask {
             }
         }
 
-        if (!started && !startingArea.contains(Players.getLocal())) {
+        if (!started && !startingArea.contains(Players.getLocal()) && !startingArea.contains(Walking.getDestination())) {
             Obstacle first = obs.get(0);
             GameObject ob = GameObjects.closest(x -> x.exists() && x.distance() <= 7 && !safelyIgnore.contains(x.getRealID())
                     && x.getName().equalsIgnoreCase(first.getName()) && x.hasAction(first.getAction()));
@@ -199,10 +199,5 @@ public class AgilityCourseTask implements WatTask {
         }
 
         return ret;
-    }
-
-    @Override
-    public BankLocation favoredBank() {
-        return favoredBank;
     }
 }
