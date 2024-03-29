@@ -93,7 +93,7 @@ public class MulingTask implements WatTask {
         }
 
         if(NPCs.closest("Grand Exchange Clerk") == null) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getTile(), false, this));
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
             return;
         }
 
