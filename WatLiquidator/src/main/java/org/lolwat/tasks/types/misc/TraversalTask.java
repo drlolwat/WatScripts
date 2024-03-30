@@ -281,24 +281,32 @@ public class TraversalTask implements WatTask {
             return postTask.clothesRequired();
         }
 
-        return new HashMap<>();
+        HashMap<String, Integer> ret = new HashMap<>();
+        for(Item i : Equipment.all()) {
+            if(i == null)
+                continue;
+
+            ret.put(i.getName(), 1);
+        }
+
+        return ret;
     }
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        if(postTask != null) {
-            return postTask.inventoryRequired();
-        }
-
         return new HashMap<>();
     }
 
     @Override
     public List<String> inventoryTolerated() {
-        if(postTask != null) {
-            return postTask.inventoryTolerated();
+        List<String> ret = new ArrayList<>();
+        for(Item i : Inventory.all()) {
+            if(i == null)
+                continue;
+
+            ret.add(i.getName());
         }
 
-        return new ArrayList<>();
+        return ret;
     }
 }
