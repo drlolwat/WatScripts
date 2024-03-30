@@ -119,5 +119,11 @@ public class TeleportManager {
                 "Camelot teleport",
                 "Camelot teleport",
                 "Camelot"));
+
+        teleports.add(new Teleport("Taverley",
+                new Tile(2894, 3465, 0),
+                "Taverley teleport",
+                "Taverley teleport",
+                "Taverley"));
     }
 }
