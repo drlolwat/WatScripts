@@ -461,7 +461,7 @@ public class TaskManager {
         tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
         tasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
         tasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
-        //tasks.put(PaidQuest.DRUIDIC_RITUAL, new DruidicRitualQuest());
+        tasks.put(PaidQuest.DRUIDIC_RITUAL, new DruidicRitualQuest());
         //tasks.put(PaidQuest.PRIEST_IN_PERIL, new PriestInPerilQuest());
 
         return tasks;
