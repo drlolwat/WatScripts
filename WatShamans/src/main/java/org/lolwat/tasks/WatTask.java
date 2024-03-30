@@ -3,6 +3,7 @@ package org.lolwat.tasks;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.WatAIO;
 
 import java.util.ArrayList;
@@ -26,5 +27,8 @@ public interface WatTask {
     }
     default HashMap<String, Object> data() {
         return new HashMap<>();
+    }
+    default void onMessage(Message m) {
+
     }
 }
