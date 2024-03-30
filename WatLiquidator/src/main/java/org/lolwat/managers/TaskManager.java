@@ -7,6 +7,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
+import org.dreambot.api.methods.quest.book.PaidQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
@@ -106,7 +107,7 @@ public class TaskManager {
             }
         } else {
             for (Map.Entry<Quest, WatTask> questTask : questTasks.entrySet()) {
-                if (questTask.getValue().canPerformTask() && Quests.isFinished(questTask.getValue().completesQuest())) {
+                if (questTask.getValue().canPerformTask() && !Quests.isFinished(questTask.getValue().completesQuest())) {
                     Logger.log("TaskManager: Selected quest task: " + questTask.getValue().getName());
                     setCurrentTask(questTask.getValue(), 0);
                     return;
@@ -444,6 +445,7 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
+        tasks.add(new GEBeggingTask());
 
         return tasks;
     }
@@ -458,6 +460,9 @@ public class TaskManager {
         tasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
         tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
         tasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
+        tasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
+        //tasks.put(PaidQuest.DRUIDIC_RITUAL, new DruidicRitualQuest());
+        //tasks.put(PaidQuest.PRIEST_IN_PERIL, new PriestInPerilQuest());
 
         return tasks;
     }
