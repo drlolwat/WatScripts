@@ -14,6 +14,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -293,5 +294,10 @@ public class DruidicRitualQuest implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public void onMessage(Message m) {
+        // you can listen for the trade event here
     }
 }
