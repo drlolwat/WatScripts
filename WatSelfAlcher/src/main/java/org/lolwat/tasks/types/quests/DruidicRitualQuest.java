@@ -295,9 +295,4 @@ public class DruidicRitualQuest implements WatTask {
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
     }
-
-    @Override
-    public void onMessage(Message m) {
-        // you can listen for the trade event here
-    }
 }
