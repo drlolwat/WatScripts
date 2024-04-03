@@ -25,6 +25,7 @@ import org.lolwat.tasks.types.cooking.CookingFishTask;
 import org.lolwat.tasks.types.crafting.JewelryTask;
 import org.lolwat.tasks.types.crafting.SpinningTask;
 import org.lolwat.tasks.types.firemaking.FiremakingTask;
+import org.lolwat.tasks.types.herblore.CleanHerbTask;
 import org.lolwat.tasks.types.magic.HighAlchemyTask;
 import org.lolwat.tasks.types.misc.*;
 import org.lolwat.tasks.types.prayer.BuryBonesTask;
@@ -322,6 +323,7 @@ public class TaskManager {
         tasks.addAll(createRangedTasks());
         tasks.addAll(createMagicTasks());
         tasks.addAll(createAgilityTasks());
+        tasks.addAll(createHerbloreTasks());
 
         for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -352,6 +354,12 @@ public class TaskManager {
         tasks.add(new CowhideCollectorTask());
         tasks.add(new ScavengingTask());
 
+        return tasks;
+    }
+
+    private List<WatTask> createHerbloreTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+        tasks.add(new CleanHerbTask());
         return tasks;
     }
 
