@@ -45,7 +45,7 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
-@ScriptManifest(name = "WatAIO", description = "It is what it is, but all in one", author = "lolwat", version = 0.9, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one Account Building script for Old School RuneScape", author = "lolwat", version = 1.0, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
 
