@@ -327,7 +327,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                         }).start();
                     }
                 }
-            };
+            }
         }
 
         if(TaskManager.getInstance().getCurrentTask() != null) {
