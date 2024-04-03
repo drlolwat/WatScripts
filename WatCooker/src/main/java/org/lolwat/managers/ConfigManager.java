@@ -58,6 +58,7 @@ public class ConfigManager {
         defaultProfile.addProperty("smithing", 10);
         defaultProfile.addProperty("mining", 99);
         defaultProfile.addProperty("agility", 1);
+        defaultProfile.addProperty("herblore", 1);
 
         defaultProfile.addProperty("quests_enabled", true);
         defaultProfile.addProperty("breaks_enabled", true);
