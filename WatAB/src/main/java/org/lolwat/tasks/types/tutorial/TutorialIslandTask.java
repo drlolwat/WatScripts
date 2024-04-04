@@ -304,15 +304,11 @@ public class TutorialIslandTask implements WatTask {
                 }
 
                 case 160: {
-                    if(!Inventory.use("Bread dough")) {
-                        Logger.error("Tutorial: Problem using bread dough");
+                    GameObject range = GameObjects.closest("Range");
+                    if (range != null && range.interact("Cook")) {
+                        Sleep.sleepUntil(() -> !Inventory.contains("Bread dough"), 10000);
                     }
-                    else {
-                        GameObject range = GameObjects.closest("Range");
-                        if(range != null && range.interact("Cook")) {
-                            Sleep.sleepUntil(() -> !Inventory.contains("Bread dough"), 10000);
-                        }
-                    }
+
                     break;
                 }
 
