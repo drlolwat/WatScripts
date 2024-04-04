@@ -19,18 +19,15 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.mining.MiningTask;
-import org.lolwat.tasks.types.misc.HopperTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 
 import java.io.BufferedReader;
@@ -285,10 +282,6 @@ public class GenericUtils {
             shuffledMap.put(entry.getKey(), entry.getValue());
         }
         return shuffledMap;
-    }
-
-    public static boolean isOnTutorial() {
-        return (PlayerSettings.getConfig(281) != 1000);
     }
 
     public static void castHomeTeleport() {
