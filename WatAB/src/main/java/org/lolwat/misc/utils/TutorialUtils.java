@@ -1,12 +1,10 @@
 package org.lolwat.misc.utils;
 
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.WatAIO;
 
 import static org.dreambot.api.utilities.Logger.log;
 
@@ -34,7 +32,7 @@ public class TutorialUtils {
     }
 
     public static void handleTab() {
-        if(GenericUtils.isOnTutorial()) {
+        if(isOnTutorial()) {
             final Tab t = getTab();
             if (t == null) {
                 log("Tab is null?");
@@ -45,5 +43,13 @@ public class TutorialUtils {
                 Sleep.sleepUntil(() -> Tabs.isOpen(t), Calculations.random(1200, 1600));
             }
         }
+    }
+
+    public static boolean isOnTutorial() {
+        return (PlayerSettings.getConfig(281) != 1000);
+    }
+
+    public static int getTutorialStep() {
+        return PlayerSettings.getConfig(281);
     }
 }
