@@ -39,10 +39,9 @@ import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.quests.*;
 import org.lolwat.tasks.types.smithing.SmithingItemTask;
-import org.lolwat.tasks.types.tutorial.SelectUsernameTask;
+import org.lolwat.tasks.types.tutorial.TutorialIslandTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 import org.lolwat.WatAIO;
-import sun.net.www.content.text.Generic;
 
 import java.awt.*;
 import java.time.Instant;
@@ -248,7 +247,7 @@ public class TaskManager {
         }
 
         if (PlayerSettings.getConfig(281) != 1000) {
-            setCurrentTask(new SelectUsernameTask(), 0);
+            setCurrentTask(new TutorialIslandTask(), 0);
             Logger.log("We are performing Tutorial Island");
             return true;
         }
