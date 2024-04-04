@@ -405,6 +405,7 @@ public class TutorialIslandTask implements WatTask {
                         GameObject obj = GameObjects.closest("Anvil");
                         if (obj != null && obj.interact()) {
                             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
+                            Sleep.sleep(100, 200);
                         }
                     }
 
