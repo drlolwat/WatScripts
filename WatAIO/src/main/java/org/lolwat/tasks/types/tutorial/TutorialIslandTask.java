@@ -514,6 +514,7 @@ public class TutorialIslandTask implements WatTask {
                     if(ob != null && ob.exists()) {
                         if(ob.interact("Open")) {
                             Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 5000);
+                            Sleep.sleep(50, 100);
                         }
                     }
                     break;
