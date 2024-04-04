@@ -12,6 +12,13 @@ public class TutorialUtils {
     private static final Tab[] tabs = new Tab[]{Tab.COMBAT, Tab.SKILLS, Tab.QUEST, Tab.INVENTORY, Tab.EQUIPMENT,
             Tab.PRAYER, Tab.MAGIC, Tab.CLAN, Tab.ACCOUNT_MANAGEMENT, Tab.FRIENDS, Tab.LOGOUT, Tab.OPTIONS, Tab.EMOTES, Tab.MUSIC};
 
+    public static final int NAME_WIDGET = 558; // ??
+    public static final int NAME_TEXT_CHILDID = 12;
+    public static final int NAME_LOOKUP_CHILDID = 18; // Actions: "Look up name". If no actions, name is not available
+    public static final int NAME_SETNAME_CHILDID = 19; // Actions: "Set name"
+    public static final int APPEAR_PAR = 679; // appearance
+    public static final int ACCEPT = 68; // appearance
+
     public static boolean needsOpenTab() {
         return PlayerSettings.getConfig(1021) != 2560 && PlayerSettings.getConfig(1021) != 2048;
     }
