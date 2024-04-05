@@ -152,8 +152,12 @@ public class TaskManager {
         else {
             GenericUtils.shuffleHashMap(tasksBySkill);
             for(WatTask t : tasksBySkill.get(sk)) {
-                if(ConfigManager.getInstance().getSkillTarget(t.trainsSkill()) > Skills.getRealLevel(t.trainsSkill()) &&
-                        t.canPerformTask()) {
+                if(Skills.getRealLevel(t.trainsSkill()) > t.avoidAfterLevel())
+                    continue;
+
+                if(t.avoidAfterLevel() > Skills.getRealLevel(t.trainsSkill())
+                        && ConfigManager.getInstance().getSkillTarget(t.trainsSkill()) > Skills.getRealLevel(t.trainsSkill())
+                        && t.canPerformTask()) {
 
                     Logger.log(Color.green, "TaskManager: Selected task for skill: " + sk.getName() + " - " + t.getName());
                     setCurrentTask(t, 0);
@@ -452,7 +456,7 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
-        tasks.add(new GEBeggingTask());
+        //tasks.add(new GEBeggingTask());
 
         return tasks;
     }
@@ -468,7 +472,7 @@ public class TaskManager {
         tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
         tasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
         tasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
-        tasks.put(PaidQuest.DRUIDIC_RITUAL, new DruidicRitualQuest());
+        //tasks.put(PaidQuest.DRUIDIC_RITUAL, new DruidicRitualQuest());
         //tasks.put(PaidQuest.PRIEST_IN_PERIL, new PriestInPerilQuest());
 
         return tasks;
