@@ -126,6 +126,10 @@ public class MiningTask implements WatTask {
                         Camera.rotateToEntity(obj);
                     }
 
+                    if(!Map.isTileOnScreen(rockTile)) {
+                        Camera.rotateToTile(rockTile);
+                    }
+
                     if(!obj.interact()) {
                         Logger.error("error interacting with rock");
                     }
