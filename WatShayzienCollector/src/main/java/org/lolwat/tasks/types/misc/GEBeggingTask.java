@@ -132,6 +132,11 @@ public class GEBeggingTask implements WatTask {
     }
 
     private void performBegging() {
+        if(Bank.isOpen()) {
+            Bank.close();
+            Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+        }
+
         String beggingMessage = getBeggingMessage();
         if (!beggingMessage.isEmpty()) {
             Keyboard.type(beggingMessage, true);

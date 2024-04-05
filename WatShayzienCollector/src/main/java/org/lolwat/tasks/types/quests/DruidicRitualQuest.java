@@ -253,7 +253,7 @@ public class DruidicRitualQuest implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return !Quests.isFinished(PaidQuest.DRUIDIC_RITUAL) || !Quests.isStarted(PaidQuest.DRUIDIC_RITUAL);
+        return GenericUtils.isMember() && (!Quests.isFinished(PaidQuest.DRUIDIC_RITUAL) || !Quests.isStarted(PaidQuest.DRUIDIC_RITUAL));
     }
 
     @Override
