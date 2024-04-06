@@ -155,7 +155,6 @@ public class ConfigManager {
                 JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
 
                 for (String key : jsonObject.keySet()) {
-                    Logger.log("Key: " + key + ", Value: " + jsonObject.get(key));
                     config.put("profile_" + key, jsonObject.get(key));
                 }
 
