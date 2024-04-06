@@ -224,6 +224,11 @@ public class TraversalTask implements WatTask {
             }
         } else {
             if(area.contains(Players.getLocal()) || area.contains(Walking.getDestination())) {
+                if (!Map.isTileOnScreen(area.getRandomTile())) {
+                    Camera.rotateToTile(area.getRandomTile());
+                    Sleep.sleepUntil(() -> Map.isTileOnScreen(area.getRandomTile()), 3000);
+                }
+
                 Logger.log("Reached target area for task " + postTask.getName());
                 TaskManager.getInstance().setCurrentTask(postTask);
                 return;
