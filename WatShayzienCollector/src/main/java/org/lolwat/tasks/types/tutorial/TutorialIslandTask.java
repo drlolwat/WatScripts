@@ -678,8 +678,16 @@ public class TutorialIslandTask implements WatTask {
                         return;
                     }
 
-                    if(Dialogues.getOptions() == null) {
-                        DialogueUtils.talkTo("Account Guide");
+                    NPC accountGuide = NPCs.closest("Account Guide");
+                    if (accountGuide != null && accountGuide.exists()) {
+                        if(accountGuide.canReach()) {
+                            if (Dialogues.getOptions() == null) {
+                                DialogueUtils.talkTo("Account Guide");
+                            }
+                        } else {
+                            TaskManager.getInstance().setCurrentTask(new TraversalTask(accountGuide.getTile().getArea(1), this));
+                            return;
+                        }
                     }
 
                     break;
