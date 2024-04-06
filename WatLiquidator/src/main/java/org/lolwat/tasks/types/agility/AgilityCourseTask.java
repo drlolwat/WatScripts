@@ -200,4 +200,9 @@ public class AgilityCourseTask implements WatTask {
 
         return ret;
     }
+
+    @Override
+    public boolean requiresMembers() {
+        return true;
+    }
 }
