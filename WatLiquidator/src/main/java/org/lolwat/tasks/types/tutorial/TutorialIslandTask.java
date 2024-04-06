@@ -551,6 +551,7 @@ public class TutorialIslandTask implements WatTask {
                     break;
                 }
 
+                case 490:
                 case 480: {
                     if(Dialogues.canContinue()) {
                         Dialogues.spaceToContinue();
