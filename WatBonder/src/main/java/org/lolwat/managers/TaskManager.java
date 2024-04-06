@@ -98,7 +98,7 @@ public class TaskManager {
                     continue;
 
                 if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
-                    if (task.canPerformTask()) {
+                    if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember() || !task.requiresMembers() && !GenericUtils.isMember())) {
                         Logger.log("TaskManager: Selected task: " + task.getName());
                         setCurrentTask(task, 0);
                         return;
@@ -108,9 +108,11 @@ public class TaskManager {
         } else {
             for (Map.Entry<Quest, WatTask> questTask : questTasks.entrySet()) {
                 if (questTask.getValue().canPerformTask() && !Quests.isFinished(questTask.getValue().completesQuest())) {
-                    Logger.log("TaskManager: Selected quest task: " + questTask.getValue().getName());
-                    setCurrentTask(questTask.getValue(), 0);
-                    return;
+                    if((questTask.getValue().requiresMembers() && GenericUtils.isMember() || !questTask.getValue().requiresMembers() && !GenericUtils.isMember())) {
+                        Logger.log("TaskManager: Selected quest task: " + questTask.getValue().getName());
+                        setCurrentTask(questTask.getValue(), 0);
+                        return;
+                    }
                 }
             }
 
@@ -138,7 +140,7 @@ public class TaskManager {
 
             Collections.shuffle(pool);
             for(WatTask t : pool) {
-                if(t.canPerformTask()) {
+                if(t.canPerformTask() && (t.requiresMembers() && GenericUtils.isMember() || !t.requiresMembers() && !GenericUtils.isMember())) {
                     if(gpToGenerate > 0) {
                         t.data().put("gp_to_generate", gpToGenerate);
                     }
@@ -157,7 +159,7 @@ public class TaskManager {
 
                 if(t.avoidAfterLevel() > Skills.getRealLevel(t.trainsSkill())
                         && ConfigManager.getInstance().getSkillTarget(t.trainsSkill()) > Skills.getRealLevel(t.trainsSkill())
-                        && t.canPerformTask()) {
+                        && t.canPerformTask() && (t.requiresMembers() && GenericUtils.isMember() || !t.requiresMembers() && !GenericUtils.isMember())) {
 
                     Logger.log(Color.green, "TaskManager: Selected task for skill: " + sk.getName() + " - " + t.getName());
                     setCurrentTask(t, 0);
@@ -242,6 +244,9 @@ public class TaskManager {
             ConfigManager.getInstance().getWsProfile(0);
             ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
+
+            boolean p2pEnabled = ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed");
+            Logger.log(p2pEnabled ? Color.green : Color.red, "P2P tasks are " + (p2pEnabled ? "enabled" : "disabled"));
             watAIO.enableLoginManager();
         }
 
@@ -264,14 +269,15 @@ public class TaskManager {
         }
 
         if (!GenericUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
-                && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("bond_min_ttl"))) {
+                && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("bond_min_ttl"))
+                && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
 
             setCurrentTask(new BondingTask(null), 0);
             Logger.log("We are making our account a member");
             return true;
         }
 
-        if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+        if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers() && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
             setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
             Logger.log("We are hopping into a P2P world");
             return true;
