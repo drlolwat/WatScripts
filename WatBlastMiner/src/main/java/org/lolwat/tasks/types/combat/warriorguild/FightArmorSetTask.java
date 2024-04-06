@@ -264,4 +264,9 @@ public class FightArmorSetTask implements WatTask {
             }
         };
     }
+
+    @Override
+    public boolean requiresMembers() {
+        return true;
+    }
 }
