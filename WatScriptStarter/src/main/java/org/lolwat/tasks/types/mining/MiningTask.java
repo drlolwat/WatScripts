@@ -42,7 +42,7 @@ public class MiningTask implements WatTask {
     private String rockName;
     private boolean usingAlternateRocks = false;
     private long lastSuccessfulRock = 0;
-    private boolean gotRock;
+    private boolean gotRock = false;
     private Tile rockTile;
     private final int minLevel;
     private Integer maxMiningLevel = 0;
@@ -77,7 +77,7 @@ public class MiningTask implements WatTask {
         if ((!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) || (Inventory.contains(pickaxe) && Inventory.get(pickaxe).isNoted())) {
             WatConfig.incrementToolFailures();
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() { { put(pickaxe, 1); }}, sellingItems, 1, this));
+            TaskManager.getInstance().setCurrentTask(new BankingTask(null, sellingItems, 1, this));
         } else {
             if (!Tab.INVENTORY.isOpen()) {
                 Tab.INVENTORY.open();
