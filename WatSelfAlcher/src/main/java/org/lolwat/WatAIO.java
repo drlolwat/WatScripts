@@ -148,7 +148,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             if (TaskManager.getInstance().getCurrentTask().completesQuest() == null) {
                 if (TaskManager.getInstance().getCurrentTask().trainsSkill() != null) {
                     if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) > TaskManager.getInstance().getCurrentTask().avoidAfterLevel()) {
-                        Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to level, picking new task..");
+                        Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (task) level, picking new task..");
                         TaskManager.getInstance().getSpecificSkillTask(TaskManager.getInstance().getCurrentTask().trainsSkill());
                         return 1000;
                     }
