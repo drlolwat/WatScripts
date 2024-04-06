@@ -155,6 +155,7 @@ public class ConfigManager {
                 JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
 
                 for (String key : jsonObject.keySet()) {
+                    Logger.log("Key: " + key + ", Value: " + jsonObject.get(key));
                     config.put("profile_" + key, jsonObject.get(key));
                 }
 
@@ -175,7 +176,8 @@ public class ConfigManager {
     }
 
     public boolean getConfigBoolean(String key) {
-        return Objects.equals(config.get(key).toString(), "true") || Objects.equals(config.get(key).toString(), "1");
+        String value = config.get(key).toString().replace("\"", "");
+        return Objects.equals(value, "true") || Objects.equals(value, "1");
     }
 
     public int getConfigInt(String key) {
