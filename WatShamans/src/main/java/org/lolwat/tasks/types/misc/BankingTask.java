@@ -666,15 +666,17 @@ public class BankingTask implements WatTask {
         if (postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
             for(Item i : Equipment.all()) {
                 if(i == null) continue;
-                if(!postTask.clothesRequired().containsKey(i.getName())) {
+                if(!postTask.clothesRequired().containsKey(i.getName()) && !postTask.inventoryRequired().containsKey(i.getName())) {
                     Logger.log("Task " + postTask.getName() + " does not require: " + i.getName() + ", adding to list");
                     toUnequip.add(i.getName());
                 }
             }
 
             if(toUnequip.size() == Equipment.all(Objects::nonNull).size()) {
-                Logger.log("Depositing all gear due to task: " + postTask.getName() + " not requiring any of it");
-                Bank.depositAllEquipment();
+                if(Equipment.size() > 0) {
+                    Logger.log("Depositing all gear due to task: " + postTask.getName() + " not requiring any of it");
+                    Bank.depositAllEquipment();
+                }
             }
             else {
                 if(Bank.isOpen()) {
@@ -713,11 +715,11 @@ public class BankingTask implements WatTask {
     }
 
     private void depositNonRequired() {
-        if(Inventory.isEmpty()) {
+        if (Inventory.isEmpty()) {
             return;
         }
 
-        if(postTask != null) {
+        if (postTask != null) {
             /*if(!postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
                 for(Item i : Equipment.all()) {
                     if(i == null) continue;
@@ -732,53 +734,74 @@ public class BankingTask implements WatTask {
             handleEquipmentDeposit();
         }
 
-        if(!inventoryRequired.isEmpty()) {
-            for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                Logger.log("Inventory requires: " + entry.getKey());
-                if (Inventory.contains(entry.getKey()) && entry.getValue() > 0) {
-                    if(Inventory.count(entry.getKey()) > entry.getValue()) {
-                        Logger.log("Final: Depositing extras of: " + entry.getKey() + ", have: " + Inventory.count(entry.getKey()) + ", need: " + entry.getValue());
-                        Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - entry.getValue()));
-                        Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == entry.getValue(), 1500);
+        boolean canDepositAll = true;
+        for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+            if(Inventory.contains(entry.getKey())) {
+                canDepositAll = false;
+                break;
+            }
+        }
+
+        for (String i : inventoryTolerated()) {
+            if(Inventory.contains(i)) {
+                canDepositAll = false;
+                break;
+            }
+        }
+
+        if(!canDepositAll) {
+            if (!inventoryRequired.isEmpty()) {
+                for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+                    Logger.log("Inventory requires: " + entry.getKey());
+                    if (Inventory.contains(entry.getKey()) && entry.getValue() > 0) {
+                        if (Inventory.count(entry.getKey()) > entry.getValue()) {
+                            Logger.log("Final: Depositing extras of: " + entry.getKey() + ", have: " + Inventory.count(entry.getKey()) + ", need: " + entry.getValue());
+                            Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - entry.getValue()));
+                            Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == entry.getValue(), 1500);
+                        }
                     }
                 }
-            }
 
-            for(Item i : Inventory.all()) {
-                if(i == null)
-                    continue;
+                for (Item i : Inventory.all()) {
+                    if (i == null)
+                        continue;
 
-                if(postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
-                    Logger.log("Banking: Inventory tolerates item: " + i.getName());
-                    continue;
+                    if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
+                        Logger.log("Banking: Inventory tolerates item: " + i.getName());
+                        continue;
+                    }
+
+                    if (inventoryRequired != null && !inventoryRequired.containsKey(i.getName())) {
+                        Logger.log("Banking: Depositing " + i.getName() + ", not required.");
+                        Bank.depositAll(i.getName());
+                        Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                        continue;
+                    }
+
+                    if (i.isNoted()) {
+                        Logger.log("Banking: Depositing " + i.getName() + ", noted.");
+                        Bank.depositAll(i.getName());
+                        Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                    }
                 }
+            } else {
+                for (Item i : Inventory.all()) {
+                    if (i == null) continue;
 
-                if(inventoryRequired != null && !inventoryRequired.containsKey(i.getName())) {
+                    if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
+                        Logger.log("Banking: Inventory tolerates item: " + i.getName());
+                        continue;
+                    }
+
                     Logger.log("Banking: Depositing " + i.getName() + ", not required.");
                     Bank.depositAll(i.getName());
-                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
-                    continue;
-                }
-
-                if(i.isNoted()) {
-                    Logger.log("Banking: Depositing " + i.getName() + ", noted.");
-                    Bank.depositAll(i.getName());
-                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
+                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 5000);
                 }
             }
         } else {
-            for (Item i : Inventory.all()) {
-                if(i == null) continue;
-
-                if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
-                    Logger.log("Banking: Inventory tolerates item: " + i.getName());
-                    continue;
-                }
-
-                Logger.log("Banking: Depositing " + i.getName() + ", not required.");
-                Bank.depositAll(i.getName());
-                Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 5000);
-            }
+            Logger.log("Banking: required/tolerated no items in inventory, depositing all.");
+            Bank.depositAllItems();
+            Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
         }
     }
 
