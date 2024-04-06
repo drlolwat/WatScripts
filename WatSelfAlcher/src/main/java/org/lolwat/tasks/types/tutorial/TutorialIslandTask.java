@@ -305,8 +305,17 @@ public class TutorialIslandTask implements WatTask {
 
                 case 160: {
                     GameObject range = GameObjects.closest("Range");
-                    if (range != null && range.interact("Cook")) {
-                        Sleep.sleepUntil(() -> !Inventory.contains("Bread dough"), 10000);
+                    if (range != null) {
+                        if(range.canReach()) {
+                            if(!range.interact("Cook")) {
+                                Logger.log("Tutorial: Problem interacting with range");
+                            } else {
+                                Sleep.sleepUntil(() -> !Inventory.contains("Bread dough"), 10000);
+                            }
+                        } else {
+                            TaskManager.getInstance().setCurrentTask(new TraversalTask(range.getTile().getArea(1), this));
+                            return;
+                        }
                     }
 
                     break;
@@ -450,6 +459,17 @@ public class TutorialIslandTask implements WatTask {
                         Dialogues.spaceToContinue();
                     }
 
+                    break;
+                }
+
+                case 405: {
+                    if(!Equipment.contains("Bronze dagger")) {
+                        if(!Inventory.interact("Bronze dagger", "Equip")) {
+                            Logger.error("Tutorial: Problem wielding bronze dagger");
+                        } else {
+                            Sleep.sleepUntil(() -> Equipment.contains("Bronze dagger"), 5000);
+                        }
+                    }
                     break;
                 }
 
@@ -764,6 +784,15 @@ public class TutorialIslandTask implements WatTask {
                 case 670:
                 case 640:
                 case 620: {
+                    if(Magic.isSpellSelected()) {
+                        if(!Magic.deselect()) {
+                            Logger.error("Tutorial: Problem deselecting spell");
+                        }
+                        else {
+                            Sleep.sleepUntil(() -> !Magic.isSpellSelected(), 5000);
+                        }
+                    }
+
                     List<String> answers = new ArrayList<String>() {
                         {
                             add("Yes.");
@@ -773,32 +802,27 @@ public class TutorialIslandTask implements WatTask {
 
                     if(Dialogues.canContinue()) {
                         Dialogues.spaceToContinue();
-                        return;
+                    }
+
+                    if(Dialogues.getOptions() != null) {
+                        DialogueUtils.solve(answers);
                     }
 
                     Widget w = Widgets.getWidget(219);
-                    if(w != null && w.isVisible()) {
-                        WidgetChild c = w.getChild(1);
-                        if(c != null) {
-                            WidgetChild c2 = c.getChild(3);
-                            if(c2 != null && c2.isVisible() && c2.getText().contains("that")) {
-                                c2.interact();
-                                Sleep.sleepUntil(() -> !c2.isVisible(), 5000);
-                            }
-                        }
-                    }
-
-                    if(Dialogues.getOptions() == null) {
+                    if(w == null || !w.isVisible()) {
                         DialogueUtils.talkTo("Magic Instructor", answers);
-                    } else {
-                        Sleep.sleep(100, 200); // just in case
+                        Sleep.sleep(100, 200);
                     }
 
                     break;
                 }
 
                 case 650: {
-                    Area location = new Area(3138, 3091, 3141, 3091);
+                    Area location = new Area(
+                            new Tile(3144, 3089, 0),
+                            new Tile(3141, 3092, 0),
+                            new Tile(3137, 3092, 0),
+                            new Tile(3141, 3088, 0));
 
                     if (!location.contains(Players.getLocal())) {
                         TaskManager.getInstance().setCurrentTask(new TraversalTask(location, this));
