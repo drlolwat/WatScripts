@@ -29,6 +29,7 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.config.WatConfig;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.tasks.types.mining.MiningTask;
@@ -97,7 +98,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         }
 
-        Logger.log(Color.green, "WatAIO is starting...");
+        Logger.log(Color.green, "WatAIO version 1 is starting");
         getRandomManager().disableSolver(RandomEvent.DISMISS);
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
