@@ -39,12 +39,6 @@ public class SheepShearerQuest implements WatTask {
             }
         }
 
-        //go to start location
-        if (!startLocation.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
-            return;
-        }
-
         if (NPCs.closest("Fred the Farmer") != null) {
             // handle the dialogue here
             if (Dialogues.inDialogue()) {
@@ -54,6 +48,11 @@ public class SheepShearerQuest implements WatTask {
                 }
             } else {
                 NPCs.closest("Fred the Farmer").interact();
+            }
+        } else {
+            //go to start location
+            if (!startLocation.contains(Players.getLocal())) {
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
             }
         }
     }
