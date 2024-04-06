@@ -378,6 +378,12 @@ public class BankingTask implements WatTask {
                     }
                 }
 
+                if(Equipment.contains(entry.getKey())) {
+                    Logger.log("Inventory item is actually equipped, skipping: " + entry.getKey());
+                    Sleep.sleep(100, 200);
+                    continue;
+                }
+
                 if (Bank.contains(x -> x != null && x.getName().contains(entry.getKey()))
                         && Bank.count(x -> x != null && x.getName().contains(entry.getKey())) >= amountRequired) {
 
@@ -608,7 +614,7 @@ public class BankingTask implements WatTask {
         Logger.log("Final checks: Net worth, etc.");
 
         if(postTask != null && !(postTask instanceof MulingTask)) {
-            depositNonRequired();
+            //depositNonRequired();
         }
 
         // calculate net worth
