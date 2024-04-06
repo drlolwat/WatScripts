@@ -129,4 +129,9 @@ public class CleanHerbTask implements WatTask {
     public List<String> inventoryTolerated() {
         return WatTask.super.inventoryTolerated();
     }
+
+    @Override
+    public boolean requiresMembers() {
+        return true;
+    }
 }
