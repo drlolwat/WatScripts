@@ -185,7 +185,7 @@ public class MulingTask implements WatTask {
                         }
 
                         if (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
-                            if(p.interact("Trade with")) {
+                            if(Trade.tradeWithPlayer(p)) {
                                 lastSentRequest = Instant.now().getEpochSecond();
                                 Sleep.sleepUntil(Trade::isOpen, 5000);
                             }
