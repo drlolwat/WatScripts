@@ -638,6 +638,14 @@ public class TutorialIslandTask implements WatTask {
                         Dialogues.spaceToContinue();
                     }
                     else {
+                        Widget w = Widgets.getWidget(229);
+                        if(w != null && w.isVisible()) {
+                            WidgetChild c = w.getChild(1);
+                            if(c != null && !c.getText().isEmpty()) {
+                                break;
+                            }
+                        }
+
                         if (HintArrow.exists()) {
                             if (!HintArrow.getType().equals(HintArrowType.NPC)) {
                                 GameObject obj = GameObjects.getTopObjectOnTile(HintArrow.getTile());
