@@ -31,4 +31,7 @@ public interface WatTask {
     default void onMessage(Message m) {
 
     }
+    default boolean requiresMembers() {
+        return false;
+    }
 }
