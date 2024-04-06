@@ -175,7 +175,7 @@ public class ConfigManager {
     }
 
     public boolean getConfigBoolean(String key) {
-        return Objects.equals(config.get(key).toString(), "true");
+        return Objects.equals(config.get(key).toString(), "true") || Objects.equals(config.get(key).toString(), "1");
     }
 
     public int getConfigInt(String key) {
