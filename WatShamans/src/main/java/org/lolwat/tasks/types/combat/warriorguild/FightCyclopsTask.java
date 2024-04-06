@@ -336,4 +336,9 @@ public class FightCyclopsTask implements WatTask {
             }
         };
     }
+
+    @Override
+    public boolean requiresMembers() {
+        return true;
+    }
 }
