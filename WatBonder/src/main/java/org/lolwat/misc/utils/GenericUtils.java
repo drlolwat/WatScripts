@@ -186,6 +186,10 @@ public class GenericUtils {
     }
 
     public static boolean isMember() {
+        if(!ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
+            return false;
+        }
+
         return PlayerSettings.getConfig(1780) > 0;
     }
 
