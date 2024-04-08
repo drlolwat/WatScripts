@@ -6,7 +6,7 @@
 
     <groupId>org.lolwat</groupId>
     <artifactId>WatAIO</artifactId>
-    <version>0.1-ALPHA</version>
+    <version>1.0-RELEASE</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -41,7 +41,7 @@
                 <version>3.2.1</version>
                 <configuration>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <shadedClassifierName>dep-included</shadedClassifierName>
+                    <shadedClassifierName>unobbed</shadedClassifierName>
                     <outputDirectory>${dreambot.path}/Scripts</outputDirectory>
                 </configuration>
                 <executions>
