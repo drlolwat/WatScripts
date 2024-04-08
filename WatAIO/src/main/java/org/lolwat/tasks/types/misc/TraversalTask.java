@@ -49,6 +49,8 @@ public class TraversalTask implements WatTask {
     boolean usingArea;
     Area area;
     boolean hasTeleported = false;
+    double taskStartedAt;
+    Tile startedOnTile;
 
     @Override
     public String getName() {
@@ -64,6 +66,8 @@ public class TraversalTask implements WatTask {
         postTask = post;
         usingArea = true;
         lastWalk = 0;
+        taskStartedAt = Instant.now().getEpochSecond();
+        startedOnTile = Players.getLocal().getTile();
 
         Logger.log("Walking to area for task " + post.getName());
     }
@@ -72,6 +76,17 @@ public class TraversalTask implements WatTask {
     public void execute(WatAIO instance) {
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
+        }
+
+        int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
+        if(sinceStartedTask >= 30 && Players.getLocal().getTile().equals(startedOnTile)) {
+            Logger.log("Traversal: havent moved for 30 seconds, moving on");
+            if(postTask != null) {
+                TaskManager.getInstance().setCurrentTask(postTask);
+            } else {
+                TaskManager.getInstance().setCurrentTask(null);
+            }
+            return;
         }
 
         if(GenericUtils.isMember() && postTask != null) {
