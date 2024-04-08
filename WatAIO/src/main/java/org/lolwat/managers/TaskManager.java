@@ -99,7 +99,8 @@ public class TaskManager {
                     continue;
 
                 if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
-                    if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember() || !task.requiresMembers() && !GenericUtils.isMember())) {
+                    if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember()
+                            || !task.requiresMembers() && !GenericUtils.isMember()) && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
                         Logger.log("TaskManager: Selected task: " + task.getName());
                         setCurrentTask(task, 0);
                         return;
