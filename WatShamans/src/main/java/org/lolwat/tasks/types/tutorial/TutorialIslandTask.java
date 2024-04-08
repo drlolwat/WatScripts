@@ -282,7 +282,15 @@ public class TutorialIslandTask implements WatTask {
                     }
 
                     if(Dialogues.getOptions() == null) {
-                        DialogueUtils.talkTo("Master Chef");
+                        NPC chef = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Master Chef"));
+                        if(chef != null) {
+                            if(chef.canReach()) {
+                                DialogueUtils.talkTo("Master Chef");
+                            } else {
+                                TaskManager.getInstance().setCurrentTask(new TraversalTask(chef.getTile().getArea(1), this));
+                                return;
+                            }
+                        }
                     }
 
                     break;
