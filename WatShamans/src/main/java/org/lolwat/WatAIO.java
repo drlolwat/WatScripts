@@ -16,6 +16,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
+import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -104,6 +105,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
+        WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
     }
 
     @Override
