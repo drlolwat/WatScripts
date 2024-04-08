@@ -150,6 +150,7 @@ public class RunecraftingTask implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<String, Integer>() {{
             put(GenericUtils.uppercaseFirst(runeType) + " tiara", 1);
+            putAll(GenericUtils.getSkillingGear());
         }};
     }
 
