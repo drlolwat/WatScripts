@@ -38,6 +38,7 @@ import org.lolwat.tasks.types.fishing.FishingTask;
 import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.WatTask;
 import org.lolwat.tasks.types.quests.*;
+import org.lolwat.tasks.types.runecrafting.RunecraftingTask;
 import org.lolwat.tasks.types.smithing.SmithingItemTask;
 import org.lolwat.tasks.types.tutorial.TutorialIslandTask;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
@@ -333,6 +334,7 @@ public class TaskManager {
         tasks.addAll(createMagicTasks());
         tasks.addAll(createAgilityTasks());
         tasks.addAll(createHerbloreTasks());
+        tasks.addAll(createRunecraftingTasks());
 
         for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -363,6 +365,17 @@ public class TaskManager {
         tasks.add(new CowhideCollectorTask());
         tasks.add(new ScavengingTask());
 
+        return tasks;
+    }
+
+    private List<WatTask> createRunecraftingTasks() {
+        List<WatTask> tasks = new ArrayList<>();
+        tasks.add(new RunecraftingTask("air", 1, 2));
+        tasks.add(new RunecraftingTask("mind", 2, 5));
+        tasks.add(new RunecraftingTask("water", 5, 9));
+        tasks.add(new RunecraftingTask("earth", 9, 14));
+        tasks.add(new RunecraftingTask("fire", 14, 20));
+        tasks.add(new RunecraftingTask("body", 20, 99));
         return tasks;
     }
 
