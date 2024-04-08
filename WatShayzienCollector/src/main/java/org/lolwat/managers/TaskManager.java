@@ -375,7 +375,8 @@ public class TaskManager {
         tasks.add(new RunecraftingTask("water", 5, 9));
         tasks.add(new RunecraftingTask("earth", 9, 14));
         tasks.add(new RunecraftingTask("fire", 14, 20));
-        tasks.add(new RunecraftingTask("body", 20, 99));
+        tasks.add(new RunecraftingTask("body", 20, 35));
+        tasks.add(new RunecraftingTask("body", 35, 99));
         return tasks;
     }
 
