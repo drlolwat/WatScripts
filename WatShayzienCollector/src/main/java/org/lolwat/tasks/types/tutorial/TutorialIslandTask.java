@@ -14,6 +14,7 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
@@ -448,8 +449,17 @@ public class TutorialIslandTask implements WatTask {
 
                 case 360: {
                     GameObject gate = GameObjects.closest("Gate");
-                    if(gate != null && gate.interact("Open")) {
-                        Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
+                    if(gate != null) {
+                        if (gate.isOnScreen() && Map.isTileOnMap(gate.getTile())) {
+                            if (gate.interact("Open")) {
+                                Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
+                            }
+                        } else {
+                            TaskManager.getInstance().setCurrentTask(new TraversalTask(gate.getTile().getArea(1), this));
+                            return;
+                        }
+                    } else {
+                        Logger.error("Tutorial: Problem finding gate after making dagger");
                     }
 
                     break;
