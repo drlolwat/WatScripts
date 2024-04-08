@@ -1,6 +1,7 @@
 package org.lolwat.tasks.types.runecrafting;
 
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -10,6 +11,8 @@ import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -38,6 +41,23 @@ public class RunecraftingTask implements WatTask {
 
     @Override
     public void execute(WatAIO instance) {
+        if(runeType.equals("chaos")) {
+            if(Combat.isAutoRetaliateOn()) {
+                if(!Tabs.isOpen(Tab.COMBAT)) {
+                    Tabs.open(Tab.COMBAT);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.COMBAT), Calculations.random(3000, 6000));
+                }
+
+                Combat.toggleAutoRetaliate(false);
+                Sleep.sleepUntil(() -> !Combat.isAutoRetaliateOn(), Calculations.random(3000, 6000));
+
+                if(!Tabs.isOpen(Tab.INVENTORY)) {
+                    Tabs.open(Tab.INVENTORY);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(3000, 6000));
+                }
+            }
+        }
+
         Area entrance = RunecraftingUtils.getRunecraftingAreaByRune(runeType);
         String tiara = GenericUtils.uppercaseFirst(runeType) + " tiara";
 
