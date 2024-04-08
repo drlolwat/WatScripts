@@ -13,6 +13,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
@@ -82,14 +83,18 @@ public class FiremakingTask implements WatTask {
             Sleep.sleep(100, 400);
         }
 
-        if(Inventory.contains("Tinderbox") && Inventory.interact("Tinderbox")) {
+        if(Inventory.contains("Tinderbox") && Inventory.use("Tinderbox")) {
             Tile t = Players.getLocal().getTile();
-            if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.interact(WoodcuttingUtils.getLogName(logType))) {
+            if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.use(WoodcuttingUtils.getLogName(logType))) {
                 ready = false;
                 Sleep.sleep(200, 500);
                 Mouse.move(Inventory.get("Tinderbox").getDestination());
                 Sleep.sleepUntil(() -> Dialogues.canContinue() || (Players.getLocal().getTile() != t && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating()), 10000);
+            } else {
+                Logger.log("Failed to use tinderbox on log");
             }
+        } else {
+            Logger.log("Failed to select tinderbox");
         }
     }
 
