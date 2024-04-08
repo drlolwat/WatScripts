@@ -83,8 +83,8 @@ public class RunecraftingTask implements WatTask {
             if (!Inventory.contains(x -> x != null && x.getName().toLowerCase().contains("essence") && !x.isNoted())
                     || !Equipment.contains(x -> x != null && x.getName().contains(tiara))) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(null, new HashMap<String, Integer>() {{
-                    put(GenericUtils.uppercaseFirst(runeType) + " rune", -Calculations.random(3000, 5000));
-                }}, Calculations.random(30, 40), this));
+                    put(GenericUtils.uppercaseFirst(runeType) + " rune", -Calculations.random(2000, 5000));
+                }}, Calculations.random(50, 100), this));
                 return;
             }
 
@@ -100,6 +100,7 @@ public class RunecraftingTask implements WatTask {
                     Logger.log("Failed to enter ruins (safe to ignore)");
                 } else {
                     Sleep.sleepUntil(() -> (ruins == null || !ruins.canReach()) && (altar != null && altar.canReach()), Calculations.random(3000, 6000));
+                    Sleep.sleep(60, 120);
                 }
             }
         }
