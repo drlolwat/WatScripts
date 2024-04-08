@@ -25,6 +25,9 @@ public class RunecraftingUtils {
             case "mind": {
                 return new Area(2979, 3517, 2986, 3510);
             }
+            case "chaos": {
+                return new Area(3055, 3595, 3066, 3586);
+            }
         }
     }
 }
