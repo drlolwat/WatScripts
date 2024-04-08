@@ -436,6 +436,12 @@ public class TutorialIslandTask implements WatTask {
                         if (wc.interact()) {
                             Sleep.sleepUntil(() -> Inventory.contains("Bronze dagger"), 5000);
                         }
+                    } else {
+                        GameObject obj = GameObjects.closest("Anvil");
+                        if (obj != null && obj.interact() && obj.canReach()) {
+                            Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 15000);
+                            Sleep.sleep(100, 200);
+                        }
                     }
                     break;
                 }
