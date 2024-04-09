@@ -278,16 +278,6 @@ public class GenericUtils {
         }
     }
 
-    public static <K, V> Map<K, V> shuffleMap(Map<K, V> map) {
-        List<Map.Entry<K, V>> entryList = new ArrayList<>(map.entrySet());
-        Collections.shuffle(entryList);
-        Map<K, V> shuffledMap = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry : entryList) {
-            shuffledMap.put(entry.getKey(), entry.getValue());
-        }
-        return shuffledMap;
-    }
-
     public static void castHomeTeleport() {
         if(Magic.canCast(Normal.HOME_TELEPORT)) {
             if(!Tabs.isOpen(Tab.MAGIC)) {
