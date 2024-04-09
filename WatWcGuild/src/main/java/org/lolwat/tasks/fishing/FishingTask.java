@@ -53,7 +53,7 @@ public class FishingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         String tool = FishingUtils.getToolByFishType(fishType);
         HashMap<String, Integer> requiredItems = new HashMap<String, Integer>() {{ put(tool, 1); }};
 

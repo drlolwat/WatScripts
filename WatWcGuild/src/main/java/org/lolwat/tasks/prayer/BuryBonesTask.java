@@ -37,7 +37,7 @@ public class BuryBonesTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         String name = PrayerUtils.getBonesFromType(buryingType);
         if(name != null) {
             if(!Inventory.contains(name)) {

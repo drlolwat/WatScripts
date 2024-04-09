@@ -72,7 +72,7 @@ public class CowhideCollectorTask implements WatTask {
     private boolean hasHopped = false;
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (Inventory.isFull()) {
             depositCowhides();
             lastCowhideCollectionTime = 0;
