@@ -40,7 +40,7 @@ public class LiquidationTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         Area loc = BankLocation.GRAND_EXCHANGE.getArea(5);
         if(loc.contains(Players.getLocal())) {
             if(!Bank.isOpen()) {

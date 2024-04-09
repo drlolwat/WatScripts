@@ -71,7 +71,7 @@ public class TraversalTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
         }

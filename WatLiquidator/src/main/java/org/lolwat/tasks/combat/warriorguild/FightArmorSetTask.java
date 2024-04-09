@@ -12,7 +12,6 @@ import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -24,8 +23,8 @@ import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
@@ -72,7 +71,7 @@ public class FightArmorSetTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (!inventoryReq.isEmpty()) {
             for (Map.Entry<String, Integer> f : inventoryReq.entrySet()) {
                 if(Dialogues.inDialogue()) {

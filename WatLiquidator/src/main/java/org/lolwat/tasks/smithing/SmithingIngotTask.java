@@ -47,7 +47,7 @@ public class SmithingIngotTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {

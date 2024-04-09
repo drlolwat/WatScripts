@@ -30,7 +30,7 @@ public class BondingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         boolean requiresHop = false;
         if(!BankLocation.GRAND_EXCHANGE.getArea(5).contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(5), this));

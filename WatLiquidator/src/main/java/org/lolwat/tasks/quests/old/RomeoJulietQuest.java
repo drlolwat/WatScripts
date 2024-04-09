@@ -70,7 +70,7 @@ public class RomeoJulietQuest implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(Inventory.isFull()) {
             TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, this));
             return;

@@ -55,25 +55,25 @@ public class WitchsPotionQuest implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (!geItemsAcquired) {
-            acquireGEItems(instance);
+            acquireGEItems();
         } else if (!goldAcquired) {
             acquireGold();
         } else if (!newtAcquired) {
-            acquireEyeOfNewt(instance);
+            acquireEyeOfNewt();
         } else if (!beefCooked) {
-            cookBeef(instance);
+            cookBeef();
         } else if (!questStarted) {
-            startQuest(instance);
+            startQuest();
         } else if (!ratTailAcquired) {
-            acquireRatsTail(instance);
+            acquireRatsTail();
         } else {
-            completeQuest(instance);
+            completeQuest();
         }
     }
 
-    private void acquireGEItems(WatAIO instance) {
+    private void acquireGEItems() {
         if (!Inventory.containsAll(needed.keySet())) {
             TaskManager.getInstance().setCurrentTask(new BankingTask(needed, new HashMap<>(), 1, this));
             return;
@@ -99,7 +99,7 @@ public class WitchsPotionQuest implements WatTask {
         }
     }
 
-    private void acquireEyeOfNewt(WatAIO instance) {
+    private void acquireEyeOfNewt() {
         if (Inventory.contains("Eye of newt")) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this)); // Proceed to the next task
             newtAcquired = true;
@@ -136,7 +136,7 @@ public class WitchsPotionQuest implements WatTask {
         }
     }
 
-    private void cookBeef(WatAIO instance) {
+    private void cookBeef() {
         if (Inventory.contains("Burnt meat")) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this)); // Proceed to the next task
             beefCooked = true;
@@ -166,7 +166,7 @@ public class WitchsPotionQuest implements WatTask {
 
     private boolean isRatBeingAttacked = false;
 
-    private void acquireRatsTail(WatAIO instance) {
+    private void acquireRatsTail() {
         if (questStarted && !Inventory.contains("Rat's tail")) {
             if (!ratLocation.contains(Players.getLocal())) {
                 TaskManager.getInstance().setCurrentTask(new TraversalTask(ratLocation, this));
@@ -201,7 +201,7 @@ public class WitchsPotionQuest implements WatTask {
         }
     }
 
-    private void startQuest(WatAIO instance) {
+    private void startQuest() {
         if (!startLocation.contains(Players.getLocal()) && !Quests.isStarted(FreeQuest.WITCHS_POTION)) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
             return;
@@ -230,7 +230,7 @@ public class WitchsPotionQuest implements WatTask {
 
     private boolean hettyDialogueComplete = false;
 
-    private void completeQuest(WatAIO instance) {
+    private void completeQuest() {
         if (!startLocation.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
             return;
