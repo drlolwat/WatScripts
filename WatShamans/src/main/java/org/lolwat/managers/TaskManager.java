@@ -34,6 +34,7 @@ import org.lolwat.tasks.magic.HighAlchemyTask;
 import org.lolwat.tasks.mining.MiningTask;
 import org.lolwat.tasks.misc.*;
 import org.lolwat.tasks.prayer.BuryBonesTask;
+import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
 import org.lolwat.tasks.runecrafting.RunecraftingTask;
 import org.lolwat.tasks.smithing.SmithingItemTask;
 import org.lolwat.tasks.tutorial.TutorialIslandTask;
@@ -52,15 +53,13 @@ public class TaskManager {
 
     // ---- RUNTIME VARIABLES ----
     private static TaskManager instance;
-    private final WatAIO watAIO;
     private WatTask currentTask;
     private int tasksUntilBreak;
     private double taskSelectedAt;
     private int taskRunTime;
     private double checkedHoursAt;
 
-    public TaskManager(WatAIO instance) {
-        watAIO = instance;
+    public TaskManager() {
         setupAllTasks();
         resetBreaks();
         setCheckedHoursAt(0);
@@ -102,20 +101,8 @@ public class TaskManager {
                 }
             }
         } else {
-            //TODO: QuestManager
-            /*
-            for (Map.Entry<Quest, WatTask> questTask : questTasks.entrySet()) {
-                if (questTask.getValue().canPerformTask() && !Quests.isFinished(questTask.getValue().completesQuest())) {
-                    if((questTask.getValue().requiresMembers() && GenericUtils.isMember() || !questTask.getValue().requiresMembers() && !GenericUtils.isMember())) {
-                        Logger.log("TaskManager: Selected quest task: " + questTask.getValue().getName());
-                        setCurrentTask(questTask.getValue(), 0);
-                        return;
-                    }
-                }
-            }*/
-
-            Logger.log(Color.red, "TaskManager: no quest tasks available, selecting a regular task");
-            getNewTask(true);
+            Logger.log("TaskManager: Selected questing, now selecting quest..");
+            setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), 0);
         }
     }
 
@@ -235,7 +222,7 @@ public class TaskManager {
 
             boolean p2pEnabled = ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed");
             Logger.log(p2pEnabled ? Color.green : Color.red, "P2P tasks are " + (p2pEnabled ? "enabled" : "disabled"));
-            watAIO.enableLoginManager();
+            WatAIO.getInstance().enableLoginManager();
         }
 
         if(!Client.isLoggedIn()) {
