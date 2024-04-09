@@ -1,11 +1,10 @@
-package org.lolwat.tasks.types.quests;
+package org.lolwat.tasks.quests.old;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
@@ -18,11 +17,10 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.tasks.types.misc.TraversalTask;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.TraversalTask;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
