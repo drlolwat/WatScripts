@@ -29,13 +29,13 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.config.WatConfig;
+import org.lolwat.managers.types.WatConfig;
 import org.lolwat.misc.mouse.BezierMouse;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WebUtils;
-import org.lolwat.tasks.types.mining.MiningTask;
-import org.lolwat.tasks.types.misc.*;
-import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
+import org.lolwat.tasks.mining.MiningTask;
+import org.lolwat.tasks.misc.*;
+import org.lolwat.tasks.woodcutting.WoodcuttingTask;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -146,7 +146,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 return 1000;
             }
 
-            if (TaskManager.getInstance().getCurrentTask().completesQuest() == null) {
+            if (TaskManager.getInstance().getCurrentTask().questTask() == null) {
                 if (TaskManager.getInstance().getCurrentTask().trainsSkill() != null) {
                     if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) > TaskManager.getInstance().getCurrentTask().avoidAfterLevel()) {
                         Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (task) level, picking new task..");
@@ -163,7 +163,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     }
                 }
             } else {
-                if (Quests.isFinished(TaskManager.getInstance().getCurrentTask().completesQuest())) {
+                if(Quests.isFinished(TaskManager.getInstance().getCurrentTask().questTask().getQuest())) {
                     Logger.log("We are now avoiding this quest, it's completed, picking new task..");
                     TaskManager.getInstance().getNewTask();
                     return 1000;
