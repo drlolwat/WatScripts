@@ -54,7 +54,7 @@ public class FiremakingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(!Tabs.isOpen(Tab.INVENTORY)) {
             Tabs.open(Tab.INVENTORY);
         }

@@ -46,7 +46,7 @@ public class AdvertiseTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(!spamZone.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(spamZone, this));
             return;
