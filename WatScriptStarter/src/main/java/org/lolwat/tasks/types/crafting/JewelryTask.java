@@ -46,8 +46,7 @@ public class JewelryTask implements WatTask {
     public void execute(WatAIO instance) {
         for(java.util.Map.Entry<String, Integer> m : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue() || Inventory.get(m.getKey()).isNoted()) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(
-                        CraftingUtils.getMaterialsForJewelry(craftingType, true, 1),
+                TaskManager.getInstance().setCurrentTask(new BankingTask(null,
                         toSell, totalLoads, this));
 
                 return;
@@ -118,6 +117,11 @@ public class JewelryTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        return CraftingUtils.getMaterialsForJewelry(craftingType, true, 1);
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<>();
     }
 }
