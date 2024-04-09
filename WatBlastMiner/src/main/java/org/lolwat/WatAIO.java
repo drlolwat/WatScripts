@@ -4,12 +4,11 @@ import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.quest.Quests;
-import org.dreambot.api.methods.settings.PlayerSettings;
-import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -28,26 +27,24 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.config.WatConfig;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.TutorialUtils;
+import org.lolwat.misc.mouse.BezierMouse;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.tasks.types.mining.MiningTask;
 import org.lolwat.tasks.types.misc.*;
-import org.lolwat.misc.mouse.BezierMouse;
-import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.time.Instant;
-import java.util.*;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 @ScriptManifest(name = "WatAIO", description = "All in one Account Building script for Old School RuneScape", author = "lolwat", version = 1.0, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
@@ -244,11 +241,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         if(ConfigManager.getInstance().getLevelUps() == null)
             ConfigManager.getInstance().setLevelUps(new HashMap<>());
 
-        int totalLevelsGained = 0;
-        for (int i : ConfigManager.getInstance().getLevelUps().values()) {
-            totalLevelsGained += i;
-        }
-
         g.drawImage(image, 10, 10, null);
 
         Font segoeUIBoldFont = new Font("Verdana", Font.BOLD, 10);
@@ -262,12 +254,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
         g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
         g2d.drawString(taskTime, 77, 40);
-
-        //if(totalLevelsGained > 0) {
-        //    g2d.setColor(new Color(0, 200, 0));
-        //    g2d.drawString("+" + totalLevelsGained, 277, 40);
-        //    g2d.setColor(Color.WHITE);
-        //}
 
         // row 1
         g2d.drawString((TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 38, 59);
@@ -319,14 +305,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
-            if(!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+            if (!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
                 boolean enableGpt = false; // change at compile time
-                if(enableGpt) {
+                if (enableGpt) {
                     if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
                         ConfigManager.getInstance().setWaitingForResponse(true);
                         new Thread(() -> {
                             String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
-                            if(!response.isEmpty()) {
+                            if (!response.isEmpty()) {
                                 Keyboard.type(response, true);
                             }
                             ConfigManager.getInstance().setWaitingForResponse(false);
@@ -334,9 +320,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     }
                 }
             }
-        }
 
-        if(TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onMessage(m);
         }
     }
