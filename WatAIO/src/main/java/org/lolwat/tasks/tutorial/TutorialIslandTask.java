@@ -56,7 +56,7 @@ public class TutorialIslandTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         int step = TutorialUtils.getTutorialStep();
         if(step < 1000) {
             switch(step) {

@@ -42,7 +42,7 @@ public class CleanHerbTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         String bestHerb = HerbUtils.bestHerbToClean();
         String toSell = GenericUtils.uppercaseFirst(bestHerb.replace("Grimy", "").trim());
 

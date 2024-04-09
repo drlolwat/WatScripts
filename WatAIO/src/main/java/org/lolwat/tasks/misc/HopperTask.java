@@ -28,7 +28,7 @@ public class HopperTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (!Tab.LOGOUT.isOpen()) {
             Tab.LOGOUT.open();
             Sleep.sleep(500, 1000);
