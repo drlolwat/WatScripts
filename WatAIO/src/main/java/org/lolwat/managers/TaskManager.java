@@ -5,54 +5,48 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.Quests;
-import org.dreambot.api.methods.quest.book.FreeQuest;
-import org.dreambot.api.methods.quest.book.PaidQuest;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.types.agility.AgilityCourseTask;
-import org.lolwat.tasks.types.agility.types.Obstacle;
-import org.lolwat.tasks.types.combat.MagicCombatTask;
-import org.lolwat.tasks.types.combat.MeleeCombatTask;
-import org.lolwat.tasks.types.combat.RangedCombatTask;
-import org.lolwat.tasks.types.cooking.CookingFishTask;
-import org.lolwat.tasks.types.crafting.JewelryTask;
-import org.lolwat.tasks.types.crafting.SpinningTask;
-import org.lolwat.tasks.types.firemaking.FiremakingTask;
-import org.lolwat.tasks.types.herblore.CleanHerbTask;
-import org.lolwat.tasks.types.magic.HighAlchemyTask;
-import org.lolwat.tasks.types.misc.*;
-import org.lolwat.tasks.types.prayer.BuryBonesTask;
+import org.lolwat.WatAIO;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
+import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.types.prayer.BoneType;
 import org.lolwat.misc.types.smithing.IngotType;
-import org.lolwat.misc.types.mixed.TreeType;
-import org.lolwat.tasks.types.fishing.FishingTask;
-import org.lolwat.tasks.types.mining.MiningTask;
-import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.quests.*;
-import org.lolwat.tasks.types.runecrafting.RunecraftingTask;
-import org.lolwat.tasks.types.smithing.SmithingItemTask;
-import org.lolwat.tasks.types.tutorial.TutorialIslandTask;
-import org.lolwat.tasks.types.woodcutting.WoodcuttingTask;
-import org.lolwat.WatAIO;
+import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.agility.AgilityCourseTask;
+import org.lolwat.tasks.agility.types.Obstacle;
+import org.lolwat.tasks.combat.MagicCombatTask;
+import org.lolwat.tasks.combat.MeleeCombatTask;
+import org.lolwat.tasks.combat.RangedCombatTask;
+import org.lolwat.tasks.cooking.CookingFishTask;
+import org.lolwat.tasks.crafting.JewelryTask;
+import org.lolwat.tasks.crafting.SpinningTask;
+import org.lolwat.tasks.firemaking.FiremakingTask;
+import org.lolwat.tasks.fishing.FishingTask;
+import org.lolwat.tasks.herblore.CleanHerbTask;
+import org.lolwat.tasks.magic.HighAlchemyTask;
+import org.lolwat.tasks.mining.MiningTask;
+import org.lolwat.tasks.misc.*;
+import org.lolwat.tasks.prayer.BuryBonesTask;
+import org.lolwat.tasks.runecrafting.RunecraftingTask;
+import org.lolwat.tasks.smithing.SmithingItemTask;
+import org.lolwat.tasks.tutorial.TutorialIslandTask;
+import org.lolwat.tasks.woodcutting.WoodcuttingTask;
 
 import java.awt.*;
 import java.time.Instant;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class TaskManager {
     private List<WatTask> tasks;
     private HashMap<Skill, List<WatTask>> tasksBySkill;
-    private HashMap<Quest, WatTask> questTasks;
     private List<WatTask> restrictedMoneyMakingTasks;
     private List<WatTask> unrestrictedMoneyMakingTasks;
 
@@ -71,7 +65,7 @@ public class TaskManager {
         resetBreaks();
         setCheckedHoursAt(0);
 
-        Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks and " + getQuests().size() + " total quests.");
+        Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
 
     public static TaskManager getInstance() {
@@ -108,6 +102,8 @@ public class TaskManager {
                 }
             }
         } else {
+            //TODO: QuestManager
+            /*
             for (Map.Entry<Quest, WatTask> questTask : questTasks.entrySet()) {
                 if (questTask.getValue().canPerformTask() && !Quests.isFinished(questTask.getValue().completesQuest())) {
                     if((questTask.getValue().requiresMembers() && GenericUtils.isMember() || !questTask.getValue().requiresMembers() && !GenericUtils.isMember())) {
@@ -116,7 +112,7 @@ public class TaskManager {
                         return;
                     }
                 }
-            }
+            }*/
 
             Logger.log(Color.red, "TaskManager: no quest tasks available, selecting a regular task");
             getNewTask(true);
@@ -188,16 +184,6 @@ public class TaskManager {
             taskSelectedAt = Instant.now().getEpochSecond();
 
         taskRunTime = runtime > 0 ? runtime : Calculations.random(1200, 6750);
-    }
-
-    public void shuffleQuestTasks() {
-        List<Map.Entry<Quest, WatTask>> questTaskList = new ArrayList<>(questTasks.entrySet());
-        Collections.shuffle(questTaskList);
-
-        questTasks.clear();
-        for (Map.Entry<Quest, WatTask> entry : questTaskList) {
-            questTasks.put(entry.getKey(), entry.getValue());
-        }
     }
 
     public void resetBreaks() {
@@ -311,14 +297,12 @@ public class TaskManager {
 
         tasksUntilBreak--;
         Collections.shuffle(tasks);
-        shuffleQuestTasks();
         return false;
     }
 
     private void setupAllTasks() {
         tasks = new ArrayList<>();
         tasksBySkill = new HashMap<>();
-        questTasks = new HashMap<>();
         restrictedMoneyMakingTasks = new ArrayList<>();
         unrestrictedMoneyMakingTasks = new ArrayList<>();
 
@@ -346,8 +330,6 @@ public class TaskManager {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
         }
-
-        questTasks.putAll(createQuestTasks());
 
         restrictedMoneyMakingTasks.addAll(createRestrictedMMTasks());
         unrestrictedMoneyMakingTasks.addAll(createUnrestrictedMMTasks());
@@ -478,23 +460,6 @@ public class TaskManager {
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //varrock east
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false)); //grand exchange south wall
         //tasks.add(new GEBeggingTask());
-
-        return tasks;
-    }
-
-    private  HashMap<Quest, WatTask> createQuestTasks() {
-        HashMap<Quest, WatTask> tasks = new HashMap<>();
-
-        tasks.put(FreeQuest.IMP_CATCHER, new ImpCatcherQuest());
-        tasks.put(FreeQuest.SHEEP_SHEARER, new SheepShearerQuest());
-        tasks.put(FreeQuest.COOKS_ASSISTANT, new CooksAssistantQuest());
-        tasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
-        tasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
-        tasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoJulietQuest());
-        tasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
-        tasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
-        //tasks.put(PaidQuest.DRUIDIC_RITUAL, new DruidicRitualQuest());
-        //tasks.put(PaidQuest.PRIEST_IN_PERIL, new PriestInPerilQuest());
 
         return tasks;
     }
@@ -1266,7 +1231,6 @@ public class TaskManager {
         return tasks;
     }
 
-    public HashMap<Quest, WatTask> getQuests() { return questTasks; }
     public List<WatTask> getTasks() { return tasks; }
     public double getTaskSelectedAt() { return taskSelectedAt; }
     public int getTaskRunTime() { return taskRunTime; }

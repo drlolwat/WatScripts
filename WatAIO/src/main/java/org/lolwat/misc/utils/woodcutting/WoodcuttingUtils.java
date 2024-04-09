@@ -2,7 +2,7 @@ package org.lolwat.misc.utils.woodcutting;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.misc.config.WatConfig;
+import org.lolwat.managers.types.WatConfig;
 import org.lolwat.misc.types.mixed.TreeType;
 
 import java.util.HashMap;
