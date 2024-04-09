@@ -10,8 +10,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.magic.Magic;
-import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
@@ -25,13 +23,13 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.Teleport;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.WatTask;
-import org.lolwat.WatAIO;
 import org.lolwat.tasks.types.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.types.combat.warriorguild.FightCyclopsTask;
 
@@ -79,14 +77,36 @@ public class TraversalTask implements WatTask {
         }
 
         int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
-        if(sinceStartedTask >= 30 && Players.getLocal().getTile().equals(startedOnTile)) {
-            Logger.log("Traversal: havent moved for 30 seconds, moving on");
-            if(postTask != null) {
-                TaskManager.getInstance().setCurrentTask(postTask);
-            } else {
-                TaskManager.getInstance().setCurrentTask(null);
+        if(sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
+            Logger.log("Traversal: havent moved for 15 seconds, checking for portals etc");
+            GameObject portal = GameObjects.closest(x -> x != null && x.canReach() & x.getName().toLowerCase().contains("portal"));
+            if(portal != null) {
+                if(!portal.isOnScreen()) {
+                    Camera.rotateToEntity(portal);
+                    Sleep.sleepUntil(portal::isOnScreen, 5000);
+                }
+
+                if(portal.interact()) {
+                    Logger.log("Traversal: interacted with portal");
+                    Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(startedOnTile) && Players.getLocal().isStandingStill()
+                            && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating(), 5000);
+                }
+
+                return;
             }
-            return;
+
+            if(sinceStartedTask >= 90) {
+                GenericUtils.castHomeTeleport();
+
+                Logger.log("Traversal: havent moved for 90 seconds, home teleporting and moving on");
+                if (postTask != null) {
+                    TaskManager.getInstance().setCurrentTask(postTask);
+                } else {
+                    TaskManager.getInstance().setCurrentTask(null);
+                }
+
+                return;
+            }
         }
 
         if(GenericUtils.isMember() && postTask != null) {
