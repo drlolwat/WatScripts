@@ -44,21 +44,21 @@ public class TheRestlessGhostQuest implements WatTask {
     private boolean questCompleted = false;
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (!questStarted) {
-            startQuest(instance);
+            startQuest();
         } else if (!amuletAcquired) {
-            acquireAmulet(instance);
+            acquireAmulet();
         } else if (!talkedToGhost) {
-            talkToRestlessGhost(instance);
+            talkToRestlessGhost();
         } else if (!skullAcquired) {
-            retrieveSkull(instance);
+            retrieveSkull();
         } else {
-            completeQuest(instance);
+            completeQuest();
         }
     }
 
-    private void startQuest(WatAIO instance) {
+    private void startQuest() {
         if (Inventory.isFull()) {
             Bank.open();
             Sleep.sleepUntil(() -> Bank.isOpen(), Calculations.random(1000, 2000));
@@ -79,7 +79,7 @@ public class TheRestlessGhostQuest implements WatTask {
         }
     }
 
-    private void acquireAmulet(WatAIO instance) {
+    private void acquireAmulet() {
         if (!lumbridgeSwamp.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(lumbridgeSwamp, this));
             return;
@@ -93,7 +93,7 @@ public class TheRestlessGhostQuest implements WatTask {
     }
 
     // Go to graveyard and interact with coffin then speak to ghost
-    private void talkToRestlessGhost(WatAIO instance) {
+    private void talkToRestlessGhost() {
         if (!graveyard.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(graveyard, this));
             return;
@@ -129,7 +129,7 @@ public class TheRestlessGhostQuest implements WatTask {
     }
 
 
-    private void retrieveSkull(WatAIO instance) {
+    private void retrieveSkull() {
         if (!wizardTower.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(wizardTower, this));
             return;
@@ -145,7 +145,7 @@ public class TheRestlessGhostQuest implements WatTask {
         }
     }
 
-    private void completeQuest(WatAIO instance) {
+    private void completeQuest() {
         if (!graveyard.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(graveyard, this));
             return;

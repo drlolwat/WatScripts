@@ -49,7 +49,7 @@ public class SpinningTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         String name = CraftingUtils.getCraftingItemName(spinningType);
         HashMap<String, Integer> requiredItems = new HashMap<String, Integer>() { { put(name, 28); }};
 

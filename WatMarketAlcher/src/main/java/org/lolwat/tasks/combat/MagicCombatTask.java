@@ -68,7 +68,7 @@ public class MagicCombatTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         HashMap<String, Integer> requiredItems = new HashMap<>();
 
         if(Skills.getRealLevel(Skill.MAGIC) >= 50) {
