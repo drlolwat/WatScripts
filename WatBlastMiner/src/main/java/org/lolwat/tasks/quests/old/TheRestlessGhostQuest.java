@@ -1,10 +1,8 @@
-package org.lolwat.tasks.types.quests;
+package org.lolwat.tasks.quests.old;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
-import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -14,8 +12,6 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -23,15 +19,12 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.tasks.types.misc.TraversalTask;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.lolwat.misc.utils.DialogueUtils.continueWhilePossible;
 
 public class TheRestlessGhostQuest implements WatTask {
     private final Area lumbridgeChurch = new Area(3240, 3211, 3247, 3204);
