@@ -1,4 +1,4 @@
-package org.lolwat.tasks.types.quests;
+package org.lolwat.tasks.quests.old;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -13,33 +13,46 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.tasks.types.misc.TraversalTask;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class SheepShearerQuest implements WatTask {
-    private Area startLocation = new Area(3188, 3275, 3191, 3270);
+public class DoricsQuest implements WatTask {
+    private final Area startLocation = new Area(2950, 3449, 2953, 3452);
+    private final List<String> startDialogue = Arrays.asList("I wanted to use your anvils.", "Yes.");
 
-    List<String> startDialogue = Arrays.asList("I'm looking for a quest.", "Yes.");
+    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
+        put("Clay", 6);
+        put("Copper ore", 4);
+        put("Iron ore", 2);
+    } };
 
-    public SheepShearerQuest() {
+    public DoricsQuest() {
     }
 
     @Override
     public void execute(WatAIO instance) {
         //check for items
-        for (String i : inventoryRequired().keySet()) {
-            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < inventoryRequired().get(i))) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this));
+        for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
+            if (!Inventory.contains(kv.getKey()) ||
+                    (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
+                    (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(needed, null, 1, this));
                 return;
             }
         }
 
-        if (NPCs.closest("Fred the Farmer") != null) {
+        //go to start location
+        if (!startLocation.contains(Players.getLocal())) {
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
+            return;
+        }
+
+        if (NPCs.closest("Doric") != null) {
             // handle the dialogue here
             if (Dialogues.inDialogue()) {
                 while (Dialogues.inDialogue()) {
@@ -47,24 +60,19 @@ public class SheepShearerQuest implements WatTask {
                     DialogueUtils.solve(startDialogue);
                 }
             } else {
-                NPCs.closest("Fred the Farmer").interact();
-            }
-        } else {
-            //go to start location
-            if (!startLocation.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
+                NPCs.closest("Doric").interact();
             }
         }
     }
 
     @Override
     public String getName() {
-        return "Sheep Shearer";
+        return "Doric's Quest";
     }
 
     @Override
     public boolean canPerformTask() {
-        return !Quests.isFinished(FreeQuest.SHEEP_SHEARER);
+        return !Quests.isFinished(FreeQuest.DORICS_QUEST);
     }
 
     @Override
@@ -94,7 +102,7 @@ public class SheepShearerQuest implements WatTask {
 
     @Override
     public Quest completesQuest() {
-        return FreeQuest.SHEEP_SHEARER;
+        return FreeQuest.DORICS_QUEST;
     }
 
     @Override
@@ -104,6 +112,6 @@ public class SheepShearerQuest implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() { { put("Ball of wool", 20); }};
+        return new HashMap<>();
     }
 }
