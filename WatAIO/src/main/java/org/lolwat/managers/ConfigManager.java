@@ -22,7 +22,6 @@ import java.util.Objects;
 
 public class ConfigManager {
     private static ConfigManager instance;
-    private final WatAIO watAIO;
     private HashMap<Object, Object> config;
     private boolean hasLoaded;
     private int netWorth;
@@ -32,8 +31,7 @@ public class ConfigManager {
     private HashMap<String, Integer> levelUps;
     private boolean muleConnectionFailed;
 
-    public ConfigManager(WatAIO instance) {
-        watAIO = instance;
+    public ConfigManager() {
         config = new HashMap<>();
         hasLoaded = false;
         levelUps = new HashMap<>();
@@ -159,7 +157,7 @@ public class ConfigManager {
                     config.put("profile_" + key, jsonObject.get(key));
                 }
 
-                watAIO.enableLoginManager();
+                WatAIO.getInstance().enableLoginManager();
                 Logger.log(Color.green, (breaking > 0) ? "Updated account hivetime due to break" :"Loaded unique account profile from BotBuddy Hive");
 
             } else {
