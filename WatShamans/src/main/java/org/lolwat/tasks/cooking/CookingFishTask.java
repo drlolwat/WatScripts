@@ -56,7 +56,7 @@ public class CookingFishTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         for (java.util.Map.Entry<String, Integer> m : CookingUtils.getRequiredItems(fishType, false, 1).entrySet()) {
             if (!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue() || Inventory.get(m.getKey()).isNoted()) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(CookingUtils.getRequiredItems(fishType, true, 1),
