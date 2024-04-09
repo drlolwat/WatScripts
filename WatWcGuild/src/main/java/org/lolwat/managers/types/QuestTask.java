@@ -1,0 +1,19 @@
+package org.lolwat.managers.types;
+
+import org.dreambot.api.methods.quest.book.Quest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public interface QuestTask  {
+    String getName();
+    Quest getQuest();
+    int getVarbitId();
+    void execute(WatTask parent);
+    default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); };
+    default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); };
+    default List<String> inventoryTolerated() {
+        return new ArrayList<>();
+    }
+}
