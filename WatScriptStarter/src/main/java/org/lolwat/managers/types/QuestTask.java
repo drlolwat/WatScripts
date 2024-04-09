@@ -9,6 +9,7 @@ import java.util.List;
 public interface QuestTask {
     Quest completes();
     void execute();
+    boolean canPerformTask();
     default boolean requiresMembers() { return false; }
     default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); };
     default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); };
