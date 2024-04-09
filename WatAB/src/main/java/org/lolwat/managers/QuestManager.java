@@ -8,6 +8,7 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.quests.CooksAssistantQuest;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class QuestManager {
     private static QuestManager instance;
@@ -19,9 +20,9 @@ public class QuestManager {
 
     public Quest getIncompleteQuest() {
         GenericUtils.shuffleHashMap(questTasks);
-        for (Quest q : questTasks.keySet()) {
-            if (!Quests.isFinished(q)) {
-                return q;
+        for (Map.Entry<Quest, QuestTask> qt : questTasks.entrySet()) {
+            if (!Quests.isFinished(qt.getKey()) && qt.getValue().canPerformTask()) {
+                return qt.getKey();
             }
         }
         return null;
