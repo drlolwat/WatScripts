@@ -378,6 +378,7 @@ public class TutorialIslandTask implements WatTask {
                     break;
                 }
 
+                case 300:
                 case 270: {
                     List<GameObject> tins = GameObjects.all("Tin rocks");
                     Collections.shuffle(tins);
