@@ -34,7 +34,7 @@ public class DoricsQuest implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         //check for items
         for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
             if (!Inventory.contains(kv.getKey()) ||

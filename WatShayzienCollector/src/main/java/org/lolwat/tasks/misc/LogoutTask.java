@@ -5,7 +5,6 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -41,7 +40,7 @@ public class LogoutTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(!Client.isLoggedIn()) {
             return;
         }
@@ -50,7 +49,7 @@ public class LogoutTask implements WatTask {
         if(loc.contains(Players.getLocal())) {
             if(postScript != null) {
                 if(!(postScript instanceof BreakingTask)) {
-                    instance.enableLoginManager();
+                    WatAIO.getInstance().enableLoginManager();
                 }
 
                 Sleep.sleep(100, 200);
@@ -86,7 +85,7 @@ public class LogoutTask implements WatTask {
                     Sleep.sleep(100, 200);
                 }
 
-                instance.disableLoginManager();
+                WatAIO.getInstance().disableLoginManager();
                 Sleep.sleep(100, 200);
                 Tabs.logout();
             }
