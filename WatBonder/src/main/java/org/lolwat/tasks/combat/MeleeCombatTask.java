@@ -66,7 +66,7 @@ public class MeleeCombatTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         for(String n : clothesRequired().keySet()) {
             if(!Equipment.contains(n)) {
                 if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
