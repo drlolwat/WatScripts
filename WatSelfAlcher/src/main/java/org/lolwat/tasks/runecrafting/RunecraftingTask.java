@@ -39,7 +39,7 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(runeType.equals("chaos")) {
             if(Combat.isAutoRetaliateOn()) {
                 if(!Tabs.isOpen(Tab.COMBAT)) {

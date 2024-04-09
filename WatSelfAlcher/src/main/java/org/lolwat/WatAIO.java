@@ -49,6 +49,11 @@ import java.util.HashMap;
 @ScriptManifest(name = "WatAIO", description = "All in one Account Building script for Old School RuneScape", author = "lolwat", version = 1.0, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
+    private static WatAIO instance;
+
+    public static WatAIO getInstance() {
+        return instance;
+    }
 
     @Override
     public void onStart(String... params) {
@@ -66,6 +71,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     }
 
     private void doStart(String profile) {
+        if(instance == null) {
+            Logger.log(Color.green, "WatAIO starting: assigning instance");
+            instance = this;
+        }
+
         if (ConfigManager.getInstance() == null) {
             Logger.log("Constructing ConfigManager singleton.");
             ConfigManager.setInstance(new ConfigManager(this));
@@ -96,7 +106,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         }
 
-        Logger.log(Color.green, "WatAIO version 1 is starting");
         getRandomManager().disableSolver(RandomEvent.DISMISS);
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
@@ -187,7 +196,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 return 1000;
             }
 
-            TaskManager.getInstance().getCurrentTask().execute(this);
+            TaskManager.getInstance().getCurrentTask().execute();
 
             return TaskManager.getInstance().getCurrentTask() != null ? (TaskManager.getInstance().getCurrentTask().loopTime() > 0 ?
                     TaskManager.getInstance().getCurrentTask().loopTime() : 500) : 500;

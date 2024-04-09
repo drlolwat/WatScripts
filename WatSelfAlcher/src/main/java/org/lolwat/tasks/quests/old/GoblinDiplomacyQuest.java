@@ -54,7 +54,7 @@ public class GoblinDiplomacyQuest implements WatTask {
     public GoblinDiplomacyQuest() { }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (Bank.isOpen()) {
             Bank.close();
             Sleep.sleep(300, 600);

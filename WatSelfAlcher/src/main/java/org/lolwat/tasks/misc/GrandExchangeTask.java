@@ -48,7 +48,7 @@ public class GrandExchangeTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (Inventory.isFull()) {
             Logger.log("Inventory is full, going to bank to deposit items.");
             if (!Bank.open(BankLocation.GRAND_EXCHANGE)) {

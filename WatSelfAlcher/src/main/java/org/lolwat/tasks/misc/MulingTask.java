@@ -70,7 +70,7 @@ public class MulingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (Inventory.isFull()) {
             Logger.log("Inventory is full. Depositing items except for coins.");
             if (!Bank.open(BankLocation.GRAND_EXCHANGE)) {

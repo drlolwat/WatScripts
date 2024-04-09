@@ -13,7 +13,6 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -48,25 +47,25 @@ public class DruidicRitualQuest implements WatTask {
     }};
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (!geItemsAcquired) {
-            acquireGEItems(instance);
+            acquireGEItems();
         } else if (!questStarted) {
-            startQuest(instance);
+            startQuest();
         } else if (!spokeToSanfew) {
-            talkToSanfew(instance);
+            talkToSanfew();
         } else if (!enteredDungeon) {
-            enterCauldronDungeon(instance);
+            enterCauldronDungeon();
         } else if (!meatDipped) {
-            dipMeat(instance);
+            dipMeat();
         } else if (!spokeToSanfewAfterEnchantment) {
-                talkToSanfewAfterEnchantment(instance);
+            talkToSanfewAfterEnchantment();
         } else {
-            completeQuest(instance);
+            completeQuest();
         }
     }
 
-    private void acquireGEItems(WatAIO instance) {
+    private void acquireGEItems() {
         if (!Inventory.containsAll(needed.keySet())) {
             TaskManager.getInstance().setCurrentTask(new BankingTask(needed, new HashMap<>(), 1, this));
             return;
@@ -79,7 +78,7 @@ public class DruidicRitualQuest implements WatTask {
         geItemsAcquired = Inventory.containsAll(needed.keySet());
     }
 
-    private void startQuest(WatAIO instance) {
+    private void startQuest() {
         if (Quests.isFinished(PaidQuest.DRUIDIC_RITUAL)) {
             questStarted = true;
             return;
@@ -110,7 +109,7 @@ public class DruidicRitualQuest implements WatTask {
         }
     }
 
-    private void talkToSanfew(WatAIO instance) {
+    private void talkToSanfew() {
         if (!sanfewDownstairs.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(sanfewDownstairs, this));
             return;
@@ -140,7 +139,7 @@ public class DruidicRitualQuest implements WatTask {
         }
     }
 
-    private void enterCauldronDungeon(WatAIO instance) {
+    private void enterCauldronDungeon() {
         if (!Inventory.contains("Enchanted beef", "Enchanted rat", "Enchanted bear", "Enchanted chicken")) {
             if (!cauldronDungeon.contains(Players.getLocal()) && !cauldronOfThunder.contains(Players.getLocal())) {
                 TaskManager.getInstance().setCurrentTask(new TraversalTask(cauldronDungeon, this));
@@ -149,14 +148,13 @@ public class DruidicRitualQuest implements WatTask {
                 TaskManager.getInstance().setCurrentTask(new TraversalTask(cauldronOfThunder, this));
                 Sleep.sleepUntil(() -> cauldronOfThunder.contains(Players.getLocal()), 5000);
                 enteredDungeon = true;
-            }
-            else if (cauldronOfThunder.contains(Players.getLocal())) {
+            } else if (cauldronOfThunder.contains(Players.getLocal())) {
                 enteredDungeon = true;
             }
         }
     }
 
-    private void dipMeat(WatAIO instance) {
+    private void dipMeat() {
         GameObject cauldron = GameObjects.closest("Cauldron of Thunder");
         if (cauldron != null && cauldronOfThunder.contains(Players.getLocal())) {
             // Array of all meats to attempt dipping
@@ -202,7 +200,7 @@ public class DruidicRitualQuest implements WatTask {
         return !Inventory.contains(meat);
     }
 
-    private void talkToSanfewAfterEnchantment(WatAIO instance) {
+    private void talkToSanfewAfterEnchantment() {
         if (!sanfewDownstairs.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(sanfewDownstairs, this));
             return;
@@ -230,7 +228,7 @@ public class DruidicRitualQuest implements WatTask {
         }
     }
 
-    private void completeQuest(WatAIO instance) {
+    private void completeQuest() {
         if (!stoneCircle.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(stoneCircle, this));
             return;
@@ -265,11 +263,6 @@ public class DruidicRitualQuest implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-        // Not used in this quest, but required by interface.
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
@@ -284,8 +277,4 @@ public class DruidicRitualQuest implements WatTask {
         return GenericUtils.getSkillingGear();
     }
 
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
-    }
 }

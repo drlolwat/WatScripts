@@ -46,7 +46,7 @@ public class BuyGracefulOutfitTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(!Inventory.contains("Mark of grace")) {
             TaskManager.getInstance().setCurrentTask(post);
             return;

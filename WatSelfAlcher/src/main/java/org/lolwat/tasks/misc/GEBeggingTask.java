@@ -80,7 +80,7 @@ public class GEBeggingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if (!hasWalkedToGE) {
             walkToGE();
         } else {
