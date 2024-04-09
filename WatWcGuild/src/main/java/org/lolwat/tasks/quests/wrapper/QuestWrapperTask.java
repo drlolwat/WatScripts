@@ -1,15 +1,23 @@
-package org.lolwat.tasks.quests;
+package org.lolwat.tasks.quests.wrapper;
 
 import com.google.common.collect.Lists;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
-import org.lolwat.managers.types.WatQuest;
+import org.lolwat.managers.QuestManager;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.QuestTask;
 import org.lolwat.managers.types.WatTask;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class QuestWrapperTask implements WatTask {
-    private WatQuest questTask = null;
+    private final QuestTask questTask;
+
+    public QuestWrapperTask(Quest q) {
+        this.questTask = QuestManager.getInstance().getQuestTask(q);
+    }
+
     @Override
     public String getName() {
         return "Quest Selection";
@@ -18,7 +26,7 @@ public class QuestWrapperTask implements WatTask {
     @Override
     public void execute() {
         if(questTask == null) {
-            // TODO: QuestManager, evaluate through available quests and select one
+            TaskManager.getInstance().getNewTask();
         } else {
             questTask.execute();
         }
@@ -45,7 +53,7 @@ public class QuestWrapperTask implements WatTask {
     }
 
     @Override
-    public WatQuest questTask() {
+    public QuestTask questTask() {
         return questTask;
     }
 
