@@ -67,7 +67,7 @@ public class MiningTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         String pickaxe = MiningUtils.getBestPickaxeForLevel();
 
         if (WorldHopper.isWorldHopperOpen()) {
