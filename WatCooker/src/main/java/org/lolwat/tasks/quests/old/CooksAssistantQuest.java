@@ -28,7 +28,7 @@ public class CooksAssistantQuest implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         //check for items
         for (String i : inventoryRequired().keySet()) {
             if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < inventoryRequired().get(i))) {

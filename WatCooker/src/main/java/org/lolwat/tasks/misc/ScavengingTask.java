@@ -47,7 +47,7 @@ public class ScavengingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(!scavengingZone.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(scavengingZone, this));
             return;

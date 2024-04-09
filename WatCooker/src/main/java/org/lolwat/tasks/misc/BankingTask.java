@@ -71,7 +71,7 @@ public class BankingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         boolean runLiquidation = false;
 
         List<String> allowedObjects = new ArrayList<String>() {

@@ -92,7 +92,7 @@ public class FightCyclopsTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         Area fightingArea;
         if(basement || latestDefender.contains("Rune"))
             fightingArea = dragonFightingArea;
