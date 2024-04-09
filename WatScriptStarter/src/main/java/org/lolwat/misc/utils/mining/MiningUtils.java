@@ -2,7 +2,7 @@ package org.lolwat.misc.utils.mining;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.misc.config.WatConfig;
+import org.lolwat.managers.types.WatConfig;
 import org.lolwat.misc.types.mixed.OreType;
 
 import java.util.HashMap;
