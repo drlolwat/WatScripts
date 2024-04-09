@@ -38,6 +38,11 @@ public class CooksAssistantQuest implements QuestTask {
     }
 
     @Override
+    public boolean canPerformTask() {
+        return true; // no requirements
+    }
+
+    @Override
     public List<String> inventoryTolerated() {
         return new ArrayList<String>() {{
             add("Pot of flour");
