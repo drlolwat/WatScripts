@@ -43,7 +43,7 @@ public class JewelryTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         for(java.util.Map.Entry<String, Integer> m : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1).entrySet()) {
             if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue() || Inventory.get(m.getKey()).isNoted()) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(null,

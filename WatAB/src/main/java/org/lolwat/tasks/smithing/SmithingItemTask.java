@@ -53,7 +53,7 @@ public class SmithingItemTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         SmithingType itemType = SmithingUtils.getBestSmithingChoice(ingotType);
         // check to see if we have enough bars
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.materialsForSmithing(itemType, ingotType,false, 1).entrySet()) {

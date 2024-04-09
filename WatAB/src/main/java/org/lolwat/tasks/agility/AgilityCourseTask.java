@@ -61,7 +61,7 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         if(needsEat) {
             if(Inventory.count(x -> x != null && x.hasAction("Eat")) > 0) {
                 if(Combat.getHealthPercent() <= 50 && !Inventory.interact(x -> x != null && x.hasAction("Eat"))) {

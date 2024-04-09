@@ -54,7 +54,7 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public void execute(WatAIO instance) {
+    public void execute() {
         String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
         if ((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
             WatConfig.incrementToolFailures();
