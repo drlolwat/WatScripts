@@ -1,4 +1,4 @@
-package org.lolwat.tasks.types.quests;
+package org.lolwat.tasks.quests.old;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -13,19 +13,20 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.tasks.types.misc.TraversalTask;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class CooksAssistantQuest implements WatTask {
-    private final Area startLocation = new Area(3205, 3217, 3212, 3212);
-    private final List<String> startDialogue = Arrays.asList("What's wrong?", "Yes.");
+public class SheepShearerQuest implements WatTask {
+    private Area startLocation = new Area(3188, 3275, 3191, 3270);
 
-    public CooksAssistantQuest() {
+    List<String> startDialogue = Arrays.asList("I'm looking for a quest.", "Yes.");
+
+    public SheepShearerQuest() {
     }
 
     @Override
@@ -38,13 +39,7 @@ public class CooksAssistantQuest implements WatTask {
             }
         }
 
-        //go to start location
-        if (!startLocation.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
-            return;
-        }
-
-        if (NPCs.closest("Cook") != null) {
+        if (NPCs.closest("Fred the Farmer") != null) {
             // handle the dialogue here
             if (Dialogues.inDialogue()) {
                 while (Dialogues.inDialogue()) {
@@ -52,19 +47,24 @@ public class CooksAssistantQuest implements WatTask {
                     DialogueUtils.solve(startDialogue);
                 }
             } else {
-                NPCs.closest("Cook").interact();
+                NPCs.closest("Fred the Farmer").interact();
+            }
+        } else {
+            //go to start location
+            if (!startLocation.contains(Players.getLocal())) {
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, this));
             }
         }
     }
 
     @Override
     public String getName() {
-        return "Cooks Assistant";
+        return "Sheep Shearer";
     }
 
     @Override
     public boolean canPerformTask() {
-        return !Quests.isFinished(FreeQuest.COOKS_ASSISTANT);
+        return !Quests.isFinished(FreeQuest.SHEEP_SHEARER);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class CooksAssistantQuest implements WatTask {
 
     @Override
     public Quest completesQuest() {
-        return FreeQuest.COOKS_ASSISTANT;
+        return FreeQuest.SHEEP_SHEARER;
     }
 
     @Override
@@ -102,10 +102,8 @@ public class CooksAssistantQuest implements WatTask {
         return GenericUtils.getSkillingGear();
     }
 
+    @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() {{
-            put("Egg", 1);
-            put("Bucket of milk", 1);
-            put("Pot of flour", 1); }};
+        return new HashMap<String, Integer>() { { put("Ball of wool", 20); }};
     }
 }

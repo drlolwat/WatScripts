@@ -1,10 +1,11 @@
-package org.lolwat.tasks.types.quests;
+package org.lolwat.tasks.quests.old;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -13,34 +14,41 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.WatTask;
-import org.lolwat.tasks.types.misc.BankingTask;
-import org.lolwat.tasks.types.misc.TraversalTask;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class DoricsQuest implements WatTask {
-    private final Area startLocation = new Area(2950, 3449, 2953, 3452);
-    private final List<String> startDialogue = Arrays.asList("I wanted to use your anvils.", "Yes.");
+public class ImpCatcherQuest implements WatTask {
+    private Area startLocation = new Area(
+            new Tile(3102, 3163, 2),
+            new Tile(3103, 3162, 2),
+            new Tile(3105, 3162, 2),
+            new Tile(3106, 3162, 2),
+            new Tile(3105, 3166, 2),
+            new Tile(3102, 3165, 2));
 
-    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
-        put("Clay", 6);
-        put("Copper ore", 4);
-        put("Iron ore", 2);
+    List<String> startDialogue = Arrays.asList("Give me a quest please.", "Give me a quest or else!", "Just stop messing around and give me a quest!", "Yes.");
+
+    private HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
+        put("Black bead", 1);
+        put("Yellow bead", 1);
+        put("Red bead", 1);
+        put("White bead", 1);
     } };
 
-    public DoricsQuest() {
+    public ImpCatcherQuest() {
+        // Wizard Mizgog
     }
 
     @Override
     public void execute(WatAIO instance) {
         //check for items
-        for (java.util.Map.Entry<String, Integer> kv : needed.entrySet()) {
-            if (!Inventory.contains(kv.getKey()) ||
-                    (Inventory.contains(kv.getKey()) && Inventory.get(kv.getKey()).isNoted()) ||
-                    (Inventory.contains(kv.getKey()) && Inventory.count(kv.getKey()) < kv.getValue())) {
+        for (String i : needed.keySet()) {
+            if (!Inventory.contains(i) || (Inventory.contains(i) && Inventory.get(i).isNoted()) || (Inventory.contains(i) && Inventory.count(i) < needed.get(i))) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(needed, null, 1, this));
                 return;
             }
@@ -52,7 +60,7 @@ public class DoricsQuest implements WatTask {
             return;
         }
 
-        if (NPCs.closest("Doric") != null) {
+        if (NPCs.closest("Wizard Mizgog") != null) {
             // handle the dialogue here
             if (Dialogues.inDialogue()) {
                 while (Dialogues.inDialogue()) {
@@ -60,19 +68,19 @@ public class DoricsQuest implements WatTask {
                     DialogueUtils.solve(startDialogue);
                 }
             } else {
-                NPCs.closest("Doric").interact();
+                NPCs.closest("Wizard Mizgog").interact();
             }
         }
     }
 
     @Override
     public String getName() {
-        return "Doric's Quest";
+        return "Imp Catcher";
     }
 
     @Override
     public boolean canPerformTask() {
-        return !Quests.isFinished(FreeQuest.DORICS_QUEST);
+        return !Quests.isFinished(FreeQuest.IMP_CATCHER);
     }
 
     @Override
@@ -102,7 +110,7 @@ public class DoricsQuest implements WatTask {
 
     @Override
     public Quest completesQuest() {
-        return FreeQuest.DORICS_QUEST;
+        return FreeQuest.IMP_CATCHER;
     }
 
     @Override
@@ -112,6 +120,10 @@ public class DoricsQuest implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        return new HashMap<String, Integer>() {{
+            put("Black bead", 1);
+            put("Yellow bead", 1);
+            put("Red bead", 1);
+            put("White bead", 1); }};
     }
 }
