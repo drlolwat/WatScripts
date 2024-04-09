@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public interface WatQuest {
-    String getName();
-    Quest getQuest();
-    int getVarbitId();
+public interface QuestTask {
+    Quest completes();
     void execute();
     default boolean requiresMembers() { return false; }
     default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); };
