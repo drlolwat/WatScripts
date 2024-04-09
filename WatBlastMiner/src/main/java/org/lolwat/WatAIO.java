@@ -27,6 +27,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.WatConfig;
@@ -78,7 +79,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if (ConfigManager.getInstance() == null) {
             Logger.log("Constructing ConfigManager singleton.");
-            ConfigManager.setInstance(new ConfigManager(this));
+            ConfigManager.setInstance(new ConfigManager());
             ConfigManager.getInstance().setLevelUps(new HashMap<>());
             ConfigManager.getInstance().setNetWorth(0);
             ConfigManager.getInstance().setNetWorthGeneratedAt(0);
@@ -90,6 +91,11 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             TeleportManager.setInstance(new TeleportManager());
         }
 
+        if(QuestManager.getInstance() == null) {
+            Logger.log("Constructing QuestManager singleton.");
+            QuestManager.setInstance(new QuestManager());
+        }
+
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
         BezierMouse m = new BezierMouse();
@@ -97,7 +103,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
-            TaskManager.setInstance(new TaskManager(this));
+            TaskManager.setInstance(new TaskManager());
         }
 
         try {
@@ -172,7 +178,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     }
                 }
             } else {
-                if(Quests.isFinished(TaskManager.getInstance().getCurrentTask().questTask().getQuest())) {
+                if(Quests.isFinished(TaskManager.getInstance().getCurrentTask().questTask().completes())) {
                     Logger.log("We are now avoiding this quest, it's completed, picking new task..");
                     TaskManager.getInstance().getNewTask();
                     return 1000;
