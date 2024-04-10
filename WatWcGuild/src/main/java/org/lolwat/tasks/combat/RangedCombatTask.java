@@ -32,10 +32,10 @@ import java.util.Map;
 
 
 public class RangedCombatTask implements WatTask {
-    private int minLevel;
-    private int maxLevel;
-    private Area zone;
-    private String name;
+    private final int minLevel;
+    private final int maxLevel;
+    private final Area zone;
+    private final String name;
     private final HashMap<String, Integer> food;
 
     public RangedCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {

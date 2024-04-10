@@ -37,7 +37,7 @@ public class RomeoJulietQuest implements WatTask {
 
     private State state;
 
-    private Area romeoArea = new Area(
+    private final Area romeoArea = new Area(
             new Tile(3205, 3437, 0),
             new Tile(3205, 3420, 0),
             new Tile(3211, 3420, 0),
@@ -45,9 +45,9 @@ public class RomeoJulietQuest implements WatTask {
             new Tile(3222, 3416, 0),
             new Tile(3222, 3437, 0));
 
-    private Area julietArea = new Area(3155, 3426, 3161, 3425, 1);
+    private final Area julietArea = new Area(3155, 3426, 3161, 3425, 1);
 
-    private Area lawrenceArea = new Area(
+    private final Area lawrenceArea = new Area(
             new Tile(3259, 3481, 0),
             new Tile(3252, 3481, 0),
             new Tile(3252, 3488, 0),

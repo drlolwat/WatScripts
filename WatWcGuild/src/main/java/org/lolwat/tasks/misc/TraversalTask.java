@@ -13,7 +13,6 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -27,15 +26,15 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.Teleport;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -203,7 +202,7 @@ public class TraversalTask implements WatTask {
 
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
 
-        List<String> types = Arrays.asList("Web");
+        List<String> types = Collections.singletonList("Web");
         for (String t : types) {
             if(GameObjects.closest(t) != null && GameObjects.closest(t).distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest(t).interact()) {
                 Logger.log("Traversal: slashed " + t);

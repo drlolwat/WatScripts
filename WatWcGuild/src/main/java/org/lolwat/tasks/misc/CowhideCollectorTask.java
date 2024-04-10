@@ -7,65 +7,58 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
+import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.WatAIO;
 
 import java.util.HashMap;
 
 public class CowhideCollectorTask implements WatTask {
     private final Area cowPastureEast = new Area(
-            new Tile[] {
-                    new Tile(3253, 3255, 0),
-                    new Tile(3253, 3272, 0),
-                    new Tile(3251, 3274, 0),
-                    new Tile(3251, 3276, 0),
-                    new Tile(3249, 3278, 0),
-                    new Tile(3248, 3279, 0),
-                    new Tile(3245, 3279, 0),
-                    new Tile(3244, 3280, 0),
-                    new Tile(3244, 3281, 0),
-                    new Tile(3240, 3285, 0),
-                    new Tile(3240, 3287, 0),
-                    new Tile(3241, 3288, 0),
-                    new Tile(3241, 3289, 0),
-                    new Tile(3242, 3290, 0),
-                    new Tile(3242, 3293, 0),
-                    new Tile(3241, 3294, 0),
-                    new Tile(3241, 3295, 0),
-                    new Tile(3240, 3296, 0),
-                    new Tile(3240, 3298, 0),
-                    new Tile(3241, 3299, 0),
-                    new Tile(3256, 3299, 0),
-                    new Tile(3257, 3300, 0),
-                    new Tile(3260, 3300, 0),
-                    new Tile(3261, 3299, 0),
-                    new Tile(3263, 3299, 0),
-                    new Tile(3265, 3297, 0),
-                    new Tile(3265, 3255, 0)
-            }
-    );
+            new Tile(3253, 3255, 0),
+            new Tile(3253, 3272, 0),
+            new Tile(3251, 3274, 0),
+            new Tile(3251, 3276, 0),
+            new Tile(3249, 3278, 0),
+            new Tile(3248, 3279, 0),
+            new Tile(3245, 3279, 0),
+            new Tile(3244, 3280, 0),
+            new Tile(3244, 3281, 0),
+            new Tile(3240, 3285, 0),
+            new Tile(3240, 3287, 0),
+            new Tile(3241, 3288, 0),
+            new Tile(3241, 3289, 0),
+            new Tile(3242, 3290, 0),
+            new Tile(3242, 3293, 0),
+            new Tile(3241, 3294, 0),
+            new Tile(3241, 3295, 0),
+            new Tile(3240, 3296, 0),
+            new Tile(3240, 3298, 0),
+            new Tile(3241, 3299, 0),
+            new Tile(3256, 3299, 0),
+            new Tile(3257, 3300, 0),
+            new Tile(3260, 3300, 0),
+            new Tile(3261, 3299, 0),
+            new Tile(3263, 3299, 0),
+            new Tile(3265, 3297, 0),
+            new Tile(3265, 3255, 0));
     private final Area cowPastureWest = new Area(
-            new Tile[] {
-                    new Tile(3211, 3284, 0),
-                    new Tile(3195, 3284, 0),
-                    new Tile(3193, 3286, 0),
-                    new Tile(3193, 3301, 0),
-                    new Tile(3197, 3303, 0),
-                    new Tile(3200, 3302, 0),
-                    new Tile(3205, 3302, 0),
-                    new Tile(3208, 3303, 0),
-                    new Tile(3210, 3302, 0),
-                    new Tile(3210, 3297, 0),
-                    new Tile(3211, 3296, 0),
-                    new Tile(3213, 3292, 0)
-            }
-    );
+            new Tile(3211, 3284, 0),
+            new Tile(3195, 3284, 0),
+            new Tile(3193, 3286, 0),
+            new Tile(3193, 3301, 0),
+            new Tile(3197, 3303, 0),
+            new Tile(3200, 3302, 0),
+            new Tile(3205, 3302, 0),
+            new Tile(3208, 3303, 0),
+            new Tile(3210, 3302, 0),
+            new Tile(3210, 3297, 0),
+            new Tile(3211, 3296, 0),
+            new Tile(3213, 3292, 0));
     private final Area lumbridgeBankArea = new Area(new Tile(3207, 3220, 2), new Tile(3210, 3210, 2));
     private long lastCowhideCollectionTime;
     private boolean hasCollectedCowhide = false;
@@ -124,7 +117,6 @@ public class CowhideCollectorTask implements WatTask {
 
     private void hopWorld() {
         TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
-        return;
     }
 
     @Override

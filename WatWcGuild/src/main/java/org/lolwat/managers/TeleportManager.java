@@ -9,15 +9,12 @@ import java.util.List;
 public class TeleportManager {
     private static TeleportManager instance;
     private List<Teleport> teleports;
-
     public TeleportManager() {
         setupTeleports();
     }
-
     public static void setInstance(TeleportManager inst) {
         instance = inst;
     }
-
     public static TeleportManager getInstance() {
         return instance;
     }

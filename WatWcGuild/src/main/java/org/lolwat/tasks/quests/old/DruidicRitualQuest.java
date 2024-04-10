@@ -39,7 +39,7 @@ public class DruidicRitualQuest implements WatTask {
     private boolean meatDipped = false;
     private boolean spokeToSanfewAfterEnchantment = false;
     private boolean questCompleted = false;
-    private HashMap<String, Integer> needed = new HashMap<String, Integer>() {{
+    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() {{
         put("Raw rat meat", 1);
         put("Raw bear meat", 1);
         put("Raw beef", 1);

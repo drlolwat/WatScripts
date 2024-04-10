@@ -11,8 +11,10 @@ public interface QuestTask {
     void execute();
     boolean canPerformTask();
     default boolean requiresMembers() { return false; }
-    default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); };
-    default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); };
+    default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); }
+
+    default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); }
+
     default List<String> inventoryTolerated() {
         return new ArrayList<>();
     }

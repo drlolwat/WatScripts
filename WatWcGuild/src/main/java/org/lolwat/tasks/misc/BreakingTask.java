@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.HashMap;
 
 public class BreakingTask implements WatTask {
-    private double endsAt;
+    private final double endsAt;
     public BreakingTask(double expireAt) {
         endsAt = expireAt;
     }
