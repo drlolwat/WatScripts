@@ -108,6 +108,7 @@ public class TaskManager {
                 Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
                 setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), 0);
             } else {
+                tasksUntilBreak++; // so we dont decrement it if we dont get a quest
                 Logger.log("TaskManager: All available quests completed, selecting a skill-based task..");
                 getNewTask(true);
             }
