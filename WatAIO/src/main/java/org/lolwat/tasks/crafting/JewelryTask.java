@@ -6,21 +6,23 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
-import org.lolwat.managers.types.WatTask;
-import org.lolwat.WatAIO;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class JewelryTask implements WatTask {
     private final List<Area> furnaceLocations = Arrays.asList(new Area(3105, 3501, 3110, 3496), // edge
@@ -117,8 +119,4 @@ public class JewelryTask implements WatTask {
         return CraftingUtils.getMaterialsForJewelry(craftingType, true, 1);
     }
 
-    @Override
-    public List<String> inventoryTolerated() {
-        return new ArrayList<>();
-    }
 }

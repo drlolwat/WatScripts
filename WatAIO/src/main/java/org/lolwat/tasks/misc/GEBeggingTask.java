@@ -7,7 +7,6 @@ import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -16,10 +15,10 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.dreambot.api.wrappers.widgets.message.MessageType;
-import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.WebUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.WebUtils;
 
 import java.util.HashMap;
 
@@ -37,25 +36,22 @@ public class GEBeggingTask implements WatTask {
     private String tradeName = null;
     private boolean hasWalkedToGE = false;
     private final Area grandExchangeArea = new Area(
-            new Tile[] {
-                    new Tile(3161, 3499, 0),
-                    new Tile(3168, 3499, 0),
-                    new Tile(3174, 3494, 0),
-                    new Tile(3174, 3486, 0),
-                    new Tile(3169, 3481, 0),
-                    new Tile(3160, 3481, 0),
-                    new Tile(3155, 3486, 0),
-                    new Tile(3155, 3493, 0),
-                    new Tile(3163, 3492, 0),
-                    new Tile(3166, 3492, 0),
-                    new Tile(3167, 3491, 0),
-                    new Tile(3167, 3488, 0),
-                    new Tile(3163, 3488, 0),
-                    new Tile(3162, 3489, 0),
-                    new Tile(3162, 3492, 0),
-                    new Tile(3155, 3493, 0)
-            }
-    );
+            new Tile(3161, 3499, 0),
+            new Tile(3168, 3499, 0),
+            new Tile(3174, 3494, 0),
+            new Tile(3174, 3486, 0),
+            new Tile(3169, 3481, 0),
+            new Tile(3160, 3481, 0),
+            new Tile(3155, 3486, 0),
+            new Tile(3155, 3493, 0),
+            new Tile(3163, 3492, 0),
+            new Tile(3166, 3492, 0),
+            new Tile(3167, 3491, 0),
+            new Tile(3167, 3488, 0),
+            new Tile(3163, 3488, 0),
+            new Tile(3162, 3489, 0),
+            new Tile(3162, 3492, 0),
+            new Tile(3155, 3493, 0));
     public GEBeggingTask() {
         initializePerimeterTiles();
     }
