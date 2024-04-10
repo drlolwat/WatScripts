@@ -6,7 +6,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -15,26 +14,26 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.cooking.CookingUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 public class CookingFishTask implements WatTask {
-    private List<Area> areas = Arrays.asList(new Area(3236, 3409, 3240, 3413));
-    private FishType fishType;
-    private Area usingArea;
-    private int inventoryCount;
-    private int minLevel;
-    private int maxLevel;
-    private HashMap<String, Integer> selling;
+    private final List<Area> areas = Collections.singletonList(new Area(3236, 3409, 3240, 3413));
+    private final FishType fishType;
+    private final Area usingArea;
+    private final int inventoryCount;
+    private final int minLevel;
+    private final int maxLevel;
+    private final HashMap<String, Integer> selling;
 
     public CookingFishTask(FishType type, int startAtLevel, int avoidAtLevel, int maximumInventories, HashMap<String, Integer> toSell) {
         fishType = type;
