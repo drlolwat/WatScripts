@@ -31,7 +31,7 @@ import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.WatConfig;
-import org.lolwat.misc.mouse.BezierMouse;
+import org.lolwat.misc.mouse.HumanMouse;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.tasks.mining.MiningTask;
@@ -47,11 +47,10 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one Account Building script for Old School RuneScape", author = "lolwat", version = 1.0, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one Account Building script for Old School RuneScape", author = "lolwat", version = 1.1, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;
-
     public static WatAIO getInstance() {
         return instance;
     }
@@ -97,8 +96,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         Walking.setMinimapTargetSize(15);
-        Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        BezierMouse m = new BezierMouse();
+        Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
+        HumanMouse m = new HumanMouse();
         Mouse.setMouseAlgorithm(m);
 
         if (TaskManager.getInstance() == null) {

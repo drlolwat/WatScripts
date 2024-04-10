@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 public class FiremakingTask implements WatTask {
-    private Area selectedLocation;
+    private final Area selectedLocation;
     private final TreeType logType;
     private final int minLevel;
     private final int avoidAtLevel;
