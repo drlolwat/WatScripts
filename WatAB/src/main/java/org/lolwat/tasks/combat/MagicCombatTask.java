@@ -32,12 +32,12 @@ import java.util.HashMap;
 
 
 public class MagicCombatTask implements WatTask {
-    private int minLevel;
-    private int maxLevel;
-    private Area zone;
-    private String name;
+    private final int minLevel;
+    private final int maxLevel;
+    private final Area zone;
+    private final String name;
     private final HashMap<String, Integer> food;
-    private Spell toCast;
+    private final Spell toCast;
     private int casts;
 
     public MagicCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {

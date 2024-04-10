@@ -1,6 +1,5 @@
 package org.lolwat.tasks.misc;
 
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
@@ -8,8 +7,8 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
 
