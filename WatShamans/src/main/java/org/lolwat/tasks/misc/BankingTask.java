@@ -11,7 +11,6 @@ import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -21,14 +20,13 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.OutfitUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 import org.lolwat.tasks.magic.HighAlchemyTask;
@@ -89,16 +87,16 @@ public class BankingTask implements WatTask {
             if (banker == null || !banker.exists()) {
                 Logger.log("Banking: Looking for bank chest");
                 GameObject chest = GameObjects.closest(x -> x != null && x.canReach()
-                        && allowedObjects.contains(x.getName()));
+                        && allowedObjects.contains(x.getName()) && x.distance() <= 15.00);
 
                 if (chest == null) {
-                    Logger.log("Banking: No banker or chest found, walking to nearest bank");
+                    Logger.log("Banking: No banker or chest found (15r), walking to nearest bank");
                     TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this));
                     return;
                 } else {
-                    Logger.log("Banking: Opening bank via " + chest.getName() + " (" + chest.getID() + ")");
+                    Logger.log("Banking: Opening bank via " + chest.getName() + " (id: " + chest.getID() + ", distance: " + chest.distance() + ")");
                     if(!chest.isOnScreen()) {
-                        if(!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 18.0) {
+                        if(!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 15.0) {
                             Logger.log("Banking: Walking closer to chest");
                             TaskManager.getInstance().setCurrentTask(new TraversalTask(chest.getTile().getArea(2), this));
                             return;
@@ -862,11 +860,6 @@ public class BankingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
@@ -875,8 +868,6 @@ public class BankingTask implements WatTask {
     public Integer avoidAfterLevel() {
         return 101;
     }
-
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
