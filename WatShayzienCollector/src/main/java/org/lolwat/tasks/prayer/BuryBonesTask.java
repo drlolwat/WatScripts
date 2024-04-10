@@ -3,16 +3,15 @@ package org.lolwat.tasks.prayer;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.prayer.BoneType;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.prayer.PrayerUtils;
 import org.lolwat.tasks.misc.BankingTask;
 
@@ -22,7 +21,7 @@ public class BuryBonesTask implements WatTask {
     private final BoneType buryingType;
     private final int inventoryLoads;
     private boolean ready;
-    private int stopAt;
+    private final int stopAt;
 
     @Override
     public String getName() {

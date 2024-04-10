@@ -27,6 +27,7 @@ import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,9 +38,9 @@ public class WitchsPotionQuest implements WatTask {
     private final Area ratLocation = new Area(2953, 3205, 2960, 3202);
     private final Area portSarimMagicShop = new Area(3011, 3261, 3016, 3256);
     List<String> startDialogue = Arrays.asList("I am in search of a quest.", "Yes.");
-    List<String> bettyDialogue = Arrays.asList("Can I see your wares?");
+    List<String> bettyDialogue = Collections.singletonList("Can I see your wares?");
 
-    private HashMap<String, Integer> needed = new HashMap<String, Integer>() {{
+    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() {{
         put("Raw beef", 1);
         put("Onion", 1);
     }};

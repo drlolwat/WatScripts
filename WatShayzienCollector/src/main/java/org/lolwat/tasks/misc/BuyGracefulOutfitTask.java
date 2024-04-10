@@ -6,29 +6,28 @@ import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.OutfitUtils;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.OutfitUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class BuyGracefulOutfitTask implements WatTask {
-    private Area grace = new Area(
+    private final Area grace = new Area(
             new Tile(3046, 4961, 1),
             new Tile(3050, 4961, 1),
             new Tile(3053, 4965, 1),
             new Tile(3047, 4967, 1));
 
-    private WatTask post;
-    private List<String> toBuy;
+    private final WatTask post;
+    private final List<String> toBuy;
 
     public BuyGracefulOutfitTask(WatTask post, List<String> toBuy) {
         this.post = post;
