@@ -5,15 +5,12 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.WatAIO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class AdvertiseTask implements WatTask {
@@ -22,7 +19,7 @@ public class AdvertiseTask implements WatTask {
             new Tile(3175, 3478, 0),
             new Tile(3175, 3503, 0),
             new Tile(3154, 3503, 0));
-    private List<String> phrases;
+    private final List<String> phrases;
     private int count = 0;
     @Override
     public String getName() {
@@ -79,11 +76,6 @@ public class AdvertiseTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -96,17 +88,5 @@ public class AdvertiseTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
-    }
-
-    
-
-    @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }
