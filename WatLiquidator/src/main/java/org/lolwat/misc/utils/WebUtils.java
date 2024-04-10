@@ -2,13 +2,12 @@ package org.lolwat.misc.utils;
 
 import com.google.gson.Gson;
 import org.dreambot.api.Client;
-import org.dreambot.api.methods.ForumUser;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -16,9 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WebUtils {
-    private static String WEBHOOK_URL = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
+    private static final String WEBHOOK_URL = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
     private static final String GPT_URL = "https://api.botbuddy.net/wat.php";
-    private static Gson gson = new Gson();
+    private static final Gson gson = new Gson();
     private static long lastCallTime = 0;
 
     public static void postWebhook(String title, String message) {

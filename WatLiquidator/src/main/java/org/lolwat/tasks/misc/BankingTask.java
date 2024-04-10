@@ -37,7 +37,7 @@ import java.util.*;
 
 public class BankingTask implements WatTask {
     private HashMap<String, Integer> inventoryRequired; // Process inv second..
-    private HashMap<String, Integer> sellingItems; // Check this at the very top of banking operations
+    private final HashMap<String, Integer> sellingItems; // Check this at the very top of banking operations
     private final int inventoriesWorth;
     private WatTask postTask;
 

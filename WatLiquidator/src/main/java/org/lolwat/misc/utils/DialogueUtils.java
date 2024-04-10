@@ -3,19 +3,18 @@ package org.lolwat.misc.utils;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.dreambot.api.utilities.Sleep.*;
+import static org.dreambot.api.utilities.Sleep.sleepUntil;
+import static org.dreambot.api.utilities.Sleep.sleepWhile;
 
 public class DialogueUtils {
     public static void continueWhilePossible() {
