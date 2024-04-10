@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
+import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -96,6 +97,17 @@ public class BankingTask implements WatTask {
                     return;
                 } else {
                     Logger.log("Banking: Opening bank via " + chest.getName() + " (" + chest.getID() + ")");
+                    if(!chest.isOnScreen()) {
+                        if(!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 18.0) {
+                            Logger.log("Banking: Walking closer to chest");
+                            TaskManager.getInstance().setCurrentTask(new TraversalTask(chest.getTile().getArea(2), this));
+                            return;
+                        }
+
+                        Camera.rotateToTile(chest.getTile());
+                        Sleep.sleepUntil(chest::isOnScreen, Calculations.random(5000, 10000));
+                    }
+
                     if (!chest.interact()) {
                         Logger.error("Banking: Failed to interact with chest");
                         return;
@@ -103,9 +115,8 @@ public class BankingTask implements WatTask {
                 }
             } else {
                 Logger.log("Banking: Opening bank via Banker (distance: " + banker.distance() + ")");
-                if (!banker.interact("Bank")) {
-                    Logger.error("Banking: Failed to interact with banker");
-                    return;
+                if (!Bank.open()) {
+                    Logger.error("Banking: Failed to open bank");
                 }
             }
 
