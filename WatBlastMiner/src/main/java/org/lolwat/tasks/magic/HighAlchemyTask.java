@@ -28,9 +28,9 @@ import java.util.List;
 
 
 public class HighAlchemyTask implements WatTask {
-    private int minLevel;
-    private int maxLevel;
-    private String item;
+    private final int minLevel;
+    private final int maxLevel;
+    private final String item;
     boolean alched = false;
 
     List<String> items = new ArrayList<String>() {
@@ -95,13 +95,13 @@ public class HighAlchemyTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
-        if(Inventory.getItemInSlot(12) == null) {
+        if(Inventory.getItemInSlot(15) == null) {
             if (!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
                 Sleep.sleep(120, 240);
             }
 
-            Inventory.drag(item, 12);
+            Inventory.drag(item, 15);
         }
 
         if (!Tabs.isOpen(Tab.MAGIC)) {
@@ -160,8 +160,6 @@ public class HighAlchemyTask implements WatTask {
         return maxLevel;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<String, Integer>() {
@@ -173,12 +171,10 @@ public class HighAlchemyTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
-    }
-
-    @Override
     public List<String> inventoryTolerated() {
-        return new ArrayList<String>() { { add("Gold necklace"); } };
+        return new ArrayList<String>() { {
+            add("Gold necklace");
+            add("Staff of fire");
+        } };
     }
 }
