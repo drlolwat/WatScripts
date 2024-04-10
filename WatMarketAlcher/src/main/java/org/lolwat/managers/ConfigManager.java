@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class ConfigManager {
     private static ConfigManager instance;
-    private HashMap<Object, Object> config;
+    private final HashMap<Object, Object> config;
     private boolean hasLoaded;
     private int netWorth;
     private double netWorthGeneratedAt;

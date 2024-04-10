@@ -7,7 +7,6 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -15,15 +14,17 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
-import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
-import org.lolwat.managers.types.WatTask;
-import org.lolwat.WatAIO;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class SpinningTask implements WatTask {
     private final List<Area> spinnerLocations = Collections.singletonList(new Area(
@@ -101,11 +102,6 @@ public class SpinningTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.CRAFTING;
     }
@@ -115,15 +111,9 @@ public class SpinningTask implements WatTask {
         return avoidAtLevel;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
     }
 
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
-    }
 }

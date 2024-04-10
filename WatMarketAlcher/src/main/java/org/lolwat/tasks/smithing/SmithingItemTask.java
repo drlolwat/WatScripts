@@ -6,7 +6,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.helpers.Smithing;
@@ -14,24 +13,24 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.smithing.SmithingType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.HashMap;
 
 public class SmithingItemTask implements WatTask {
-    private IngotType ingotType;
-    private int minimumLevel;
-    private int maximumLevel;
-    private Area selectedArea;
-    private int maximumInventories;
-    private HashMap<String, Integer> byproducts;
+    private final IngotType ingotType;
+    private final int minimumLevel;
+    private final int maximumLevel;
+    private final Area selectedArea;
+    private final int maximumInventories;
+    private final HashMap<String, Integer> byproducts;
 
     public SmithingItemTask(IngotType type, int minLevel, int maxLevel, Area area, int maxInventories, HashMap<String, Integer> toSell) {
         ingotType = type;

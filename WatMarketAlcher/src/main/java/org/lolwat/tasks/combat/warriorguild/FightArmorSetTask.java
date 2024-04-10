@@ -35,12 +35,12 @@ import java.util.Map;
 
 
 public class FightArmorSetTask implements WatTask {
-    private Skill trainingSkill;
-    private boolean needsEat;
-    private HashMap<String, Integer> inventoryReq;
+    private final Skill trainingSkill;
+    private final boolean needsEat;
+    private final HashMap<String, Integer> inventoryReq;
     private final Area fightingArea = new Area(2849, 3545, 2858, 3534);
     private boolean needsCheck = true;
-    private String latest;
+    private final String latest;
 
     public FightArmorSetTask(Skill skillType, HashMap<String, Integer> inventory, String latestObtained) {
         trainingSkill = skillType;

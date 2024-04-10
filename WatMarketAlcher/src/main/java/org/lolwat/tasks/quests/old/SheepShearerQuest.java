@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SheepShearerQuest implements WatTask {
-    private Area startLocation = new Area(3188, 3275, 3191, 3270);
+    private final Area startLocation = new Area(3188, 3275, 3191, 3270);
 
     List<String> startDialogue = Arrays.asList("I'm looking for a quest.", "Yes.");
 
