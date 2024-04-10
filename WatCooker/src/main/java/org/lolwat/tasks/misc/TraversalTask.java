@@ -53,7 +53,7 @@ public class TraversalTask implements WatTask {
     @Override
     public String getName() {
         if(postTask != null) {
-            return postTask.getName();
+            return "W-" + postTask.getName();
         }
 
         return "Walking";
@@ -258,10 +258,11 @@ public class TraversalTask implements WatTask {
                 return;
             }
         } else {
-            if(area.contains(Players.getLocal()) || area.contains(Walking.getDestination())) {
-                if (!Map.isTileOnScreen(area.getRandomTile())) {
-                    Camera.rotateToTile(area.getRandomTile());
-                    Sleep.sleepUntil(() -> Map.isTileOnScreen(area.getRandomTile()), 3000);
+            if(area.contains(Players.getLocal())) {
+                Tile check = area.getRandomTile();
+                if (Map.isTileOnMap(check) && !Map.isTileOnScreen(check)) {
+                    Camera.rotateToTile(check);
+                    Sleep.sleepUntil(() -> Map.isTileOnScreen(check), 3000);
                 }
 
                 Logger.log("Reached target area for task " + postTask.getName());
