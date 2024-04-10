@@ -5,7 +5,6 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.combat.DefensiveItemType;
 import org.lolwat.misc.utils.GenericUtils;

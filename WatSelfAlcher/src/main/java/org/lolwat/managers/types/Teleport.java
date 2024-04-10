@@ -2,8 +2,6 @@ package org.lolwat.managers.types;
 
 import org.dreambot.api.methods.map.Tile;
 
-import java.util.List;
-
 public class Teleport {
     private final String name;
     private final Tile destination;

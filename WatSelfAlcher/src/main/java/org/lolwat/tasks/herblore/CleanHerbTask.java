@@ -6,7 +6,6 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.PaidQuest;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
@@ -15,9 +14,9 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.herblore.HerbUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.misc.BankingTask;
 
 import java.util.HashMap;

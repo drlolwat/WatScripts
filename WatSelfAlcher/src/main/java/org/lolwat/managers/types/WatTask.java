@@ -17,8 +17,10 @@ public interface WatTask {
     Integer avoidAfterLevel();
     default int loopTime() { return 400; }
     default QuestTask questTask() { return null; }
-    default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); };
-    default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); };
+    default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); }
+
+    default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); }
+
     default List<String> inventoryTolerated() {
         return new ArrayList<>();
     }

@@ -4,12 +4,9 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.magic.Spell;
-import org.dreambot.api.methods.magic.cost.Rune;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
-import org.lolwat.misc.types.combat.DefensiveItemType;
 import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
