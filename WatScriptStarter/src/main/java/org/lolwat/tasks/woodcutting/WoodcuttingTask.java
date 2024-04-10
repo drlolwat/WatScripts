@@ -41,6 +41,7 @@ public class WoodcuttingTask implements WatTask {
     private final HashMap<String, Integer> sellList;
     private long lastGotLog;
     private final boolean dropping;
+    private final boolean moneyMaking;
 
     public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
         treeType = type;
@@ -50,6 +51,18 @@ public class WoodcuttingTask implements WatTask {
         sellList = sellingList;
         lastGotLog = 0;
         dropping = drop;
+        moneyMaking = false;
+    }
+
+    public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop, boolean money) {
+        treeType = type;
+        area = startingLocation.getArea(15);
+        avoidAfterLevel = maxLevel;
+        minimumLevel = minLevel;
+        sellList = sellingList;
+        lastGotLog = 0;
+        dropping = drop;
+        moneyMaking = money;
     }
 
     @Override
@@ -154,7 +167,9 @@ public class WoodcuttingTask implements WatTask {
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<String, Integer>() {
             {
-                putAll(GenericUtils.getSkillingGear());
+                if(!moneyMaking) {
+                    putAll(GenericUtils.getSkillingGear());
+                }
             }
         };
     }
