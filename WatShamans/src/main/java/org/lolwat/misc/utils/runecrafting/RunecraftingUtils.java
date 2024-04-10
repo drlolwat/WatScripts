@@ -1,6 +1,5 @@
 package org.lolwat.misc.utils.runecrafting;
 
-import org.dreambot.api.methods.magic.cost.Rune;
 import org.dreambot.api.methods.map.Area;
 
 public class RunecraftingUtils {

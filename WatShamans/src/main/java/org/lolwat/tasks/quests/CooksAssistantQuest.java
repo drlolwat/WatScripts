@@ -10,12 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CooksAssistantQuest implements QuestTask {
-
-    @Override
-    public Quest completes() {
-        return FreeQuest.COOKS_ASSISTANT;
-    }
-
     @Override
     public void execute() {
         int state = PlayerSettings.getBitValue(29);
@@ -35,6 +29,11 @@ public class CooksAssistantQuest implements QuestTask {
                 break;
             }
         }
+    }
+
+    @Override
+    public Quest completes() {
+        return FreeQuest.COOKS_ASSISTANT;
     }
 
     @Override

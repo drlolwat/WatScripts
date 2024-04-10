@@ -6,14 +6,13 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.WatAIO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,8 +26,8 @@ public class ScavengingTask implements WatTask {
             new Tile(3154, 3503, 0));
 
     private final List<String> avoidItems;
-    private List<String> itemsTaken;
-    private int maxScavenge = 50000;
+    private final List<String> itemsTaken;
+    private final int maxScavenge = 50000;
 
     @Override
     public String getName() {
