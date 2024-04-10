@@ -5,6 +5,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -102,8 +103,14 @@ public class TaskManager {
             }
         } else {
             Logger.log("TaskManager: Selected questing, now selecting quest..");
-            setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), 0);
-            Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
+            Quest incompleteQuest = QuestManager.getInstance().getIncompleteQuest();
+            if(incompleteQuest != null) {
+                Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
+                setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), 0);
+            } else {
+                Logger.log("TaskManager: All available quests completed, selecting a skill-based task..");
+                getNewTask(true);
+            }
         }
     }
 
