@@ -18,6 +18,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
@@ -82,26 +83,34 @@ public class BankingTask implements WatTask {
             }
         };
 
-        if (NPCs.all("Banker").isEmpty() && GameObjects.all(x -> x != null && x.canReach() && allowedObjects.contains(x.getName())).isEmpty()) {
-            GameObject chest = GameObjects.closest(x -> x!= null && x.canReach() && allowedObjects.contains(x.getName()));
-            if(chest == null) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this));
-                return;
-            }
-        }
+        if(!Bank.isOpen()) {
+            NPC banker = NPCs.closest("Banker");
+            if (banker == null || !banker.exists()) {
+                Logger.log("Banking: Looking for bank chest");
+                GameObject chest = GameObjects.closest(x -> x != null && x.canReach()
+                        && allowedObjects.contains(x.getName()));
 
-        if (!Bank.isOpen()) {
-            GameObject chest = GameObjects.closest(x -> x != null && x.canReach() && allowedObjects.contains(x.getName()));
-            if(chest == null) {
-                Bank.open();
+                if (chest == null) {
+                    Logger.log("Banking: No banker or chest found, walking to nearest bank");
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this));
+                    return;
+                } else {
+                    Logger.log("Banking: Opening bank via " + chest.getName() + " (" + chest.getID() + ")");
+                    if (!chest.interact()) {
+                        Logger.error("Banking: Failed to interact with chest");
+                        return;
+                    }
+                }
             } else {
-                chest.interact();
+                Logger.log("Banking: Opening bank via Banker (distance: " + banker.distance() + ")");
+                if (!banker.interact("Bank")) {
+                    Logger.error("Banking: Failed to interact with banker");
+                    return;
+                }
             }
 
-            Sleep.sleepUntil(Bank::isOpen, 1500);
-        }
-
-        if (!Bank.isOpen()) {
+            Logger.log("Banking: Waiting for bank to be open..");
+            Sleep.sleepUntil(Bank::isOpen, 15000);
             return;
         }
 
