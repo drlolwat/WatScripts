@@ -103,6 +103,7 @@ public class TaskManager {
         } else {
             Logger.log("TaskManager: Selected questing, now selecting quest..");
             setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), 0);
+            Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
         }
     }
 
