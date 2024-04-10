@@ -1,20 +1,15 @@
 package org.lolwat.misc.mouse;
 
 import org.dreambot.api.input.Mouse;
-import org.dreambot.api.input.event.impl.mouse.MouseButton;
-import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
 import org.dreambot.api.input.mouse.algorithm.StandardMouseAlgorithm;
 import org.dreambot.api.input.mouse.destination.AbstractMouseDestination;
 import org.dreambot.api.methods.Calculations;
-import org.lolwat.WatAIO;
-import org.lolwat.managers.ConfigManager;
+import org.dreambot.api.utilities.Logger;
 
 import java.awt.*;
 
-public class BezierMouse implements MouseAlgorithm {
+public class HumanMouse extends StandardMouseAlgorithm {
     private boolean isMoving = false;
-    private static boolean INSTANT_HOP = false;
-    private StandardMouseAlgorithm basic = new StandardMouseAlgorithm();
 
     @Override
     public boolean handleMovement(AbstractMouseDestination abstractMouseDestination) {
@@ -28,11 +23,6 @@ public class BezierMouse implements MouseAlgorithm {
         isMoving = false;
 
         return distance(Mouse.getPosition(), suitPos) < 2;
-    }
-
-    @Override
-    public boolean handleClick(MouseButton mouseButton) {
-        return basic.handleClick(mouseButton);
     }
 
     public void generatePoints(Point point) {
@@ -52,12 +42,6 @@ public class BezierMouse implements MouseAlgorithm {
     }
 
     private void moveCursorWithCubicBezier(Point startPos, Point endPos) {
-        if (INSTANT_HOP) {
-            Mouse.hop(endPos);
-            sleep(35);
-            return;
-        }
-
         Point controlPoint1 = randomPoint(startPos, endPos);
         Point controlPoint2 = randomPoint(startPos, endPos);
         int steps = Calculations.random(5, 15);
@@ -108,7 +92,7 @@ public class BezierMouse implements MouseAlgorithm {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Logger.log(e);
         }
     }
 }
