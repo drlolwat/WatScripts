@@ -8,7 +8,6 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -17,14 +16,13 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.firemaking.FiremakingUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
-import org.lolwat.managers.types.WatTask;
-import org.lolwat.WatAIO;
-import org.lolwat.misc.types.mixed.TreeType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,13 +36,12 @@ public class FiremakingTask implements WatTask {
     private final int avoidAtLevel;
     private final HashMap<String, Integer> toSell;
     private final int inventoryLoads;
-    private List<Area> areas = Arrays.asList(
-            new Area(3149, 3475, 3176, 3478),
-            new Area(3180, 3501, 3148, 3507));
-
-    private boolean ready = true;
 
     public FiremakingTask(TreeType type, int firemakingLevel, int pAvoidAtLevel, int totalInventories, HashMap<String, Integer> sellList) {
+        List<Area> areas = Arrays.asList(
+                new Area(3149, 3475, 3176, 3478),
+                new Area(3180, 3501, 3148, 3507));
+
         minLevel = firemakingLevel;
         selectedLocation = areas.get(new Random().nextInt(areas.size()));
         logType = type;
@@ -86,7 +83,6 @@ public class FiremakingTask implements WatTask {
         if(Inventory.contains("Tinderbox") && Inventory.use("Tinderbox")) {
             Tile t = Players.getLocal().getTile();
             if(Inventory.contains(WoodcuttingUtils.getLogName(logType)) && Inventory.use(WoodcuttingUtils.getLogName(logType))) {
-                ready = false;
                 Sleep.sleep(200, 500);
                 Mouse.move(Inventory.get("Tinderbox").getDestination());
                 Sleep.sleepUntil(() -> Dialogues.canContinue() || (Players.getLocal().getTile() != t && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating()), 10000);
@@ -124,11 +120,6 @@ public class FiremakingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-        ready = true;
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.FIREMAKING;
     }
@@ -138,15 +129,8 @@ public class FiremakingTask implements WatTask {
         return avoidAtLevel;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }
