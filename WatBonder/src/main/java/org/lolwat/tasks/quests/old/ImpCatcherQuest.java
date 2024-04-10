@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ImpCatcherQuest implements WatTask {
-    private Area startLocation = new Area(
+    private final Area startLocation = new Area(
             new Tile(3102, 3163, 2),
             new Tile(3103, 3162, 2),
             new Tile(3105, 3162, 2),
@@ -32,7 +32,7 @@ public class ImpCatcherQuest implements WatTask {
 
     List<String> startDialogue = Arrays.asList("Give me a quest please.", "Give me a quest or else!", "Just stop messing around and give me a quest!", "Yes.");
 
-    private HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
+    private final HashMap<String, Integer> needed = new HashMap<String, Integer>() { {
         put("Black bead", 1);
         put("Yellow bead", 1);
         put("Red bead", 1);

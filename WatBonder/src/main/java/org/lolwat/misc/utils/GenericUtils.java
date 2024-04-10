@@ -39,7 +39,7 @@ import java.util.*;
 
 public class GenericUtils {
 
-    private static HashMap<String, Integer> levels = new HashMap<String, Integer>() {
+    private static final HashMap<String, Integer> levels = new HashMap<String, Integer>() {
         {
             // picks
             put("Rune pickaxe", 40);

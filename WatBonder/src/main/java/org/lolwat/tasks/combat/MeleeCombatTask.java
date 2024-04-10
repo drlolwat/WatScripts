@@ -9,7 +9,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -20,9 +19,9 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
-import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
@@ -31,12 +30,12 @@ import java.util.List;
 
 
 public class MeleeCombatTask implements WatTask {
-    private Skill trainingSkill;
-    private int minLevel;
-    private int maxLevel;
-    private Area zone;
-    private String name;
-    private HashMap<String, Integer> food;
+    private final Skill trainingSkill;
+    private final int minLevel;
+    private final int maxLevel;
+    private final Area zone;
+    private final String name;
+    private final HashMap<String, Integer> food;
     private final List<String> pickups;
 
     public MeleeCombatTask(Skill skillType, int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake, List<String> itemsToPickup) {

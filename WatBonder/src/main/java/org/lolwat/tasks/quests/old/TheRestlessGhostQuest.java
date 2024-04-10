@@ -22,6 +22,7 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class TheRestlessGhostQuest implements WatTask {
 
     private final List<String> fatherAereckDialogue = Arrays.asList("I'm looking for a quest!", "Ok, let me help then.", "Yes.");
     private final List<String> fatherUrhneyDialogue = Arrays.asList("Father Aereck sent me to talk to you.", "He's got a ghost haunting his graveyard.");
-    private final List<String> ghost0Dialogue = Arrays.asList("Yep, now tell me what the problem is.");
+    private final List<String> ghost0Dialogue = Collections.singletonList("Yep, now tell me what the problem is.");
 
     private boolean questStarted = false;
     private boolean amuletAcquired = false;
