@@ -34,12 +34,8 @@ public class DoricsQuest implements QuestTask {
 
     @Override
     public void execute(WatTask wrapper) {
-        int step = PlayerSettings.getBitValue(31);
-        if(!Quests.isStarted(completes())) {
-            step = 0;
-        }
-
-        if (step == 0) {
+        List<Integer> validStates = Arrays.asList(0, 1);
+        if (validStates.contains(getState())) {
             if (!Inventory.contains("Clay", "Copper ore", "Iron ore")) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
                 return;
@@ -64,13 +60,18 @@ public class DoricsQuest implements QuestTask {
                 }
             }
         } else {
-            Logger.log("Unhandled step: " + step);
+            Logger.log("Unhandled state: " + getState());
         }
     }
 
     @Override
     public boolean canPerformTask() {
         return !Quests.isFinished(completes());
+    }
+
+    @Override
+    public int getState() {
+        return PlayerSettings.getBitValue(31);
     }
 
     @Override
