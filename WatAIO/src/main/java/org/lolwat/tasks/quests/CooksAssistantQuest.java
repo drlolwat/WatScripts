@@ -28,11 +28,15 @@ public class CooksAssistantQuest implements QuestTask {
     private boolean hasMilledGrain = false;
 
     @Override
+    public int getState() {
+        return PlayerSettings.getBitValue(29);
+    }
+
+    @Override
     public void execute(WatTask wrapper) {
-        int state = PlayerSettings.getBitValue(29);
-        switch(state) {
+        switch(getState()) {
             default: {
-                Logger.log("Unhandled value: " + state);
+                Logger.log("Unhandled value: " + getState());
                 break;
             }
 
