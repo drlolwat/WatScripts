@@ -96,7 +96,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         Walking.setMinimapTargetSize(15);
-        Camera.setCameraMode(CameraMode.KEYBOARD_ONLY);
+        Camera.setCameraMode(CameraMode.MOUSE_ONLY);
         HumanMouse m = new HumanMouse();
         Mouse.setMouseAlgorithm(m);
 
