@@ -1,17 +1,34 @@
 package org.lolwat.tasks.quests;
 
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.QuestTask;
+import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.DialogueUtils;
+import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.TraversalTask;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class CooksAssistantQuest implements QuestTask {
+    private final Area cookLocation = new Area(3205, 3216, 3210, 3212);
+    private final List<String> startDialogue = Arrays.asList("What's wrong?", "Yes.", "Actually, I know where to find this stuff.", "I'll get right on it.");
+    private boolean hasMilledGrain = false;
+
     @Override
-    public void execute() {
+    public void execute(WatTask wrapper) {
         int state = PlayerSettings.getBitValue(29);
         switch(state) {
             default: {
@@ -20,12 +37,29 @@ public class CooksAssistantQuest implements QuestTask {
             }
 
             case 0: {
-                Logger.log("Not started?");
-                break;
-            }
+                if(!Quests.isStarted(FreeQuest.COOKS_ASSISTANT) || Inventory.contains("Pot of flour", "Bucket of milk", "Egg")) {
+                    NPC cook = NPCs.closest("Cook");
+                    if (!Dialogues.inDialogue() && (cook == null || !cook.exists() || !cook.canReach()) && !cookLocation.contains(Players.getLocal())) {
+                        TaskManager.getInstance().setCurrentTask(new TraversalTask(cookLocation, wrapper));
+                        return;
+                    }
 
-            case 1: {
-                Logger.log("Started?");
+                    if (Dialogues.inDialogue()) {
+                        DialogueUtils.continueWhilePossible();
+                        DialogueUtils.solve(startDialogue);
+                    } else {
+                        if (cook != null && cook.exists() && cook.canReach()) {
+                            if (!cook.interact()) {
+                                Logger.log("Failed to interact with cook");
+                            }
+                        }
+                    }
+                } else {
+                    if(!Inventory.contains("Pot of flour", "Bucket of milk", "Egg")) {
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
+                    }
+                }
+
                 break;
             }
         }
@@ -42,11 +76,11 @@ public class CooksAssistantQuest implements QuestTask {
     }
 
     @Override
-    public List<String> inventoryTolerated() {
-        return new ArrayList<String>() {{
-            add("Pot of flour");
-            add("Egg");
-            add("Bucket of milk");
+    public HashMap<String, Integer> inventoryRequired() {
+        return new HashMap<String, Integer>() {{
+            put("Pot of flour", 1);
+            put("Bucket of milk", 1);
+            put("Egg", 1);
         }};
     }
 }
