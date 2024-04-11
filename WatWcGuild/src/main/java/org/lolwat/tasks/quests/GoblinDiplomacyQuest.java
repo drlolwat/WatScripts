@@ -122,9 +122,9 @@ public class GoblinDiplomacyQuest implements QuestTask {
                         if (!bentnoze.interact("Talk-to")) {
                             Logger.log("Failed to interact with General Bentnoze");
                         }
-                    }
 
-                    Sleep.sleepUntil(Dialogues::inDialogue, 5000);
+                        Sleep.sleepUntil(Dialogues::inDialogue, 5000);
+                    }
                 }
             }
         }
