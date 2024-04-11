@@ -31,6 +31,7 @@ import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 import org.lolwat.tasks.magic.HighAlchemyTask;
 import org.lolwat.tasks.prayer.BuryBonesTask;
+import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
 
 import java.time.Instant;
 import java.util.*;
@@ -670,7 +671,7 @@ public class BankingTask implements WatTask {
         Logger.log("Banking: Complete");
 
         if (postTask != null) {
-            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask) {
+            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask || postTask instanceof QuestWrapperTask) {
                 Bank.close();
             }
 
