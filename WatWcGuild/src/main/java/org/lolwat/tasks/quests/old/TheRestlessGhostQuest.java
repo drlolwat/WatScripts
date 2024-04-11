@@ -32,8 +32,6 @@ public class TheRestlessGhostQuest implements WatTask {
     private final Area graveyard = new Area(3247, 3195, 3251, 3190);
     private final Area swampRocks = new Area(3236, 3148, 3229, 3142);
     private final Area wizardTower = new Area(3111, 9569, 3121, 9564);
-
-
     private final List<String> fatherAereckDialogue = Arrays.asList("I'm looking for a quest!", "Ok, let me help then.", "Yes.");
     private final List<String> fatherUrhneyDialogue = Arrays.asList("Father Aereck sent me to talk to you.", "He's got a ghost haunting his graveyard.");
     private final List<String> ghost0Dialogue = Collections.singletonList("Yep, now tell me what the problem is.");
