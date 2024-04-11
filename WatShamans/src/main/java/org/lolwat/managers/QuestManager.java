@@ -5,7 +5,7 @@ import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.lolwat.managers.types.QuestTask;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.quests.CooksAssistantQuest;
+import org.lolwat.tasks.quests.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +35,11 @@ public class QuestManager {
     private void setupQuests() {
         questTasks = new HashMap<>();
         questTasks.put(FreeQuest.COOKS_ASSISTANT, new CooksAssistantQuest());
+        questTasks.put(FreeQuest.DORICS_QUEST, new DoricsQuest());
+        questTasks.put(FreeQuest.IMP_CATCHER, new ImpCatcherQuest());
+        questTasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
+        questTasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoAndJulietQuest());
+        questTasks.put(FreeQuest.SHEEP_SHEARER, new SheepShearerQuest());
     }
 
     public static QuestManager getInstance() {
