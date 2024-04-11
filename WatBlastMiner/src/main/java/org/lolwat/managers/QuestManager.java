@@ -40,6 +40,7 @@ public class QuestManager {
         questTasks.put(FreeQuest.GOBLIN_DIPLOMACY, new GoblinDiplomacyQuest());
         questTasks.put(FreeQuest.ROMEO_AND_JULIET, new RomeoAndJulietQuest());
         questTasks.put(FreeQuest.SHEEP_SHEARER, new SheepShearerQuest());
+        questTasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
     }
 
     public static QuestManager getInstance() {
