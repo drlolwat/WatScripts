@@ -181,7 +181,9 @@ public class TaskManager {
         if(runtime == 0)
             taskSelectedAt = Instant.now().getEpochSecond();
 
-        taskRunTime = runtime > 0 ? runtime : Calculations.random(1200, 6750);
+        taskRunTime = runtime > 0
+                ? runtime
+                : Calculations.random(1200, 3750 + (60 * Skills.getRealLevel(value.trainsSkill())));
     }
 
     public void resetBreaks() {
