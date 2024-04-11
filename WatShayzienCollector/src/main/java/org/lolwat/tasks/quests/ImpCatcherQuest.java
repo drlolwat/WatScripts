@@ -73,6 +73,7 @@ public class ImpCatcherQuest implements QuestTask {
                     if (wizard != null) {
                         if (!wizard.interact("Talk-to")) {
                             Logger.log("Failed to interact with Wizard Mizgog");
+                            return;
                         }
 
                         Sleep.sleepUntil(Dialogues::inDialogue, 5000);
