@@ -20,7 +20,11 @@ public class QuestWrapperTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Quest Selection";
+        if(questTask != null && questTask.completes() != null) {
+            return questTask.completes().toString();
+        } else {
+            return "Quest Selection";
+        }
     }
 
     @Override
@@ -28,7 +32,7 @@ public class QuestWrapperTask implements WatTask {
         if(questTask == null) {
             TaskManager.getInstance().getNewTask();
         } else {
-            questTask.execute();
+            questTask.execute(this);
         }
     }
 
