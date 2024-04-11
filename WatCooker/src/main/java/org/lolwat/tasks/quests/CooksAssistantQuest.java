@@ -5,7 +5,6 @@ import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
@@ -26,7 +25,6 @@ import java.util.List;
 public class CooksAssistantQuest implements QuestTask {
     private final Area cookLocation = new Area(3205, 3216, 3210, 3212);
     private final List<String> startDialogue = Arrays.asList("What's wrong?", "Yes.", "Actually, I know where to find this stuff.", "I'll get right on it.");
-    private boolean hasMilledGrain = false;
 
     @Override
     public int getState() {
@@ -42,7 +40,7 @@ public class CooksAssistantQuest implements QuestTask {
             }
 
             case 0: {
-                if(!Quests.isStarted(FreeQuest.COOKS_ASSISTANT) || Inventory.contains("Pot of flour", "Bucket of milk", "Egg")) {
+                if(Inventory.contains("Pot of flour", "Bucket of milk", "Egg")) {
                     NPC cook = NPCs.closest("Cook");
                     if (!Dialogues.inDialogue() && (cook == null || !cook.exists() || !cook.canReach()) && !cookLocation.contains(Players.getLocal())) {
                         TaskManager.getInstance().setCurrentTask(new TraversalTask(cookLocation, wrapper));
@@ -62,9 +60,7 @@ public class CooksAssistantQuest implements QuestTask {
                         }
                     }
                 } else {
-                    if(!Inventory.contains("Pot of flour", "Bucket of milk", "Egg")) {
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
-                    }
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
                 }
 
                 break;
