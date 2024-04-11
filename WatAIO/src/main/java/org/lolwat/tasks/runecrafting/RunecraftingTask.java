@@ -63,6 +63,11 @@ public class RunecraftingTask implements WatTask {
         if (altar != null && altar.exists() && altar.getID() != 14860) { // 14860 was fucking me up in Varrock east
             if (Inventory.contains(x -> x != null && x.getName().contains("essence")) && !altar.interact("Craft-rune")) {
                 Logger.log("Failed to craft rune");
+                if(altar.distance() >= 10) {
+                    Logger.log("Moving closer to altar..");
+                    TaskManager.getInstance().setCurrentTask(new TraversalTask(altar.getTile().getArea(3), this));
+                    return;
+                }
             } else {
                 Sleep.sleepUntil(() -> !Inventory.contains(x -> x != null && x.getName().contains("essence")), Calculations.random(3000, 6000));
             }
