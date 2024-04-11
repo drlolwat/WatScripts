@@ -235,7 +235,20 @@ public class TutorialIslandTask implements WatTask {
                         Dialogues.spaceToContinue();
                     }
 
+                    GameObject fire = GameObjects.closest("Fire");
                     Tile currentTile = Players.getLocal().getTile();
+
+                    if(fire != null && fire.getTile().equals(currentTile)) {
+                        Area safeZone = new Area(
+                                new Tile(3101, 3099, 0),
+                                new Tile(3101, 3094, 0),
+                                new Tile(3105, 3094, 0),
+                                new Tile(3105, 3099, 0));
+
+                        TaskManager.getInstance().setCurrentTask(new TraversalTask(safeZone, this));
+                        return;
+                    }
+
                     if(Inventory.contains("Logs")) {
                         if(!Inventory.use("Tinderbox")) {
                             Logger.error("Tutorial: Problem using tinderbox");
