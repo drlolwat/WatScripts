@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface QuestTask {
     Quest completes();
-    void execute();
+    void execute(WatTask wrapper);
     boolean canPerformTask();
+    int getState();
     default boolean requiresMembers() { return false; }
     default HashMap<String, Integer> clothesRequired() { return new HashMap<>(); }
 
