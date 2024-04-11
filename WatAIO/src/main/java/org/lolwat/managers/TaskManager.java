@@ -85,7 +85,9 @@ public class TaskManager {
             return;
         }
 
-        boolean quest = !noQuest && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3;
+        boolean quest = !noQuest
+                && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3
+                && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("quest_min_ttl");
 
         if(!quest) {
             for (WatTask task : tasks) {
