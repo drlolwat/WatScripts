@@ -10,6 +10,7 @@ import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.QuestTask;
@@ -56,6 +57,8 @@ public class CooksAssistantQuest implements QuestTask {
                             if (!cook.interact()) {
                                 Logger.log("Failed to interact with cook");
                             }
+
+                            Sleep.sleepUntil(Dialogues::inDialogue, 5000);
                         }
                     }
                 } else {
