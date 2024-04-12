@@ -183,7 +183,9 @@ public class TaskManager {
 
         taskRunTime = runtime > 0
                 ? runtime
-                : Calculations.random(1200, 3750 + (60 * Skills.getRealLevel(value.trainsSkill())));
+                : Calculations.random(1200, 3750 + (value != null && value.trainsSkill() != null
+                ? (60 * Skills.getRealLevel(value.trainsSkill()))
+                : 0));
     }
 
     public void resetBreaks() {
