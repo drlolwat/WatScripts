@@ -1,4 +1,4 @@
-package org.lolwat.misc;
+package org.lolwat.misc.utils;
 
 import java.util.HashMap;
 
