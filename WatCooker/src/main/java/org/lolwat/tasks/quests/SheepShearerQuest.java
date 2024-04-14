@@ -40,6 +40,7 @@ public class SheepShearerQuest implements QuestTask {
                 break;
             }
 
+            case 1:
             case 0: {
                 if(Inventory.count(x -> x != null && x.getName().equals("Ball of wool") && !x.isNoted()) < 20) {
                     TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
