@@ -141,11 +141,6 @@ public class RomeoAndJulietQuest implements QuestTask {
 
             case 40: {
                 if(!Inventory.contains(x -> x != null && x.getName().equals("Cadava berries") && !x.isNoted())) {
-                    /*TaskManager.getInstance().setCurrentTask(new GatheringTask("Cadava bush", "Cadava berries", 1, new Area(
-                            new Tile(3260, 3374, 0),
-                            new Tile(3261, 3364, 0),
-                            new Tile(3273, 3363, 0),
-                            new Tile(3283, 3375, 0)), wrapper));*/
                     TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
                         put("Cadava potion", 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {
