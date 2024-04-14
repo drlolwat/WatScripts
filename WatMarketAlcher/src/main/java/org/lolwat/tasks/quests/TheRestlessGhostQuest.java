@@ -151,12 +151,12 @@ public class TheRestlessGhostQuest implements QuestTask {
                     Area skullZone = new Area(3111, 9569, 3121, 9564);
                     GameObject altar = GameObjects.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Altar"));
 
-                    if (!skullZone.contains(Players.getLocal()) && altar == null) {
+                    if (!skullZone.contains(Players.getLocal())) {
                         TaskManager.getInstance().setCurrentTask(new TraversalTask(skullZone, wrapper));
                         return;
                     }
 
-                    if (altar != null) {
+                    if (altar != null && skullZone.contains(altar)) {
                         if (!altar.interact()) {
                             Logger.log("Failed to interact with Altar");
                             return;
