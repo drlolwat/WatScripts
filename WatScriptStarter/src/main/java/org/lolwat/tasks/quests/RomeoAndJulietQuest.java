@@ -10,6 +10,8 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -47,8 +49,6 @@ public class RomeoAndJulietQuest implements QuestTask {
     private final Area potionArea = new Area(3192, 3406, 3194, 3402);
     private final List<String> romeoDialogue = Arrays.asList("Yes, I have seen her actually!", "Yes, ok, I'll let her know.", "Ok, thanks.", "Yes.");
     private final List<String> potionDialogue = Arrays.asList("Talk about something else.", "Talk about Romeo & Juliet.");
-    private final int cutsceneId = 19136;
-
     @Override
     public Quest completes() {
         return FreeQuest.ROMEO_AND_JULIET;
@@ -78,7 +78,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                     }
                 }
 
-                if(Dialogues.inDialogue() || PlayerSettings.getConfig(1021) == cutsceneId){
+                if(Dialogues.inDialogue() || Tabs.isDisabled(Tab.INVENTORY)){
                     DialogueUtils.continueWhilePossible();
                     DialogueUtils.solve(romeoDialogue);
                 } else {
@@ -104,7 +104,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                     return;
                 }
 
-                if(Dialogues.inDialogue() || PlayerSettings.getConfig(1021) == cutsceneId) {
+                if(Dialogues.inDialogue() || Tabs.isDisabled(Tab.INVENTORY)) {
                     DialogueUtils.continueWhilePossible();
                 } else {
                     if (juliet != null) {
@@ -141,11 +141,23 @@ public class RomeoAndJulietQuest implements QuestTask {
 
             case 40: {
                 if(!Inventory.contains(x -> x != null && x.getName().equals("Cadava berries") && !x.isNoted())) {
-                    TaskManager.getInstance().setCurrentTask(new GatheringTask("Cadava bush", "Cadava berries", 1, new Area(
+                    /*TaskManager.getInstance().setCurrentTask(new GatheringTask("Cadava bush", "Cadava berries", 1, new Area(
                             new Tile(3260, 3374, 0),
                             new Tile(3261, 3364, 0),
                             new Tile(3273, 3363, 0),
-                            new Tile(3283, 3375, 0)), wrapper));
+                            new Tile(3283, 3375, 0)), wrapper));*/
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
+                        put("Cadava potion", 1);
+                    }}, null, 1, wrapper, new HashMap<String, WatTask>() {
+                        {
+                            put("Cadava potion", new GatheringTask("Cadava bush", "Cadava berries", 1, new Area(
+                                    new Tile(3260, 3374, 0),
+                                    new Tile(3261, 3364, 0),
+                                    new Tile(3273, 3363, 0),
+                                    new Tile(3283, 3375, 0)), wrapper));
+                        }
+                    }));
+
                     return;
                 }
 
@@ -185,12 +197,5 @@ public class RomeoAndJulietQuest implements QuestTask {
             return 40;
         }
         return state;
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() {{
-            put("Message", 1);
-        }};
     }
 }
