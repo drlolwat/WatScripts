@@ -41,6 +41,7 @@ public class BankingTask implements WatTask {
     private final HashMap<String, Integer> sellingItems; // Check this at the very top of banking operations
     private final int inventoriesWorth;
     private WatTask postTask;
+    private HashMap<String, WatTask> gatheringTasks;
 
     private final List<String> restrictedItems = new ArrayList<String>() {
         {
@@ -53,6 +54,10 @@ public class BankingTask implements WatTask {
     };
 
     public BankingTask(HashMap<String, Integer> invRequired, HashMap<String, Integer> sellList, Integer inventories, WatTask post) {
+        this(invRequired, sellList, inventories, post, null);
+    }
+
+    public BankingTask(HashMap<String, Integer> invRequired, HashMap<String, Integer> sellList, Integer inventories, WatTask post, HashMap<String, WatTask> gathering) {
         if (invRequired == null || invRequired.isEmpty())
             inventoryRequired = new HashMap<>();
         else
@@ -68,6 +73,12 @@ public class BankingTask implements WatTask {
 
         if(post != null && !post.inventoryRequired().isEmpty()) {
             inventoryRequired = post.inventoryRequired();
+        }
+
+        if(gathering != null) {
+            gatheringTasks = gathering;
+        } else {
+            gatheringTasks = new HashMap<>();
         }
     }
 
@@ -474,6 +485,16 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Beginning checks");
         if (!buyingRequired.isEmpty()) {
+            if(gatheringTasks != null && !gatheringTasks.isEmpty()) {
+                for(Map.Entry<String, WatTask> tasks : gatheringTasks.entrySet()) {
+                    if(buyingRequired.containsKey(tasks.getKey())) {
+                        Logger.log("We have an alternate pathway to get " + tasks.getKey() + ", setting task..");
+                        TaskManager.getInstance().setCurrentTask(tasks.getValue());
+                        return;
+                    }
+                }
+            }
+
             checkAndSet(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
