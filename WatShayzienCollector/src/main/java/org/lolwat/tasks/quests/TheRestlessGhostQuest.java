@@ -123,7 +123,7 @@ public class TheRestlessGhostQuest implements QuestTask {
                     DialogueUtils.continueWhilePossible();
                     DialogueUtils.solve(Collections.singletonList("Yep, now tell me what the problem is."));
                 } else {
-                    if(ghost != null) {
+                    if(ghost != null && !Inventory.contains("Ghost's skull")) {
                         if(!ghost.interact()) {
                             Logger.log("Failed to interact with Restless ghost");
                             return;
@@ -132,10 +132,30 @@ public class TheRestlessGhostQuest implements QuestTask {
                         Sleep.sleepUntil(Dialogues::inDialogue, 5000);
                     } else {
                         GameObject coffin = GameObjects.closest(x -> x != null && x.canReach() && x.getName().equals("Coffin"));
+
                         if(coffin != null) {
-                            if(!coffin.interact()) {
-                                Logger.log("Failed to interact with Coffin");
-                                return;
+                            if(!Inventory.contains("Ghost's skull")) {
+                                if (!coffin.interact()) {
+                                    Logger.log("Failed to interact with Coffin");
+                                    return;
+                                }
+                            } else {
+                                if(coffin.hasAction("Open")) {
+                                    if(!coffin.interact("Open")) {
+                                        Logger.log("Failed to open Coffin");
+                                    }
+                                    return;
+                                }
+
+                                if(!Inventory.use("Ghost's skull")) {
+                                    Logger.log("Failed to use Ghost's skull");
+                                    return;
+                                }
+
+                                if(!coffin.interact()) {
+                                    Logger.log("Failed to interact with Coffin");
+                                    return;
+                                }
                             }
 
                             Sleep.sleepUntil(Dialogues::inDialogue, 5000);
