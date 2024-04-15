@@ -99,7 +99,8 @@ public class BankingTask implements WatTask {
             if (banker == null || !banker.exists()) {
                 Logger.log("Banking: Looking for bank chest");
                 GameObject chest = GameObjects.closest(x -> x != null && x.canReach()
-                        && allowedObjects.contains(x.getName()) && x.distance() <= 15.00);
+                        && allowedObjects.contains(x.getName()) && x.distance() <= 15.00
+                        && !x.hasAction("Shut") && !x.hasAction("Search"));
 
                 if (chest == null) {
                     Logger.log("Banking: No banker or chest found (15r), walking to nearest bank");
