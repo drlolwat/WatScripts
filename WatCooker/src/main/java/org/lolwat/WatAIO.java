@@ -15,6 +15,8 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
+import org.dreambot.api.methods.walking.web.node.AbstractWebNode;
+import org.dreambot.api.methods.walking.web.node.impl.BasicWebNode;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
@@ -117,6 +119,36 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
         WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
+
+        // draynor basement?
+        AbstractWebNode webNode0 = new BasicWebNode(3117,9752,0);
+        AbstractWebNode webNode1 = new BasicWebNode(3108,9752,0);
+        AbstractWebNode webNode2 = new BasicWebNode(3108,9765,0);
+        AbstractWebNode webNode3 = new BasicWebNode(3097,9765,0);
+        AbstractWebNode webNode4 = new BasicWebNode(3097,9760,0);
+        AbstractWebNode webNode5 = new BasicWebNode(3108,9760,0);
+        AbstractWebNode webNode6 = new BasicWebNode(3108,9752,0);
+        AbstractWebNode webNode7 = new BasicWebNode(3101,9755,0);
+        AbstractWebNode webNode8 = new BasicWebNode(3091,9755,0);
+        webNode0.addConnections(webNode1);
+        webNode1.addConnections(webNode0);
+        webNode1.addConnections(webNode2);
+        webNode2.addConnections(webNode1);
+        webNode2.addConnections(webNode3);
+        webNode3.addConnections(webNode2);
+        webNode3.addConnections(webNode4);
+        webNode4.addConnections(webNode3);
+        webNode4.addConnections(webNode5);
+        webNode5.addConnections(webNode4);
+        webNode5.addConnections(webNode6);
+        webNode6.addConnections(webNode5);
+        webNode6.addConnections(webNode7);
+        webNode7.addConnections(webNode6);
+        webNode7.addConnections(webNode8);
+        webNode8.addConnections(webNode7);
+
+        AbstractWebNode[] webNodes = {webNode0,webNode1,webNode2,webNode3,webNode4,webNode5,webNode6,webNode7,webNode8,};
+        WebFinder.getWebFinder().addWebNodes(webNodes);
     }
 
     @Override
