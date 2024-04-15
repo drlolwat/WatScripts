@@ -149,7 +149,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                                     new Tile(3260, 3374, 0),
                                     new Tile(3261, 3364, 0),
                                     new Tile(3273, 3363, 0),
-                                    new Tile(3283, 3375, 0)), wrapper));
+                                    new Tile(3283, 3375, 0)), false, wrapper));
                         }
                     }));
 
