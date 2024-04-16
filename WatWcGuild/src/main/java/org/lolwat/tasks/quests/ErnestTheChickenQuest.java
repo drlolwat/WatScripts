@@ -31,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ErnestTheChickenQuest implements QuestTask {
-    boolean killedFish = false;
-
     @Override
     public Quest completes() {
         return FreeQuest.ERNEST_THE_CHICKEN;
