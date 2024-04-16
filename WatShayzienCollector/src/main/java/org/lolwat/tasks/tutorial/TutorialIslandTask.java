@@ -577,6 +577,7 @@ public class TutorialIslandTask implements WatTask {
                     break;
                 }
 
+                case 460:
                 case 450: {
                     if(Players.getLocal().isInCombat()) {
                         return;
