@@ -65,6 +65,8 @@ public class GatheringTask implements WatTask {
                 }
 
                 Sleep.sleepUntil(() -> !i.exists() && Players.getLocal().isStandingStill(), 5000);
+            } else {
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
             }
         }
     }
