@@ -82,7 +82,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                     DialogueUtils.continueWhilePossible();
                     DialogueUtils.solve(romeoDialogue);
                 } else {
-                    if (romeo != null) {
+                    if (romeo != null && !Tabs.isDisabled(Tab.INVENTORY)) {
                         if (!romeo.interact("Talk-to")) {
                             Logger.log("Failed to interact with Romeo");
                         }
@@ -107,7 +107,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                 if(Dialogues.inDialogue() || Tabs.isDisabled(Tab.INVENTORY)) {
                     DialogueUtils.continueWhilePossible();
                 } else {
-                    if (juliet != null) {
+                    if (juliet != null && !Tabs.isDisabled(Tab.INVENTORY)) {
                         if (!juliet.interact("Talk-to")) {
                             Logger.log("Failed to interact with Juliet");
                         }
