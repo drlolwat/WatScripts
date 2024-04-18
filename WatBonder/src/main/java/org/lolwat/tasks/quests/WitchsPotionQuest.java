@@ -3,6 +3,7 @@ package org.lolwat.tasks.quests;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -80,6 +81,12 @@ public class WitchsPotionQuest implements QuestTask {
                     }
 
                     if(range != null) {
+                        if(!range.isOnScreen()) {
+                            Camera.rotateToEntity(range);
+                            Sleep.sleepUntil(range::isOnScreen, 5000);
+                            return;
+                        }
+
                         if(Inventory.contains(x -> x != null && x.getName().equals("Raw beef") && !x.isNoted())) {
                             if (Inventory.use("Raw beef") && Mouse.click(range.getClickablePoint())) {
                                 Sleep.sleepUntil(() -> Inventory.contains("Burnt meat"), 5000);
