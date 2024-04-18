@@ -71,6 +71,7 @@ public class RuneMysteriesQuest implements QuestTask {
             }
 
             case 5:
+            case 4:
             case 2:
             case 1: {
                 if(getState() == 1 && !Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Air talisman"))) {
@@ -80,7 +81,8 @@ public class RuneMysteriesQuest implements QuestTask {
                     return;
                 }
 
-                if(!Dialogues.inDialogue() && getState() == 5 && !Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Research notes"))) {
+                if(!Dialogues.inDialogue() && (getState() == 5 || getState() == 4)
+                        && !Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Research notes"))) {
                     TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
                         put("Research notes", 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {{
