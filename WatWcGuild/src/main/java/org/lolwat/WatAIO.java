@@ -122,7 +122,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public int onLoop() {
         if (!Client.isLoggedIn()) {
-            if (TaskManager.getInstance().getCurrentTask() == null || !(TaskManager.getInstance().getCurrentTask() instanceof BreakingTask)) {
+            if (TaskManager.getInstance().getCurrentTask() == null && !(TaskManager.getInstance().getCurrentTask() instanceof BreakingTask)) {
                 TaskManager.getInstance().setCurrentTask(null);
                 Logger.log("Enabling login manager");
                 enableLoginManager();
