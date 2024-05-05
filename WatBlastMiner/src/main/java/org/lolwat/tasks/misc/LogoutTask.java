@@ -50,6 +50,8 @@ public class LogoutTask implements WatTask {
             if(postScript != null) {
                 if(!(postScript instanceof BreakingTask)) {
                     WatAIO.getInstance().enableLoginManager();
+                } else {
+                    WatAIO.getInstance().disableLoginManager();
                 }
 
                 Sleep.sleep(100, 200);
