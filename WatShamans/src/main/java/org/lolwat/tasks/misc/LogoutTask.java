@@ -85,6 +85,7 @@ public class LogoutTask implements WatTask {
                     Sleep.sleep(100, 200);
                 }
 
+                Logger.log("WAIO: logging out for break");
                 WatAIO.getInstance().disableLoginManager();
                 Sleep.sleep(100, 200);
                 Tabs.logout();
