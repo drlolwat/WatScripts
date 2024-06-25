@@ -25,6 +25,7 @@ import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.QuestManager;
@@ -112,6 +113,10 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
+        if(!Menu.isMenuManipulationActive()) {
+            Logger.log("Enabling menu manipulation");
+            Menu.toggleMenuManipulation(true);
+        }
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
