@@ -547,44 +547,27 @@ public class BankingTask implements WatTask {
                         Sleep.sleep(100, 200);
                     }
 
-                    boolean needsMule = true;
-                    for(Item i : Bank.all()) {
-                        if(i == null || !i.isTradable())
-                            continue;
-
-                        int q = i.getAmount();
-                        int a = NumUtils.getItemPrice(i.getName()) * q;
-
-                        if(a >= 5000) {
-                            needsMule = false;
-                            runLiquidation = true;
-                            break;
+                    if (!ConfigManager.getInstance().getConfigBoolean("disable_mule") && !ConfigManager.getInstance().hasMuleConnectionFailed()) {
+                        if (Bank.contains("Coins")) {
+                            finalPrice -= Bank.count("Coins");
                         }
-                    }
 
-                    if (needsMule) {
-                        if(!ConfigManager.getInstance().getConfigBoolean("disable_mule") && !ConfigManager.getInstance().hasMuleConnectionFailed()) {
-                            if (Bank.contains("Coins")) {
-                                finalPrice -= Bank.count("Coins");
-                            }
-
-                            if (Inventory.contains("Coins")) {
-                                finalPrice -= Inventory.count("Coins");
-                            }
-
-                            Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
-                            int totalPrice = finalPrice;
-                            TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                                {
-                                    put("Coins", totalPrice);
-                                }
-                            }, this));
-                            return;
-                        } else {
-                            Logger.log("We are out of GP, time to go and make some.");
-                            TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
-                            return;
+                        if (Inventory.contains("Coins")) {
+                            finalPrice -= Inventory.count("Coins");
                         }
+
+                        Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
+                        int totalPrice = finalPrice;
+                        TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                            {
+                                put("Coins", totalPrice);
+                            }
+                        }, this));
+                        return;
+                    } else {
+                        Logger.log("We are out of GP, time to go and make some.");
+                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
+                        return;
                     }
                 } else {
                     if (!ConfigManager.getInstance().getConfigBoolean("disable_mule") && !ConfigManager.getInstance().hasMuleConnectionFailed()) {
@@ -613,12 +596,6 @@ public class BankingTask implements WatTask {
                         return;
                     }
                 }
-            }
-
-            if (runLiquidation) {
-                Logger.log("Exchanger: Handing off to G.E task");
-                TaskManager.getInstance().setCurrentTask(new LiquidationTask(this, toWithdraw));
-                return;
             }
         }
 
