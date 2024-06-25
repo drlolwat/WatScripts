@@ -4,9 +4,8 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-
-import static org.dreambot.api.utilities.Logger.log;
 
 public class TutorialUtils {
     private static final Tab[] tabs = new Tab[]{Tab.COMBAT, Tab.SKILLS, Tab.QUEST, Tab.INVENTORY, Tab.EQUIPMENT,
@@ -24,6 +23,7 @@ public class TutorialUtils {
     }
 
     public static Tab getTab() {
+        // maybe 14192, 2691, 1010 // WAS 1021
         int conf = PlayerSettings.getConfig(1021) & 15;
         conf -= 1;
         int conf2 = PlayerSettings.getConfig(281);
@@ -41,8 +41,9 @@ public class TutorialUtils {
     public static void handleTab() {
         if(isOnTutorial()) {
             final Tab t = getTab();
-            if (t == null) {
-                log("Tab is null?");
+
+            if(t == null) {
+                Logger.log("TutorialUtils: Failed to get tab");
                 return;
             }
 
