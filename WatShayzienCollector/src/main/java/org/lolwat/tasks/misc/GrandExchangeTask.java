@@ -6,6 +6,7 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.grandexchange.GrandExchangeItem;
+import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.widget.Widget;
@@ -283,8 +284,8 @@ public class GrandExchangeTask implements WatTask {
                                         item.setValue(0);
                                         Logger.error("Error collecting cancelled item from G.E");
                                     } else {
-                                        int curPrice = NumUtils.getItemPrice(item.getKey());
-                                        if (curPrice >= (itemCost * 3)) {
+                                        int curPrice = LivePrices.get(itemFinal);
+                                        if (itemCost >= (curPrice * 3)) {
                                             Logger.log("Cancelled item " + item.getKey() + ", we're at max price so we will try again..");
                                         } else {
                                             Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
