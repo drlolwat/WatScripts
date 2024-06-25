@@ -19,18 +19,20 @@ public class TutorialUtils {
     public static final int ACCEPT = 68; // appearance
 
     public static boolean needsOpenTab() {
-        return PlayerSettings.getConfig(1021) != 2560 && PlayerSettings.getConfig(1021) != 2048;
+        return PlayerSettings.getConfig(1021) != 33556992 && PlayerSettings.getConfig(1021) != 33556480;
     }
 
     public static Tab getTab() {
         // maybe 14192, 2691, 1010 // WAS 1021
         int conf = PlayerSettings.getConfig(1021) & 15;
         conf -= 1;
-        int conf2 = PlayerSettings.getConfig(281);
-        if (conf2 == 580) {
+        //log("Config 1021 adjusted index: " + conf); // more logging
+        int tutorialstep = PlayerSettings.getConfig(281);
+        //log("Config 281: " + tutorialstep); // more logging
+        if (tutorialstep == 580) {
             conf = 9;
         }
-        if (conf2 == 590)
+        if (tutorialstep == 590)
             conf = 8;
         if (conf >= 0 && conf < tabs.length) {
             return tabs[conf];
