@@ -89,6 +89,8 @@ public class TaskManager {
                 && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3
                 && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("quest_min_ttl");
 
+        //quest = true;
+
         if(!quest) {
             for (WatTask task : tasks) {
                 if (task.trainsSkill().equals(Skill.HITPOINTS))
@@ -282,7 +284,7 @@ public class TaskManager {
         if(ConfigManager.getInstance().isTradeUnlocked()
                 && ConfigManager.getInstance().getConfigBoolean("logout_after_unrestricted")) {
 
-            setCurrentTask(new LogoutTask(true, true,null), 0);
+            setCurrentTask(new LogoutTask(true, !ConfigManager.getInstance().getConfigBoolean("disable_mule"),null), 0);
             Logger.log("We are going to the bank to log out");
             return true;
         }
