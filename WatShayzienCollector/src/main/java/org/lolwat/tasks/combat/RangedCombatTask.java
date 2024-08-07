@@ -23,6 +23,7 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.ranged.RangedUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.ArrayList;
@@ -123,7 +124,6 @@ public class RangedCombatTask implements WatTask {
             Sleep.sleep(60, 120);
         }
 
-        Sleep.sleep(300, 500);
 
         if (!Tabs.isOpen(Tab.INVENTORY)) {
             Tabs.open(Tab.INVENTORY);
@@ -137,6 +137,11 @@ public class RangedCombatTask implements WatTask {
         GenericUtils.handleSpecial();
 
         if (!Players.getLocal().isInCombat()) {
+            if(GenericUtils.tooManyPlayers(10, 3)) {
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
+                return;
+            }
+
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
                 GenericUtils.moveMouseInOrOut();
