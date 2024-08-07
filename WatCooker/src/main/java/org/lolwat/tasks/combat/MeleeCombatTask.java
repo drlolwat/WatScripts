@@ -23,6 +23,7 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.HashMap;
@@ -128,8 +129,6 @@ public class MeleeCombatTask implements WatTask {
             Sleep.sleep(60, 120);
         }
 
-        Sleep.sleep(300, 500);
-
         if (!Tabs.isOpen(Tab.INVENTORY)) {
             Tabs.open(Tab.INVENTORY);
             Sleep.sleep(300, 500);
@@ -142,6 +141,11 @@ public class MeleeCombatTask implements WatTask {
         GenericUtils.handleSpecial();
 
         if (!Players.getLocal().isInCombat()) {
+            if(GenericUtils.tooManyPlayers(10, 3)) {
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
+                return;
+            }
+
             if(!pickups.isEmpty() && !Inventory.isFull()) {
                 GenericUtils.handlePickup(pickups);
             }
