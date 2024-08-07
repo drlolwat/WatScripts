@@ -84,8 +84,6 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute() {
-        boolean runLiquidation = false;
-
         List<String> allowedObjects = new ArrayList<String>() {
             {
                 add("Bank booth");
