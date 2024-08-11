@@ -104,7 +104,8 @@ public class TraversalTask implements WatTask {
                     TaskManager.getInstance().setCurrentTask(null);
                 }
 
-                return;
+                Tile current = Players.getLocal().getTile();
+                Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(current), 15000);
             }
         }
 
