@@ -1,6 +1,7 @@
 package org.lolwat.tasks.misc;
 
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -48,6 +49,7 @@ public class TraversalTask implements WatTask {
     boolean hasTeleported = false;
     double taskStartedAt;
     Tile startedOnTile;
+    boolean hadNoobChance;
 
     @Override
     public String getName() {
@@ -65,6 +67,7 @@ public class TraversalTask implements WatTask {
         lastWalk = 0;
         taskStartedAt = Instant.now().getEpochSecond();
         startedOnTile = Players.getLocal().getTile();
+        hadNoobChance = false;
 
         Logger.log("Walking to area for task " + post.getName());
     }
@@ -73,6 +76,15 @@ public class TraversalTask implements WatTask {
     public void execute() {
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
+        }
+
+        if(!hadNoobChance && !(postTask instanceof AeglenModeTask)) {
+            int noobMode = Calculations.random(Combat.getCombatLevel() * 2);
+            if(noobMode < Combat.getCombatLevel()) {
+                TaskManager.getInstance().setCurrentTask(new AeglenModeTask(this, Calculations.random(120)));
+                return;
+            }
+            hadNoobChance = true;
         }
 
         int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
