@@ -34,7 +34,7 @@ public class MeleeUtils {
     public static HashMap<EquipmentSlot, String> bestGearForLevel() {
         HashMap<EquipmentSlot, String> ret = new HashMap<>();
 
-        if(Combat.getCombatLevel() <= 15) {
+        if(Combat.getCombatLevel() < 10) {
             ret.put(EquipmentSlot.WEAPON, "Bronze sword");
             ret.put(EquipmentSlot.SHIELD, "Wooden shield");
         }
