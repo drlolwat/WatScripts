@@ -2,6 +2,7 @@ package org.lolwat.tasks.misc;
 
 import com.google.common.collect.Lists;
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -36,13 +37,16 @@ public class AeglenModeTask implements WatTask {
 
     @Override
     public void execute() {
-        if ((System.currentTimeMillis()) - startedAt > (secondsToRun * 1000L)) {
+        if (((System.currentTimeMillis()) - startedAt > (secondsToRun * 1000L)) || Players.getLocal().isInCombat()
+                || Combat.isInWild()) {
+
             TaskManager.getInstance().setCurrentTask(post);
             return;
         }
 
-        int n = Calculations.random(5);
+        int n = Calculations.random(15);
         if(n == 1) {
+            Logger.log("Noob mode hit 1");
             for(GameObject o : GameObjects.all(x -> x != null && x.isOnScreen() && !examined.contains(x.getName())
                     && !x.getName().equalsIgnoreCase("null"))) {
 
@@ -58,6 +62,7 @@ public class AeglenModeTask implements WatTask {
 
             Sleep.sleep(Calculations.random(1000, 5000));
         } else {
+            Logger.log("Noob mode hit else");
             List<String> openable = Collections.singletonList("Gate");
             for(GameObject o : GameObjects.all(x -> x != null && x.isOnScreen() && openable.contains(x.getName())
                     && x.hasAction("Open") && x.distance(Players.getLocal()) <= 10)) {
