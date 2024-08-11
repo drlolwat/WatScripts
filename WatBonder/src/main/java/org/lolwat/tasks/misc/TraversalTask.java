@@ -1,7 +1,6 @@
 package org.lolwat.tasks.misc;
 
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -78,14 +77,14 @@ public class TraversalTask implements WatTask {
             TutorialUtils.handleTab();
         }
 
-        if(!hadNoobChance && !(postTask instanceof AeglenModeTask)) {
+        /*if(!hadNoobChance && !(postTask instanceof AeglenModeTask)) {
             int noobMode = Calculations.random(Combat.getCombatLevel() * 2);
             if(noobMode < Combat.getCombatLevel()) {
                 TaskManager.getInstance().setCurrentTask(new AeglenModeTask(this, Calculations.random(120)));
                 return;
             }
             hadNoobChance = true;
-        }
+        }*/
 
         int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
         if(sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
