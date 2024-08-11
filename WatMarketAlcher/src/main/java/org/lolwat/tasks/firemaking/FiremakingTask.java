@@ -115,11 +115,6 @@ public class FiremakingTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.FIREMAKING;
     }

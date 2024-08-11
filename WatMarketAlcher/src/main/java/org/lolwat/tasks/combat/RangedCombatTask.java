@@ -17,7 +17,6 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
@@ -152,16 +151,6 @@ public class RangedCombatTask implements WatTask {
     @Override
     public boolean requiresLogin() {
         return true;
-    }
-
-    @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
     }
 
     @Override

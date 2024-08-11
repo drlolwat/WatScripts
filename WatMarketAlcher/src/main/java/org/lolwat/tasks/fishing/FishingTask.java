@@ -12,7 +12,6 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.mixed.FishType;
@@ -21,7 +20,6 @@ import org.lolwat.misc.utils.fishing.FishingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
-import java.time.Instant;
 import java.util.HashMap;
 
 public class FishingTask implements WatTask {
@@ -30,7 +28,6 @@ public class FishingTask implements WatTask {
     private final HashMap<String, Integer> sellingItems;
     private final int minimumLevel;
     private final int maximumLevel;
-    private long lastCatch;
     private Tile currentSpot;
 
     public FishingTask(FishType type, int minLevel, int maxLevel, Tile startingLocation, HashMap<String, Integer> sellItems) {
@@ -102,7 +99,6 @@ public class FishingTask implements WatTask {
                 if(getNpcOnTile(currentSpot) != null && getNpcOnTile(currentSpot).interact(FishingUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
                     GenericUtils.moveMouseInOrOut();
-                    lastCatch = Instant.now().getEpochSecond();
                     Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || !getNpcOnTile(currentSpot).exists() || (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 60000);
                 }
             }
@@ -133,11 +129,6 @@ public class FishingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-        lastCatch = Instant.now().getEpochSecond();
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.FISHING;
     }
@@ -147,15 +138,8 @@ public class FishingTask implements WatTask {
         return maximumLevel;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }

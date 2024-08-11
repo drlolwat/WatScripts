@@ -26,7 +26,6 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -37,7 +36,6 @@ import org.lolwat.tasks.misc.TraversalTask;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class TutorialIslandTask implements WatTask {
@@ -886,16 +884,6 @@ public class TutorialIslandTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
@@ -903,17 +891,5 @@ public class TutorialIslandTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
-    }
-
-    
-
-    @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }

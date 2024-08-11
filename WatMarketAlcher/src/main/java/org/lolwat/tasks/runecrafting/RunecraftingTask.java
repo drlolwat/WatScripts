@@ -15,7 +15,6 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
@@ -24,7 +23,6 @@ import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class RunecraftingTask implements WatTask {
     final int minimumLevel;
@@ -125,16 +123,6 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.RUNECRAFTING;
     }
@@ -143,8 +131,6 @@ public class RunecraftingTask implements WatTask {
     public Integer avoidAfterLevel() {
         return avoidAfterLevel;
     }
-
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
@@ -159,15 +145,5 @@ public class RunecraftingTask implements WatTask {
         return new HashMap<String, Integer>() {{
             put("Pure essence", 28);
         }};
-    }
-
-    @Override
-    public List<String> inventoryTolerated() {
-        return WatTask.super.inventoryTolerated();
-    }
-
-    @Override
-    public boolean requiresMembers() {
-        return WatTask.super.requiresMembers();
     }
 }
