@@ -107,15 +107,16 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         try {
-            image = ImageIO.read(new URL("https://api.botbuddy.net/waio2.png")); //300x143
+            image = ImageIO.read(new URL("https://api.botbuddy.net/paint.png")); //300x143
         } catch (Exception ignored) {
 
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
         if(!Menu.isMenuManipulationActive()) {
-            Logger.log("Enabling menu manipulation");
+            Logger.log("Enabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(true);
+            Walking.toggleNoClickWalk(true);
         }
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
