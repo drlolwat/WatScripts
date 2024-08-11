@@ -105,11 +105,6 @@ public class SmithingIngotTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         cooldown = 0;
     }
@@ -124,15 +119,8 @@ public class SmithingIngotTask implements WatTask {
         return avoidAtLevel;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }
