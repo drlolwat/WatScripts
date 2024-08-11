@@ -140,11 +140,6 @@ public class HighAlchemyTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         Sleep.sleep(360, 720);
         alched = true;
