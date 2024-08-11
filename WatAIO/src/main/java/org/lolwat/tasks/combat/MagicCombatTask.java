@@ -20,7 +20,6 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
@@ -166,15 +165,6 @@ public class MagicCombatTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-    @Override
     public Skill trainsSkill() {
         return Skill.MAGIC;
     }
@@ -186,10 +176,5 @@ public class MagicCombatTask implements WatTask {
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return MagicUtils.getRequiredItems();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }
