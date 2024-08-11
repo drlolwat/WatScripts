@@ -143,6 +143,10 @@ public class TaskManager {
                         t.data().put("gp_to_generate", gpToGenerate);
                     }
 
+                    if(getCurrentTask() != null) {
+                        t.data().put("previous_task", getCurrentTask());
+                    }
+
                     Logger.log(Color.green, "TaskManager: Selected money making task: " + t.getName());
                     setCurrentTask(t, 0);
                     return;
