@@ -158,11 +158,6 @@ public class MiningTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         gotRock = false;
         lastTile = rockTile;
@@ -178,8 +173,6 @@ public class MiningTask implements WatTask {
     public Integer avoidAfterLevel() {
         return maxMiningLevel;
     }
-
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
