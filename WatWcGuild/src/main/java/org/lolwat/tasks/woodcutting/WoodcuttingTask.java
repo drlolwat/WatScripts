@@ -1,10 +1,11 @@
 package org.lolwat.tasks.woodcutting;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -38,10 +39,12 @@ public class WoodcuttingTask implements WatTask {
     private final Area area;
     private final int minimumLevel;
     private final int avoidAfterLevel;
-    private final HashMap<String, Integer> sellList;
+    private HashMap<String, Integer> sellList;
     private long lastGotLog;
     private final boolean dropping;
     private final boolean moneyMaking;
+    private final HashMap<String, Object> data;
+    private boolean gotLog = false;
 
     public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
         treeType = type;
@@ -52,6 +55,7 @@ public class WoodcuttingTask implements WatTask {
         lastGotLog = 0;
         dropping = drop;
         moneyMaking = false;
+        data = new HashMap<>();
     }
 
     public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop, boolean money) {
@@ -63,10 +67,35 @@ public class WoodcuttingTask implements WatTask {
         lastGotLog = 0;
         dropping = drop;
         moneyMaking = money;
+        data = new HashMap<>();
     }
 
     @Override
     public void execute() {
+        if(data.containsKey("gp_to_generate")) {
+            int logsNeeded = (int)data.get("gp_to_generate") / LivePrices.get(WoodcuttingUtils.getLogName(treeType));
+            Logger.log("We need to generate " + data.get("gp_to_generate") + "gp, which is " + logsNeeded + " logs");
+
+            if(Bank.isOpen()) {
+                int coins = (Bank.contains("Coins") ? Bank.get("Coins").getAmount() : 0)
+                        + (Inventory.contains("Coins") ? Inventory.get("Coins").getAmount() : 0);
+
+                if(coins >= (int)data.get("gp_to_generate")) {
+                    WatTask t = (WatTask)data.get("previous_task");
+                    data.remove("gp_to_generate");
+                    data.remove("previous_task");
+                    TaskManager.getInstance().setCurrentTask(t);
+                    return;
+                }
+            }
+
+            sellList = new HashMap<String, Integer>() {
+                {
+                    put(WoodcuttingUtils.getLogName(treeType), -logsNeeded);
+                }
+            };
+        }
+
         String hatchet = WoodcuttingUtils.getBestHatchetForLevel();
         if ((!Inventory.contains(hatchet) && !Equipment.contains(hatchet)) || (Inventory.contains(hatchet) && Inventory.get(hatchet).isNoted())) {
             WatConfig.incrementToolFailures();
@@ -114,8 +143,10 @@ public class WoodcuttingTask implements WatTask {
 
             GameObject tree = GameObjects.closest(x -> x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) && area.contains(x));
             if (tree != null && tree.interact()) {
-                Mouse.move();
-                Sleep.sleepUntil(() -> !tree.exists() || Inventory.isFull() || Dialogues.canContinue(), treeType.equals(TreeType.TREE) ? 5000 : 60000);
+                gotLog = false;
+                Sleep.sleepUntil(() -> (treeType.equals(TreeType.TREE) && gotLog) ||
+                        (!tree.exists() || Inventory.isFull() || Dialogues.canContinue()),
+                        treeType.equals(TreeType.TREE) ? 5000 : 60000);
             } else {
                 Sleep.sleep(5000, 10000);
                 if (lastGotLog > 0 && (Instant.now().getEpochSecond() - lastGotLog) > 30) {
@@ -144,6 +175,7 @@ public class WoodcuttingTask implements WatTask {
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         lastGotLog = Instant.now().getEpochSecond();
+        gotLog = true;
     }
 
     @Override
@@ -155,8 +187,6 @@ public class WoodcuttingTask implements WatTask {
     public Integer avoidAfterLevel() {
         return avoidAfterLevel;
     }
-
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
@@ -185,5 +215,10 @@ public class WoodcuttingTask implements WatTask {
                 add(WoodcuttingUtils.getBestHatchetForLevel());
             }
         };
+    }
+
+    @Override
+    public HashMap<String, Object> data() {
+        return data;
     }
 }
