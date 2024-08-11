@@ -11,7 +11,7 @@ import org.lolwat.managers.types.WatTask;
 public class AeglenModeTask implements WatTask {
     @Override
     public String getName() {
-        return "Aeglen";
+        return "Aeglen (Noob)";
     }
 
     public AeglenModeTask() {
