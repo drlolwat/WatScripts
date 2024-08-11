@@ -277,7 +277,8 @@ public class TutorialIslandTask implements WatTask {
                     break;
                 }
 
-                case 120: {
+                case 120:
+                case 130: {
                     Area area = new Area(3073, 3086, 3078, 3083);
                     if (!area.contains(Players.getLocal())) {
                         TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
