@@ -11,7 +11,6 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.helpers.Smithing;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.smithing.IngotType;
@@ -95,16 +94,6 @@ public class SmithingItemTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.SMITHING;
     }
@@ -114,15 +103,9 @@ public class SmithingItemTask implements WatTask {
         return maximumLevel;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return GenericUtils.getSkillingGear();
     }
 
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
-    }
 }
