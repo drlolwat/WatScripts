@@ -11,7 +11,6 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -86,16 +85,6 @@ public class CleanHerbTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.HERBLORE;
     }
@@ -103,13 +92,6 @@ public class CleanHerbTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return maxLevel;
-    }
-
-    
-
-    @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
     }
 
     @Override
