@@ -10,7 +10,6 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.crafting.CraftingType;
@@ -88,16 +87,6 @@ public class JewelryTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.CRAFTING;
     }
@@ -106,8 +95,6 @@ public class JewelryTask implements WatTask {
     public Integer avoidAfterLevel() {
         return avoidAtLevel;
     }
-
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {

@@ -142,11 +142,6 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 650;
-    }
-
-    @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         lastGotLog = Instant.now().getEpochSecond();
     }
