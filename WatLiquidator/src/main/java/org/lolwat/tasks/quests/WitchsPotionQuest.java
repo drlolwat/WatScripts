@@ -9,6 +9,7 @@ import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -81,7 +82,7 @@ public class WitchsPotionQuest implements QuestTask {
                     }
 
                     if(range != null) {
-                        if(!range.isOnScreen()) {
+                        if(!range.isOnScreen() || !Map.isTileOnScreen(range.getTile())) {
                             Camera.rotateToEntity(range);
                             Sleep.sleepUntil(range::isOnScreen, 5000);
                             return;
