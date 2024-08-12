@@ -9,7 +9,6 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
@@ -46,9 +45,9 @@ public class WoodcuttingTask implements WatTask {
     private final HashMap<String, Object> data;
     private boolean gotLog = false;
 
-    public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
+    public WoodcuttingTask(TreeType type, Area startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop) {
         treeType = type;
-        area = startingLocation.getArea(15);
+        area = startingLocation;
         avoidAfterLevel = maxLevel;
         minimumLevel = minLevel;
         sellList = sellingList;
@@ -58,9 +57,9 @@ public class WoodcuttingTask implements WatTask {
         data = new HashMap<>();
     }
 
-    public WoodcuttingTask(TreeType type, Tile startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop, boolean money) {
+    public WoodcuttingTask(TreeType type, Area startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop, boolean money) {
         treeType = type;
-        area = startingLocation.getArea(15);
+        area = startingLocation;
         avoidAfterLevel = maxLevel;
         minimumLevel = minLevel;
         sellList = sellingList;
@@ -74,7 +73,6 @@ public class WoodcuttingTask implements WatTask {
     public void execute() {
         if(data.containsKey("gp_to_generate")) {
             int logsNeeded = (int)data.get("gp_to_generate") / LivePrices.get(WoodcuttingUtils.getLogName(treeType));
-            Logger.log("We need to generate " + data.get("gp_to_generate") + "gp, which is " + logsNeeded + " logs");
 
             if(Bank.isOpen()) {
                 int coins = (Bank.contains("Coins") ? Bank.get("Coins").getAmount() : 0)
@@ -87,6 +85,8 @@ public class WoodcuttingTask implements WatTask {
                     TaskManager.getInstance().setCurrentTask(t);
                     return;
                 }
+
+                Logger.log("We need to generate " + data.get("gp_to_generate") + "gp, which is " + logsNeeded + " logs");
             }
 
             sellList = new HashMap<String, Integer>() {
