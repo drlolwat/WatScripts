@@ -81,6 +81,9 @@ public class MeleeCombatTask implements WatTask {
         }
 
         for(String n : inventoryRequired().keySet()) {
+            if(!inventoryRequired().containsKey(n) || inventoryRequired().get(n) == null || inventoryRequired().get(n) == 0)
+                continue;
+
             if(!Inventory.contains(n) || Inventory.get(n).isNoted()) {
                 Logger.error("MeleeCombatTask was missing " + n + " (" + Inventory.count(n) + "/" + inventoryRequired().get(n) + ")");
                 TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this));
