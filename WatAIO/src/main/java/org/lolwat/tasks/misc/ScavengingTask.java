@@ -7,14 +7,17 @@ import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.NumUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,7 +30,9 @@ public class ScavengingTask implements WatTask {
 
     private final List<String> avoidItems;
     private final List<String> itemsTaken;
-    private final int maxScavenge = 50000;
+    private final HashMap<String, Object> data;
+    private final int originalWorld;
+    private final List<Integer> acceptableWorlds;
 
     @Override
     public String getName() {
@@ -43,12 +48,20 @@ public class ScavengingTask implements WatTask {
         };
 
         itemsTaken = new ArrayList<>();
+        data = new HashMap<>();
+        originalWorld = Worlds.getCurrentWorld();
+        acceptableWorlds = Arrays.asList(301, 308);
     }
 
     @Override
     public void execute() {
         if(!scavengingZone.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(scavengingZone, this));
+            return;
+        }
+
+        if(!acceptableWorlds.contains(Worlds.getCurrentWorld())) {
+            TaskManager.getInstance().setCurrentTask(new HopperTask(301, this));
             return;
         }
 
@@ -68,14 +81,16 @@ public class ScavengingTask implements WatTask {
             }
         }
 
+        int maxScavenge = data().containsKey("gp_to_generate") ? (int)data().get("gp_to_generate") : 50000;
         if(Inventory.isFull() || worth > maxScavenge) {
             itemsTaken.clear();
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellList, 1, (worth > maxScavenge) ? null : this));
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellList, 1,
+                    (worth > maxScavenge) ? new HopperTask(originalWorld, null) : this));
             return;
         }
 
         for(GroundItem item : GroundItems.all(x -> !avoidItems.contains(x.getName().toLowerCase()) && scavengingZone.contains(x))) {
-            if(item == null || !item.exists()) {
+            if(item == null || !item.exists() || NumUtils.getItemPrice(item.getName()) < 100) {
                 continue;
             }
 
@@ -116,8 +131,6 @@ public class ScavengingTask implements WatTask {
         return 101;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<>();
@@ -126,5 +139,10 @@ public class ScavengingTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<>();
+    }
+
+    @Override
+    public HashMap<String, Object> data() {
+        return data;
     }
 }
