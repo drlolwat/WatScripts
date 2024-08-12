@@ -353,7 +353,6 @@ public class TaskManager {
             }
         }
 
-        tasks.add(new CowhideCollectorTask());
         tasks.add(new ScavengingTask());
 
         return tasks;
@@ -465,9 +464,48 @@ public class TaskManager {
 
     private List<WatTask> createRestrictedMMTasks() {
         List<WatTask> tasks = new ArrayList<>();
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false, true)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 99, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(120, 250)); }}, false, true)); //grand exchange south wall
-        //tasks.add(new GEBeggingTask());
+
+        // ------------- REGULAR LOGS
+        // VARROCK EAST
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
+                new Tile(3272, 3438, 0),
+                new Tile(3293, 3438, 0),
+                new Tile(3294, 3485, 0),
+                new Tile(3273, 3485, 0)), 1, 21,
+                new HashMap<String, Integer>() {
+                    {
+                        put("Logs", -Calculations.random(200, 400));
+                    }
+                },
+                false));
+
+        // LUMBRIDGE WEST
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
+                new Tile(3161, 3208, 0),
+                new Tile(3199, 3208, 0),
+                new Tile(3199, 3237, 0),
+                new Tile(3199, 3256, 0),
+                new Tile(3139, 3237, 0)), 1, 21,
+                new HashMap<String, Integer>() {
+                    {
+                        put("Logs", -Calculations.random(200, 400));
+                    }
+                },
+                false));
+
+        // VARROCK WEST
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
+                new Tile(3158, 3417, 0),
+                new Tile(3158, 3380, 0),
+                new Tile(3174, 3378, 0),
+                new Tile(3172, 3426, 0)), 1, 21,
+                new HashMap<String, Integer>() {
+                    {
+                        put("Logs", -Calculations.random(200, 400));
+                    }
+                },
+                false));
+
 
         return tasks;
     }
@@ -1096,22 +1134,87 @@ public class TaskManager {
     private List<WatTask> createWoodcuttingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        // regular logs
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3275, 3443), 1, 21, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(200, 400)); }}, false)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3160, 3455), 1, 21, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(200, 400)); }}, false)); //grand exchange south wall
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Tile(3194, 3248), 1, 21, new HashMap<String, Integer>() { { put("Logs", -Calculations.random(200, 400)); }}, false)); //lumbridge
+        // ------------- REGULAR LOGS
+        // VARROCK EAST
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
+                new Tile(3272, 3438, 0),
+                new Tile(3293, 3438, 0),
+                new Tile(3294, 3485, 0),
+                new Tile(3273, 3485, 0)), 1, 21,
+                new HashMap<String, Integer>() {
+                    {
+                        put("Logs", -Calculations.random(200, 400));
+                    }
+                },
+                false));
 
-        // oak logs
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -Calculations.random(200, 400)); put("Logs", -1); }}, false)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -Calculations.random(200, 400)); put("Logs", -1); }}, false)); //varrock west
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243), 21, 50, new HashMap<String, Integer>() { { put("Oak logs", -Calculations.random(200, 400)); put("Logs", -1); }}, false)); //lumbridge
+        // LUMBRIDGE WEST
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
+                new Tile(3161, 3208, 0),
+                new Tile(3199, 3208, 0),
+                new Tile(3199, 3237, 0),
+                new Tile(3199, 3256, 0),
+                new Tile(3139, 3237, 0)), 1, 21,
+                new HashMap<String, Integer>() {
+                    {
+                        put("Logs", -Calculations.random(200, 400));
+                    }
+                },
+                false));
 
-        // willow logs
-        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276), 50, 99, new HashMap<String, Integer>(){ { put("Willow logs", -2000); put("Oak logs", -1); put("Logs", -1); }}, false)); //lumbridge
+        // VARROCK WEST
+        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
+                new Tile(3158, 3417, 0),
+                new Tile(3158, 3380, 0),
+                new Tile(3174, 3378, 0),
+                new Tile(3172, 3426, 0)), 1, 21,
+                new HashMap<String, Integer>() {
+                    {
+                        put("Logs", -Calculations.random(200, 400));
+                    }
+                },
+                false));
 
-        // yew logs
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -Calculations.random(200, 400)); }}, false)); //edge
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502), 60, 99, new HashMap<String, Integer>() { { put("Yew logs", -Calculations.random(200, 400)); }}, false)); //g.e
+        // ------------- OAK LOGS
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429).getArea(10), 21, 50, new HashMap<String, Integer>() {
+            {
+                put("Oak logs", -Calculations.random(200, 400));
+                put("Logs", -1);
+            }
+        }, false)); //varrock east
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422).getArea(10), 21, 50, new HashMap<String, Integer>() {
+            {
+                put("Oak logs", -Calculations.random(200, 400));
+                put("Logs", -1);
+            }
+        }, false)); //varrock west
+        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243).getArea(10), 21, 50, new HashMap<String, Integer>() {
+            {
+                put("Oak logs", -Calculations.random(200, 400));
+                put("Logs", -1);
+            }
+        }, false)); //lumbridge
+
+        // ------------- WILLOW LOGS
+        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276).getArea(10), 50, 99, new HashMap<String, Integer>() {
+            {
+                put("Willow logs", -2000);
+                put("Oak logs", -1);
+                put("Logs", -1);
+            }
+        }, false)); //lumbridge
+
+        // ------------- YEW LOGS
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475).getArea(10), 60, 99, new HashMap<String, Integer>() {
+            {
+                put("Yew logs", -Calculations.random(200, 400));
+            }
+        }, false)); //edge
+        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502).getArea(10), 60, 99, new HashMap<String, Integer>() {
+            {
+                put("Yew logs", -Calculations.random(200, 400));
+            }
+        }, false)); //g.e
 
         return tasks;
     }
