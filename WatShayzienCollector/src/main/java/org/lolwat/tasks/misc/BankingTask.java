@@ -125,7 +125,6 @@ public class BankingTask implements WatTask {
             } else {
                 Logger.log("Banking: Opening bank via Banker (distance: " + banker.distance() + ")");
                 if (!Bank.open()) {
-                    Logger.error("Banking: Failed to open bank");
                     return;
                 }
             }
