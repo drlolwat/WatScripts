@@ -91,32 +91,41 @@ public class GenericUtils {
     }
 
     public static void handlePickup(List<String> items) {
-        if(ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
+        if (ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
             items.add("Bones");
             items.add("Big bones");
         }
 
-        for(GroundItem i : GroundItems.all()) {
-            if(i == null || i.getTile() == null || i.getName() == null)
-                continue;
+        GroundItem i = GroundItems.closest(x -> x != null && items.contains(x.getName()) && x.distance() <= 4 && x.canReach());
 
-            if(items.contains(i.getName())) {
-                if(i.interact("Take")) {
+        if(items != null && i != null) {
+            if (items.contains(i.getName())) {
+                if (i.interact("Take")) {
                     Logger.log("GenericUtils: Picked up item: " + i.getName());
                     Sleep.sleepUntil(() -> !i.exists(), 5000);
                 }
             }
         }
 
-        if(ConfigManager.getInstance().getConfigBoolean("pickup_bones") && Inventory.isFull()) {
-            for(Item i : Inventory.all(x -> x.hasAction("Bury"))) {
-                if(i == null)
+        if (ConfigManager.getInstance().getConfigBoolean("pickup_bones") && Inventory.isFull()) {
+            for (Item ix : Inventory.all(x -> x.hasAction("Bury"))) {
+                if (ix == null)
                     continue;
 
-                if(!i.interact("Bury")) {
-                    Logger.error("GenericUtils: Failed to bury item: " + i.getName());
-                    Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(50, 120));
+                if(Players.getLocal().isInCombat()) {
+                    break;
                 }
+
+                if(Dialogues.inDialogue()) {
+                    DialogueUtils.continueWhilePossible();
+                    Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(1200, 1800));
+                }
+
+                if (!ix.interact("Bury")) {
+                    Logger.error("GenericUtils: Failed to bury item: " + ix.getName());
+                }
+
+                Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1200, 1800));
             }
         }
     }
