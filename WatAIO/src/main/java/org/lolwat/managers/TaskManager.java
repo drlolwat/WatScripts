@@ -189,7 +189,7 @@ public class TaskManager {
 
         taskRunTime = runtime > 0
                 ? runtime
-                : Calculations.random(1200, 3750 + (value != null && value.trainsSkill() != null
+                : Calculations.random(1200, 1800 + (value != null && value.trainsSkill() != null
                 ? (60 * Skills.getRealLevel(value.trainsSkill()))
                 : 0));
     }
@@ -1150,11 +1150,11 @@ public class TaskManager {
 
         // LUMBRIDGE WEST
         tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
-                new Tile(3161, 3208, 0),
-                new Tile(3199, 3208, 0),
-                new Tile(3199, 3237, 0),
-                new Tile(3199, 3256, 0),
-                new Tile(3139, 3237, 0)), 1, 21,
+                new Tile(3204, 3255, 0),
+                new Tile(3204, 3238, 0),
+                new Tile(3150, 3238, 0),
+                new Tile(3150, 3255, 0),
+                new Tile(3153, 3261, 0)), 1, 21,
                 new HashMap<String, Integer>() {
                     {
                         put("Logs", -Calculations.random(200, 400));
