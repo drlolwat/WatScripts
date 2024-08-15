@@ -71,6 +71,7 @@ public class ConfigManager {
         defaultProfile.addProperty("use_profile_cape", false);
         defaultProfile.addProperty("faster_quests", false);
         defaultProfile.addProperty("pickup_bones", false);
+        defaultProfile.addProperty("rest_after_tut", 0);
 
         return defaultProfile;
     }
