@@ -25,6 +25,7 @@ import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -148,8 +149,8 @@ public class MeleeCombatTask implements WatTask {
                 return;
             }
 
-            if(!pickups.isEmpty() && !Inventory.isFull()) {
-                GenericUtils.handlePickup(pickups);
+            if(!Inventory.isFull()) {
+                GenericUtils.handlePickup(pickups != null && !pickups.isEmpty() ? pickups : new ArrayList<>());
             }
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.canReach() && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
