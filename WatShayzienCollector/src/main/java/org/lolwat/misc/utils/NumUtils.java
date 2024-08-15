@@ -25,7 +25,7 @@ public class NumUtils {
             return itemPrices.get(item);
         }
 
-        itemPrices.put(item, (int) (LivePrices.get(item) * 1.2));
+        itemPrices.put(item, (int) (LivePrices.getHigh(item) * 1.2));
         return itemPrices.get(item);
     }
 
