@@ -28,6 +28,7 @@ import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -150,6 +151,10 @@ public class MagicCombatTask implements WatTask {
             if(GenericUtils.tooManyPlayers(10, 3)) {
                 TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
                 return;
+            }
+
+            if(!Inventory.isFull()) {
+                GenericUtils.handlePickup(new ArrayList<>());
             }
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
