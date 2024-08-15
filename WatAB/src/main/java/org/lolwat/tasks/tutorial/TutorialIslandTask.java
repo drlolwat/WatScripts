@@ -26,14 +26,17 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
+import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.awt.event.KeyEvent;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -875,7 +878,16 @@ public class TutorialIslandTask implements WatTask {
             }
         } else {
             Logger.log("WAIO: tutorial completed");
-            TaskManager.getInstance().getNewTask();
+            if(ConfigManager.getInstance().getConfigInt("rest_after_tut") > 0) {
+                int time = ConfigManager.getInstance().getConfigInt("rest_after_tut");
+
+                Logger.log("Going to rest for " + time + " minutes");
+                TaskManager.getInstance().setCurrentTask(new BreakingTask(
+                        Instant.now().getEpochSecond() + time),
+                        time * 60);
+            } else {
+                TaskManager.getInstance().getNewTask();
+            }
         }
     }
 
