@@ -11,8 +11,11 @@ import java.util.HashMap;
 
 public class BreakingTask implements WatTask {
     private final double endsAt;
+    private final HashMap<String, Object> data;
+
     public BreakingTask(double expireAt) {
         endsAt = expireAt;
+        data = new HashMap<String, Object>() { { put("seconds_to_run", endsAt-Instant.now().getEpochSecond()); } };
     }
 
     @Override
@@ -65,7 +68,10 @@ public class BreakingTask implements WatTask {
         return 101;
     }
 
-    
+    @Override
+    public HashMap<String, Object> data() {
+        return data;
+    }
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
