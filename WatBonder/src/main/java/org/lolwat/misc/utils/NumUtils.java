@@ -25,7 +25,7 @@ public class NumUtils {
             return itemPrices.get(item);
         }
 
-        itemPrices.put(item, (int) (LivePrices.getHigh(item) * 1.2));
+        itemPrices.put(item, LivePrices.getHigh(item));
         return itemPrices.get(item);
     }
 
@@ -36,7 +36,7 @@ public class NumUtils {
             itemPrices.remove(item);
         }
         else {
-            num = LivePrices.get(item);
+            num = LivePrices.getHigh(item);
         }
 
         if(num < 10) {
