@@ -41,26 +41,14 @@ public class LogoutTask implements WatTask {
 
     @Override
     public void execute() {
-        if(!Client.isLoggedIn()) {
+        if (!Client.isLoggedIn()) {
             return;
         }
 
         Area loc = BankLocation.getNearest().getArea(5);
-        if(loc.contains(Players.getLocal())) {
-            if(postScript != null) {
-                if(!(postScript instanceof BreakingTask)) {
-                    WatAIO.getInstance().enableLoginManager();
-                } else {
-                    WatAIO.getInstance().disableLoginManager();
-                }
-
-                Sleep.sleep(100, 200);
-                TaskManager.getInstance().setCurrentTask(postScript, 0);
-                return;
-            }
-
-            if(endingScript) {
-                if(muleWealth) {
+        if (loc.contains(Players.getLocal())) {
+            if (endingScript) {
+                if (muleWealth) {
                     this.muleWealth = false;
                     TaskManager.getInstance().setCurrentTask(
                             new LiquidationTask(
@@ -73,16 +61,14 @@ public class LogoutTask implements WatTask {
                     return;
                 }
 
-                if(Bank.isOpen()) {
+                if (Bank.isOpen()) {
                     Bank.close();
                     Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
                 }
-
-
             }
 
-            if(Client.isLoggedIn()) {
-                if(!Tabs.open(Tab.LOGOUT)) {
+            if (Client.isLoggedIn()) {
+                if (!Tabs.open(Tab.LOGOUT)) {
                     Tabs.open(Tab.LOGOUT);
                     Sleep.sleep(100, 200);
                 }
@@ -93,7 +79,20 @@ public class LogoutTask implements WatTask {
                 Tabs.logout();
             }
 
-            if(endingScript) {
+            if (postScript != null) {
+                if (!(postScript instanceof BreakingTask)) {
+                    WatAIO.getInstance().enableLoginManager();
+                } else {
+                    WatAIO.getInstance().disableLoginManager();
+                }
+
+                Sleep.sleep(100, 200);
+                TaskManager.getInstance().setCurrentTask(postScript, (postScript instanceof BreakingTask)
+                        ? (int) postScript.data().get("seconds_to_run")
+                        : 0);
+            }
+
+            if (endingScript) {
                 Logger.log("WAIO: job done");
                 ScriptManager.getScriptManager().stop();
             }
