@@ -72,29 +72,29 @@ public class MagicCombatTask implements WatTask {
     public void execute() {
         HashMap<String, Integer> requiredItems = new HashMap<>();
 
-        if(Skills.getRealLevel(Skill.MAGIC) >= 50) {
-            casts *=2;
+        if (Skills.getRealLevel(Skill.MAGIC) >= 50) {
+            casts *= 2;
         }
 
         requiredItems.putAll(MagicUtils.getRunesRequired((Normal) toCast, casts));
         requiredItems.putAll(food);
 
-        if(Equipment.isEmpty() || Equipment.all(x -> x.getName().toLowerCase().contains("staff")).isEmpty()) {
+        if (Equipment.isEmpty() || Equipment.all(x -> x.getName().toLowerCase().contains("staff")).isEmpty()) {
             Logger.log("We need to grab runes and staff...");
-            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1,this));
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
             return;
         }
 
-        if(!MagicUtils.canAffordCast(toCast)) {
+        if (!MagicUtils.canAffordCast(toCast)) {
             Logger.log("We need to grab runes...");
-            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1,this));
+            TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
             return;
         }
 
-        if(!food.isEmpty()) {
-            if(Inventory.isEmpty() || Inventory.all(x -> x.hasAction("Eat")).isEmpty()) {
+        if (!food.isEmpty()) {
+            if (Inventory.isEmpty() || Inventory.all(x -> x.hasAction("Eat")).isEmpty()) {
                 Logger.log("We need to grab food...");
-                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 2,this));
+                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 2, this));
                 return;
             }
         }
@@ -106,8 +106,8 @@ public class MagicCombatTask implements WatTask {
             }
         }
 
-        if(!Magic.isAutocasting()) {
-            if(Bank.isOpen()) {
+        if (!Magic.isAutocasting()) {
+            if (Bank.isOpen()) {
                 Bank.close();
                 Sleep.sleep(120, 240);
             }
@@ -127,8 +127,8 @@ public class MagicCombatTask implements WatTask {
             return;
         }
 
-        if(!Combat.isAutoRetaliateOn()) {
-            if(!Tabs.isOpen(Tab.COMBAT)) {
+        if (!Combat.isAutoRetaliateOn()) {
+            if (!Tabs.isOpen(Tab.COMBAT)) {
                 Tabs.open(Tab.COMBAT);
                 Sleep.sleep(120, 240);
             }
@@ -142,20 +142,19 @@ public class MagicCombatTask implements WatTask {
             Sleep.sleep(300, 500);
         }
 
-        if(Dialogues.canContinue()) {
+        if (Dialogues.canContinue()) {
             Dialogues.continueDialogue();
         }
 
 
         if (!Players.getLocal().isInCombat()) {
-            if(GenericUtils.tooManyPlayers(10, 3)) {
+            if (GenericUtils.tooManyPlayers(10, 3)) {
                 TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
                 return;
             }
 
-            if(!Inventory.isFull()) {
-                GenericUtils.handlePickup(new ArrayList<>());
-            }
+            GenericUtils.handlePickup(new ArrayList<>());
+
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
