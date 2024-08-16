@@ -98,13 +98,17 @@ public class GenericUtils {
 
         GroundItem i = GroundItems.closest(x -> x != null && items.contains(x.getName()) && x.distance() <= 4 && x.canReach());
 
-        if(items != null && i != null) {
-            if (items.contains(i.getName())) {
-                if (i.interact("Take")) {
-                    Logger.log("GenericUtils: Picked up item: " + i.getName());
-                    Sleep.sleepUntil(() -> !i.exists(), 5000);
+        if(!Inventory.isFull()) {
+            if (items != null && i != null) {
+                if (items.contains(i.getName())) {
+                    if (i.interact("Take")) {
+                        Logger.log("GenericUtils: Picked up item: " + i.getName());
+                        Sleep.sleepUntil(() -> !i.exists(), 5000);
+                    }
                 }
             }
+        } else {
+            Logger.log("GenericUtils: Inventory is full, not picking up item: " + i.getName());
         }
 
         if (ConfigManager.getInstance().getConfigBoolean("pickup_bones") && Inventory.isFull()) {
