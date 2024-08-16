@@ -869,7 +869,7 @@ public class TaskManager {
                     new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, new ArrayList<>()));
 
             // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
                     new Tile(3193, 3300, 0),
                     new Tile(3193, 3286, 0),
                     new Tile(3197, 3282, 0),
@@ -892,7 +892,7 @@ public class TaskManager {
             }, new ArrayList<>()));
 
             // lumbridge cows north 2
-            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
                     new Tile(3154, 3344, 0),
                     new Tile(3155, 3316, 0),
                     new Tile(3161, 3316, 0),
@@ -910,7 +910,7 @@ public class TaskManager {
             }, new ArrayList<>()));
 
             // lumbridge east cows
-            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
                     new Tile(3252, 3277, 0),
                     new Tile(3242, 3286, 0),
                     new Tile(3243, 3297, 0),
@@ -922,8 +922,17 @@ public class TaskManager {
                 }
             }, new ArrayList<>()));
 
+            // lumbridge goblins
+            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
+                    new Tile(3241, 3248, 0),
+                    new Tile(3251, 3224, 0),
+                    new Tile(3266, 3215, 0),
+                    new Tile(3263, 3253, 0)), "Goblin",
+                    new HashMap<>(),
+                    new ArrayList<>()));
+
             // falador cows
-            tasks.add(new MeleeCombatTask(sk, 5, 20, new Area(
+            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
                     new Tile(3043, 3306, 0),
                     new Tile(3043, 3311, 0),
                     new Tile(3041, 3313, 0),
@@ -938,15 +947,16 @@ public class TaskManager {
                 }
             }, new ArrayList<>()));
 
+
             // al kharid warriors east
-            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+            tasks.add(new MeleeCombatTask(sk, 25, 45, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
                     put("Trout", 20);
                 }
             }, new ArrayList<>()));
 
             // al kharid warrior west
-            tasks.add(new MeleeCombatTask(sk, 20, 40, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
+            tasks.add(new MeleeCombatTask(sk, 25, 45, new Area(3282, 3177, 3285, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
                 {
                     put("Trout", 20);
                 }
