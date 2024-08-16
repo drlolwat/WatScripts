@@ -717,6 +717,7 @@ public class BankingTask implements WatTask {
 
                 for(Item i : Equipment.all()) {
                     if(i == null) continue;
+                    if(Inventory.isFull()) break;
 
                     if(toUnequip.contains(i.getName())) {
                         if(!Equipment.unequip(x -> x != null && x.getName().equals(i.getName()))) {
