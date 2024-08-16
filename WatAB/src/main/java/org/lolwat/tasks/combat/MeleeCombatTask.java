@@ -149,9 +149,7 @@ public class MeleeCombatTask implements WatTask {
                 return;
             }
 
-            if(!Inventory.isFull()) {
-                GenericUtils.handlePickup(pickups != null && !pickups.isEmpty() ? pickups : new ArrayList<>());
-            }
+            GenericUtils.handlePickup(pickups != null && !pickups.isEmpty() ? pickups : new ArrayList<>());
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.canReach() && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
