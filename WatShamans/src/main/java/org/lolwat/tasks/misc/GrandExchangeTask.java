@@ -284,7 +284,7 @@ public class GrandExchangeTask implements WatTask {
                                         item.setValue(0);
                                         Logger.error("Error collecting cancelled item from G.E");
                                     } else {
-                                        int curPrice = LivePrices.get(itemFinal);
+                                        int curPrice = LivePrices.getHigh(itemFinal);
                                         if (itemCost >= (curPrice * 3)) {
                                             Logger.log("Cancelled item " + item.getKey() + ", we're at max price so we will try again..");
                                         } else {
