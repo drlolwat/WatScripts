@@ -112,6 +112,7 @@ public class GenericUtils {
         }
 
         if (ConfigManager.getInstance().getConfigBoolean("pickup_bones") && Inventory.isFull()) {
+            Sleep.sleep(1000, 2000);
             for (Item ix : Inventory.all(x -> x.hasAction("Bury"))) {
                 if (ix == null)
                     continue;
