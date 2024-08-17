@@ -44,6 +44,12 @@ public class NumUtils {
         }
 
         num = (int) (num * 1.2);
+
+        int currentHigh = LivePrices.getHigh(item);
+        if(num > (currentHigh * 3)) {
+            num = currentHigh;
+        }
+
         itemPrices.put(item, num);
     }
 }
