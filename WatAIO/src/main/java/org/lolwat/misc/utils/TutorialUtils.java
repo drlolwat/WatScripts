@@ -16,7 +16,7 @@ public class TutorialUtils {
     public static final int NAME_LOOKUP_CHILDID = 18; // Actions: "Look up name". If no actions, name is not available
     public static final int NAME_SETNAME_CHILDID = 19; // Actions: "Set name"
     public static final int APPEAR_PAR = 679; // appearance
-    public static final int ACCEPT = 68; // appearance
+    public static final int ACCEPT = 74;//68; // appearance
 
     public static boolean needsOpenTab() {
         return PlayerSettings.getConfig(1021) != 33556992 && PlayerSettings.getConfig(1021) != 33556480;
