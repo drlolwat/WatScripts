@@ -38,6 +38,7 @@ import org.lolwat.tasks.misc.TraversalTask;
 import java.awt.event.KeyEvent;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,7 +102,8 @@ public class TutorialIslandTask implements WatTask {
                     } else {
                         final Widget par = Widgets.getWidget(TutorialUtils.APPEAR_PAR);
                         if (par != null && par.isVisible()) {
-                            List<WidgetChild> widgets = Widgets.getAll(x -> x.hasAction("Select"));
+                            List<String> avoid = Arrays.asList("He/him", "She/her", "They/them", "A", "B");
+                            List<WidgetChild> widgets = Widgets.getAll(x -> x.hasAction("Select") && !avoid.contains(x.getText()));
                             List<WidgetChild> rightArrows = new ArrayList<>();
                             for (int i = 1; i < widgets.size(); i += 2) {
                                 rightArrows.add(widgets.get(i));
@@ -751,6 +753,8 @@ public class TutorialIslandTask implements WatTask {
                         if(accountGuide.canReach()) {
                             if (Dialogues.getOptions() == null) {
                                 DialogueUtils.talkTo("Account Guide");
+                                Sleep.sleep(100, 200);
+                                DialogueUtils.continueWhilePossible();
                             }
                         } else {
                             TaskManager.getInstance().setCurrentTask(new TraversalTask(accountGuide.getTile().getArea(1), this));
