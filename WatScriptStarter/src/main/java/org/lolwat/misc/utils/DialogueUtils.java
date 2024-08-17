@@ -54,6 +54,10 @@ public class DialogueUtils {
             return;
         }
 
+        if(Dialogues.isProcessing()) {
+            return;
+        }
+
         Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
 
         if(!answers.isEmpty() && Dialogues.getOptions() != null) {
