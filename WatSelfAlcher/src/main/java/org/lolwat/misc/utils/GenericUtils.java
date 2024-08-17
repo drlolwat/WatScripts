@@ -119,20 +119,22 @@ public class GenericUtils {
     public static void handleBury() {
         if (ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
             for (Item ix : Inventory.all(x -> x != null && x.hasAction("Bury"))) {
-                if(Players.getLocal().isInCombat()) {
-                    break;
-                }
+                if (ix != null) {
+                    if (Players.getLocal().isInCombat()) {
+                        break;
+                    }
 
-                if(Dialogues.inDialogue()) {
-                    DialogueUtils.continueWhilePossible();
-                    Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(1200, 1800));
-                }
+                    if (Dialogues.inDialogue()) {
+                        DialogueUtils.continueWhilePossible();
+                        Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(1200, 1800));
+                    }
 
-                if (!ix.interact("Bury")) {
-                    Logger.error("GenericUtils: Failed to bury item: " + ix.getName());
-                }
+                    if (!ix.interact("Bury")) {
+                        Logger.error("GenericUtils: Failed to bury item: " + ix.getName());
+                    }
 
-                Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1200, 1800));
+                    Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1200, 1800));
+                }
             }
         }
     }
