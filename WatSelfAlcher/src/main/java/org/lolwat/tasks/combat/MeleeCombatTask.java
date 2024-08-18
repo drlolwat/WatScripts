@@ -144,7 +144,7 @@ public class MeleeCombatTask implements WatTask {
         GenericUtils.handleSpecial();
 
         if (!Players.getLocal().isInCombat()) {
-            if(GenericUtils.tooManyPlayers(10, 3)) {
+            if(GenericUtils.tooManyPlayers(10, 5)) {
                 TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
                 return;
             }
@@ -152,9 +152,11 @@ public class MeleeCombatTask implements WatTask {
             GenericUtils.handlePickup(pickups != null && !pickups.isEmpty() ? pickups : new ArrayList<>());
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.canReach() && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
-            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
-                GenericUtils.moveMouseInOrOut();
+            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && !closestFriend.interact("Attack")) {
+                Logger.error("Error attacking NPC during MeleeCombatTask");
             }
+
+            Sleep.sleepUntil(() -> Players.getLocal().isInCombat(), Calculations.random(1500, 2500));
         }
     }
 
