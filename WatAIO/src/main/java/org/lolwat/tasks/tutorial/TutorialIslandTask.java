@@ -505,7 +505,7 @@ public class TutorialIslandTask implements WatTask {
 
                 case 405: {
                     if(!Equipment.contains("Bronze dagger")) {
-                        if(!Inventory.interact("Bronze dagger", "Equip")) {
+                        if(!Inventory.interact("Bronze dagger", "Wield")) {
                             Logger.error("Tutorial: Problem wielding bronze dagger");
                         } else {
                             Sleep.sleepUntil(() -> Equipment.contains("Bronze dagger"), 5000);
@@ -521,7 +521,7 @@ public class TutorialIslandTask implements WatTask {
                             WidgetChild c = w.getChild(1);
                             if (c != null && c.isVisible() && c.interact()) {
                                 Sleep.sleep(100, 150);
-                                if (Inventory.contains("Bronze dagger") && Inventory.interact("Bronze dagger", "Equip")) {
+                                if (Inventory.contains("Bronze dagger") && Inventory.interact("Bronze dagger", "Wield")) {
                                     Sleep.sleep(50, 120);
                                 }
                             }
