@@ -285,6 +285,11 @@ public class GrandExchangeTask implements WatTask {
                                     } else {
                                         Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
                                         NumUtils.raisePrice(item.getKey());
+
+                                        if(NumUtils.getItemPrice(item.getKey()) > Inventory.count("Coins")) {
+                                            Logger.log("Item price is higher than coin stack, breaking");
+                                            break;
+                                        }
                                     }
                                 }
                             }
