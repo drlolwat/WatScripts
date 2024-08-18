@@ -1,5 +1,6 @@
 package org.lolwat.tasks.misc;
 
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
@@ -28,6 +29,10 @@ public class HopperTask implements WatTask {
 
     @Override
     public void execute() {
+        if(Players.getLocal().isInCombat()) {
+            return;
+        }
+
         if (!Tab.LOGOUT.isOpen()) {
             Tab.LOGOUT.open();
             Sleep.sleep(500, 1000);
@@ -49,6 +54,7 @@ public class HopperTask implements WatTask {
             WorldHopper.hopWorld(world);
         }
 
+        Sleep.sleep(1000, 3000);
         TaskManager.getInstance().setCurrentTask(postTask);
     }
 
