@@ -172,7 +172,8 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                         Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (task) level, picking new task..");
                         TaskManager.getInstance().getSpecificSkillTask(TaskManager.getInstance().getCurrentTask().trainsSkill());
                         return 1000;
-                    }
+                    }//TODO skip the skill if it's already at the target level instead of ending up on break
+                    else
 
                     if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) >=
                             ConfigManager.getInstance().getSkillTarget(TaskManager.getInstance().getCurrentTask().trainsSkill())) {
