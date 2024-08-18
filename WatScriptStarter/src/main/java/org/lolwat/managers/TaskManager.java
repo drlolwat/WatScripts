@@ -171,6 +171,7 @@ public class TaskManager {
         }
 
         Logger.error("TaskManager: could not select a specific task for skill: " + sk.getName());
+        getNewTask();
     }
 
     public WatTask getCurrentTask() {
@@ -923,7 +924,7 @@ public class TaskManager {
             }, new ArrayList<>()));
 
             // lumbridge goblins
-            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
+            tasks.add(new MeleeCombatTask(sk, 12, 30, new Area(
                     new Tile(3241, 3248, 0),
                     new Tile(3251, 3224, 0),
                     new Tile(3266, 3215, 0),
