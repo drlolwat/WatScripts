@@ -72,6 +72,7 @@ public class ConfigManager {
         defaultProfile.addProperty("faster_quests", false);
         defaultProfile.addProperty("pickup_bones", false);
         defaultProfile.addProperty("rest_after_tut", 0);
+        defaultProfile.addProperty("logout_after_ttl", 0);
 
         return defaultProfile;
     }
