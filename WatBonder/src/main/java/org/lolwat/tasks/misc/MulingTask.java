@@ -178,6 +178,7 @@ public class MulingTask implements WatTask {
                     // are we near the player
                     if (p != null) {
                         Logger.log("Detected mule nearby");
+                        Sleep.sleep(4000, 8000);
                         if(!org.dreambot.api.methods.map.Map.isTileOnScreen(p.getTile()) && Camera.rotateToEntity(p)) {
                             Logger.log("Rotated to see mule");
                             Sleep.sleep(100, 500);
