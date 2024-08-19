@@ -156,7 +156,7 @@ public class MeleeCombatTask implements WatTask {
                 Logger.error("Error attacking NPC during MeleeCombatTask");
             }
 
-            Sleep.sleepUntil(() -> Players.getLocal().isInCombat(), Calculations.random(1500, 2500));
+            Sleep.sleepUntil(() -> Players.getLocal().isInCombat(), Calculations.random(3000, 5000));
         }
     }
 
