@@ -218,7 +218,6 @@ public class TaskManager {
                 continue;
 
             if(Skills.getRealLevel(sk) < ConfigManager.getInstance().getSkillTarget(sk)) {
-                //Logger.log("Goal not met for: " + sk.getName() + " (" + Skills.getRealLevel(sk) + "/" + ConfigManager.getInstance().getSkillTarget(sk) + ")");
                 goalsMet = false;
             }
         }
