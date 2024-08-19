@@ -224,7 +224,14 @@ public class TaskManager {
         }
 
         if(goalsMet) {
-            Logger.log("We are going to the bank to log out");
+            Logger.log("We are going to the bank to log out (skill goals met)");
+            setCurrentTask(new LogoutTask(true, true, null), 0);
+            Sleep.sleep(1000, 3000);
+            return true;
+        }
+
+        if(Client.isLoggedIn() && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("logout_after_ttl")) {
+            Logger.log("We are going to the bank to log out (ttl goal met)");
             setCurrentTask(new LogoutTask(true, true, null), 0);
             Sleep.sleep(1000, 3000);
             return true;
