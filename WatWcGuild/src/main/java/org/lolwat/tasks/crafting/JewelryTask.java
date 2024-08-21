@@ -64,7 +64,6 @@ public class JewelryTask implements WatTask {
                 Sleep.sleepUntil(() -> Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)) != null && Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)).isVisible(), 10000);
                 if(Widgets.getWidget(CraftingUtils.getJewelryParentId(craftingType)).getChild(CraftingUtils.getJewelryChildId(craftingType)).interact()) {
                     Sleep.sleep(500, 900);
-                    GenericUtils.moveMouseInOrOut();
                     Sleep.sleepUntil(() -> !Inventory.contains("Gold bar") || Dialogues.canContinue(), 45000);
                 }
             }
