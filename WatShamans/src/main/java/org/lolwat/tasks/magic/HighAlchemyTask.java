@@ -35,7 +35,13 @@ public class HighAlchemyTask implements WatTask {
 
     List<String> items = new ArrayList<String>() {
         {
-            add("Gold necklace");
+            add("Ruby necklace");
+            add("Diamond amulet (u)");
+            add("Emerald necklace");
+            add("Castle wars bracelet(3)");
+            add("Sapphire necklace");
+            add("Ruby amulet (u)");
+            add("Emerald amulet (u)");
         }
     };
 
