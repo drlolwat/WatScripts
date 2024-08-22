@@ -1,6 +1,5 @@
 package org.lolwat.misc.utils;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -259,20 +258,6 @@ public class GenericUtils {
         // Add the shuffled entries back to the original HashMap
         for (Map.Entry<K, V> entry : entryList) {
             hashMap.put(entry.getKey(), entry.getValue());
-        }
-    }
-
-    public static void moveMouseInOrOut() {
-        if(Calculations.random(4) == 1) {
-            Mouse.moveOutsideScreen();
-        } else {
-            Mouse.move();
-        }
-    }
-
-    public static void moveMouse() {
-        if(Calculations.random(10) == 1) {
-            moveMouseInOrOut();
         }
     }
 
