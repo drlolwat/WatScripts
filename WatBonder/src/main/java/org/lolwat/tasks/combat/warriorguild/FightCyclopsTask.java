@@ -25,7 +25,6 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
@@ -266,9 +265,11 @@ public class FightCyclopsTask implements WatTask {
 
         if (!Players.getLocal().isInCombat()) {
             NPC closestFriend = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("cyclops") && !x.isInCombat() && !x.isHealthBarVisible() && fightingArea.contains(x));
-            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && closestFriend.interact("Attack")) {
-                GenericUtils.moveMouseInOrOut();
+            if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && !closestFriend.interact("Attack")) {
+                Logger.log("Error interacting with cyclops");
             }
+
+            Sleep.sleepUntil(() -> Players.getLocal().isInCombat(), Calculations.random(4000, 5000));
         }
     }
 
