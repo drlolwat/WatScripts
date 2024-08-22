@@ -45,11 +45,40 @@ public class BankingTask implements WatTask {
 
     private final List<String> restrictedItems = new ArrayList<String>() {
         {
-            add("logs");
-            add("trout");
-            add("salmon");
-            add("diamond necklace");
-            add("gold bar");
+            add("oak logs");
+            add("willow logs");
+            add("yew logs");
+            add("raw shrimps");
+            add("shrimps");
+            add("raw anchovies");
+            add("anchovies");
+            add("raw lobster");
+            add("lobster");
+            add("clay");
+            add("soft clay");
+            add("copper ore");
+            add("tin ore");
+            add("iron ore");
+            add("silver ore");
+            add("gold ore");
+            add("coal");
+            add("mithril ore");
+            add("adamantite ore");
+            add("runite ore");
+            add("cowhide");
+            add("vial");
+            add("vial of water");
+            add("jug of water");
+            add("fishing bait");
+            add("feather");
+            add("eye of newt");
+            add("wine of zamorak");
+            add("air rune");
+            add("water rune");
+            add("earth rune");
+            add("fire rune");
+            add("mind rune");
+            add("chaos rune");
         }
     };
 
@@ -150,7 +179,7 @@ public class BankingTask implements WatTask {
         for(Item i : Bank.all()) {
             if(i == null) continue;
             if(ConfigManager.getInstance().getItemThreshold(i.getName()) > -1) {
-                if(Bank.count(i.getName()) >= ConfigManager.getInstance().getItemThreshold(i.getName())) {
+                if(Bank.count(i.getName()) > ConfigManager.getInstance().getItemThreshold(i.getName())) {
                     if(!sellingItems.containsKey(i.getName())) {
                         sellingItems.put(i.getName(), Bank.count(i.getName())-ConfigManager.getInstance().getItemThreshold(i.getName()));
                     }
@@ -162,9 +191,9 @@ public class BankingTask implements WatTask {
         if(!allowedToSell) {
             for(String s : sellingItems.keySet()) {
                 if(restrictedItems.contains(s.toLowerCase())) {
-                    allowedToSell = true;
-                } else {
                     toRemove.add(s);
+                } else {
+                    allowedToSell = true;
                 }
             }
 
@@ -185,7 +214,7 @@ public class BankingTask implements WatTask {
 
                 for (Map.Entry<String, Integer> entry : sellingItems.entrySet()) {
                     int triggerAmount = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                    boolean triggered = Bank.contains(entry.getKey()) && Bank.get(entry.getKey()).getAmount() >= triggerAmount;
+                    boolean triggered = Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= triggerAmount;
                     int toWithdraw = entry.getValue();
 
                     if(!triggered && postTask != null && postTask.data().containsKey("gp_to_generate")) {
@@ -234,7 +263,7 @@ public class BankingTask implements WatTask {
                 Logger.log("Nothing to sell");
             }
         } else {
-            Logger.log("Not allowed to sell (account restricted, or restricted items)");
+            Logger.log("Not allowed to sell (account restricted, or restricted items only)");
         }
 
         Logger.log("Sell checker: finished");

@@ -78,14 +78,33 @@ public class ConfigManager {
         defaultProfile.addProperty("logout_after_ttl", 0);
 
         JsonObject items = new JsonObject();
+        items.addProperty("Logs", 200);
+        items.addProperty("Oak logs", 200);
+        items.addProperty("Yew logs", 200);
         items.addProperty("Raw shrimp", 150);
+        items.addProperty("Raw pike", 150);
+        items.addProperty("Raw trout", 150);
         items.addProperty("Lobster", 100);
         items.addProperty("Iron full helm", 1);
         items.addProperty("Iron platebody", 1);
         items.addProperty("Iron platelegs", 1);
         items.addProperty("Iron kiteshield", 1);
         items.addProperty("Iron scimitar", 1);
-
+        items.addProperty("Mithril full helm", 1);
+        items.addProperty("Mithril platebody", 1);
+        items.addProperty("Mithril platelegs", 1);
+        items.addProperty("Mithril kiteshield", 1);
+        items.addProperty("Mithril scimitar", 1);
+        items.addProperty("Adamant full helm", 1);
+        items.addProperty("Adamant platebody", 1);
+        items.addProperty("Adamant platelegs", 1);
+        items.addProperty("Adamant kiteshield", 1);
+        items.addProperty("Adamant scimitar", 1);
+        items.addProperty("Rune full helm", 1);
+        items.addProperty("Rune platebody", 1);
+        items.addProperty("Rune platelegs", 1);
+        items.addProperty("Rune kiteshield", 1);
+        items.addProperty("Rune scimitar", 1);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
@@ -221,7 +240,7 @@ public class ConfigManager {
     }
 
     public boolean isTradeUnlocked() {
-        return Combat.getCombatLevel() >= 50 || getConfigBoolean("ignore_trade_restriction") ||
+        return (Combat.getCombatLevel() >= 50 && Quests.getQuestPoints() >= 10) || getConfigBoolean("ignore_trade_restriction") ||
                 (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 75600 && Quests.getQuestPoints() >= 10);
     }
 
