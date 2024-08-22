@@ -98,7 +98,6 @@ public class FishingTask implements WatTask {
             if(currentSpot != null && getNpcOnTile(currentSpot) != null) {
                 if(getNpcOnTile(currentSpot) != null && getNpcOnTile(currentSpot).interact(FishingUtils.getMenuItemByFishType(fishType))) {
                     Sleep.sleep(1200, 2000);
-                    GenericUtils.moveMouseInOrOut();
                     Sleep.sleepUntil(() -> getNpcOnTile(currentSpot) == null || !getNpcOnTile(currentSpot).exists() || (!Players.getLocal().isAnimating() && !Players.getLocal().isMoving()) || Inventory.isFull() || Dialogues.canContinue() || !hasRequiredItems(), 60000);
                 }
             }
