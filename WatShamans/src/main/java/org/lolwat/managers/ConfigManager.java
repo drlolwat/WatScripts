@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.script.ScriptManager;
@@ -30,6 +31,7 @@ public class ConfigManager {
     private boolean waitingForResponse;
     private HashMap<String, Integer> levelUps;
     private boolean muleConnectionFailed;
+    private HashMap<String, Integer> itemThresholds;
 
     public ConfigManager() {
         config = new HashMap<>();
@@ -38,6 +40,7 @@ public class ConfigManager {
         firstStart = true;
         waitingForResponse = false;
         muleConnectionFailed = false;
+        itemThresholds = new HashMap<>();
     }
 
     private JsonObject getDefaultProfile() {
@@ -74,7 +77,21 @@ public class ConfigManager {
         defaultProfile.addProperty("rest_after_tut", 0);
         defaultProfile.addProperty("logout_after_ttl", 0);
 
+        JsonObject items = new JsonObject();
+        items.addProperty("Raw shrimp", 150);
+        items.addProperty("Lobster", 100);
+        items.addProperty("Iron full helm", 1);
+        items.addProperty("Iron platebody", 1);
+        items.addProperty("Iron platelegs", 1);
+        items.addProperty("Iron kiteshield", 1);
+        items.addProperty("Iron scimitar", 1);
+
+        defaultProfile.add("item_thresholds", items);
         return defaultProfile;
+    }
+
+    public int getItemThreshold(String item) {
+        return itemThresholds.getOrDefault(item, -1);
     }
 
     public void printConfigContents() {
@@ -113,7 +130,14 @@ public class ConfigManager {
             fileWriter.close();
 
             for (String key : jsonObject.keySet()) {
-                config.put(key, jsonObject.get(key));
+                if (key.equals("item_thresholds")) {
+                    JsonObject items = jsonObject.getAsJsonObject(key);
+                    for (String itemKey : items.keySet()) {
+                        itemThresholds.put(itemKey, items.get(itemKey).getAsInt());
+                    }
+                } else {
+                    config.put(key, jsonObject.get(key));
+                }
             }
 
             config.put("hitpoints", 100);
@@ -197,7 +221,7 @@ public class ConfigManager {
     }
 
     public boolean isTradeUnlocked() {
-        return getConfigBoolean("ignore_trade_restriction") ||
+        return Combat.getCombatLevel() >= 50 || getConfigBoolean("ignore_trade_restriction") ||
                 (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 75600 && Quests.getQuestPoints() >= 10);
     }
 
