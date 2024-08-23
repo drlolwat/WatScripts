@@ -178,10 +178,19 @@ public class BankingTask implements WatTask {
         Logger.log("Checking bank for items to sell based on thresholds");
         for(Item i : Bank.all()) {
             if(i == null) continue;
-            if(ConfigManager.getInstance().getItemThreshold(i.getName()) > -1) {
-                if(Bank.count(i.getName()) > ConfigManager.getInstance().getItemThreshold(i.getName())) {
+            int threshold = ConfigManager.getInstance().getItemThreshold(i.getName());
+            if(threshold != 0) {
+                int toCheck = (threshold > 0 ? threshold+1 : -threshold);
+                if(Bank.count(i.getName()) >= toCheck) {
                     if(!sellingItems.containsKey(i.getName())) {
-                        sellingItems.put(i.getName(), Bank.count(i.getName())-ConfigManager.getInstance().getItemThreshold(i.getName()));
+                        int toSell;
+                        if(threshold > 0) {
+                            toSell = Bank.count(i.getName()) - threshold;
+                        } else {
+                            toSell = Bank.count(i.getName());
+                        }
+
+                        sellingItems.put(i.getName(), toSell);
                     }
                 }
             }
