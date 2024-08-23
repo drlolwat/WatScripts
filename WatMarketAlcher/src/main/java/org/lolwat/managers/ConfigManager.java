@@ -61,7 +61,6 @@ public class ConfigManager {
         defaultProfile.addProperty("agility", 1);
         defaultProfile.addProperty("herblore", 1);
         defaultProfile.addProperty("runecrafting", 1);
-
         defaultProfile.addProperty("quests_enabled", true);
         defaultProfile.addProperty("breaks_enabled", true);
         defaultProfile.addProperty("ignore_trade_restriction", false);
@@ -78,13 +77,13 @@ public class ConfigManager {
         defaultProfile.addProperty("logout_after_ttl", 0);
 
         JsonObject items = new JsonObject();
-        items.addProperty("Logs", 200);
-        items.addProperty("Oak logs", 200);
-        items.addProperty("Yew logs", 200);
-        items.addProperty("Raw shrimp", 150);
-        items.addProperty("Raw pike", 150);
-        items.addProperty("Raw trout", 150);
-        items.addProperty("Lobster", 100);
+        items.addProperty("Logs", -200);
+        items.addProperty("Oak logs", -200);
+        items.addProperty("Yew logs", -200);
+        items.addProperty("Raw shrimp", -150);
+        items.addProperty("Raw pike", -150);
+        items.addProperty("Raw trout", -150);
+        items.addProperty("Lobster", -100);
         items.addProperty("Iron full helm", 1);
         items.addProperty("Iron platebody", 1);
         items.addProperty("Iron platelegs", 1);
@@ -105,12 +104,20 @@ public class ConfigManager {
         items.addProperty("Rune platelegs", 1);
         items.addProperty("Rune kiteshield", 1);
         items.addProperty("Rune scimitar", 1);
+        items.addProperty("Amulet of strength", 1);
+        items.addProperty("Amulet of power", 1);
+        items.addProperty("Amulet of magic", 1);
+        items.addProperty("Iron ore", -150);
+        items.addProperty("Coal", -150);
+        items.addProperty("Tin ore", -150);
+        items.addProperty("Copper ore", -150);
+        items.addProperty("Bones", -1);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
 
     public int getItemThreshold(String item) {
-        return itemThresholds.getOrDefault(item, -1);
+        return itemThresholds.getOrDefault(item, 0);
     }
 
     public void printConfigContents() {
