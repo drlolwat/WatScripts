@@ -1,5 +1,6 @@
 package org.lolwat.managers;
 
+import com.google.common.collect.Lists;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
@@ -541,7 +542,7 @@ public class TaskManager {
                 new Tile(3172, 3302, 0),
                 new Tile(3170, 3300, 0),
                 new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
-        }));
+        }, Lists.newArrayList()));
 
         // lumbridge chickens east
         tasks.add(new MagicCombatTask(1, 10, new Area(
@@ -550,7 +551,7 @@ public class TaskManager {
                 new Tile(3236, 3287, 0),
                 new Tile(3236, 3300, 0),
                 new Tile(3226, 3301, 0),
-                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }));
+                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, Lists.newArrayList()));
 
         // lumbridge cows north
         tasks.add(new MagicCombatTask(5, 20, new Area(
@@ -573,7 +574,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         // lumbridge cows north 2
         tasks.add(new MagicCombatTask( 5, 20, new Area(
@@ -591,7 +592,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         // lumbridge east cows
         tasks.add(new MagicCombatTask( 5, 20, new Area(
@@ -604,7 +605,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         // falador cows
         tasks.add(new MagicCombatTask( 5, 20, new Area(
@@ -620,7 +621,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         tasks.add(new MagicCombatTask(20, 30, new Area(
                 new Tile(3044, 3498, 0),
@@ -629,7 +630,7 @@ public class TaskManager {
                 new Tile(3054, 3498, 0)), "Monk", new HashMap<String, Integer>() {
             {
                 put("Trout", 12);
-            }}));
+            }}, Lists.newArrayList()));
 
         // giant frogs
         tasks.add(new MagicCombatTask(20, 50, new Area(
@@ -646,7 +647,22 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
+
+        tasks.add(new MagicCombatTask(20, 50, new Area(
+                new Tile(2930, 3516, 0),
+                new Tile(2930, 3514, 0),
+                new Tile(2931, 3513, 0),
+                new Tile(2935, 3513, 0),
+                new Tile(2938, 3517, 0),
+                new Tile(2938, 3518, 0),
+                new Tile(2935, 3518, 0),
+                new Tile(2934, 3519, 0),
+                new Tile(2933, 3519, 0)), "Monk of Zamorak", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }, Collections.singletonList("Zamorak monk bottom")));
 
         tasks.add(new MagicCombatTask(50, 55, new Area(
                 new Tile(3367, 3157, 0),
@@ -657,7 +673,7 @@ public class TaskManager {
                 new Tile(3384, 3158, 0),
                 new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
             put("Trout", 20);
-        }}));
+        }}, Lists.newArrayList()));
 
         tasks.add(new HighAlchemyTask(55, 99));
 
@@ -686,7 +702,7 @@ public class TaskManager {
                 new Tile(3172, 3302, 0),
                 new Tile(3170, 3300, 0),
                 new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
-        }));
+        }, Lists.newArrayList()));
 
         // lumbridge chickens east
         tasks.add(new RangedCombatTask(1, 10, new Area(
@@ -695,7 +711,7 @@ public class TaskManager {
                 new Tile(3236, 3287, 0),
                 new Tile(3236, 3300, 0),
                 new Tile(3226, 3301, 0),
-                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }));
+                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, Lists.newArrayList()));
 
         // lumbridge cows north
         tasks.add(new RangedCombatTask(5, 20, new Area(
@@ -718,7 +734,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         // lumbridge cows north 2
         tasks.add(new RangedCombatTask( 5, 20, new Area(
@@ -736,7 +752,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         // lumbridge east cows
         tasks.add(new RangedCombatTask( 5, 20, new Area(
@@ -749,7 +765,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         // falador cows
         tasks.add(new RangedCombatTask( 5, 20, new Area(
@@ -765,7 +781,7 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
 
         tasks.add(new RangedCombatTask(20, 30, new Area(
                 new Tile(3044, 3498, 0),
@@ -774,7 +790,7 @@ public class TaskManager {
                 new Tile(3054, 3498, 0)), "Monk", new HashMap<String, Integer>() {
             {
                 put("Trout", 12);
-            }}));
+            }}, Lists.newArrayList()));
 
         // giant frogs
         tasks.add(new RangedCombatTask(20, 50, new Area(
@@ -791,7 +807,22 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }));
+        }, Lists.newArrayList()));
+
+        tasks.add(new RangedCombatTask(20, 50, new Area(
+                new Tile(2930, 3516, 0),
+                new Tile(2930, 3514, 0),
+                new Tile(2931, 3513, 0),
+                new Tile(2935, 3513, 0),
+                new Tile(2938, 3517, 0),
+                new Tile(2938, 3518, 0),
+                new Tile(2935, 3518, 0),
+                new Tile(2934, 3519, 0),
+                new Tile(2933, 3519, 0)), "Monk of Zamorak", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }, Collections.singletonList("Zamorak monk bottom")));
 
         tasks.add(new RangedCombatTask(50, 99, new Area(
                 new Tile(3367, 3157, 0),
@@ -802,7 +833,7 @@ public class TaskManager {
                 new Tile(3384, 3158, 0),
                 new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
             put("Trout", 20);
-        }}));
+        }}, Lists.newArrayList()));
 
         tasks.add(new RangedCombatTask(60, 99, new Area(
                 new Tile(3165, 9882, 0),
@@ -817,7 +848,7 @@ public class TaskManager {
                 new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
             put("Lobster", 20);
             put("Knife", 1);
-        }}));
+        }}, Lists.newArrayList()));
 
         tasks.add(new RangedCombatTask(60, 99, new Area(
                 new Tile(3154, 9908, 0),
@@ -837,7 +868,7 @@ public class TaskManager {
                 new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
             put("Lobster", 20);
             put("Knife", 1);
-        }}));
+        }}, Lists.newArrayList()));
 
         return tasks;
     }
@@ -983,6 +1014,21 @@ public class TaskManager {
                     put("Trout", 20);
                 }
             }, new ArrayList<>()));
+
+            tasks.add(new MeleeCombatTask(sk, 20, 50, new Area(
+                    new Tile(2930, 3516, 0),
+                    new Tile(2930, 3514, 0),
+                    new Tile(2931, 3513, 0),
+                    new Tile(2935, 3513, 0),
+                    new Tile(2938, 3517, 0),
+                    new Tile(2938, 3518, 0),
+                    new Tile(2935, 3518, 0),
+                    new Tile(2934, 3519, 0),
+                    new Tile(2933, 3519, 0)), "Monk of Zamorak", new HashMap<String, Integer>() {
+                {
+                    put("Trout", 12);
+                }
+            }, Collections.singletonList("Zamorak monk bottom")));
 
             // varrock guards, palace courtyard
             tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
