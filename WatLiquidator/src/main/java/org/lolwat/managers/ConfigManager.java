@@ -112,6 +112,10 @@ public class ConfigManager {
         items.addProperty("Tin ore", -150);
         items.addProperty("Copper ore", -150);
         items.addProperty("Bones", -1);
+        items.addProperty("Emerald necklace", -100);
+        items.addProperty("Gold ring", -100);
+        items.addProperty("Sapphire ring", -100);
+        items.addProperty("Zamorak monk bottom", 1);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
