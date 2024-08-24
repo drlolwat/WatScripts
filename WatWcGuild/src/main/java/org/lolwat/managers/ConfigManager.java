@@ -224,6 +224,7 @@ public class ConfigManager {
             ScriptManager.getScriptManager().stop();
         }
     }
+
     public String getConfigString(String key) {
         String value = config.get(key).toString();
         return value.replace("\"", "");
