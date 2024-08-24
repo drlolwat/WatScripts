@@ -1,5 +1,6 @@
 package org.lolwat.tasks.combat;
 
+import com.google.common.collect.Lists;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -28,8 +29,8 @@ import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MagicCombatTask implements WatTask {
@@ -40,8 +41,9 @@ public class MagicCombatTask implements WatTask {
     private final HashMap<String, Integer> food;
     private final Spell toCast;
     private int casts;
+    private List<String> pickups;
 
-    public MagicCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {
+    public MagicCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake, List<String> pickups) {
         minLevel = minimumLevel;
         zone = killingArea;
         name = monsterName;
@@ -56,6 +58,11 @@ public class MagicCombatTask implements WatTask {
         }
 
         casts = Calculations.random(75, 150);
+
+        if(pickups != null && !pickups.isEmpty())
+            this.pickups = pickups;
+        else
+            this.pickups = Lists.newArrayList();
     }
 
     @Override
@@ -152,7 +159,7 @@ public class MagicCombatTask implements WatTask {
                 return;
             }
 
-            GenericUtils.handlePickup(new ArrayList<>());
+            GenericUtils.handlePickup(pickups);
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.canReach() && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && !closestFriend.interact("Attack")) {
