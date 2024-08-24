@@ -851,7 +851,7 @@ public class BankingTask implements WatTask {
                         continue;
                     }
 
-                    if (i.isNoted()) {
+                    if (i.isNoted() && (postTask != null && !(postTask instanceof HighAlchemyTask))) {
                         Logger.log("Banking: Depositing " + i.getName() + ", noted.");
                         Bank.depositAll(i.getName());
                         Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
