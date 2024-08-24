@@ -27,16 +27,14 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.Teleport;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TraversalTask implements WatTask {
     WatTask postTask;
@@ -49,10 +47,39 @@ public class TraversalTask implements WatTask {
     double taskStartedAt;
     Tile startedOnTile;
     boolean hadNoobChance;
+    List<String> possibleDialogues = Arrays.asList(
+            "Nobody.",
+            "Don't tell them anything and ignore them.",
+            "Talk to any banker in RuneScape.",
+            "Nothing.",
+            "Memorable.", "Use the Account Recovery System.",
+            "Politely tell them no and then use the 'Report Abuse' button.",
+            "Virus scan my device then change my password.",
+            "Don't tell them anything and inform Jagex through the game website.",
+            "No, it might steal my password.",
+            "Don't give them my password.",
+            "To recover my account if i don't remember my password.",
+            "Nowhere.", "Don't give out your password to anyone. Not even close friends.",
+            "No.", "Me.",
+            "Through account settings on oldschool.runescape.com.",
+            "To help me recover my password if I forget it or if it is stolen.", "Delete it - it's a fake!",
+            "Read the text and follow the advice given.",
+            "Secure my device and reset my password.",
+            "Recovering your account if you forget your password.",
+            "Decline the offer and report that player.",
+            "Game Inbox on the RuneScape website.",
+            "Set up 2 step authentication with my email provider.", "No, you should never buy an account.",
+            "Do not visit the website and report the player who messaged you.",
+            "Only on the Old School RuneScape website.", "Report the incident and do not click any links.",
+            "Authenticator and two-step login on my registered email.",
+            "Report the player for phishing.",
+            "Don't share your information and report the player.",
+            "The birthday of a famous person or event.", "No, you should never allow anyone to level your account.", "Nothing, it's a fake.",
+            "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!");
 
     @Override
     public String getName() {
-        if(postTask != null) {
+        if (postTask != null) {
             return "W-" + postTask.getName();
         }
 
@@ -86,17 +113,21 @@ public class TraversalTask implements WatTask {
             hadNoobChance = true;
         }*/
 
+        if(Dialogues.inDialogue()) {
+            DialogueUtils.solve(possibleDialogues);
+        }
+
         int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
-        if(sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
+        if (sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
             Logger.log("Traversal: havent moved for 15 seconds, checking for portals etc");
             GameObject portal = GameObjects.closest(x -> x != null && x.canReach() & x.getName().toLowerCase().contains("portal"));
-            if(portal != null) {
-                if(!portal.isOnScreen()) {
+            if (portal != null) {
+                if (!portal.isOnScreen()) {
                     Camera.rotateToEntity(portal);
                     Sleep.sleepUntil(portal::isOnScreen, 5000);
                 }
 
-                if(portal.interact()) {
+                if (portal.interact()) {
                     Logger.log("Traversal: interacted with portal");
                     Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(startedOnTile) && Players.getLocal().isStandingStill()
                             && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating(), 5000);
@@ -105,7 +136,7 @@ public class TraversalTask implements WatTask {
                 return;
             }
 
-            if(sinceStartedTask >= 90) {
+            if (sinceStartedTask >= 90) {
                 GenericUtils.castHomeTeleport();
 
                 Logger.log("Traversal: havent moved for 90 seconds, home teleporting and moving on");
@@ -120,30 +151,30 @@ public class TraversalTask implements WatTask {
             }
         }
 
-        if(GenericUtils.isMember() && postTask != null) {
+        if (GenericUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
             double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
-            if(targetDistance >= 1000 && !hasTeleported) {
+            if (targetDistance >= 1000 && !hasTeleported) {
                 Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
-                if(teleport != null) {
+                if (teleport != null) {
                     Logger.log("Traversal: selected teleport " + teleport.getName() + " for destination "
                             + area.getRandomTile() + " for task " + postTask.getName());
 
                     String teleportItem = teleport.getSearchFor();
-                    if(!Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
-                        if(Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
-                            if(Bank.isOpen()) {
+                    if (!Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                        if (Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                            if (Bank.isOpen()) {
                                 Bank.close();
                                 Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
                             }
 
-                            if(!Tabs.isOpen(Tab.EQUIPMENT)) {
+                            if (!Tabs.isOpen(Tab.EQUIPMENT)) {
                                 Tabs.open(Tab.EQUIPMENT);
                                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.EQUIPMENT), Calculations.random(200, 300));
                             }
 
-                            if(!Equipment.interact(Equipment.getSlotForItem(f -> f.getName().contains(teleportItem)),
+                            if (!Equipment.interact(Equipment.getSlotForItem(f -> f.getName().contains(teleportItem)),
                                     teleport.getOption())) {
 
                                 Logger.log("Traversal: failed to use equipped teleport item");
@@ -155,7 +186,7 @@ public class TraversalTask implements WatTask {
                             hasTeleported = true;
                             return;
                         } else {
-                            if(targetDistance > exchangeDistance
+                            if (targetDistance > exchangeDistance
                                     && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
 
                                 TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
@@ -169,18 +200,18 @@ public class TraversalTask implements WatTask {
                             }
                         }
                     } else {
-                        if(Bank.isOpen()) {
+                        if (Bank.isOpen()) {
                             Bank.close();
                             Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
                         }
 
-                        if(!Tabs.isOpen(Tab.INVENTORY)) {
+                        if (!Tabs.isOpen(Tab.INVENTORY)) {
                             Tabs.open(Tab.INVENTORY);
                             Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
                         }
 
-                        if(teleportItem.contains("teleport")) {
-                            if(!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Break")) {
+                        if (teleportItem.contains("teleport")) {
+                            if (!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Break")) {
                                 Logger.log("Traversal: failed to use teleport tab: " + teleportItem);
                                 return;
                             }
@@ -216,21 +247,21 @@ public class TraversalTask implements WatTask {
 
         List<String> types = Collections.singletonList("Web");
         for (String t : types) {
-            if(GameObjects.closest(t) != null && GameObjects.closest(t).distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest(t).interact()) {
+            if (GameObjects.closest(t) != null && GameObjects.closest(t).distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest(t).interact()) {
                 Logger.log("Traversal: slashed " + t);
                 Sleep.sleepUntil(() -> GameObjects.closest(t) == null || !GameObjects.closest(t).exists(), 5000);
                 return;
             }
         }
 
-        if(Worlds.getCurrent().isF2P()) {
+        if (Worlds.getCurrent().isF2P()) {
             Area castleWars = new Area(2435, 3099, 2446, 3080);
-            if(castleWars.contains(Players.getLocal())) {
+            if (castleWars.contains(Players.getLocal())) {
                 GameObject obj = GameObjects.closest("Large door");
-                if(obj != null && obj.interact()) {
+                if (obj != null && obj.interact()) {
                     Sleep.sleep(2000, 3000);
 
-                    if(Dialogues.inDialogue() && Dialogues.getOptions() != null && Dialogues.chooseOption("Yes")) {
+                    if (Dialogues.inDialogue() && Dialogues.getOptions() != null && Dialogues.chooseOption("Yes")) {
                         Sleep.sleep(1000, 2000);
                         TaskManager.getInstance().setCurrentTask(postTask);
                         return;
@@ -239,12 +270,12 @@ public class TraversalTask implements WatTask {
             }
         }
 
-        if(postTask instanceof FightCyclopsTask) {
-            if(!Inventory.contains("Warrior guild token") || Inventory.count("Warrior guild token") < 100) {
+        if (postTask instanceof FightCyclopsTask) {
+            if (!Inventory.contains("Warrior guild token") || Inventory.count("Warrior guild token") < 100) {
                 String defender = "";
-                if(Equipment.slotContains(EquipmentSlot.SHIELD, x -> x.getName().contains("defender"))) {
+                if (Equipment.slotContains(EquipmentSlot.SHIELD, x -> x.getName().contains("defender"))) {
                     defender = Equipment.getItemInSlot(EquipmentSlot.SHIELD).getName();
-                } else if(Inventory.contains(x -> x.getName().contains("defender"))) {
+                } else if (Inventory.contains(x -> x.getName().contains("defender"))) {
                     defender = Inventory.get(x -> x.getName().contains("defender")).getName();
                 }
 
@@ -257,7 +288,7 @@ public class TraversalTask implements WatTask {
             }
         }
 
-        if(!usingArea) {
+        if (!usingArea) {
             if (completedTile && Map.isTileOnMap(target)) {
                 if (!Map.isTileOnScreen(target)) {
                     Camera.rotateToTile(target);
@@ -269,7 +300,7 @@ public class TraversalTask implements WatTask {
                 return;
             }
         } else {
-            if(area.contains(Players.getLocal())) {
+            if (area.contains(Players.getLocal())) {
                 Tile check = area.getRandomTile();
                 if (Map.isTileOnMap(check) && !Map.isTileOnScreen(check)) {
                     Camera.rotateToTile(check);
@@ -283,7 +314,7 @@ public class TraversalTask implements WatTask {
         }
 
         if (Walking.shouldWalk(5) || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
-            if(target == null && usingArea)
+            if (target == null && usingArea)
                 Walking.walk(area);
             else
                 Walking.walk(target);
@@ -322,17 +353,16 @@ public class TraversalTask implements WatTask {
         return 101;
     }
 
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        if(postTask != null) {
+        if (postTask != null) {
             return postTask.clothesRequired();
         }
 
         HashMap<String, Integer> ret = new HashMap<>();
-        for(Item i : Equipment.all()) {
-            if(i == null)
+        for (Item i : Equipment.all()) {
+            if (i == null)
                 continue;
 
             ret.put(i.getName(), 1);
@@ -349,8 +379,8 @@ public class TraversalTask implements WatTask {
     @Override
     public List<String> inventoryTolerated() {
         List<String> ret = new ArrayList<>();
-        for(Item i : Inventory.all()) {
-            if(i == null)
+        for (Item i : Inventory.all()) {
+            if (i == null)
                 continue;
 
             ret.add(i.getName());
