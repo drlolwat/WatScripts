@@ -1,5 +1,6 @@
 package org.lolwat.tasks.combat;
 
+import com.google.common.collect.Lists;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
@@ -37,8 +38,9 @@ public class RangedCombatTask implements WatTask {
     private final Area zone;
     private final String name;
     private final HashMap<String, Integer> food;
+    private List<String> pickups;
 
-    public RangedCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake) {
+    public RangedCombatTask(int minimumLevel, int maximumLevel, Area killingArea, String monsterName, HashMap<String, Integer> foodToTake, List<String> pickups) {
         minLevel = minimumLevel;
         zone = killingArea;
         name = monsterName;
@@ -49,6 +51,11 @@ public class RangedCombatTask implements WatTask {
         } else {
             food = new HashMap<>();
         }
+
+        if(pickups != null && !pickups.isEmpty())
+            this.pickups = pickups;
+        else
+            this.pickups = Lists.newArrayList();
     }
 
     @Override
@@ -141,7 +148,7 @@ public class RangedCombatTask implements WatTask {
                 return;
             }
 
-            GenericUtils.handlePickup(new ArrayList<>());
+            GenericUtils.handlePickup(pickups);
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.canReach() && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && !closestFriend.interact("Attack")) {
