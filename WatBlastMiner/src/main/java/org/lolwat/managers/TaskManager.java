@@ -899,6 +899,7 @@ public class TaskManager {
                     new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
             }, new ArrayList<>()));
 
+
             // lumbridge chickens east
             tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
                     new Tile(3231, 3295, 0),
@@ -906,7 +907,8 @@ public class TaskManager {
                     new Tile(3236, 3287, 0),
                     new Tile(3236, 3300, 0),
                     new Tile(3226, 3301, 0),
-                    new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, new ArrayList<>()));
+                    new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() {
+            }, new ArrayList<>()));
 
             // lumbridge cows north
             tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
@@ -1053,7 +1055,11 @@ public class TaskManager {
                     new Tile(3384, 3158, 0),
                     new Tile(3375, 3160, 0)), "Hill giant", new HashMap<String, Integer>() {{
                 put("Trout", 20);
-            }}, new ArrayList<String>() { { add("Giant key"); }}));
+            }}, new ArrayList<String>() {
+                {
+                    add("Giant key");
+                }
+            }));
 
             tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
                     new Tile(3165, 9882, 0),
@@ -1067,9 +1073,13 @@ public class TaskManager {
                     new Tile(3173, 9886, 0),
                     new Tile(3165, 9886, 0)), "Moss giant", new HashMap<String, Integer>() {{
                 put("Lobster", 20);
-            }}, new ArrayList<String>() { { add("Mossy key"); }}));
+            }}, new ArrayList<String>() {
+                {
+                    add("Mossy key");
+                }
+            }));
 
-            tasks.add(new MeleeCombatTask(sk,50, 126, new Area(
+            tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
                     new Tile(3154, 9908, 0),
                     new Tile(3154, 9902, 0),
                     new Tile(3156, 9902, 0),
@@ -1086,7 +1096,51 @@ public class TaskManager {
                     new Tile(3159, 9898, 0),
                     new Tile(3156, 9900, 0)), "Moss giant", new HashMap<String, Integer>() {{
                 put("Lobster", 20);
-            }}, new ArrayList<String>() { { add("Mossy key"); }}));
+            }}, new ArrayList<String>() {
+                {
+                    add("Mossy key");
+                }
+            }));
+
+            tasks.add(new MeleeCombatTask(sk, 40, 65, new Area(
+                    new Tile(1884, 5188, 0),
+                    new Tile(1887, 5185, 0),
+                    new Tile(1890, 5185, 0),
+                    new Tile(1893, 5188, 0),
+                    new Tile(1904, 5188, 0),
+                    new Tile(1907, 5191, 0),
+                    new Tile(1906, 5194, 0),
+                    new Tile(1903, 5196, 0),
+                    new Tile(1902, 5199, 0),
+                    new Tile(1897, 5199, 0),
+                    new Tile(1895, 5200, 0),
+                    new Tile(1892, 5200, 0),
+                    new Tile(1884, 5194, 0)), "Minotaur", new HashMap<String, Integer>() {{
+                put("Lobster", 12);
+            }}, new ArrayList<>()));
+
+            tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
+                    new Tile(2119, 5271, 0),
+                    new Tile(2118, 5279, 0),
+                    new Tile(2125, 5277, 0),
+                    new Tile(2127, 5275, 0),
+                    new Tile(2134, 5275, 0),
+                    new Tile(2133, 5271, 0),
+                    new Tile(2128, 5265, 0)),
+                    "Giant spider", new HashMap<String, Integer>() {{
+                put("Lobster", 12);
+            }}, new ArrayList<>()));
+
+            tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
+                    new Tile(2149, 5268, 0),
+                    new Tile(2154, 5275, 0),
+                    new Tile(2158, 5276, 0),
+                    new Tile(2159, 5274, 0),
+                    new Tile(2155, 5267, 0)),
+                    "Giant spider", new HashMap<String, Integer>() {{
+                put("Lobster", 12);
+            }}, new ArrayList<>()));
+
         }
 
         return tasks;
