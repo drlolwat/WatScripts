@@ -649,7 +649,7 @@ public class TaskManager {
             }
         }, Lists.newArrayList()));
 
-        tasks.add(new MagicCombatTask(20, 50, new Area(
+        tasks.add(new MagicCombatTask(30, 55, new Area(
                 new Tile(2930, 3516, 0),
                 new Tile(2930, 3514, 0),
                 new Tile(2931, 3513, 0),
@@ -809,7 +809,7 @@ public class TaskManager {
             }
         }, Lists.newArrayList()));
 
-        tasks.add(new RangedCombatTask(20, 50, new Area(
+        tasks.add(new RangedCombatTask(35, 60, new Area(
                 new Tile(2930, 3516, 0),
                 new Tile(2930, 3514, 0),
                 new Tile(2931, 3513, 0),
@@ -1015,7 +1015,7 @@ public class TaskManager {
                 }
             }, new ArrayList<>()));
 
-            tasks.add(new MeleeCombatTask(sk, 20, 50, new Area(
+            tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
                     new Tile(2930, 3516, 0),
                     new Tile(2930, 3514, 0),
                     new Tile(2931, 3513, 0),
