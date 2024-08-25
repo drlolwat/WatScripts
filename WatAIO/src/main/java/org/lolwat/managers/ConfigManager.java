@@ -82,8 +82,8 @@ public class ConfigManager {
         items.addProperty("Yew logs", -200);
         items.addProperty("Raw shrimp", -150);
         items.addProperty("Raw pike", -150);
-        items.addProperty("Raw trout", -150);
-        items.addProperty("Lobster", -100);
+        items.addProperty("Raw trout", -500);
+        items.addProperty("Lobster", -500);
         items.addProperty("Iron full helm", 1);
         items.addProperty("Iron platebody", 1);
         items.addProperty("Iron platelegs", 1);
