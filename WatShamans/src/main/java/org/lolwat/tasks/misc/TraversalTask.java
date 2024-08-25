@@ -17,11 +17,14 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
@@ -115,6 +118,20 @@ public class TraversalTask implements WatTask {
 
         if(Dialogues.inDialogue()) {
             DialogueUtils.solve(possibleDialogues);
+        }
+
+        Widget w = Widgets.getWidget(579);
+        if(w != null && w.isVisible()) {
+            WidgetChild c = w.getChild(17);
+            if(c != null && c.isVisible() && c.hasAction("Yes")) {
+                if(!c.interact("Yes")) {
+                    Logger.log("Traversal: failed to click yes on widget");
+                }
+
+                Tile t = Players.getLocal().getTile();
+                Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(t), 5000);
+                return;
+            }
         }
 
         int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
