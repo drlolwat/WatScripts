@@ -61,6 +61,7 @@ public class VampyreSlayerQuest implements QuestTask {
                 break;
             }
 
+            case 3: // just in case there is a 3rd state lol
             case 2:
             case 1: {
                 if(!Inventory.contains("Stake")) {
