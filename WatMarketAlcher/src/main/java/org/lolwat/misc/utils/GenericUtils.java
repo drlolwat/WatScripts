@@ -90,24 +90,28 @@ public class GenericUtils {
     }
 
     public static void handlePickup(List<String> items) {
+        List<String> newItems = new ArrayList<>();
+
         if (ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
-            items.add("Bones");
-            items.add("Big bones");
+            newItems.add("Bones");
+            newItems.add("Big bones");
         }
 
-        GroundItem i = GroundItems.closest(x -> x != null && items.contains(x.getName()) && x.distance() <= 4 && x.canReach());
+        newItems.addAll(items);
+
+        GroundItem i = GroundItems.closest(x -> x != null && newItems.contains(x.getName()) && x.distance() <= 4 && x.canReach());
+
+        if(i == null) return;
 
         if(!Inventory.isFull()) {
-            if (items != null && i != null) {
-                if (items.contains(i.getName())) {
-                    if (i.interact("Take")) {
-                        Logger.log("GenericUtils: Picked up item: " + i.getName());
-                        Sleep.sleepUntil(() -> !i.exists(), 5000);
-                    }
-
-                    Sleep.sleepUntil(() -> !Players.getLocal().isInCombat(), Calculations.random(2000, 3000));
-                    handleBury();
+            if (newItems.contains(i.getName())) {
+                if (i.interact("Take")) {
+                    Logger.log("GenericUtils: Picked up item: " + i.getName());
+                    Sleep.sleepUntil(() -> !i.exists(), 5000);
                 }
+
+                Sleep.sleepUntil(() -> !Players.getLocal().isInCombat(), Calculations.random(2000, 3000));
+                handleBury();
             }
         } else {
             Logger.log("GenericUtils: Inventory is full, not picking up item: " + i.getName());
