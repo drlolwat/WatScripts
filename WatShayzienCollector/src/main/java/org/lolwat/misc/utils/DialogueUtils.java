@@ -40,6 +40,8 @@ public class DialogueUtils {
                 Logger.log(Arrays.toString(Dialogues.getOptions()));
             }
         }
+
+        DialogueUtils.continueWhilePossible();
     }
 
     public static void talkTo(String npc) {
