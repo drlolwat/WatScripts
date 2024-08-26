@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import org.dreambot.api.Client;
-import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.script.ScriptManager;
@@ -77,9 +76,9 @@ public class ConfigManager {
         defaultProfile.addProperty("logout_after_ttl", 0);
 
         JsonObject items = new JsonObject();
-        items.addProperty("Logs", -200);
-        items.addProperty("Oak logs", -200);
-        items.addProperty("Yew logs", -200);
+        items.addProperty("Logs", -500);
+        items.addProperty("Oak logs", -500);
+        items.addProperty("Yew logs", -500);
         items.addProperty("Raw shrimp", -150);
         items.addProperty("Raw pike", -150);
         items.addProperty("Raw trout", -500);
@@ -114,8 +113,16 @@ public class ConfigManager {
         items.addProperty("Bones", -1);
         items.addProperty("Emerald necklace", -100);
         items.addProperty("Gold ring", -100);
+        items.addProperty("Ruby necklace", -100);
         items.addProperty("Sapphire ring", -100);
         items.addProperty("Zamorak monk bottom", 1);
+        items.addProperty("Sapphire", -1);
+        items.addProperty("Ruby", -1);
+        items.addProperty("Diamond", -1);
+        items.addProperty("Bronze bar", -1);
+        items.addProperty("Iron bar", -1);
+        items.addProperty("Steel bar", -1);
+        items.addProperty("Gold bar", -1);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
@@ -252,8 +259,8 @@ public class ConfigManager {
     }
 
     public boolean isTradeUnlocked() {
-        return (Combat.getCombatLevel() >= 50 && Quests.getQuestPoints() >= 10) || getConfigBoolean("ignore_trade_restriction") ||
-                (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 75600 && Quests.getQuestPoints() >= 10);
+        return getConfigBoolean("ignore_trade_restriction") ||
+                (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 82800 && Quests.getQuestPoints() >= 10);
     }
 
     public int getNetWorth() {
