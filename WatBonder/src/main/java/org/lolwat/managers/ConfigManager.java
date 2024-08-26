@@ -15,7 +15,6 @@ import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -260,7 +259,7 @@ public class ConfigManager {
 
     public boolean isTradeUnlocked() {
         return getConfigBoolean("ignore_trade_restriction") ||
-                (Instant.now().getEpochSecond() - getConfigDouble("profile_appeared_at") >= 82800 && Quests.getQuestPoints() >= 10);
+                (TaskManager.getInstance().getMinutesPlayed() >= 1260 && Quests.getQuestPoints() >= 10);
     }
 
     public int getNetWorth() {
