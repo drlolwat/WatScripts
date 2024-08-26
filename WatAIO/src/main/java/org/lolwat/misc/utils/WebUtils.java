@@ -55,7 +55,7 @@ public class WebUtils {
             }
             lastCallTime = currentTime;
 
-            String urlParameters = "nm=" + nm + "&msg=" + msg + "&task=" + task;
+            String urlParameters = "nm=" + nm + "&msg=" + msg + "&task=";
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
             HttpURLConnection con = (HttpURLConnection) new URL(GPT_URL).openConnection();
