@@ -179,6 +179,16 @@ public class BankingTask implements WatTask {
         Logger.log("Checking bank for items to sell based on thresholds");
         for(Item i : Bank.all()) {
             if(i == null) continue;
+            if(postTask != null) { // we dont want to sell items that are required for the next task
+                if(postTask.inventoryRequired().containsKey(i.getName())) {
+                    continue;
+                }
+
+                if(postTask.clothesRequired().containsKey(i.getName())) {
+                    continue;
+                }
+            }
+
             int threshold = ConfigManager.getInstance().getItemThreshold(i.getName());
             if(threshold != 0) {
                 int toCheck = (threshold > 0 ? threshold+1 : -threshold);
