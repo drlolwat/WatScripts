@@ -39,7 +39,6 @@ public class MagicCombatTask implements WatTask {
     private final Area zone;
     private final String name;
     private final HashMap<String, Integer> food;
-    private final Spell toCast;
     private int casts;
     private List<String> pickups;
 
@@ -48,8 +47,6 @@ public class MagicCombatTask implements WatTask {
         zone = killingArea;
         name = monsterName;
         maxLevel = maximumLevel;
-
-        toCast = MagicUtils.getBestSpellForLevel();
 
         if(foodToTake != null && !foodToTake.isEmpty()) {
             food = foodToTake;
@@ -77,6 +74,7 @@ public class MagicCombatTask implements WatTask {
 
     @Override
     public void execute() {
+        Spell toCast = MagicUtils.getBestSpellForLevel();
         HashMap<String, Integer> requiredItems = new HashMap<>();
 
         if (Skills.getRealLevel(Skill.MAGIC) >= 50) {
