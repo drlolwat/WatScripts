@@ -176,7 +176,7 @@ public class VampyreSlayerQuest implements QuestTask {
 
     @Override
     public boolean canPerformTask() {
-        return !Quests.isFinished(completes()) && Combat.getCombatLevel() >= 35;
+        return !Quests.isFinished(completes()) && Combat.getCombatLevel() >= 25;
     }
 
     @Override
