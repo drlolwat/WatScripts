@@ -20,6 +20,7 @@ import org.lolwat.managers.types.QuestTask;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.TalkToNPC;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
@@ -77,7 +78,6 @@ public class TheRestlessGhostQuest implements QuestTask {
                 }
 
                 if(Dialogues.inDialogue()) {
-                    DialogueUtils.continueWhilePossible();
                     DialogueUtils.solve(Arrays.asList("Father Aereck sent me to talk to you.", "He's got a ghost haunting his graveyard."));
                 } else {
                     if(urhney != null) {
@@ -100,7 +100,10 @@ public class TheRestlessGhostQuest implements QuestTask {
 
                     TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
                         put("Ghostspeak amulet", 1);
-                    }}, null, 1, wrapper));
+                    }}, null, 1, wrapper, new HashMap<String, WatTask>() {{
+                        put("Ghostspeak amulet", new TalkToNPC(new Area(3144, 3177, 3151, 3173), "Father Urhney", wrapper,
+                                Collections.singletonList("I've lost the Amulet of Ghostspeak."), "Ghostspeak amulet"));
+                    }}));
                     return;
                 }
 
