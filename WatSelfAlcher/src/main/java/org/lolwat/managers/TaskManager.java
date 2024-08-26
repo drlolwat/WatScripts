@@ -1102,7 +1102,7 @@ public class TaskManager {
                 }
             }));
 
-            tasks.add(new MeleeCombatTask(sk, 40, 65, new Area(
+            tasks.add(new MeleeCombatTask(sk, 30, 55, new Area(
                     new Tile(1884, 5188, 0),
                     new Tile(1887, 5185, 0),
                     new Tile(1890, 5185, 0),
@@ -1116,7 +1116,7 @@ public class TaskManager {
                     new Tile(1895, 5200, 0),
                     new Tile(1892, 5200, 0),
                     new Tile(1884, 5194, 0)), "Minotaur", new HashMap<String, Integer>() {{
-                put("Lobster", 12);
+                put("Lobster", 16);
             }}, new ArrayList<>()));
 
             tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
@@ -1128,7 +1128,7 @@ public class TaskManager {
                     new Tile(2133, 5271, 0),
                     new Tile(2128, 5265, 0)),
                     "Giant spider", new HashMap<String, Integer>() {{
-                put("Lobster", 12);
+                put("Lobster", 20);
             }}, new ArrayList<>()));
 
             tasks.add(new MeleeCombatTask(sk, 50, 126, new Area(
@@ -1138,7 +1138,7 @@ public class TaskManager {
                     new Tile(2159, 5274, 0),
                     new Tile(2155, 5267, 0)),
                     "Giant spider", new HashMap<String, Integer>() {{
-                put("Lobster", 12);
+                put("Lobster", 20);
             }}, new ArrayList<>()));
 
         }
