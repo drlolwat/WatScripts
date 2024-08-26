@@ -1,5 +1,6 @@
 package org.lolwat.misc.utils.combat.magic;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.magic.Normal;
@@ -68,6 +69,9 @@ public class MagicUtils {
 
     public static HashMap<String, Integer> getRunesRequired(Normal spell, int spellCount) {
         HashMap<String, Integer> ret = new HashMap<>();
+        if(spellCount <= 0) {
+            spellCount = Calculations.random(50, 100);
+        }
 
         switch(spell) {
             default:
@@ -127,20 +131,23 @@ public class MagicUtils {
         if(magicLevel >= 41) {
             return Normal.WIND_BLAST;
         }
-        else if(magicLevel >= 35) {
+
+        if(magicLevel >= 35) {
             return Normal.FIRE_BOLT;
         }
-        else if(magicLevel >= 13) {
+
+        if(magicLevel >= 13) {
             return Normal.FIRE_STRIKE;
         }
-        else if(magicLevel >= 9) {
+
+        if(magicLevel >= 9) {
             return Normal.EARTH_STRIKE;
         }
-        else if(magicLevel >= 5) {
+
+        if(magicLevel >= 5) {
             return Normal.WATER_STRIKE;
         }
-        else {
-            return Normal.WIND_STRIKE;
-        }
+
+        return Normal.WIND_STRIKE;
     }
 }
