@@ -4,15 +4,22 @@ import com.google.common.collect.Lists;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
+import org.dreambot.api.methods.settings.Varcs;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.crafting.CraftingType;
@@ -20,6 +27,7 @@ import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.types.prayer.BoneType;
 import org.lolwat.misc.types.smithing.IngotType;
+import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
@@ -60,11 +68,13 @@ public class TaskManager {
     private double taskSelectedAt;
     private int taskRunTime;
     private double checkedHoursAt;
+    private int minutesPlayed;
 
     public TaskManager() {
         setupAllTasks();
         resetBreaks();
         setCheckedHoursAt(0);
+        setMinutesPlayed(0);
 
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
@@ -242,6 +252,71 @@ public class TaskManager {
         return false;
     }
 
+    private void checkPlayTime() {
+        if(!Tabs.isOpen(Tab.QUEST)) {
+            if(!Tabs.open(Tab.QUEST)) {
+                Logger.log("Failed to open quest tab");
+            }
+
+            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.QUEST), 5000);
+        }
+
+        int currentPlaytime = 0;
+        while(currentPlaytime == 0) {
+            Widget page = Widgets.getWidget(629);
+            if (page != null && page.isVisible()) {
+                WidgetChild button = page.getChild(3);
+                if (button != null && button.isVisible()) {
+                    Widget characterInfo = Widgets.getWidget(712);
+                    if (characterInfo != null) {
+                        if (!characterInfo.isVisible()) {
+                            if (!button.interact()) {
+                                Logger.log("Failed to click playtime button");
+                                continue;
+                            }
+                        }
+
+                        WidgetChild panel = characterInfo.getChild(3);
+                        if (panel != null && panel.isVisible()) {
+                            WidgetChild time = panel.getChild(7);
+                            if (time != null && time.isVisible()) {
+                                if (time.hasAction("reveal")) {
+                                    if (!time.interact()) {
+                                        Logger.log("Failed to click reveal playtime");
+                                        continue;
+                                    }
+
+                                    if(Dialogues.inDialogue()) {
+                                        DialogueUtils.solve(Arrays.asList("Yes and don't ask me again", "Yes", "Yes.", "Yes and don't ask me again."));
+                                    }
+                                }
+
+                                Sleep.sleep(100, 200);
+                                currentPlaytime = Varcs.getInt(526);
+                                Logger.log("Current playtime: " + (double)(currentPlaytime/60) + " hour(s)");
+                            }
+                        }
+                    }
+                }
+
+                if(currentPlaytime > 0) {
+                    WidgetChild questButton = page.getChild(8);
+                    if(!questButton.interact()) {
+                        Logger.log("Failed to click quest button");
+                    }
+                }
+            }
+        }
+
+        if(!Tabs.isOpen(Tab.INVENTORY)) {
+            if(!Tabs.open(Tab.INVENTORY)) {
+                Logger.log("Failed to open inventory tab");
+            }
+        }
+
+        minutesPlayed = currentPlaytime;
+    }
+
     private boolean preTaskSelection() {
         if(!ConfigManager.getInstance().hasLoadedProfile() ||
                 (getInstance().getCheckedHoursAt() == 0 ||
@@ -250,6 +325,10 @@ public class TaskManager {
             ConfigManager.getInstance().getWsProfile(0);
             ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
+
+            if(Client.isLoggedIn()) {
+                checkPlayTime();
+            }
 
             boolean p2pEnabled = ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed");
             Logger.log(p2pEnabled ? Color.green : Color.red, "P2P tasks are " + (p2pEnabled ? "enabled" : "disabled"));
@@ -265,6 +344,10 @@ public class TaskManager {
             setCurrentTask(new TutorialIslandTask(), 0);
             Logger.log("We are performing Tutorial Island");
             return true;
+        }
+
+        if(minutesPlayed == 0) {
+            checkPlayTime();
         }
 
         boolean devMode = false; // change at compile time
@@ -1471,5 +1554,13 @@ public class TaskManager {
 
     public void setCheckedHoursAt(double checkedHoursAt) {
         this.checkedHoursAt = checkedHoursAt;
+    }
+
+    public int getMinutesPlayed() {
+        return minutesPlayed;
+    }
+
+    public void setMinutesPlayed(int minutesPlayed) {
+        this.minutesPlayed = minutesPlayed;
     }
 }
