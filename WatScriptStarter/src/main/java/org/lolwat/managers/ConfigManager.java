@@ -73,15 +73,20 @@ public class ConfigManager {
         defaultProfile.addProperty("pickup_bones", false);
         defaultProfile.addProperty("rest_after_tut", 0);
         defaultProfile.addProperty("logout_after_ttl", 0);
+        defaultProfile.addProperty("mule_ip", "127.0.0.1");
 
         JsonObject items = new JsonObject();
         items.addProperty("Logs", -500);
         items.addProperty("Oak logs", -500);
         items.addProperty("Yew logs", -500);
-        items.addProperty("Raw shrimp", -150);
-        items.addProperty("Raw pike", -150);
-        items.addProperty("Raw trout", -500);
-        items.addProperty("Lobster", -500);
+        items.addProperty("Raw shrimp", -100);
+        items.addProperty("Raw pike", -200);
+        items.addProperty("Raw trout", -200);
+        items.addProperty("Raw salmon", -200);
+        items.addProperty("Lobster", -100); // cook/eat
+        items.addProperty("Raw lobster", -1); // we dont fish this
+        items.addProperty("Raw tuna", -1); // we dont fish this either
+        items.addProperty("Tuna", -150); // only cook atm
         items.addProperty("Iron full helm", 1);
         items.addProperty("Iron platebody", 1);
         items.addProperty("Iron platelegs", 1);
