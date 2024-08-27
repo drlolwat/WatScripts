@@ -137,7 +137,7 @@ public class MulingTask implements WatTask {
             // READY-REVERSE|Username|Coins:100000
 
             Logger.log("Sending mule connection");
-            try (Socket socket = new Socket("localhost", 8081)) {
+            try (Socket socket = new Socket(ConfigManager.getInstance().getConfigString("mule_ip"), 8081)) {
                 byte[] messageBytes = message.toString().getBytes(StandardCharsets.UTF_8);
                 OutputStream outputStream = socket.getOutputStream();
                 outputStream.write(messageBytes);
