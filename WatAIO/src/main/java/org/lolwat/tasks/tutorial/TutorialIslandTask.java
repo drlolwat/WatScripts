@@ -882,6 +882,7 @@ public class TutorialIslandTask implements WatTask {
             }
         } else {
             Logger.log("WAIO: tutorial completed");
+            TaskManager.getInstance().setMinutesPlayed(10);
             if(ConfigManager.getInstance().getConfigInt("rest_after_tut") > 0) {
                 int time = ConfigManager.getInstance().getConfigInt("rest_after_tut");
 
