@@ -259,7 +259,7 @@ public class ConfigManager {
 
     public boolean isTradeUnlocked() {
         return getConfigBoolean("ignore_trade_restriction") ||
-                (TaskManager.getInstance().getMinutesPlayed() >= 1260 && Quests.getQuestPoints() >= 10);
+                (TaskManager.getInstance().getMinutesPlayed() >= 1200 && Quests.getQuestPoints() >= 10);
     }
 
     public int getNetWorth() {
