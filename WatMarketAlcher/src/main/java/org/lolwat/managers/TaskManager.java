@@ -29,6 +29,7 @@ import org.lolwat.misc.types.prayer.BoneType;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.combat.MagicCombatTask;
@@ -286,8 +287,10 @@ public class TaskManager {
                                         continue;
                                     }
 
+                                    Sleep.sleepUntil(Dialogues::inDialogue, 3000);
                                     if(Dialogues.inDialogue()) {
-                                        DialogueUtils.solve(Arrays.asList("Yes and don't ask me again", "Yes", "Yes.", "Yes and don't ask me again."));
+                                        DialogueUtils.solve(Arrays.asList("Yes and don't ask me again",
+                                                "Yes", "Yes.", "Yes and don't ask me again."));
                                     }
                                 }
 
@@ -326,7 +329,7 @@ public class TaskManager {
             ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
 
-            if(Client.isLoggedIn()) {
+            if(Client.isLoggedIn() && !TutorialUtils.isOnTutorial()) {
                 checkPlayTime();
             }
 
