@@ -325,13 +325,13 @@ public class TaskManager {
                 (getInstance().getCheckedHoursAt() == 0 ||
                         (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
 
+            if(minutesPlayed > 0 && !TutorialUtils.isOnTutorial()) {
+                checkPlayTime();
+            }
+
             ConfigManager.getInstance().getWsProfile(0);
             ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
-
-            if(Client.isLoggedIn() && !TutorialUtils.isOnTutorial()) {
-                checkPlayTime();
-            }
 
             boolean p2pEnabled = ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed");
             Logger.log(p2pEnabled ? Color.green : Color.red, "P2P tasks are " + (p2pEnabled ? "enabled" : "disabled"));
