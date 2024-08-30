@@ -257,6 +257,7 @@ public class TaskManager {
         if(!Tabs.isOpen(Tab.QUEST)) {
             if(!Tabs.open(Tab.QUEST)) {
                 Logger.log("Failed to open quest tab");
+                return;
             }
 
             Sleep.sleepUntil(() -> Tabs.isOpen(Tab.QUEST), 5000);
