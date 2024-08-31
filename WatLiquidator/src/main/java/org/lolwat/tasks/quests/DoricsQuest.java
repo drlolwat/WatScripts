@@ -22,10 +22,11 @@ import org.lolwat.tasks.misc.TraversalTask;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DoricsQuest implements QuestTask {
     private final Area startLocation = new Area(2950, 3449, 2953, 3452);
-    private final List<String> startDialogue = Arrays.asList("I wanted to use your anvils.", "Yes.");
+    private final List<String> startDialogue = Arrays.asList("I wanted to use your anvils.", "Yes.", "Certainly, I'll be right back!");
 
     @Override
     public Quest completes() {
@@ -36,9 +37,19 @@ public class DoricsQuest implements QuestTask {
     public void execute(WatTask wrapper) {
         List<Integer> validStates = Arrays.asList(0, 1);
         if (validStates.contains(getState())) {
-            if (!Inventory.contains("Clay", "Copper ore", "Iron ore")) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
-                return;
+            HashMap<String, Integer> items = new HashMap<String, Integer>() {
+                {
+                    put("Clay", 6);
+                    put("Copper ore", 4);
+                    put("Iron ore", 2);
+                }
+            };
+
+            for(Map.Entry<String, Integer> entry : items.entrySet()) {
+                if(!Inventory.contains(x -> x != null && x.getName().equals(entry.getKey()) && x.getAmount() >= entry.getValue() && !x.isNoted())) {
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
+                    return;
+                }
             }
 
             NPC doric = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Doric") && x.canReach());
