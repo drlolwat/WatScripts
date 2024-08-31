@@ -37,15 +37,7 @@ public class DoricsQuest implements QuestTask {
     public void execute(WatTask wrapper) {
         List<Integer> validStates = Arrays.asList(0, 1);
         if (validStates.contains(getState())) {
-            HashMap<String, Integer> items = new HashMap<String, Integer>() {
-                {
-                    put("Clay", 6);
-                    put("Copper ore", 4);
-                    put("Iron ore", 2);
-                }
-            };
-
-            for(Map.Entry<String, Integer> entry : items.entrySet()) {
+            for(Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
                 if(!Inventory.contains(x -> x != null && x.getName().equals(entry.getKey()) && x.getAmount() >= entry.getValue() && !x.isNoted())) {
                     TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
                     return;
