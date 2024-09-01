@@ -97,6 +97,8 @@ public class TaskManager {
             return;
         }
 
+        DialogueUtils.wipeOptions();
+
         boolean quest = !noQuest
                 && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3
                 && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("quest_min_ttl");
@@ -121,7 +123,7 @@ public class TaskManager {
             Logger.log("TaskManager: Selected questing, now selecting quest..");
             Quest incompleteQuest = QuestManager.getInstance().getIncompleteQuest();
             if(incompleteQuest != null) {
-                setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), 0);
+                setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), Calculations.random(3600, 7200));
                 Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
             } else {
                 tasksUntilBreak++; // so we dont decrement it if we dont get a quest
@@ -208,7 +210,7 @@ public class TaskManager {
     }
 
     public void resetBreaks() {
-        tasksUntilBreak = Calculations.random(8, 15);
+        tasksUntilBreak = Calculations.random(12, 20);
     }
 
     private boolean evaluateBreak() {
