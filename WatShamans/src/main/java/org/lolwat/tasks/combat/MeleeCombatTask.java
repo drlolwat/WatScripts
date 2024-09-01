@@ -177,7 +177,7 @@ public class MeleeCombatTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return MeleeUtils.getRequiredItems(false);
+        return MeleeUtils.getRequiredItems(false, false);
     }
 
     @Override
