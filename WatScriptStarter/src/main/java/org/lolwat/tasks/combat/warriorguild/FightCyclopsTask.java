@@ -302,7 +302,7 @@ public class FightCyclopsTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        HashMap<String, Integer> gear = MeleeUtils.getRequiredItems(true);
+        HashMap<String, Integer> gear = MeleeUtils.getRequiredItems(true, false);
         if(!latestDefender.isEmpty()) {
             String toRemove = "";
             for(Map.Entry<String, Integer> e : gear.entrySet()) {
