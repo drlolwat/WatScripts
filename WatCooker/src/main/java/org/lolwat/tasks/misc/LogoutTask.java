@@ -88,7 +88,7 @@ public class LogoutTask implements WatTask {
 
                 Sleep.sleep(100, 200);
                 TaskManager.getInstance().setCurrentTask(postScript, (postScript instanceof BreakingTask)
-                        ? (int) postScript.data().get("seconds_to_run")
+                        ? (int) Double.parseDouble(postScript.data().get("seconds_to_run").toString())
                         : 0);
             }
 
