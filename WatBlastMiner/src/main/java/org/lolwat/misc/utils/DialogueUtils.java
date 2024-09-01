@@ -8,36 +8,37 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.dreambot.api.utilities.Sleep.sleepUntil;
 import static org.dreambot.api.utilities.Sleep.sleepWhile;
 
 public class DialogueUtils {
+    private static final Set<String> usedOptions = new HashSet<>();
+
     public static void continueWhilePossible() {
-        while (Dialogues.canContinue() && Dialogues.inDialogue()) {
+        while (Dialogues.canContinue() && Dialogues.inDialogue() && Dialogues.getOptions() == null) {
             Dialogues.continueDialogue();
             sleepWhile(Dialogues::isProcessing, Dialogues::canContinue, Calculations.random(100, 300), 1000);
             Sleep.sleep(500, 700);
         }
     }
 
-    // Credit to the DreamBot forums for this solution
     public static void solve(List<String> answers) {
-        if(Dialogues.getOptions() != null && !answers.isEmpty()) {
+        if (Dialogues.getOptions() != null && !answers.isEmpty()) {
             final List<String> options = Arrays.asList(Dialogues.getOptions());
-            final Optional<String> optionalOption = answers.stream().filter(ans -> options.stream().anyMatch(option -> option.equals(ans))).findFirst();
-            if (optionalOption.isPresent()) {
-                optionalOption.ifPresent((ans) -> {
-                    Dialogues.chooseOption(ans);
-                    sleepUntil(Dialogues::canContinue, 5000);
-                    continueWhilePossible();
-                });
-            } else {
-                Logger.log(Arrays.toString(Dialogues.getOptions()));
+
+            for (String answer : answers) {
+                if (options.contains(answer) && !usedOptions.contains(answer)) {
+                    usedOptions.add(answer);
+                    Dialogues.chooseOption(answer);
+                    sleepUntil(Dialogues::canContinue, 2000);
+                    break; // Exit the loop after selecting an option
+                }
+            }
+
+            if (usedOptions.isEmpty()) {
+                Logger.log("No unused options found: " + Arrays.toString(Dialogues.getOptions()));
             }
         }
 
@@ -49,25 +50,25 @@ public class DialogueUtils {
     }
 
     public static void talkTo(String npc, List<String> answers) {
-        if(answers == null) answers = new ArrayList<>();
+        if (answers == null) answers = new ArrayList<>();
 
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
             return;
         }
 
-        if(Dialogues.isProcessing()) {
+        if (Dialogues.isProcessing()) {
             return;
         }
 
         Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
 
-        if(!answers.isEmpty() && Dialogues.getOptions() != null) {
+        if (!answers.isEmpty() && Dialogues.getOptions() != null) {
             solve(answers);
             return;
         }
 
-        if(Dialogues.canContinue()) {
+        if (Dialogues.canContinue()) {
             Dialogues.continueDialogue();
         } else {
             NPC n = NPCs.closest(npc);
@@ -83,5 +84,9 @@ public class DialogueUtils {
         }
 
         Sleep.sleepUntil(() -> (Dialogues.canContinue() || Dialogues.getOptions() != null), Calculations.random(500, 1500));
+    }
+
+    public static void wipeOptions() {
+        usedOptions.clear();
     }
 }
