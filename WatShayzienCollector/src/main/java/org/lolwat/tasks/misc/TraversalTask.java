@@ -9,6 +9,7 @@ import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
@@ -80,6 +81,8 @@ public class TraversalTask implements WatTask {
             "The birthday of a famous person or event.", "No, you should never allow anyone to level your account.", "Nothing, it's a fake.",
             "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!");
 
+    List<String> npcsTriggerPost = Arrays.asList("Delrith");
+
     @Override
     public String getName() {
         if (postTask != null) {
@@ -105,6 +108,11 @@ public class TraversalTask implements WatTask {
     public void execute() {
         if (TutorialUtils.needsOpenTab()) {
             TutorialUtils.handleTab();
+        }
+
+        if(!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
+            TaskManager.getInstance().setCurrentTask(postTask);
+            return;
         }
 
         /*if(!hadNoobChance && !(postTask instanceof AeglenModeTask)) {
