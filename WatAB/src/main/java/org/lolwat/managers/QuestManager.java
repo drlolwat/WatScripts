@@ -6,7 +6,6 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.lolwat.managers.types.QuestTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.quests.*;
-import org.lolwat.tasks.quests.ErnestTheChickenQuest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +45,7 @@ public class QuestManager {
         questTasks.put(FreeQuest.RUNE_MYSTERIES, new RuneMysteriesQuest());
         questTasks.put(FreeQuest.ERNEST_THE_CHICKEN, new ErnestTheChickenQuest());
         questTasks.put(FreeQuest.VAMPIRE_SLAYER, new VampyreSlayerQuest());
+        questTasks.put(FreeQuest.DEMON_SLAYER, new DemonSlayerQuest());
     }
 
     public static QuestManager getInstance() {
