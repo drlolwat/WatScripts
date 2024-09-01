@@ -14,7 +14,7 @@ import org.lolwat.misc.utils.GenericUtils;
 import java.util.HashMap;
 
 public class MeleeUtils {
-    public static HashMap<String, Integer> getRequiredItems(boolean replaceDefender) {
+    public static HashMap<String, Integer> getRequiredItems(boolean replaceDefender, boolean useSilverlight) {
         HashMap<String, Integer> ret = new HashMap<>();
 
         for(String s : bestGearForLevel().values()) {
@@ -22,6 +22,12 @@ public class MeleeUtils {
                 if(s.contains("defender")) {
                     s = s.replace("Dragon", "Rune"); // lolwat
                     s = s.replace("defender", "kiteshield");
+                }
+            }
+
+            if(useSilverlight) {
+                if(s.contains("scimitar")) {
+                    s = "Silverlight";
                 }
             }
 
