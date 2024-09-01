@@ -193,6 +193,6 @@ public class VampyreSlayerQuest implements QuestTask {
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
-        return MeleeUtils.getRequiredItems(false);
+        return MeleeUtils.getRequiredItems(false, false);
     }
 }
