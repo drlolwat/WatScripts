@@ -21,6 +21,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.QuestTask;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
+import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.ErnestTheChickenSolver;
 import org.lolwat.tasks.misc.GatheringTask;
 import org.lolwat.tasks.misc.TraversalTask;
@@ -96,6 +97,11 @@ public class ErnestTheChickenQuest implements QuestTask {
             }
 
             case 2: {
+                if(Inventory.isFull()) {
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
+                    return;
+                }
+
                 if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Oil can"))) {
                     Logger.log("Need oil can, handing off to ErnestTheChickenSolver");
                     TaskManager.getInstance().setCurrentTask(new ErnestTheChickenSolver(wrapper));
