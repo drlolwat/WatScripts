@@ -12,6 +12,7 @@ import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.QuestTask;
 import org.lolwat.managers.types.WatTask;
@@ -38,7 +39,10 @@ public class DoricsQuest implements QuestTask {
         List<Integer> validStates = Arrays.asList(0, 1);
         if (validStates.contains(getState())) {
             for(Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
-                if(!Inventory.contains(x -> x != null && x.getName().equals(entry.getKey()) && x.getAmount() >= entry.getValue() && !x.isNoted())) {
+                List<Item> i = Inventory.all(x -> x != null && x.getName().equalsIgnoreCase(entry.getKey()) && !x.isNoted());
+                if(i.isEmpty() ||
+                        Inventory.count(x -> x != null && x.getName().equalsIgnoreCase(entry.getKey()) && !x.isNoted()) < entry.getValue()) {
+
                     TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
                     return;
                 }
