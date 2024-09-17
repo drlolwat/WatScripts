@@ -21,7 +21,7 @@ public class QuickWithdrawTask implements WatTask {
 
     @Override
     public String getName() {
-        return "";
+        return "Banking";
     }
 
     @Override
