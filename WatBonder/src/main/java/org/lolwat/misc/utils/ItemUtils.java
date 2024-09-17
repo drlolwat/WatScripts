@@ -47,6 +47,10 @@ public class ItemUtils {
         return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty);
     }
 
+    public static boolean equipmentContains(int itemId, int itemQty) {
+        return Inventory.contains(x -> x != null && x.getID() == itemId && x.getAmount() >= itemQty);
+    }
+
     public static boolean bankContains(int itemId, int itemQty, boolean allowNoted) {
         return Bank.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty);
     }
