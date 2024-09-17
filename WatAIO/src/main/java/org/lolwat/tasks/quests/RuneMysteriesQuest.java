@@ -102,7 +102,8 @@ public class RuneMysteriesQuest implements QuestTask {
 
                 if(Dialogues.inDialogue()) {
                     DialogueUtils.continueWhilePossible();
-                    DialogueUtils.solve(Arrays.asList("Okay, here you are.", "Go ahead.", "Yes, certainly."));
+                    DialogueUtils.solve(Arrays.asList("Okay, here you are.", "Go ahead.", "Yes, certainly.",
+                            "I've been sent here with a package for you.", "Anything useful in that package I gave you?"));
                 } else {
                     if(sedridorNPC != null) {
                         if(!sedridorNPC.interact("Talk-to")) {
@@ -134,7 +135,8 @@ public class RuneMysteriesQuest implements QuestTask {
                 }
 
                 if(Dialogues.inDialogue()) {
-                    DialogueUtils.solve(Arrays.asList("I've been sent here with a package for you.", "Anything useful in that package I gave you?"));
+                    DialogueUtils.solve(Arrays.asList("I've been sent here with a package for you.",
+                            "Anything useful in that package I gave you?", "Okay, here you are.", "Go ahead.", "Yes, certainly."));
                 } else {
                     if(auburyNPC != null) {
                         if(!auburyNPC.interact("Talk-to")) {
