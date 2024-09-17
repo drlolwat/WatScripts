@@ -3,30 +3,23 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.grandexchange.LivePrices;
-import org.dreambot.api.methods.input.Camera;
-import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.methods.interactive.NPCs;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.OutfitUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
+import org.lolwat.misc.utils.OutfitUtils;
 import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
 import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 import org.lolwat.tasks.magic.HighAlchemyTask;
@@ -113,54 +106,8 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute() {
-        List<String> allowedObjects = new ArrayList<String>() {
-            {
-                add("Bank booth");
-                add("Open chest");
-                add("Bank chest");
-            }
-        };
-
         if(!Bank.isOpen()) {
-            NPC banker = NPCs.closest("Banker");
-            if (banker == null || !banker.exists()) {
-                Logger.log("Banking: Looking for bank chest");
-                GameObject chest = GameObjects.closest(x -> x != null
-                        && allowedObjects.contains(x.getName()) && x.distance() <= 15.00
-                        && !x.hasAction("Shut") && !x.hasAction("Search") && !x.hasAction("Chop down")
-                        && x.canReach());
-
-                if (chest == null) {
-                    Logger.log("Banking: No banker or chest found (15r), walking to nearest bank");
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), this));
-                    return;
-                } else {
-                    Logger.log("Banking: Opening bank via " + chest.getName() + " (id: " + chest.getID() + ", distance: " + chest.distance() + ")");
-                    if(!chest.isOnScreen()) {
-                        if(!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 15.0) {
-                            Logger.log("Banking: Walking closer to chest");
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(chest.getTile().getArea(2), this));
-                            return;
-                        }
-
-                        Camera.rotateToTile(chest.getTile());
-                        Sleep.sleepUntil(chest::isOnScreen, Calculations.random(5000, 10000));
-                    }
-
-                    if (!chest.interact()) {
-                        Logger.error("Banking: Failed to interact with chest");
-                        return;
-                    }
-                }
-            } else {
-                Logger.log("Banking: Opening bank via Banker (distance: " + banker.distance() + ")");
-                if (!Bank.open()) {
-                    return;
-                }
-            }
-
-            Logger.log("Banking: Waiting for bank to be open..");
-            Sleep.sleepUntil(Bank::isOpen, 15000);
+            ItemUtils.bank(this);
             return;
         }
 
@@ -253,7 +200,7 @@ public class BankingTask implements WatTask {
                     }
 
                     if (triggered) {
-                        checkAndSet(BankMode.NOTE);
+                        ItemUtils.setBankMode(BankMode.NOTE);
                         Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName());
                         if(!Inventory.isFull()) {
                             if (entry.getValue() > 0) {
@@ -287,7 +234,7 @@ public class BankingTask implements WatTask {
         }
 
         Logger.log("Sell checker: finished");
-        checkAndSet(BankMode.ITEM);
+        ItemUtils.setBankMode(BankMode.ITEM);
 
         HashMap<String, Integer> buyingRequired = new HashMap<>();
 
@@ -444,7 +391,7 @@ public class BankingTask implements WatTask {
         Logger.log("Inventory: Beginning checks");
         if (!inventoryRequired.isEmpty()) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                checkAndSet(BankMode.ITEM);
+                ItemUtils.setBankMode(BankMode.ITEM);
                 int amountRequired;
                 if (ItemUtils.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
@@ -495,7 +442,7 @@ public class BankingTask implements WatTask {
                     toWithdraw -= reduceBy;
 
                     if(postTask != null && postTask instanceof HighAlchemyTask && !entry.getKey().contains("rune") && !entry.getKey().contains("coin")) {
-                        checkAndSet(BankMode.NOTE);
+                        ItemUtils.setBankMode(BankMode.NOTE);
                     }
 
                     Item i = Bank.get(x -> x != null && x.getName().equals(entry.getKey()));
@@ -555,7 +502,7 @@ public class BankingTask implements WatTask {
                 }
             }
 
-            checkAndSet(BankMode.ITEM);
+            ItemUtils.setBankMode(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 
             if(Inventory.isFull()) {
@@ -599,7 +546,7 @@ public class BankingTask implements WatTask {
                 return;
             } else {
                 if (ConfigManager.getInstance().isTradeUnlocked()) {
-                    checkAndSet(BankMode.NOTE);
+                    ItemUtils.setBankMode(BankMode.NOTE);
                     Logger.log("Exchanger: Need to sell items");
                     if (Inventory.isFull()) {
                         Bank.depositAllExcept("Coins");
@@ -889,15 +836,6 @@ public class BankingTask implements WatTask {
                 Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
             }
         }
-    }
-
-    public void checkAndSet(BankMode mode) {
-        if(Bank.getWithdrawMode().equals(mode)) {
-            return;
-        }
-
-        Bank.setWithdrawMode(mode);
-        Sleep.sleep(100, 200);
     }
 
     @Override
