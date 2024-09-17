@@ -48,7 +48,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one F2P Account Building script for Old School RuneScape", author = "lolwat", version = 1.22, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one F2P Account Building script for Old School RuneScape", author = "lolwat", version = 1.24, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;
@@ -172,16 +172,16 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                         Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (task) level, picking new task..");
                         TaskManager.getInstance().getSpecificSkillTask(TaskManager.getInstance().getCurrentTask().trainsSkill());
                         return 1000;
-                    }//TODO skip the skill if it's already at the target level instead of ending up on break
-                    else
+                    }
+                    else { //TODO skip the skill if it's already at the target level instead of ending up on break
+                        if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) >=
+                                ConfigManager.getInstance().getSkillTarget(TaskManager.getInstance().getCurrentTask().trainsSkill())) {
 
-                    if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) >=
-                            ConfigManager.getInstance().getSkillTarget(TaskManager.getInstance().getCurrentTask().trainsSkill())) {
-
-                        if(!TaskManager.getInstance().getCurrentTask().data().containsKey("gp_to_generate")) {
-                            Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (target) level, picking new task..");
-                            TaskManager.getInstance().getNewTask();
-                            return 1000;
+                            if (!TaskManager.getInstance().getCurrentTask().data().containsKey("gp_to_generate")) {
+                                Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (target) level, picking new task..");
+                                TaskManager.getInstance().getNewTask();
+                                return 1000;
+                            }
                         }
                     }
                 }
