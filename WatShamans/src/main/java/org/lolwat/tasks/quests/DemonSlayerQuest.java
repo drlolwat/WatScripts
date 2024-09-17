@@ -4,7 +4,6 @@ import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
-import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -19,16 +18,18 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.QuestTask;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.QuickWithdrawTask;
 import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.quests.helpers.GetSilverlight;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,9 +53,9 @@ public class DemonSlayerQuest implements QuestTask {
 
     @Override
     public void execute(WatTask wrapper) {
-        switch(getState()) {
+        switch (getState()) {
             case 0: {
-                if(Dialogues.inDialogue()) {
+                if (Dialogues.inDialogue()) {
                     DialogueUtils.continueWhilePossible();
                     DialogueUtils.solve(Arrays.asList("Yes.", "So how did Wally kill Delrith?",
                             "What is the magical incantation?",
@@ -77,10 +78,12 @@ public class DemonSlayerQuest implements QuestTask {
                 NPC aris = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("aris")
                         && x.canReach());
 
-                if(!Dialogues.inDialogue() && !Inventory.contains("Coins")) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() { {
-                        put("Coins", 1);
-                    } }, null, 1, wrapper));
+                if (!Dialogues.inDialogue() && !Inventory.contains("Coins")) {
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                        {
+                            put("Coins", 1);
+                        }
+                    }, null, 1, wrapper));
                     return;
                 }
 
@@ -89,8 +92,8 @@ public class DemonSlayerQuest implements QuestTask {
                     return;
                 }
 
-                if(aris != null) {
-                    if(!Dialogues.inDialogue()) {
+                if (aris != null) {
+                    if (!Dialogues.inDialogue()) {
                         if (!aris.interact("Talk-to")) {
                             Logger.log("Failed to interact with Aris");
                             return;
@@ -136,206 +139,24 @@ public class DemonSlayerQuest implements QuestTask {
             }
 
             case 2: {
-                if(!Inventory.contains("Silverlight") && !Equipment.contains("Silverlight")) {
-                    // mage dudes key
-                    if (!Inventory.contains(2399)) {
-                        Logger.log("Need to get the mage dudes key");
-
-                        Area traibornArea = new Area(
-                                new Tile(3110, 3165, 1),
-                                new Tile(3110, 3160, 1),
-                                new Tile(3114, 3160, 1),
-                                new Tile(3114, 3163, 1),
-                                new Tile(3111, 3165, 1));
-
-                        if (!Inventory.contains(x -> x.getName().equalsIgnoreCase("bones") && !x.isNoted()) || Inventory.count("Bones") < 25) {
-                            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
-                                {
-                                    put("Bones", 25);
-                                }
-                            }, null, 1, wrapper));
-                            return;
-                        }
-
-                        if (!Dialogues.inDialogue() && !traibornArea.contains(Players.getLocal())) {
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(traibornArea, wrapper));
-                            return;
-                        }
-
-                        if (Dialogues.inDialogue()) {
-                            DialogueUtils.wipeOptions();
-                            DialogueUtils.continueWhilePossible();
-                            DialogueUtils.solve(Arrays.asList("Talk about Demon Slayer.",
-                                    "He told me you were looking after it for him.",
-                                    "Well, have you got any keys knocking around?",
-                                    "I'll get the bones for you."));
-                        }
-
-                        if (!Dialogues.inDialogue()) {
-                            NPC traiborn = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("wizard traiborn")
-                                    && x.canReach());
-
-                            if (traiborn != null) {
-                                if (!traiborn.interact("Talk-to")) {
-                                    Logger.log("Failed to interact with Traiborn");
-                                    return;
-                                }
-
-                                Sleep.sleepUntil(Dialogues::inDialogue, 5000);
-                                return;
-                            }
-                        }
-
-                        return;
-                    }
-
-                    // sir prysins key
-                    if (!Inventory.contains(2401)) {
-                        Logger.log("Need to get Sir Prysin's key");
-                        int drainStatus = PlayerSettings.getBitValue(2568); // 0=not touched, 1=key in sewer, 2=key taken
-                        if (drainStatus == 0) {
-                            if (!Inventory.contains("Bucket of water")) {
-                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
-                                    {
-                                        put("Bucket of water", 1);
-                                    }
-                                }, null, 1, wrapper));
-                                return;
-                            }
-
-                            Area drainArea = new Area(3225, 3497, 3227, 3491);
-                            if (!drainArea.contains(Players.getLocal())) {
-                                TaskManager.getInstance().setCurrentTask(new TraversalTask(drainArea, wrapper));
-                                return;
-                            }
-
-                            GameObject object = GameObjects.closest(x -> x != null && x.exists()
-                                    && x.getName().equalsIgnoreCase("drain"));
-
-                            if (object != null) {
-                                if (!Inventory.use("Bucket of water") || !object.interact()) {
-                                    Logger.log("Failed to interact with drain");
-                                    return;
-                                }
-
-                                Sleep.sleepUntil(() -> PlayerSettings.getBitValue(2568) == 1, 5000);
-                            }
-                        } else {
-                            Area skeletons = new Area(
-                                    new Tile(3222, 9897, 0),
-                                    new Tile(3223, 9896, 0),
-                                    new Tile(3227, 9896, 0),
-                                    new Tile(3228, 9897, 0),
-                                    new Tile(3226, 9900, 0));
-
-                            if (!skeletons.contains(Players.getLocal())) {
-                                TaskManager.getInstance().setCurrentTask(new TraversalTask(skeletons, wrapper));
-                                return;
-                            }
-
-                            GameObject key = GameObjects.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("Rusty key"));
-                            if (key != null) {
-                                if (!key.interact("Take")) {
-                                    Logger.log("Failed to take key");
-                                    return;
-                                }
-
-                                Sleep.sleepUntil(() -> Inventory.contains("Rusty key"), 5000);
-                            }
-                        }
-
-                        return;
-                    }
-
-                    if (!Inventory.contains(2400)) { // rovins key
-                        Logger.log("Need to get Rovin's key");
-
-                        Area rovinArea = new Area(
-                                new Tile(3200, 3498, 2),
-                                new Tile(3200, 3496, 2),
-                                new Tile(3202, 3494, 2),
-                                new Tile(3204, 3494, 2),
-                                new Tile(3206, 3496, 2),
-                                new Tile(3206, 3498, 2),
-                                new Tile(3204, 3500, 2),
-                                new Tile(3202, 3500, 2));
-
-                        if (!Dialogues.inDialogue() && !rovinArea.contains(Players.getLocal())) {
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(rovinArea, wrapper));
-                            return;
-                        }
-
-                        if (Dialogues.inDialogue()) {
-                            DialogueUtils.continueWhilePossible();
-                            DialogueUtils.solve(Arrays.asList("Can you give me your key?",
-                                    "Yes I know, but this is important.",
-                                    "There's a demon who wants to invade this city.",
-                                    "Yes, very.",
-                                    "It's not them who are going to fight the demon, it's me.",
-                                    "Sir Prysin said you would give me the key.",
-                                    "Fortune-teller Aris said I was destined to kill the demon.",
-                                    "Otherwise the demon will destroy the city",
-                                    "Sir Prysin said you would give me the key",
-                                    "Why did he give you one of the keys then?"));
-                        }
-
-                        NPC rovin = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("captain rovin")
-                                && x.canReach());
-
-                        if (rovin != null) {
-                            if (!Dialogues.inDialogue()) {
-                                if (!rovin.interact("Talk-to")) {
-                                    Logger.log("Failed to interact with Captain Rovin");
-                                    return;
-                                }
-
-                                Sleep.sleepUntil(Dialogues::inDialogue, 5000);
-                                return;
-                            }
-                        }
-
-                        return;
-                    }
-
-                    Logger.log("Need to get Silverlight");
-
-                    if(!prysinArea.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(prysinArea, wrapper));
-                        return;
-                    }
-
-                    NPC sirPrysin = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("sir prysin")
-                            && x.canReach());
-
-                    if (sirPrysin != null) {
-                        if (!Dialogues.inDialogue()) {
-                            if (!sirPrysin.interact("Talk-to")) {
-                                Logger.log("Failed to interact with Sir Prysin");
-                                return;
-                            }
-
-                            Sleep.sleepUntil(Dialogues::inDialogue, 5000);
-                        }
-                    }
-
-                    if (Dialogues.inDialogue()) {
-                        DialogueUtils.continueWhilePossible();
-                    }
-
+                if (!ItemUtils.inventoryContains(2402, 1, false) && !ItemUtils.equipmentContains(2402, 1)) {
+                    TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2402, 1,
+                            new GetSilverlight(wrapper), wrapper));
+                    return;
                 } else {
-                    if(!Equipment.contains("Silverlight")) {
+                    if (!Equipment.contains("Silverlight")) {
                         Inventory.interact("Silverlight", "Wield");
                         Sleep.sleepUntil(() -> Equipment.contains("Silverlight"), 5000);
                         return;
                     }
 
-                    if(Dialogues.inDialogue()) {
+                    if (Dialogues.inDialogue()) {
                         DialogueUtils.continueWhilePossible();
                         DialogueUtils.solve(getFullIncantation());
                         return;
                     }
 
-                    if(Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
+                    if (Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
                         Logger.error("MeleeCombatTask(Q) is missing food");
                         TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                             {
@@ -345,14 +166,14 @@ public class DemonSlayerQuest implements QuestTask {
                         return;
                     }
 
-                    if(Combat.getHealthPercent() <= 50) {
+                    if (Combat.getHealthPercent() <= 50) {
                         Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
                         if (i != null && i.interact()) {
                             Sleep.sleep(60, 120);
                         }
                     }
 
-                    if(Players.getLocal().isInCombat()) {
+                    if (Players.getLocal().isInCombat()) {
                         return;
                     }
 
@@ -379,14 +200,14 @@ public class DemonSlayerQuest implements QuestTask {
 
                     NPC delrith = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("delrith"));
 
-                    if(!Dialogues.inDialogue() && delrith == null && !circle.contains(Players.getLocal())) {
+                    if (!Dialogues.inDialogue() && delrith == null && !circle.contains(Players.getLocal())) {
                         TaskManager.getInstance().setCurrentTask(new TraversalTask(circle, wrapper));
                         return;
                     }
 
-                    if(delrith != null) {
-                        if(!Players.getLocal().isInCombat()) {
-                            if(!delrith.interact("Attack")) {
+                    if (delrith != null) {
+                        if (!Players.getLocal().isInCombat()) {
+                            if (!delrith.interact("Attack")) {
                                 Logger.log("Failed to attack Delrith");
                                 return;
                             }
