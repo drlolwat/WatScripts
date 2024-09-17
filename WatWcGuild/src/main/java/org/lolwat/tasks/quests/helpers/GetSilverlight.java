@@ -40,24 +40,29 @@ public class GetSilverlight implements WatTask {
 
     @Override
     public void execute() {
+        if(ItemUtils.equipmentContains(2402, 1) || ItemUtils.inventoryContains(2402, 1, false)) {
+            TaskManager.getInstance().setCurrentTask(wrapper);
+            return;
+        }
+
         // wizard traiborns key
         if(!ItemUtils.inventoryContains(2399, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2399, 1,
-                    new GetTraibornKey(wrapper), wrapper));
+                    new GetTraibornKey(this), this));
             return;
         }
 
         // sir prysins key
         if (!ItemUtils.inventoryContains(2401, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2401, 1,
-                    new GetPrysinKey(wrapper), wrapper));
+                    new GetPrysinKey(this), this));
             return;
         }
 
         // captain rovins key
         if (!ItemUtils.inventoryContains(2400, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2400, 1,
-                    new GetRovinsKey(wrapper), wrapper));
+                    new GetRovinsKey(this), this));
             return;
         }
 
