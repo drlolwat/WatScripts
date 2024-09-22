@@ -12,6 +12,7 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.Arrays;
@@ -25,11 +26,17 @@ public class GetRovinsKey implements WatTask {
 
     @Override
     public String getName() {
-        return "";
+        return "Collecting Captain Rovin's key";
     }
 
     @Override
     public void execute() {
+        if(ItemUtils.inventoryContains(2400, 1, false)) {
+            Logger.log("Rovins key in inventory");
+            TaskManager.getInstance().setCurrentTask(wrapper);
+            return;
+        }
+
         Area rovinArea = new Area(
                 new Tile(3200, 3498, 2),
                 new Tile(3200, 3496, 2),

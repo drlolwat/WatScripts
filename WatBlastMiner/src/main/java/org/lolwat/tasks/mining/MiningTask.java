@@ -1,6 +1,5 @@
 package org.lolwat.tasks.mining;
 
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
@@ -35,17 +34,13 @@ import java.util.List;
 
 public class MiningTask implements WatTask {
     private final Tile defaultSquare;
-    private List<Tile> defaultRocks;
-    private List<List<Tile>> alternateRockList;
     private final HashMap<String, Integer> sellingItems;
     private final String rockName;
-    private final boolean usingAlternateRocks = false;
     private long lastSuccessfulRock = 0;
     private boolean gotRock = false;
     private Tile rockTile;
     private final int minLevel;
     private Integer maxMiningLevel = 0;
-    private Tile lastTile; // lets try and hover the previous rock for speed
 
     public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct) {
         minLevel = miningLevel;
@@ -141,10 +136,6 @@ public class MiningTask implements WatTask {
                     Logger.log("traversing to closer rocks");
                     return;
                 }
-
-                if (lastTile != null) {
-                    Mouse.move(lastTile.getRandomized());
-                }
             }
 
             Sleep.sleepUntil(() -> Dialogues.canContinue() || !gotRock || (rockTile != null && GameObjects.getTopObjectOnTile(rockTile).getModelColors() == null), 16000);
@@ -160,7 +151,6 @@ public class MiningTask implements WatTask {
     @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         gotRock = false;
-        lastTile = rockTile;
         lastSuccessfulRock = Instant.now().getEpochSecond();
     }
 
