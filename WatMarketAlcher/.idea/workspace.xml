@@ -7,17 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="GenericUtils: nulref">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="GetSilverlight: inherit correct post task">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/MagicCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/MagicCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/MeleeCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/MeleeCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/RangedCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/RangedCombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/HopperTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/HopperTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/firemaking/FiremakingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/mining/MiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetRovinsKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetRovinsKey.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +64,7 @@
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts/WatAIO.git&quot;,
-    &quot;second&quot;: &quot;bf997ea0-6cb7-4432-9c8f-de6a5125b790&quot;
+    &quot;second&quot;: &quot;65b04abc-b282-4e4b-ab3f-28c6c43e6c7e&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -116,15 +111,23 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.lolwat.misc.utils.ItemUtils" />
       <recent name="org.lolwat.misc.utils.TutorialUtils" />
       <recent name="org.lolwat.misc.utils.smithing.SmithingUtils" />
       <recent name="org.lolwat.misc.utils.crafting.CraftingUtils" />
       <recent name="org.lolwat.misc.utils.fishing.FishingUtils" />
-      <recent name="org.lolwat.misc.utils.firemaking.FiremakingUtils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -179,6 +182,21 @@
       <workItem from="1723912101475" duration="2319000" />
       <workItem from="1723914827606" duration="1855000" />
       <workItem from="1723942243384" duration="6757000" />
+      <workItem from="1725011936662" duration="50231000" />
+      <workItem from="1725219736756" duration="9063000" />
+      <workItem from="1725269211292" duration="12246000" />
+      <workItem from="1725444793318" duration="33846000" />
+      <workItem from="1725807986427" duration="739000" />
+      <workItem from="1726121741268" duration="6911000" />
+      <workItem from="1726525937702" duration="4126000" />
+      <workItem from="1726609570563" duration="1180000" />
+      <workItem from="1726611950707" duration="13245000" />
+      <workItem from="1726706501547" duration="6274000" />
+      <workItem from="1726785079394" duration="5867000" />
+      <workItem from="1726826324717" duration="6630000" />
+      <workItem from="1726931183100" duration="812000" />
+      <workItem from="1726956367625" duration="3631000" />
+      <workItem from="1726973728626" duration="756000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -523,7 +541,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="615" />
+    <option name="localTasksCounter" value="672" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -570,32 +588,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="MeleeCombatTask: fix nullref" />
-    <MESSAGE value="haha" />
-    <MESSAGE value="TaskManager: rework Woodcutting" />
-    <MESSAGE value="WoodcuttingTask: fix logging to correct place" />
-    <MESSAGE value="New config option: rest_after_tut - value in minutes (1440 = 1 day break before resuming)" />
-    <MESSAGE value="TutorialIslandTask: rest for x minutes if defined greaterThan 0 in config" />
-    <MESSAGE value="TaskManager: lower task runtimes" />
-    <MESSAGE value="MagicCombatTask: pickup bones/bury if enabled" />
-    <MESSAGE value="RangedCombatTask: pickup bones/bury if enabled" />
-    <MESSAGE value="NumUtils: use LivePrices.getHigh" />
-    <MESSAGE value="MeleeCombatTask: new pickup fixes, incl. keys for test" />
-    <MESSAGE value="GenericUtils: major refactor of handlePickup method" />
-    <MESSAGE value="TaskManager: add Goblins to combat tasks, change reqs for AlKharid" />
-    <MESSAGE value="NumUtils: minor changes" />
-    <MESSAGE value="BankingTask: fix endless loop in BankingTask-&gt;EquipmentChecker when inv is full" />
-    <MESSAGE value="BreakingTask: pass correct amount of time to break for" />
-    <MESSAGE value="GrandExchangeTask: use LivePrices.getHigh as fallback in 'emergencies'" />
-    <MESSAGE value="LogoutTask: handle breaks correctly" />
-    <MESSAGE value="fix burying" />
-    <MESSAGE value="Grand Exchange QOL" />
-    <MESSAGE value="DialogueUtils: QOL" />
-    <MESSAGE value="GenericUtils: QOL" />
-    <MESSAGE value="Tutorial: Working again after pronoun bs" />
-    <MESSAGE value="GenericUtils: fix not burying if inv is full" />
-    <MESSAGE value="GenericUtils: nulref" />
-    <option name="LAST_COMMIT_MESSAGE" value="GenericUtils: nulref" />
+    <MESSAGE value="Melee tools update" />
+    <MESSAGE value="DemonSlayerQuest: new quest" />
+    <MESSAGE value="DialogueUtils: fixes/updates" />
+    <MESSAGE value="MeleeUtils: support for Silverlight" />
+    <MESSAGE value="TraversalTask: continue to post if specific npc is spotted" />
+    <MESSAGE value="VampyreSlayerQuest: melee utils new method usage" />
+    <MESSAGE value="QuestManager: add Demon Slayer to quest pool" />
+    <MESSAGE value="TaskManager: more tasks between breaks" />
+    <MESSAGE value="ErnestTheChickenQuest: bank if inventory is full" />
+    <MESSAGE value="LogoutTask: address double-int cast error" />
+    <MESSAGE value="DoricsQuest: robustness" />
+    <MESSAGE value="ItemUtils: new methods: setBankMode, bank, bankContains, inventoryContains" />
+    <MESSAGE value="LiquidationTask: use ItemUtils" />
+    <MESSAGE value="BankingTask: use ItemUtils" />
+    <MESSAGE value="RuneMysteriesQuest: add dialogue to wizard dude" />
+    <MESSAGE value="WatAIO: version change" />
+    <MESSAGE value="new task: QuickWithdrawTask" />
+    <MESSAGE value="new task: GetPrysinKey" />
+    <MESSAGE value="new task: GetRovinsKey" />
+    <MESSAGE value="new task: GetTraibornKey" />
+    <MESSAGE value="new task: GetSilverlight" />
+    <MESSAGE value="DemonSlayerQuest: will collect items correctly, bank if needed" />
+    <MESSAGE value="QuickWithdrawTask: named" />
+    <MESSAGE value="ItemUtils: new method: equipmentContains" />
+    <MESSAGE value="GetSilverlight: inherit correct post task" />
+    <option name="LAST_COMMIT_MESSAGE" value="GetSilverlight: inherit correct post task" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
