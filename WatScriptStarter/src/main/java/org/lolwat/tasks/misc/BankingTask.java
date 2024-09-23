@@ -19,12 +19,6 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
-import org.lolwat.misc.utils.OutfitUtils;
-import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
-import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
-import org.lolwat.tasks.magic.HighAlchemyTask;
-import org.lolwat.tasks.prayer.BuryBonesTask;
-import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
 
 import java.time.Instant;
 import java.util.*;
@@ -115,9 +109,7 @@ public class BankingTask implements WatTask {
 
         Logger.log("Sell Checker: starting");
 
-        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked()
-                || (postTask != null && postTask.data().containsKey("gp_to_generate"))
-                || GenericUtils.isMember();
+        boolean allowedToSell = GenericUtils.isMember();
 
         Logger.log("Trade unrestricted: " + allowedToSell + ", sell enabled for task: " +
                 (postTask != null && postTask.data().containsKey("gp_to_generate")));
@@ -275,88 +267,8 @@ public class BankingTask implements WatTask {
                         }
 
                     } else {
-                        //TODO a path to obtaining untradeables that isnt hardcoded per shit
-                        if (entry.getKey().contains("defender")) {
-                            Logger.log("We are going to go and obtain a " + entry.getKey() + " first. Restarting loop.");
-
-                            String latestObtained = "";
-
-                            if (!Equipment.contains(x -> x.getName().contains("defender"))) {
-                                if (Bank.contains("Rune defender"))
-                                    latestObtained = "Rune defender";
-                                else if (Bank.contains("Adamant defender"))
-                                    latestObtained = "Adamant defender";
-                                else if (Bank.contains("Mithril defender"))
-                                    latestObtained = "Mithril defender";
-                                else if (Bank.contains("Black defender"))
-                                    latestObtained = "Black defender";
-                                else if (Bank.contains("Steel defender"))
-                                    latestObtained = "Steel defender";
-                                else if (Bank.contains("Iron defender"))
-                                    latestObtained = "Iron defender";
-                                else if (Bank.contains("Bronze defender"))
-                                    latestObtained = "Bronze defender";
-                            } else {
-                                latestObtained = Equipment.get(x -> x.getName().contains("defender")).getName();
-                            }
-
-                            int tokens = Bank.count("Warrior guild token") + Inventory.count("Warrior guild token");
-                            if (tokens >= 200) {
-                                TaskManager.getInstance().setCurrentTask(new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
-                                    {
-                                        put("Lobster", 20);
-                                    }
-                                }, latestObtained));
-                                return;
-                            } else {
-                                TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
-                                    {
-                                        put("Lobster", 20);
-                                    }
-                                }, latestObtained));
-                            }
-                            return;
-                        } else {
-                            if (OutfitUtils.isOutfitItem(entry.getKey())) {
-                                if (OutfitUtils.isGracefulItem(entry.getKey())) {
-                                    if (Bank.contains("Mark of grace")) {
-                                        // calculate total cost of missing pieces, and then see which ones we can get
-                                        // using the marks that we have.
-                                        int totalCost = 0;
-                                        int totalMarks = Bank.count("Mark of grace") + Inventory.count("Mark of grace");
-                                        List<String> gracefulItems = new ArrayList<>();
-                                        for (Map.Entry<String, Integer> e : OutfitUtils.gracefulItems.entrySet()) {
-                                            if (!Bank.contains(e.getKey()) && !Inventory.contains(e.getKey())
-                                                    && !Equipment.contains(e.getKey())) {
-
-                                                if ((totalCost + e.getValue()) > totalMarks)
-                                                    break;
-
-                                                Logger.log("We need to get: " + e.getKey() + " for " + e.getValue() + " marks");
-                                                gracefulItems.add(e.getKey());
-                                                totalCost += e.getValue();
-                                            }
-                                        }
-
-                                        if(!gracefulItems.isEmpty()) {
-                                            if(!Bank.withdraw("Mark of grace", totalCost)) {
-                                                Logger.error("Failed to withdraw marks of grace");
-                                                return;
-                                            }
-
-                                            TaskManager.getInstance().setCurrentTask(new BuyGracefulOutfitTask(this, gracefulItems));
-                                            return;
-                                        }
-                                    } else {
-                                        Logger.log("No marks of grace, can't be buying the outfit..");
-                                    }
-                                }
-                            } else { // probably a else if untradeable, obtain path here. similar to defenders but less hardcoded lol
-                                // need to buy.
-                                buyingRequired.put(entry.getKey(), amountRequired);
-                                Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
-                            }
-                        }
+                        buyingRequired.put(entry.getKey(), amountRequired);
+                        Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
                     }
                 }
             }
@@ -400,19 +312,14 @@ public class BankingTask implements WatTask {
                 }
 
                 if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    if(Inventory.get(entry.getKey()).isNoted() && (postTask != null && !(postTask instanceof HighAlchemyTask))) {
-                        Bank.depositAll(entry.getKey());
-                        Sleep.sleep(100, 300);
-                    } else {
-                        if(entry.getValue() > 0 && Inventory.count(entry.getKey()) > amountRequired) {
-                            Logger.log("Inventory: Depositing extras of: " + entry.getKey());
-                            Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
-                            Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
-                        }
-
-                        Logger.log("Inventory: We have enough of " + entry.getKey() + " already");
-                        continue;
+                    if (entry.getValue() > 0 && Inventory.count(entry.getKey()) > amountRequired) {
+                        Logger.log("Inventory: Depositing extras of: " + entry.getKey());
+                        Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
+                        Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
                     }
+
+                    Logger.log("Inventory: We have enough of " + entry.getKey() + " already");
+                    continue;
                 }
 
                 if(Equipment.contains(entry.getKey())) {
@@ -440,11 +347,6 @@ public class BankingTask implements WatTask {
                     }
 
                     toWithdraw -= reduceBy;
-
-                    if(postTask != null && postTask instanceof HighAlchemyTask && !entry.getKey().contains("rune") && !entry.getKey().contains("coin")) {
-                        ItemUtils.setBankMode(BankMode.NOTE);
-                    }
-
                     Item i = Bank.get(x -> x != null && x.getName().equals(entry.getKey()));
                     if(i != null) {
                         if(Bank.needToScroll(i)) {
@@ -545,79 +447,46 @@ public class BankingTask implements WatTask {
                 TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Buying required items", false, buyingRequired, this));
                 return;
             } else {
-                if (ConfigManager.getInstance().isTradeUnlocked()) {
-                    ItemUtils.setBankMode(BankMode.NOTE);
-                    Logger.log("Exchanger: Need to sell items");
-                    if (Inventory.isFull()) {
-                        Bank.depositAllExcept("Coins");
-                        Sleep.sleep(100, 200);
+                ItemUtils.setBankMode(BankMode.NOTE);
+                Logger.log("Exchanger: Need to sell items");
+                if (Inventory.isFull()) {
+                    Bank.depositAllExcept("Coins");
+                    Sleep.sleep(100, 200);
+                }
+
+                if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
+                    if (Bank.contains("Coins")) {
+                        finalPrice -= Bank.count("Coins");
                     }
 
-                    if (!ConfigManager.getInstance().getConfigBoolean("disable_mule") && !ConfigManager.getInstance().hasMuleConnectionFailed()) {
-                        if (Bank.contains("Coins")) {
-                            finalPrice -= Bank.count("Coins");
-                        }
-
-                        if (Inventory.contains("Coins")) {
-                            finalPrice -= Inventory.count("Coins");
-                        }
-
-                        Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
-                        int totalPrice = finalPrice;
-                        TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                            {
-                                put("Coins", totalPrice);
-                            }
-                        }, this));
-                        return;
-                    } else {
-                        Logger.log("We are out of GP, time to go and make some.");
-                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
-                        return;
+                    if (Inventory.contains("Coins")) {
+                        finalPrice -= Inventory.count("Coins");
                     }
-                } else {
-                    if (!ConfigManager.getInstance().getConfigBoolean("disable_mule") && !ConfigManager.getInstance().hasMuleConnectionFailed()) {
-                        if(Bank.contains("Coins")) {
-                            finalPrice -= Bank.count("Coins");
-                        }
 
-                        if(Inventory.contains("Coins")) {
-                            finalPrice -= Inventory.count("Coins");
+                    Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
+                    int totalPrice = finalPrice;
+                    TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                        {
+                            put("Coins", totalPrice);
                         }
-
-                        Bank.depositAllItems();
-                        Sleep.sleep(100, 200);
-                        Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
-                        int totalPrice = finalPrice;
-                        TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                            {
-                                put("Coins", totalPrice);
-                            }
-                        }, this));
-                        return;
-                    } else {
-                        // Restricted moneymaker time...
-                        Logger.log("We are out of GP, time to go and make some. (Restricted)");
-                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
-                        return;
-                    }
+                    }, this));
+                    return;
                 }
             }
         }
 
         Logger.log("Exchanger: Finished checks");
 
-        if(!ConfigManager.getInstance().hasMuleConnectionFailed() && ConfigManager.getInstance().isTradeUnlocked()
-                && !ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
+        if(!ConfigManager.getInstance().hasMuleConnectionFailed()) {
             int invMoney = 0;
             int bankMoney = 0;
 
             if (Inventory.contains("Coins")) {
-                invMoney = Inventory.get("Coins").getAmount();
+                invMoney = Inventory.count("Coins");
             }
 
             if (Bank.contains("Coins")) {
-                bankMoney = Bank.get("Coins").getAmount();
+                bankMoney = Bank.count("Coins");
             }
 
             if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_trigger")) {
@@ -677,10 +546,6 @@ public class BankingTask implements WatTask {
         Logger.log("Banking: Complete");
 
         if (postTask != null) {
-            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask || postTask instanceof QuestWrapperTask) {
-                Bank.close();
-            }
-
             TaskManager.getInstance().setCurrentTask(postTask);
         }
     }
@@ -809,7 +674,7 @@ public class BankingTask implements WatTask {
                         continue;
                     }
 
-                    if (i.isNoted() && (postTask != null && !(postTask instanceof HighAlchemyTask))) {
+                    if (i.isNoted()) {
                         Logger.log("Banking: Depositing " + i.getName() + ", noted.");
                         Bank.depositAll(i.getName());
                         Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
