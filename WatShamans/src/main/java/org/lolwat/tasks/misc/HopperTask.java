@@ -6,7 +6,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
@@ -69,7 +69,7 @@ public class HopperTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
+    public void onExpGained(Skill skill, int amount, WatScript instance) {
 
     }
 

@@ -1,13 +1,11 @@
-package org.lolwat.misc.utils.combat.ranged;
+package org.lolwat.misc.utils;
 
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.combat.DefensiveItemType;
-import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
 
@@ -32,10 +30,6 @@ public class RangedUtils {
         ret.put(EquipmentSlot.AMULET, "Amulet of power");
         ret.put(EquipmentSlot.FEET, "Leather boots");
         ret.put(EquipmentSlot.HANDS, defensiveItemByType(DefensiveItemType.GLOVES, false));
-
-        if(ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
-            ret.put(EquipmentSlot.CAPE, ConfigManager.getInstance().getConfigString("profile_cape_type"));
-        }
 
         return ret;
     }
