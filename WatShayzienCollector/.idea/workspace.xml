@@ -8,11 +8,90 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="GetSilverlight: inherit correct post task">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanCombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/WatMiner_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/WatMiner_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/firemaking/FiremakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/firemaking/FiremakingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/mining/MiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/mining/MiningTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetRovinsKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetRovinsKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/QuestManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DialogueUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/StringUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/TutorialUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WebUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/magic/MagicUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/melee/MeleeUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/ranged/RangedUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/RangedUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/cooking/CookingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/crafting/CraftingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/firemaking/FiremakingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/fishing/FishingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/herblore/HerbUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/mining/MiningUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/prayer/PrayerUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/runecrafting/RunecraftingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/smithing/SmithingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/woodcutting/WoodcuttingUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/agility/AgilityCourseTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/agility/types/Obstacle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/MagicCombatTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/MeleeCombatTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/RangedCombatTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/warriorguild/FightArmorSetTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/warriorguild/FightCyclopsTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/cooking/CookingFishTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/crafting/JewelryTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/crafting/SpinningTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/firemaking/FiremakingTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/fishing/FishingTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/herblore/CleanHerbTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/magic/HighAlchemyTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/mining/MiningTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/AdvertiseTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/AeglenModeTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BreakingTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BuyGracefulOutfitTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/CowhideCollectorTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/ErnestTheChickenSolver.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/HopperTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/HopperTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LiquidationTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LogoutTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/QuickWithdrawTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/ScavengingTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TalkToNPC.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/prayer/BuryBonesTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/CooksAssistantQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/DemonSlayerQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/DoricsQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/ErnestTheChickenQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/GoblinDiplomacyQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/ImpCatcherQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/RomeoAndJulietQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/RuneMysteriesQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/SheepShearerQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/TheRestlessGhostQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/VampyreSlayerQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/WitchsPotionQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetPrysinKey.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetRovinsKey.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetSilverlight.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/helpers/GetTraibornKey.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/quests/wrapper/QuestWrapperTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/runecrafting/RunecraftingTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/smithing/SmithingIngotTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/smithing/SmithingItemTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/woodcutting/WoodcuttingTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,12 +140,12 @@
     }
   }
 }</component>
-  <component name="GitLabMergeRequestsSettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts/WatAIO.git&quot;,
-    &quot;second&quot;: &quot;65b04abc-b282-4e4b-ab3f-28c6c43e6c7e&quot;
+  <component name="GitLabMergeRequestsSettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "first": "http://gitlab.botbuddy.net/wat-scripts/wat-shamans.git",
+    "second": "fcdb1a08-108d-4202-8587-86031de7c5f7"
   }
-}</component>
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -81,34 +160,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAIO [test].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
-    &quot;Notification.DisplayName-DoNotAsk-VCS Hosting Integrations&quot;: &quot;VCS hosting integrations&quot;,
-    &quot;Notification.DoNotAsk-VCS Hosting Integrations&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;F2P&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatMiner&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.WatAIO [package].executor": "Run",
+    "Maven.WatAIO [test].executor": "Run",
+    "Maven.WatAIO [verify].executor": "Run",
+    "Maven.WatShamans [package].executor": "Run",
+    "Notification.DisplayName-DoNotAsk-VCS Hosting Integrations": "VCS hosting integrations",
+    "Notification.DoNotAsk-VCS Hosting Integrations": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "F2P",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/lolwat/IdeaProjects/WatMiner",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="org.lolwat.misc.utils.ItemUtils" />
@@ -121,11 +201,24 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.20224.387" />
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-IU-242.20224.387" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
       </set>
     </attachedChunks>
   </component>
@@ -197,6 +290,7 @@
       <workItem from="1726931183100" duration="812000" />
       <workItem from="1726956367625" duration="3631000" />
       <workItem from="1726973728626" duration="756000" />
+      <workItem from="1727132754938" duration="1566000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>

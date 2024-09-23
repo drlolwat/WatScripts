@@ -5,7 +5,6 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -26,16 +25,12 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.Teleport;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.TutorialUtils;
-import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
-import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 
 import java.time.Instant;
 import java.util.*;
@@ -106,26 +101,9 @@ public class TraversalTask implements WatTask {
 
     @Override
     public void execute() {
-        if (TutorialUtils.needsOpenTab()) {
-            TutorialUtils.handleTab();
-        }
-
         if(!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
             TaskManager.getInstance().setCurrentTask(postTask);
             return;
-        }
-
-        /*if(!hadNoobChance && !(postTask instanceof AeglenModeTask)) {
-            int noobMode = Calculations.random(Combat.getCombatLevel() * 2);
-            if(noobMode < Combat.getCombatLevel()) {
-                TaskManager.getInstance().setCurrentTask(new AeglenModeTask(this, Calculations.random(120)));
-                return;
-            }
-            hadNoobChance = true;
-        }*/
-
-        if(Dialogues.inDialogue()) {
-            DialogueUtils.solve(possibleDialogues);
         }
 
         Widget w = Widgets.getWidget(579);
@@ -295,24 +273,6 @@ public class TraversalTask implements WatTask {
             }
         }
 
-        if (postTask instanceof FightCyclopsTask) {
-            if (!Inventory.contains("Warrior guild token") || Inventory.count("Warrior guild token") < 100) {
-                String defender = "";
-                if (Equipment.slotContains(EquipmentSlot.SHIELD, x -> x.getName().contains("defender"))) {
-                    defender = Equipment.getItemInSlot(EquipmentSlot.SHIELD).getName();
-                } else if (Inventory.contains(x -> x.getName().contains("defender"))) {
-                    defender = Inventory.get(x -> x.getName().contains("defender")).getName();
-                }
-
-                TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(trainsSkill(), new HashMap<String, Integer>() {
-                    {
-                        put("Lobster", 20);
-                    }
-                }, defender));
-                return;
-            }
-        }
-
         if (!usingArea) {
             if (completedTile && Map.isTileOnMap(target)) {
                 if (!Map.isTileOnScreen(target)) {
@@ -359,7 +319,7 @@ public class TraversalTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
+    public void onExpGained(Skill skill, int amount, WatScript instance) {
 
     }
 
