@@ -10,7 +10,7 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 
@@ -84,7 +84,7 @@ public class BondingTask implements WatTask {
         }
 
         if(requiresHop) {
-            TaskManager.getInstance().setCurrentTask(new LogoutTask(false, false, new HopperTask(0, postTask)));
+            TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
             return;
         }
 
@@ -103,7 +103,7 @@ public class BondingTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
+    public void onExpGained(Skill skill, int amount, WatScript instance) {
 
     }
 
