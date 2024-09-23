@@ -2,7 +2,7 @@ package org.lolwat.managers.types;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.wrappers.widgets.message.Message;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,5 +29,5 @@ public interface WatTask {
     default boolean requiresMembers() {
         return false;
     }
-    default void onExpGained(Skill skill, int amount, WatAIO instance) { }
+    default void onExpGained(Skill skill, int amount, WatScript instance) { }
 }
