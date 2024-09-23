@@ -6,35 +6,23 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
-import org.dreambot.api.methods.dialogues.Dialogues;
-import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
-import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.managers.ConfigManager;
-import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.mining.MiningTask;
-import org.lolwat.tasks.woodcutting.WoodcuttingTask;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GenericUtils {
 
@@ -80,23 +68,9 @@ public class GenericUtils {
         }
     };
 
-    public static String getFallbackTool(WatTask taskType) {
-        if(taskType instanceof MiningTask)
-            return "Bronze pickaxe";
-        else if(taskType instanceof WoodcuttingTask)
-            return "Bronze axe";
-
-        return "";
-    }
-
     public static void handlePickup(List<String> items) {
         List<String> newItems = new ArrayList<>();
-
-        if (ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
-            newItems.add("Bones");
-            newItems.add("Big bones");
-        }
-
+        //TODO ADD
         newItems.addAll(items);
 
         GroundItem i = GroundItems.closest(x -> x != null && newItems.contains(x.getName()) && x.distance() <= 4 && x.canReach());
@@ -111,30 +85,9 @@ public class GenericUtils {
                 }
 
                 Sleep.sleepUntil(() -> !Players.getLocal().isInCombat(), Calculations.random(2000, 3000));
-                handleBury();
             }
         } else {
             Logger.log("GenericUtils: Inventory is full, not picking up item: " + i.getName());
-            handleBury();
-        }
-    }
-
-    public static void handleBury() {
-        if (ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
-            for (Item ix : Inventory.all(x -> x != null && x.hasAction("Bury"))) {
-                if (ix != null) {
-                    if (Dialogues.inDialogue()) {
-                        DialogueUtils.continueWhilePossible();
-                        Sleep.sleepUntil(() -> !Dialogues.inDialogue(), Calculations.random(1200, 1800));
-                    }
-
-                    if (!ix.interact("Bury")) {
-                        Logger.error("GenericUtils: Failed to bury item: " + ix.getName());
-                    }
-
-                    Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(1200, 1800));
-                }
-            }
         }
     }
 
@@ -186,83 +139,8 @@ public class GenericUtils {
         return false;
     }
 
-    public static boolean notedOrNull(String item) {
-        if(!Inventory.contains(item)) return true;
-        return Inventory.get(item).isNoted();
-    }
-
-    public static HashMap<String, Integer> getSkillingGear() {
-        HashMap<String, Integer> ret = new HashMap<>();
-        if(Skills.getTotalLevel() >= 75) {
-            ret.put("Leather boots", 1);
-            if(ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
-                ret.put(ConfigManager.getInstance().getConfigString("profile_cape_type"), 1);
-            }
-        }
-        return ret;
-    }
-
     public static boolean isMember() {
-        if(!ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
-            return false;
-        }
-
         return PlayerSettings.getConfig(1780) > 0;
-    }
-
-    public static String generateUsername() {
-        String name = "";
-        try {
-            URL url = new URL("https://api.botbuddy.net/getname.php");
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    name = line;
-                }
-                reader.close();
-            } else {
-                System.out.println("HTTP request failed with response code: " + responseCode);
-            }
-
-            connection.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return name;
-    }
-
-    public static boolean canEquipTool(String toolName) {
-        if(!levels.containsKey(toolName)) {
-            return true;
-        }
-
-        return levels.containsKey(toolName) && Skills.getRealLevel(Skill.ATTACK) >= levels.get(toolName);
-    }
-
-    public static NPC getNpcOnTile(Tile tile) {
-        return NPCs.closest(n -> n.getName().contains("Fishing") && n.getTile().equals(tile));
-    }
-
-    public static <K, V> void shuffleHashMap(HashMap<K, V> hashMap) {
-        // Convert HashMap entries to a List
-        List<Map.Entry<K, V>> entryList = new ArrayList<>(hashMap.entrySet());
-
-        // Shuffle the list
-        Collections.shuffle(entryList);
-
-        // Clear the original HashMap
-        hashMap.clear();
-
-        // Add the shuffled entries back to the original HashMap
-        for (Map.Entry<K, V> entry : entryList) {
-            hashMap.put(entry.getKey(), entry.getValue());
-        }
     }
 
     public static void handleSpecial() {
@@ -297,14 +175,6 @@ public class GenericUtils {
                 Tabs.open(Tab.INVENTORY);
                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
             }
-        }
-    }
-
-    public static String uppercaseFirst(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        } else {
-            return str.substring(0, 1).toUpperCase() + str.substring(1);
         }
     }
 }
