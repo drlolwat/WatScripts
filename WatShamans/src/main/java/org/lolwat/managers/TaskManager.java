@@ -1,5 +1,6 @@
 package org.lolwat.managers;
 
+import com.google.common.collect.Lists;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skill;
@@ -31,11 +32,11 @@ public class TaskManager {
     private int minutesPlayed;
 
     public TaskManager() {
-        setCheckedHoursAt(0);
-        setMinutesPlayed(0);
-
+        tasks = Lists.newArrayList();
         tasks.add(new ShamanCombatTask());
 
+        setCheckedHoursAt(0);
+        setMinutesPlayed(0);
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
 

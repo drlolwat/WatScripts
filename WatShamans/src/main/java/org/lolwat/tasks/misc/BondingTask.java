@@ -37,11 +37,7 @@ public class BondingTask implements WatTask {
         }
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
-                {
-                    put("Old school bond (untradeable)", 1);
-                }
-            }, new HashMap<>(), 1, this));
+            //TaskManager.getInstance().setCurrentTask(new BankingTask(this));
             return;
         }
 
@@ -122,8 +118,6 @@ public class BondingTask implements WatTask {
         return 101;
     }
 
-    
-
     @Override
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<>();
@@ -131,6 +125,10 @@ public class BondingTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
+        return new HashMap<String, Integer>() {
+            {
+                put("Old school bond (untradeable)", 1);
+            }
+        };
     }
 }
