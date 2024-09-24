@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -34,6 +35,23 @@ public class ItemUtils {
             "Ring of dueling"
     );
 
+    public static final List<BankLocation> allowedLocations = Arrays.asList(BankLocation.GRAND_EXCHANGE, BankLocation.LUMBRIDGE, BankLocation.VARROCK_WEST);
+
+    public static BankLocation getClosestAllowedBank() {
+        BankLocation closestBank = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (BankLocation bankLocation : allowedLocations) {
+            double distance = Players.getLocal().distance(bankLocation.getArea(1).getCenter());
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestBank = bankLocation;
+            }
+        }
+
+        return closestBank;
+    }
+
     public static void setBankMode(BankMode mode) {
         if(Bank.getWithdrawMode().equals(mode)) {
             return;
@@ -55,6 +73,18 @@ public class ItemUtils {
         return Bank.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty);
     }
 
+    public static boolean inventoryContains(String item, int itemQty, boolean allowNoted) {
+        return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getName().contains(item) && x.getAmount() >= itemQty);
+    }
+
+    public static boolean bankContains(String item, int itemQty) {
+        return Bank.contains(x -> x != null && x.getName().contains(item) && x.getAmount() >= itemQty);
+    }
+
+    public static boolean equipmentContains(String item, int itemQty) {
+        return Equipment.contains(x -> x != null && x.getName().contains(item) && x.getAmount() >= itemQty);
+    }
+
     public static void bank(WatTask task) {
         List<String> allowedObjects = new ArrayList<String>() {
             {
@@ -74,7 +104,7 @@ public class ItemUtils {
 
             if (chest == null) {
                 Logger.log("Banking: No banker or chest found (15r), walking to nearest bank");
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), task));
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(getClosestAllowedBank().getArea(3), task));
                 return;
             } else {
                 Logger.log("Banking: Opening bank via " + chest.getName() + " (id: " + chest.getID() + ", distance: " + chest.distance() + ")");

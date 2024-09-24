@@ -106,7 +106,7 @@ public class GenericUtils {
     }
 
     public static boolean equipItem(String item, Item old) {
-        Item i = Inventory.get(item);
+        Item i = Inventory.get(x -> x != null && x.getName().contains((item)));
         if(i != null) {
             if(i.hasAction("Wear") && i.interact("Wear")) {
                 Logger.log("Equipment: Equipped wearable");
