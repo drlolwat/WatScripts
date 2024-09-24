@@ -120,6 +120,7 @@ public class TraversalTask implements WatTask {
             }
         }
 
+        /*
         int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
         if (sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
             Logger.log("Traversal: havent moved for 15 seconds, checking for portals etc");
@@ -152,7 +153,7 @@ public class TraversalTask implements WatTask {
                 Tile current = Players.getLocal().getTile();
                 Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(current), 15000);
             }
-        }
+        }*/
 
         if (GenericUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
@@ -165,8 +166,8 @@ public class TraversalTask implements WatTask {
                             + area.getRandomTile() + " for task " + postTask.getName());
 
                     String teleportItem = teleport.getSearchFor();
-                    if (!Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
-                        if (Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                    if (!Inventory.contains(x -> x.getName().contains(teleportItem))) {
+                        if (Equipment.contains(x -> x.getName().contains(teleportItem))) {
                             if (Bank.isOpen()) {
                                 Bank.close();
                                 Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
@@ -194,9 +195,9 @@ public class TraversalTask implements WatTask {
 
                                 TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                                     {
-                                        put(teleportItem, Calculations.random(2, 6));
+                                        put(teleportItem, 1);
                                     }
-                                }, new HashMap<>(), 1, this));
+                                }, null, 1, this, null));
 
                                 Logger.log("Traversal: missing teleport item " + teleportItem);
                                 return;
@@ -224,11 +225,34 @@ public class TraversalTask implements WatTask {
                                 return;
                             }
 
-                            Sleep.sleepUntil(Dialogues::inDialogue, 5000);
+                            Sleep.sleepUntil(Dialogues::inDialogue, 2000);
 
                             if (!Dialogues.inDialogue()) {
-                                Logger.log("Traversal: did not find dialogue for teleport item: " + teleportItem);
-                                return;
+                                Widget scroll = Widgets.getWidget(187);
+                                if(scroll != null && scroll.isVisible()) {
+                                    Logger.log("scroll is visible");
+                                    WidgetChild c = scroll.getChild(3);
+                                    if(c != null && c.isVisible()) {
+                                        Logger.log("scroll children visible");
+                                        WidgetChild option = null;
+                                        for(WidgetChild child : c.getChildren()) {
+                                            if(child == null) continue;
+                                            Logger.log(child.getText());
+                                            if(child.getText().contains(teleport.getOption())) {
+                                                Logger.log("found correct option in scroll");
+                                                option = child;
+                                                break;
+                                            }
+                                        }
+
+                                        if(option != null) {
+                                            if(!option.interact("Continue")) {
+                                                Logger.log("Traversal: failed to use teleport item " + teleportItem);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
                             } else {
                                 Dialogues.clickOption(teleport.getOption());
                             }
