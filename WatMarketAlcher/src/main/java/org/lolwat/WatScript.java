@@ -29,13 +29,11 @@ import org.lolwat.tasks.misc.HopperTask;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
 @ScriptManifest(name = "WatShamans", description = "Shaman Killer", author = "lolwat", version = 0.1, category = Category.COMBAT)
-public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
+public class WatScript extends AbstractScript implements ExperienceListener, ChatListener {
     private static BufferedImage image;
     private static WatScript instance;
     public static WatScript getInstance() {
@@ -165,30 +163,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onMessage(m);
         }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 
     public void disableLoginManager() {
