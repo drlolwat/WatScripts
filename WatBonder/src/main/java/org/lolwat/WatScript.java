@@ -15,16 +15,20 @@ import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
+import org.dreambot.api.script.listener.AnimationListener;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
+import org.dreambot.api.script.listener.SpawnListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.HopperTask;
 
 import javax.imageio.ImageIO;
@@ -33,7 +37,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 
 @ScriptManifest(name = "WatShamans", description = "Shaman Killer", author = "lolwat", version = 0.1, category = Category.COMBAT)
-public class WatScript extends AbstractScript implements ExperienceListener, ChatListener {
+public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static BufferedImage image;
     private static WatScript instance;
     public static WatScript getInstance() {
@@ -160,8 +164,36 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
-        if (TaskManager.getInstance().getCurrentTask() != null) {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            if(m.getMessage().startsWith("Darts")) {
+                int[] data = GenericUtils.parseText(m.getMessage());
+                TaskManager.getInstance().getCurrentTask().data().put("darts", data[0]);
+                TaskManager.getInstance().getCurrentTask().data().put("scales", data[1]);
+                Logger.log("Darts: " + data[0] + ", Scales: " + data[1] + " sent to task");
+            }
+
             TaskManager.getInstance().getCurrentTask().onMessage(m);
+        }
+    }
+
+    @Override
+    public void onNpcAnimation(NPC npc, int animation, int animationDelay) {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            TaskManager.getInstance().getCurrentTask().onNpcAnimation(npc, animation, animationDelay);
+        }
+    }
+
+    @Override
+    public void onNpcSpawn(NPC npc) {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            TaskManager.getInstance().getCurrentTask().onNpcSpawn(npc);
+        }
+    }
+
+    @Override
+    public void onNpcDespawn(NPC npc) {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            TaskManager.getInstance().getCurrentTask().onNpcDespawn(npc);
         }
     }
 

@@ -23,6 +23,8 @@ import org.dreambot.api.wrappers.items.Item;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GenericUtils {
 
@@ -132,6 +134,18 @@ public class GenericUtils {
 
                 return true;
             }
+            else if(i.hasAction("Equip") && i.interact("Equip")) {
+                Logger.log("Equipment: Equipped equippable");
+                Sleep.sleep(100, 200);
+
+                if(Bank.isOpen() && old != null) {
+                    Sleep.sleep(200, 400);
+                    Bank.depositAll(old.getName());
+                    Logger.log("Equipment: Deposited old item: " + old.getName());
+                }
+
+                return true;
+            }
         } else {
             Logger.error("item to equip was null");
         }
@@ -176,5 +190,28 @@ public class GenericUtils {
                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
             }
         }
+    }
+
+    public static int[] parseText(String text) {
+        int darts = 0;
+        int scales = 0;
+
+        Pattern dartsPattern = Pattern.compile("Darts: <col=007f00>\\w+ dart x ([\\d,]+)</col>");
+        Pattern scalesPattern = Pattern.compile("Scales: <col=007f00>([\\d,]+) \\(\\d+\\.\\d+%\\)</col>");
+
+        Matcher dartsMatcher = dartsPattern.matcher(text);
+        Matcher scalesMatcher = scalesPattern.matcher(text);
+
+        if (dartsMatcher.find()) {
+            String dartsCount = dartsMatcher.group(1).replace(",", "");
+            darts = Integer.parseInt(dartsCount);
+        }
+
+        if (scalesMatcher.find()) {
+            String scalesCount = scalesMatcher.group(1).replace(",", "");
+            scales = Integer.parseInt(scalesCount);
+        }
+
+        return new int[]{darts, scales};
     }
 }
