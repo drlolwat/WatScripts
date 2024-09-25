@@ -9,7 +9,6 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
@@ -262,7 +261,7 @@ public class BankingTask implements WatTask {
                         }
 
                         if (!GenericUtils.equipItem(entry.getKey(), null)) {
-                            Logger.error("Equipment: Error equipping item");
+                            Logger.error("Equipment: Error equipping item: " + entry.getKey());
                         }
                     }
                 }
@@ -323,14 +322,6 @@ public class BankingTask implements WatTask {
                     }
 
                     toWithdraw -= reduceBy;
-                    Item i = Bank.get(x -> x != null && x.getName().contains(entry.getKey()));
-                    if(i != null) {
-                        if(Bank.needToScroll(i)) {
-                            Bank.scroll(entry.getKey());
-                            Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
-                        }
-                    }
-
                     for(String s : ItemUtils.SINGULAR_ITEMS) {
                         if(s.toLowerCase().contains(entry.getKey().toLowerCase())) {
                             toWithdraw = 1;
@@ -407,15 +398,7 @@ public class BankingTask implements WatTask {
                 toWithdraw -= Inventory.count("Coins");
             }
 
-            if ((Bank.contains("Coins") && Bank.count("Coins") >= toWithdraw)) {
-                Item i = Bank.get("Coins");
-                if(i != null) {
-                    if(Bank.needToScroll(i)) {
-                        Bank.scroll("Coins");
-                        Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
-                    }
-                }
-
+            if ((Inventory.count("Coins") >= toWithdraw) || (Bank.contains("Coins") && Bank.count("Coins") >= toWithdraw)) {
                 Bank.withdraw("Coins", Bank.count("Coins"));
                 Sleep.sleep(100, 200);
                 Bank.close();
@@ -430,6 +413,7 @@ public class BankingTask implements WatTask {
                     Sleep.sleep(100, 200);
                 }
 
+                /*
                 if (!ConfigManager.getInstance().getConfigBoolean("disable_mule") && !ConfigManager.getInstance().hasMuleConnectionFailed()) {
                     if (Bank.contains("Coins")) {
                         finalPrice -= Bank.count("Coins");
@@ -450,7 +434,7 @@ public class BankingTask implements WatTask {
                 } else {
                     Logger.log("We are out of GP, time to go and make some.");
                     return;
-                }
+                }*/
             }
         }
 
@@ -525,6 +509,7 @@ public class BankingTask implements WatTask {
         Logger.log("Banking: Complete");
 
         if (postTask != null) {
+            Logger.log("sending to post task: " + postTask.getName());
             TaskManager.getInstance().setCurrentTask(postTask);
         }
     }
@@ -637,22 +622,20 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                for (Item i : Inventory.all()) {
-                    if (i == null)
+                List<String> toKeep = new ArrayList<>();
+                for(Item i : Inventory.all()) {
+                    if(i == null)
                         continue;
 
-                    if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
-                        Logger.log("Banking: Inventory tolerates item: " + i.getName());
-                        continue;
+                    for(String n : inventoryRequired().keySet()) {
+                        if(i.getName().contains(n)) {
+                            toKeep.add(i.getName());
+                        }
                     }
-                    /* TODO FIX THIS SHIT ITS IMPORTANT
-                    if (inventoryRequired != null && !inventoryRequired.containsKey(i.getName())) {
-                        Logger.log("Banking: Depositing " + i.getName() + ", not required.");
-                        Bank.depositAll(i.getName());
-                        Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 1500);
-                        continue;
-                    }*/
                 }
+
+                Bank.depositAllExcept(toKeep.toArray(new String[0]));
+
             } else {
                 for (Item i : Inventory.all()) {
                     if (i == null) continue;
