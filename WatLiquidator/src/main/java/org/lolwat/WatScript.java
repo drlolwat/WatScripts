@@ -22,6 +22,7 @@ import org.dreambot.api.script.listener.SpawnListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
@@ -194,6 +195,13 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     public void onNpcDespawn(NPC npc) {
         if(TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onNpcDespawn(npc);
+        }
+    }
+
+    @Override
+    public void onGroundItemSpawn(GroundItem object) {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            TaskManager.getInstance().getCurrentTask().onGroundItemSpawn(object);
         }
     }
 
