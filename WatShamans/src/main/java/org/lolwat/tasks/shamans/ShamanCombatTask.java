@@ -5,17 +5,22 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.magic.Magic;
+import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.prayer.Prayer;
 import org.dreambot.api.methods.prayer.Prayers;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.TaskManager;
@@ -75,7 +80,8 @@ public class ShamanCombatTask implements WatTask {
             "Dragon med helm",
             "Rune spear",
             "Shield left half",
-            "Dragon spear");
+            "Dragon spear",
+            "Chilli potato");
 
     List<String> doNotAlch = Collections.singletonList("Dragon warhammer");
 
@@ -242,6 +248,13 @@ public class ShamanCombatTask implements WatTask {
             }
         }
         else {
+            if(!Combat.isSpecialActive() && Combat.getSpecialPercentage() >= 50) {
+                if (!Combat.toggleSpecialAttack(true)) {
+                    Logger.log("failed to toggle special attack");
+                    return;
+                }
+            }
+
             Logger.log("current target: " + currentTarget.getName());
             if(Players.getLocal().canReach(currentTarget.getTile())) {
                 if(!Players.getLocal().isMoving()
@@ -249,7 +262,7 @@ public class ShamanCombatTask implements WatTask {
                         && !Players.getLocal().isInCombat()
                         && !Players.getLocal().isHealthBarVisible()) {
 
-                    if(currentTarget.distance(Players.getLocal()) <= 3) {
+                    if(currentTarget.getTile().distance(Players.getLocal().getTile()) <= 2) {
                         Logger.log("running too close to npc: " + currentTarget.getName());
 
                         Area[] areas = {topLeft, topRight, bottomLeft, bottomRight};
@@ -314,8 +327,6 @@ public class ShamanCombatTask implements WatTask {
         ret.put("Shayzien gloves (5)", 1);
         ret.put("Amulet of fury", 1);
         ret.put("Ava's accumulator", 1);
-        //ret.put("Ancient blessing", 1);
-        //ret.put("Toxic blowpipe", 1);
         ret.put("Magic shortbow (i)", 1);
         ret.put("Amethyst arrow", 1000);
         return ret;
@@ -325,9 +336,9 @@ public class ShamanCombatTask implements WatTask {
     public HashMap<String, Integer> inventoryRequired() {
         HashMap<String, Integer> ret = new HashMap<>();
         ret.put("Ranging potion(4)", 3);
-        ret.put("Prayer potion(4)", 11);
+        ret.put("Prayer potion(4)", 9);
         ret.put("Stamina potion(4)", 1);
-        ret.put("Shark", 6);
+        ret.put("Shark", 8);
         ret.put("Antidote++(4)", 2);
         ret.put("Skills necklace(", 1);
         ret.put("Nature rune", 500);
@@ -366,8 +377,26 @@ public class ShamanCombatTask implements WatTask {
             }
 
             if (targetArea != null) {
-                Tile targetTile = targetArea.getRandomTile();
-                Walking.walk(targetTile);
+                Tile playerTile = Players.getLocal().getTile();
+                scheduled = true;
+                Area finalTargetArea = targetArea;
+                scheduler.schedule(() -> {
+                    Tile targetTile = null;
+                    for (Tile tile : finalTargetArea.getTiles()) {
+                        if (playerTile.distance(tile) >= 2) {
+                            targetTile = tile;
+                            break;
+                        }
+                    }
+
+                    if (targetTile != null) {
+                        Walking.walk(targetTile);
+                        Logger.log("Moving to target tile: " + targetTile);
+                    } else {
+                        Logger.log("No valid target tile found");
+                    }
+                    scheduled = false;
+                }, 1000, TimeUnit.MILLISECONDS);
             } else {
                 Logger.log("No empty area found");
             }
@@ -413,8 +442,29 @@ public class ShamanCombatTask implements WatTask {
                     Tile finalFurthestTile = furthestTile;
                     scheduler.schedule(() -> {
                         Walking.walk(finalFurthestTile);
+
+                        if (!Tabs.isOpen(Tab.MAGIC)) {
+                            Tabs.open(Tab.MAGIC);
+                        }
+
+                        if (!Magic.castSpell(Normal.HIGH_LEVEL_ALCHEMY)) {
+                            Logger.log("error casting HA");
+                            return;
+                        }
+
+                        Item i = Inventory.get(x -> x != null && alchables.contains(x.getName()));
+                        if(i != null) {
+                            if(!Inventory.interact(i)) {
+                                Logger.log("failed to alch item: " + i.getName());
+
+                                if(Magic.isSpellSelected()) {
+                                    Magic.deselect();
+                                }
+                            }
+                        }
+
                         scheduled = false;
-                    }, 3500, TimeUnit.MILLISECONDS);
+                    }, 3100, TimeUnit.MILLISECONDS);
                 }
             } else {
                 Logger.log("No empty area found");
@@ -428,6 +478,42 @@ public class ShamanCombatTask implements WatTask {
         if(currentTarget != null && currentTarget.equals(npc)) {
             Logger.log("current target despawned");
             currentTarget = null;
+        }
+    }
+
+    @Override
+    public void onGroundItemSpawn(GroundItem object) {
+        if(object.getName().equals("Dragon warhammer")) {
+            if(Inventory.isFull()) {
+                Logger.log("inventory is full, dropping items");
+                for(Item i : Inventory.all()) {
+                    if(i == null || !Inventory.isFull()) break;
+                    if(!i.getName().equals("Dragon warhammer")) {
+                        if(!i.interact("Drop")) {
+                            Logger.log("failed to drop item: " + i.getName());
+                        }
+                    }
+                }
+            }
+
+            if(!object.interact("Take")) {
+                Logger.log("failed to take dragon warhammer");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> Inventory.contains("Dragon warhammer"), 5000);
+            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this, null));
+        }
+
+        if(Inventory.size() < 27 && stackables.contains(object.getName())) { //take stackable
+            if(!object.interact("Take")) {
+                Logger.log("failed to take stackable: " + object.getName());
+            }
+        }
+        else if(Inventory.size() < 25 && alchables.contains(object.getName())) { //take alchable
+            if(!object.interact("Take")) {
+                Logger.log("failed to take alchable: " + object.getName());
+            }
         }
     }
 
