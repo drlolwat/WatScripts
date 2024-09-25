@@ -7,14 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="gets in and out like a champ">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="dont talk about fight club">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/ItemUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/ItemUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanCombatTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -216,7 +212,7 @@
       <workItem from="1726956367625" duration="3631000" />
       <workItem from="1726973728626" duration="756000" />
       <workItem from="1727132754938" duration="12645000" />
-      <workItem from="1727145419860" duration="30727000" />
+      <workItem from="1727145419860" duration="33549000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -561,7 +557,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="674" />
+    <option name="localTasksCounter" value="675" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -608,7 +604,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="DialogueUtils: fixes/updates" />
     <MESSAGE value="MeleeUtils: support for Silverlight" />
     <MESSAGE value="TraversalTask: continue to post if specific npc is spotted" />
     <MESSAGE value="VampyreSlayerQuest: melee utils new method usage" />
@@ -633,7 +628,8 @@
     <MESSAGE value="GetSilverlight: inherit correct post task" />
     <MESSAGE value="initial commit" />
     <MESSAGE value="gets in and out like a champ" />
-    <option name="LAST_COMMIT_MESSAGE" value="gets in and out like a champ" />
+    <MESSAGE value="dont talk about fight club" />
+    <option name="LAST_COMMIT_MESSAGE" value="dont talk about fight club" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

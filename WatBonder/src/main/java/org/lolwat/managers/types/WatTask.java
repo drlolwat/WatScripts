@@ -2,6 +2,7 @@ package org.lolwat.managers.types;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.WatScript;
 
@@ -34,4 +35,5 @@ public interface WatTask {
     default void onNpcAnimation(NPC npc, int animation, int animationDelay) { }
     default void onNpcSpawn(NPC npc) { }
     default void onNpcDespawn(NPC npc) { }
+    default void onGroundItemSpawn(GroundItem object) { }
 }
