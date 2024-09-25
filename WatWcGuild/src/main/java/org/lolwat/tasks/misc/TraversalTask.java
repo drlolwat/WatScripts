@@ -230,16 +230,13 @@ public class TraversalTask implements WatTask {
                             if (!Dialogues.inDialogue()) {
                                 Widget scroll = Widgets.getWidget(187);
                                 if(scroll != null && scroll.isVisible()) {
-                                    Logger.log("scroll is visible");
                                     WidgetChild c = scroll.getChild(3);
                                     if(c != null && c.isVisible()) {
-                                        Logger.log("scroll children visible");
                                         WidgetChild option = null;
                                         for(WidgetChild child : c.getChildren()) {
                                             if(child == null) continue;
                                             Logger.log(child.getText());
                                             if(child.getText().contains(teleport.getOption())) {
-                                                Logger.log("found correct option in scroll");
                                                 option = child;
                                                 break;
                                             }
