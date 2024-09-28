@@ -1,11 +1,15 @@
 package org.lolwat.tasks.misc;
 
+import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -27,35 +31,61 @@ public class HopperTask implements WatTask {
         world = toWorld;
     }
 
+    Area monsterArea = new Area(1289, 10100, 1296, 10093);
+
     @Override
     public void execute() {
         if(Players.getLocal().isInCombat()) {
             return;
         }
 
-        if (!Tab.LOGOUT.isOpen()) {
-            Tab.LOGOUT.open();
-            Sleep.sleep(500, 1000);
-        }
+        GameObject gate = GameObjects.closest(34642);
 
-        if (!WorldHopper.isWorldHopperOpen()) {
-            WorldHopper.openWorldHopper();
-            Sleep.sleep(300, 800);
-        }
+        if(Worlds.getCurrentWorld() != world) {
+            if(monsterArea.contains(Players.getLocal())) {
+                if (gate != null) {
+                    if (!gate.interact()) {
+                        Logger.log("failed to interact w exit gate onHop");
+                        return;
+                    }
 
-        if(world == 0) {
-            if(!GenericUtils.isMember()) {
-                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
-            } else {
-                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+                    Sleep.sleepUntil(() -> !monsterArea.contains(Players.getLocal()) && !Players.getLocal().isInCombat(), 20000);
+                }
             }
-        }
-        else {
-            WorldHopper.hopWorld(world);
-        }
 
-        Sleep.sleep(1000, 3000);
-        TaskManager.getInstance().setCurrentTask(postTask);
+            if (!Tab.LOGOUT.isOpen()) {
+                Tab.LOGOUT.open();
+                Sleep.sleep(500, 1000);
+            }
+
+            if (!WorldHopper.isWorldHopperOpen()) {
+                WorldHopper.openWorldHopper();
+                Sleep.sleep(300, 800);
+            }
+
+            if (world == 0) {
+                if (!GenericUtils.isMember()) {
+                    WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+                } else {
+                    WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+                }
+            } else {
+                WorldHopper.hopWorld(world);
+            }
+        } else {
+            if(!monsterArea.contains(Players.getLocal())) {
+                if (gate != null) {
+                    if (!gate.interact()) {
+                        Logger.log("failed to interact w entry gate onHopSuccess");
+                        return;
+                    }
+
+                    Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 20000);
+                }
+            }
+
+            TaskManager.getInstance().setCurrentTask(postTask);
+        }
     }
 
     @Override
