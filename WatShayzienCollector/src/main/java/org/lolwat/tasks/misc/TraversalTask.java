@@ -235,7 +235,6 @@ public class TraversalTask implements WatTask {
                                         WidgetChild option = null;
                                         for(WidgetChild child : c.getChildren()) {
                                             if(child == null) continue;
-                                            Logger.log(child.getText());
                                             if(child.getText().contains(teleport.getOption())) {
                                                 option = child;
                                                 break;
