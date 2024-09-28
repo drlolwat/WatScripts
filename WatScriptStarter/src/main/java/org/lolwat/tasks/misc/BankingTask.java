@@ -288,8 +288,14 @@ public class BankingTask implements WatTask {
                     amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
                 }
 
-                if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
-                    if (entry.getValue() > 0 && Inventory.count(entry.getKey()) > amountRequired) {
+                if(Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()) && x.isNoted())) {
+                    Logger.log("Inventory: Depositing noted: " + entry.getKey());
+                    Bank.depositAll(entry.getKey());
+                    Sleep.sleepUntil(() -> !Inventory.contains(entry.getKey()), 1500);
+                }
+
+                if (ItemUtils.inventoryContains(entry.getKey(), amountRequired, false)) {
+                    if (entry.getValue() > 0 && ItemUtils.inventoryCount(entry.getKey(), false) > amountRequired) {
                         Logger.log("Inventory: Depositing extras of: " + entry.getKey());
                         Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
                         Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
@@ -351,6 +357,9 @@ public class BankingTask implements WatTask {
                             break;
                         }
                     }
+
+                    if(entry.getValue().equals(1))
+                        amountToBuy = 1;
 
                     buyingRequired.put(entry.getKey(), amountToBuy);
                     Logger.log("Inventory: We need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
