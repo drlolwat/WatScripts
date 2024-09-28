@@ -32,14 +32,10 @@ import org.lolwat.misc.mouse.HumanMouse;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.HopperTask;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.net.URL;
 
 @ScriptManifest(name = "WatShamans", description = "Shaman Killer", author = "lolwat", version = 0.1, category = Category.COMBAT)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
-    private static BufferedImage image;
     private static WatScript instance;
     public static WatScript getInstance() {
         return instance;
@@ -87,12 +83,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
             TaskManager.setInstance(new TaskManager());
-        }
-
-        try {
-            image = ImageIO.read(new URL("https://api.botbuddy.net/paint.png")); //300x143
-        } catch (Exception ignored) {
-
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
