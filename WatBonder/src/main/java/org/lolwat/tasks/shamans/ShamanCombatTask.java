@@ -108,7 +108,7 @@ public class ShamanCombatTask implements WatTask {
             for (Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
                 if (!ItemUtils.inventoryContains(entry.getKey(), entry.getValue(), false)) {
                     Logger.log("missing " + entry.getKey());
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), sellables, 5, this, null));
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
                     return;
                 }
             }
@@ -116,7 +116,7 @@ public class ShamanCombatTask implements WatTask {
             for (Map.Entry<String, Integer> entry : clothesRequired().entrySet()) {
                 if (!ItemUtils.equipmentContains(entry.getKey(), entry.getValue())) {
                     Logger.log("missing " + entry.getKey());
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), sellables, 5, this, null));
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
                     return;
                 }
             }
@@ -173,7 +173,7 @@ public class ShamanCombatTask implements WatTask {
             reachedLocation = false;
             currentTarget = null;
 
-            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), sellables, 5, this, null));
+            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
             TaskManager.getInstance().getCurrentTask().execute();
             if(!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
                 Logger.log("failed to toggle protect from missiles");
@@ -279,7 +279,7 @@ public class ShamanCombatTask implements WatTask {
             }
 
             if(Players.getLocal().canReach(currentTarget.getTile())) {
-                if(currentTarget.getTile().distance(Players.getLocal().getTile()) <= 2 && !scheduled) {
+                if(currentTarget.getTile().distance(Players.getLocal().getTile()) <= 2 && !scheduled && !Players.getLocal().isMoving()) {
                     Logger.log("running too close to npc: " + currentTarget.getName());
 
                     Area[] areas = {topLeft, topRight, bottomLeft, bottomRight};
@@ -308,12 +308,11 @@ public class ShamanCombatTask implements WatTask {
 
                         if (targetTile != null) {
                             Walking.walk(targetTile);
-                            Logger.log("Moving to target tile: " + targetTile);
                         } else {
-                            Logger.log("No valid target tile found");
+                            Logger.log("couldnt run from npc, we dumb");
                         }
                     } else {
-                        Logger.log("No empty area found");
+                        Logger.log("no empty quadrant to run from npc");
                     }
                 }
 
@@ -504,7 +503,7 @@ public class ShamanCombatTask implements WatTask {
                             Tabs.open(Tab.INVENTORY);
                         }
 
-                    }, 3300, TimeUnit.MILLISECONDS);
+                    }, 3500, TimeUnit.MILLISECONDS);
                 }
             } else {
                 Logger.log("no empty quadrant during spawns");
@@ -577,6 +576,11 @@ public class ShamanCombatTask implements WatTask {
                 Logger.log("failed to take stackable: " + item.getName());
                 Sleep.sleepUntil(() -> !item.exists(), 5000);
             }
+        }
+
+        if(item.exists()) {
+            Logger.log("didnt pick up item, readding to queue: " + item.getName());
+            groundItemQueue.add(item);
         }
     }
 }
