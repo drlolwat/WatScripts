@@ -77,6 +77,10 @@ public class ItemUtils {
         return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getName().contains(item) && Inventory.count(x.getName()) >= itemQty);
     }
 
+    public static int inventoryCount(String item, boolean allowNoted) {
+        return Inventory.count(x -> x != null && x.getName().contains(item) && (allowNoted || !x.isNoted()));
+    }
+
     public static boolean bankContains(String item, int itemQty) {
         return Bank.contains(x -> x != null && x.getName().contains(item) && x.getAmount() >= itemQty);
     }
