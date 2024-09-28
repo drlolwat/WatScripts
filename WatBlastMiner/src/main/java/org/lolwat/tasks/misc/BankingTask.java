@@ -109,11 +109,10 @@ public class BankingTask implements WatTask {
         Logger.log("Trade unrestricted: " + allowedToSell + ", sell enabled for task: " +
                 (postTask != null && postTask.data().containsKey("gp_to_generate")));
 
-        // new threshold stuff
         Logger.log("Checking bank for items to sell based on thresholds");
         for(Item i : Bank.all()) {
             if(i == null) continue;
-            if(postTask != null) { // we dont want to sell items that are required for the next task
+            if(postTask != null) {
                 if(postTask.inventoryRequired().containsKey(i.getName())) {
                     continue;
                 }

@@ -3,6 +3,8 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.prayer.Prayer;
+import org.dreambot.api.methods.prayer.Prayers;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 public class HopperTask implements WatTask {
     private final WatTask postTask;
     private final int world;
+    private final int startWorld;
 
     @Override
     public String getName() {
@@ -27,6 +30,8 @@ public class HopperTask implements WatTask {
     }
 
     public HopperTask(int toWorld, WatTask post) {
+        Logger.log("set up hopper task");
+        startWorld = Worlds.getCurrentWorld();
         postTask = post;
         world = toWorld;
     }
@@ -35,13 +40,9 @@ public class HopperTask implements WatTask {
 
     @Override
     public void execute() {
-        if(Players.getLocal().isInCombat()) {
-            return;
-        }
-
         GameObject gate = GameObjects.closest(34642);
 
-        if(Worlds.getCurrentWorld() != world) {
+        if(Worlds.getCurrentWorld() == startWorld) {
             if(monsterArea.contains(Players.getLocal())) {
                 if (gate != null) {
                     if (!gate.interact()) {
@@ -50,7 +51,12 @@ public class HopperTask implements WatTask {
                     }
 
                     Sleep.sleepUntil(() -> !monsterArea.contains(Players.getLocal()) && !Players.getLocal().isInCombat(), 20000);
+                    return;
                 }
+            }
+
+            if(!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
+                Logger.log("failed to toggle protect from missiles");
             }
 
             if (!Tab.LOGOUT.isOpen()) {
@@ -64,15 +70,16 @@ public class HopperTask implements WatTask {
             }
 
             if (world == 0) {
-                if (!GenericUtils.isMember()) {
-                    WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
-                } else {
-                    WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
-                }
+                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
             } else {
                 WorldHopper.hopWorld(world);
             }
         } else {
+            if(GenericUtils.tooManyPlayers(8, 1)) {
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
+                return;
+            }
+
             if(!monsterArea.contains(Players.getLocal())) {
                 if (gate != null) {
                     if (!gate.interact()) {
