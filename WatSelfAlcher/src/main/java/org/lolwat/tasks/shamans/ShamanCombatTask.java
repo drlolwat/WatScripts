@@ -251,7 +251,7 @@ public class ShamanCombatTask implements WatTask {
             return;
         }
 
-        if(GenericUtils.tooManyPlayers(8, 1) && Combat.getHealthPercent() >= 65) {
+        if(GenericUtils.tooManyPlayers(monsterArea, 1) && Combat.getHealthPercent() >= 65) {
             Logger.log("too many players in area, hopping worlds");
             TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
             TaskManager.getInstance().getCurrentTask().execute();
