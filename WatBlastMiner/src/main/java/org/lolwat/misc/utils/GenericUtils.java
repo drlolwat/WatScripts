@@ -7,7 +7,6 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
@@ -18,12 +17,12 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
-import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,41 +70,27 @@ public class GenericUtils {
         }
     };
 
-    public static void handlePickup(List<String> items) {
-        List<String> newItems = new ArrayList<>();
-        //TODO ADD
-        newItems.addAll(items);
-
-        GroundItem i = GroundItems.closest(x -> x != null && newItems.contains(x.getName()) && x.distance() <= 4 && x.canReach());
-
-        if(i == null) return;
-
-        if(!Inventory.isFull()) {
-            if (newItems.contains(i.getName())) {
-                if (i.interact("Take")) {
-                    Logger.log("GenericUtils: Picked up item: " + i.getName());
-                    Sleep.sleepUntil(() -> !i.exists(), 5000);
-                }
-
-                Sleep.sleepUntil(() -> !Players.getLocal().isInCombat(), Calculations.random(2000, 3000));
-            }
-        } else {
-            Logger.log("GenericUtils: Inventory is full, not picking up item: " + i.getName());
-        }
-    }
+    private static final Map<Player, Long> playerEntryTimes = new HashMap<>();
 
     public static boolean tooManyPlayers(Area area, int count) {
-        int pl = 0;
-        for(Player ply : Players.all()) {
-            if(Players.getLocal().equals(ply))
-                continue;
+        long currentTime = System.currentTimeMillis();
+        int playerCount = 0;
 
-            if(area.contains(ply)) {
-                pl++;
+        for (Player ply : Players.all()) {
+            if (Players.getLocal().equals(ply)) continue;
+            if (area.contains(ply)) {
+                playerEntryTimes.putIfAbsent(ply, currentTime);
+
+                long entryTime = playerEntryTimes.get(ply);
+                if (currentTime - entryTime > 8000) {
+                    playerCount++;
+                }
+            } else {
+                playerEntryTimes.remove(ply);
             }
         }
 
-        return pl >= count;
+        return playerCount >= count;
     }
 
     public static boolean equipItem(String item, Item old) {
