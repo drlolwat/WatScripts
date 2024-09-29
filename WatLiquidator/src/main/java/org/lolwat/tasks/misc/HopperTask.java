@@ -1,5 +1,9 @@
 package org.lolwat.tasks.misc;
 
+import org.dreambot.api.Client;
+import org.dreambot.api.data.GameState;
+import org.dreambot.api.methods.combat.Combat;
+import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -12,6 +16,7 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -40,6 +45,13 @@ public class HopperTask implements WatTask {
 
     @Override
     public void execute() {
+        if(Combat.getHealthPercent() <= 65) {
+            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
+            if (i != null && i.interact()) {
+                return;
+            }
+        }
+
         GameObject gate = GameObjects.closest(34642);
 
         if(Worlds.getCurrentWorld() == startWorld) {
@@ -53,6 +65,8 @@ public class HopperTask implements WatTask {
                     Sleep.sleepUntil(() -> !monsterArea.contains(Players.getLocal()) && !Players.getLocal().isInCombat(), 20000);
                     return;
                 }
+
+                return;
             }
 
             if(!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
@@ -74,24 +88,33 @@ public class HopperTask implements WatTask {
             } else {
                 WorldHopper.hopWorld(world);
             }
+
+            Sleep.sleepUntil(() -> Worlds.getCurrentWorld() != startWorld && Client.getGameState().equals(GameState.LOGGED_IN), 10000);
+
         } else {
-            if(GenericUtils.tooManyPlayers(8, 1)) {
-                TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
-                return;
-            }
+            if(Client.getGameState().equals(GameState.LOGGED_IN)) {
+                if (GenericUtils.tooManyPlayers(12, 1)) {
+                    TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
+                    return;
+                }
 
-            if(!monsterArea.contains(Players.getLocal())) {
-                if (gate != null) {
-                    if (!gate.interact()) {
-                        Logger.log("failed to interact w entry gate onHopSuccess");
-                        return;
+                if (!monsterArea.contains(Players.getLocal())) {
+                    if (gate != null) {
+                        if (!gate.interact()) {
+                            Logger.log("failed to interact w entry gate onHopSuccess");
+                            return;
+                        }
+
+                        Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 20000);
                     }
+                }
 
-                    Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 20000);
+                TaskManager.getInstance().setCurrentTask(postTask);
+            } else {
+                if(Client.getGameState().equals(GameState.LOADING)) {
+                    Logger.log("hopper still loading");
                 }
             }
-
-            TaskManager.getInstance().setCurrentTask(postTask);
         }
     }
 
