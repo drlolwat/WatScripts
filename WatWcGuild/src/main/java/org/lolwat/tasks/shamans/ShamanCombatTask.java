@@ -182,20 +182,29 @@ public class ShamanCombatTask implements WatTask {
             return;
         }
 
-        if (Combat.isPoisoned()) {
+        if(!Combat.isAutoRetaliateOn()) {
+            if(!Combat.toggleAutoRetaliate(true)) {
+                Logger.log("failed to toggle auto retaliate on");
+                return;
+            }
+
+            Sleep.sleepUntil(Combat::isAutoRetaliateOn, 1000);
+        }
+
+        if(Combat.getHealthPercent() <= 65) {
+            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
+            if (i != null && i.interact()) {
+                return;
+            }
+        }
+
+        if (Combat.isPoisoned() || Combat.isEnvenomed() || Combat.isDiseased()) {
             if (!antidote.interact("Drink")) {
                 Logger.log("failed to drink antidote");
                 return;
             }
 
             Sleep.sleepUntil(() -> !Combat.isPoisoned(), 5000);
-        }
-
-        if(Combat.getHealthPercent() <= 60) {
-            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-            if (i != null && i.interact()) {
-                return;
-            }
         }
 
         if(Walking.getRunEnergy() <= 30) {
@@ -242,11 +251,17 @@ public class ShamanCombatTask implements WatTask {
             return;
         }
 
-        if(GenericUtils.tooManyPlayers(6, 1)) {
+        if(GenericUtils.tooManyPlayers(8, 1) && Combat.getHealthPercent() >= 65) {
             Logger.log("too many players in area, hopping worlds");
             TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
             TaskManager.getInstance().getCurrentTask().execute();
             return;
+        }
+
+        if(Inventory.contains("Vial")) {
+            if(!Inventory.drop("Vial")) {
+                Logger.log("failed to drop vial");
+            }
         }
 
         List<NPC> attackingMe = NPCs.all(x -> x != null
@@ -422,9 +437,30 @@ public class ShamanCombatTask implements WatTask {
                             break;
                         }
                     }
-
                     if (targetTile != null) {
                         Walking.walk(targetTile);
+
+                        Item i = Inventory.get(x -> x != null && !x.getName().equals("Chilli potato") && alchables.contains(x.getName()));
+                        if(i != null) {
+                            Logger.log("alching item: " + i.getName());
+
+                            if (!Tabs.isOpen(Tab.MAGIC)) {
+                                Tabs.open(Tab.MAGIC);
+                            }
+
+                            if (!Magic.castSpell(Normal.HIGH_LEVEL_ALCHEMY)) {
+                                Logger.log("error casting HA");
+                                return;
+                            }
+
+                            if(!Inventory.interact(i)) {
+                                Logger.log("failed to alch item: " + i.getName());
+
+                                if(Magic.isSpellSelected()) {
+                                    Magic.deselect();
+                                }
+                            }
+                        }
                     } else {
                         Logger.log("couldnt run from anim, we dumb");
                     }
@@ -475,8 +511,6 @@ public class ShamanCombatTask implements WatTask {
                     Tile finalFurthestTile = furthestTile;
                     scheduler.schedule(() -> {
                         Walking.walk(finalFurthestTile);
-                        scheduled = false;
-
                         Item i = Inventory.get(x -> x != null && !x.getName().equals("Chilli potato") && alchables.contains(x.getName()));
                         if(i != null) {
                             Logger.log("alching item: " + i.getName());
@@ -498,11 +532,7 @@ public class ShamanCombatTask implements WatTask {
                                 }
                             }
                         }
-
-                        if(!Tabs.isOpen(Tab.INVENTORY)) {
-                            Tabs.open(Tab.INVENTORY);
-                        }
-
+                        scheduled = false;
                     }, 3500, TimeUnit.MILLISECONDS);
                 }
             } else {
@@ -522,6 +552,12 @@ public class ShamanCombatTask implements WatTask {
 
     @Override
     public void onGroundItemSpawn(GroundItem object) {
+        if (object == null) return;
+        if(!stackables.contains(object.getName())
+                && !alchables.contains(object.getName())
+                && !object.getName().equals("Dragon warhammer")) {
+            return;
+        }
         groundItemQueue.add(object);
     }
 
@@ -542,6 +578,8 @@ public class ShamanCombatTask implements WatTask {
         GroundItem item = groundItemQueue.poll();
         if (item == null) return;
 
+        boolean attempted = false;
+
         if (item.getName().equals("Dragon warhammer")) {
             if (Inventory.isFull()) {
                 Logger.log("inventory is full, dropping items");
@@ -561,7 +599,13 @@ public class ShamanCombatTask implements WatTask {
             }
 
             Sleep.sleepUntil(() -> Inventory.contains("Dragon warhammer"), 5000);
-            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this, null));
+
+            if(Inventory.contains("Dragon warhammer")) {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this, null));
+                TaskManager.getInstance().getCurrentTask().execute();
+            }
+
+            attempted = true;
         }
 
         if ((Inventory.size() < 27 || (Inventory.contains("Coins") && !Inventory.isFull())) && alchables.contains(item.getName())) {
@@ -569,6 +613,8 @@ public class ShamanCombatTask implements WatTask {
                 Logger.log("failed to take alchable: " + item.getName());
                 Sleep.sleepUntil(() -> !item.exists(), 5000);
             }
+
+            attempted = true;
         }
 
         if ((Inventory.size() < 26 || Inventory.contains(item.getName())) && stackables.contains(item.getName())) {
@@ -576,9 +622,11 @@ public class ShamanCombatTask implements WatTask {
                 Logger.log("failed to take stackable: " + item.getName());
                 Sleep.sleepUntil(() -> !item.exists(), 5000);
             }
+
+            attempted = true;
         }
 
-        if(item.exists()) {
+        if(item.exists() && attempted) {
             Logger.log("didnt pick up item, readding to queue: " + item.getName());
             groundItemQueue.add(item);
         }
