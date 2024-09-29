@@ -93,7 +93,7 @@ public class HopperTask implements WatTask {
 
         } else {
             if(Client.getGameState().equals(GameState.LOGGED_IN)) {
-                if (GenericUtils.tooManyPlayers(12, 1)) {
+                if (GenericUtils.tooManyPlayers(monsterArea, 1)) {
                     TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
                     return;
                 }

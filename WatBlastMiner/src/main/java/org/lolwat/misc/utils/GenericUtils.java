@@ -10,6 +10,7 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
 import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.magic.Normal;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.methods.tabs.Tab;
@@ -93,13 +94,13 @@ public class GenericUtils {
         }
     }
 
-    public static boolean tooManyPlayers(int distance, int count) {
+    public static boolean tooManyPlayers(Area area, int count) {
         int pl = 0;
         for(Player ply : Players.all()) {
             if(Players.getLocal().equals(ply))
                 continue;
 
-            if(ply.distance(Players.getLocal()) <= distance) {
+            if(area.contains(ply)) {
                 pl++;
             }
         }
