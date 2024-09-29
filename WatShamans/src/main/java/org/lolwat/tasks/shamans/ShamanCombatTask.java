@@ -335,7 +335,6 @@ public class ShamanCombatTask implements WatTask {
 
                     if (!currentTarget.interact("Attack")) {
                         Logger.log("failed to attack target");
-                        return;
                     }
                 }
             }
