@@ -27,52 +27,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericUtils {
-
-    private static final HashMap<String, Integer> levels = new HashMap<String, Integer>() {
-        {
-            // picks
-            put("Rune pickaxe", 40);
-            put("Adamant pickaxe", 30);
-            put("Mithril pickaxe", 20);
-            put("Black pickaxe", 10);
-            put("Steel pickaxe", 5);
-            put("Iron pickaxe", 1);
-            put("Bronze pickaxe", 1);
-
-            //axes
-            put("Rune axe", 40);
-            put("Adamant axe", 30);
-            put("Mithril axe", 20);
-            put("Black axe", 10);
-            put("Steel axe", 5);
-            put("Iron axe", 1);
-            put("Bronze axe", 1);
-
-            //staff?
-            put("Staff of fire", 1);
-
-            //scims..
-            put("Rune scimitar", 40);
-            put("Adamant scimitar", 30);
-            put("Mithril scimitar", 20);
-            put("Black scimitar", 10);
-            put("Steel scimitar", 5);
-            put("Iron scimitar", 1);
-            put("Bronze scimitar", 1);
-
-            //bows
-            put("Maple shortbow", 30);
-            put("Willow shortbow", 20);
-            put("Oak shortbow", 5);
-            put("Shortbow", 1);
-
-            //everything else is handled by combat utils
-        }
-    };
-
     private static final Map<Player, Long> playerEntryTimes = new HashMap<>();
 
-    public static boolean tooManyPlayers(Area area, int count) {
+    public static boolean tooManyPlayers(Area area, int count, boolean ignoreTime) {
         long currentTime = System.currentTimeMillis();
         int playerCount = 0;
 
@@ -81,8 +38,7 @@ public class GenericUtils {
             if (area.contains(ply)) {
                 playerEntryTimes.putIfAbsent(ply, currentTime);
 
-                long entryTime = playerEntryTimes.get(ply);
-                if (currentTime - entryTime > 8000) {
+                if (ignoreTime || currentTime - playerEntryTimes.get(ply) > 8000) {
                     playerCount++;
                 }
             } else {
@@ -95,36 +51,34 @@ public class GenericUtils {
 
     public static boolean equipItem(String item, Item old) {
         Item i = Inventory.get(x -> x != null && x.getName().contains((item)));
-        if(i != null) {
-            if(i.hasAction("Wear") && i.interact("Wear")) {
+        if (i != null) {
+            if (i.hasAction("Wear") && i.interact("Wear")) {
                 Logger.log("Equipment: Equipped wearable");
                 Sleep.sleep(100, 200);
 
-                if(Bank.isOpen() && old != null) {
+                if (Bank.isOpen() && old != null) {
                     Sleep.sleep(200, 400);
                     Bank.depositAll(old.getName());
                     Logger.log("Equipment: Deposited old item: " + old.getName());
                 }
 
                 return true;
-            }
-            else if(i.hasAction("Wield") && i.interact("Wield")) {
+            } else if (i.hasAction("Wield") && i.interact("Wield")) {
                 Logger.log("Equipment: Equipped wieldable");
                 Sleep.sleep(100, 200);
 
-                if(Bank.isOpen() && old != null) {
+                if (Bank.isOpen() && old != null) {
                     Sleep.sleep(200, 400);
                     Bank.depositAll(old.getName());
                     Logger.log("Equipment: Deposited old item: " + old.getName());
                 }
 
                 return true;
-            }
-            else if(i.hasAction("Equip") && i.interact("Equip")) {
+            } else if (i.hasAction("Equip") && i.interact("Equip")) {
                 Logger.log("Equipment: Equipped equippable");
                 Sleep.sleep(100, 200);
 
-                if(Bank.isOpen() && old != null) {
+                if (Bank.isOpen() && old != null) {
                     Sleep.sleep(200, 400);
                     Bank.depositAll(old.getName());
                     Logger.log("Equipment: Deposited old item: " + old.getName());
@@ -144,15 +98,17 @@ public class GenericUtils {
     }
 
     public static void handleSpecial() {
-        List<String> weapons = new ArrayList<String>() { {
-            add("Magic shortbow");
-            add("Dragon sword");
-            add("Dragon scimitar");
-        } };
+        List<String> weapons = new ArrayList<String>() {
+            {
+                add("Magic shortbow");
+                add("Dragon sword");
+                add("Dragon scimitar");
+            }
+        };
 
-        for(String s : weapons) {
+        for (String s : weapons) {
             if (Equipment.slotContains(EquipmentSlot.WEAPON, s)) {
-                if(Combat.getSpecialPercentage() > 75) {
+                if (Combat.getSpecialPercentage() > 75) {
                     Combat.toggleSpecialAttack(true);
                 }
             }
@@ -160,18 +116,18 @@ public class GenericUtils {
     }
 
     public static void castHomeTeleport() {
-        if(Magic.canCast(Normal.HOME_TELEPORT)) {
-            if(!Tabs.isOpen(Tab.MAGIC)) {
+        if (Magic.canCast(Normal.HOME_TELEPORT)) {
+            if (!Tabs.isOpen(Tab.MAGIC)) {
                 Tabs.open(Tab.MAGIC);
                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.MAGIC), Calculations.random(200, 300));
             }
 
-            if(Magic.castSpell(Normal.HOME_TELEPORT)) {
+            if (Magic.castSpell(Normal.HOME_TELEPORT)) {
                 Tile currentTile = Players.getLocal().getTile();
                 Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), 5000);
             }
 
-            if(!Tabs.isOpen(Tab.INVENTORY)) {
+            if (!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
             }

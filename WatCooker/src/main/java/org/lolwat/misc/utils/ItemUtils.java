@@ -53,7 +53,7 @@ public class ItemUtils {
     }
 
     public static void setBankMode(BankMode mode) {
-        if(Bank.getWithdrawMode().equals(mode)) {
+        if (Bank.getWithdrawMode().equals(mode)) {
             return;
         }
 
@@ -112,8 +112,8 @@ public class ItemUtils {
                 return;
             } else {
                 Logger.log("Banking: Opening bank via " + chest.getName() + " (id: " + chest.getID() + ", distance: " + chest.distance() + ")");
-                if(!chest.isOnScreen()) {
-                    if(!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 15.0) {
+                if (!chest.isOnScreen()) {
+                    if (!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 15.0) {
                         Logger.log("Banking: Walking closer to chest");
                         TaskManager.getInstance().setCurrentTask(new TraversalTask(chest.getTile().getArea(2), task));
                         return;
