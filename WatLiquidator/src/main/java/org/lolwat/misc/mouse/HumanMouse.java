@@ -37,7 +37,8 @@ public class HumanMouse extends StandardMouseAlgorithm {
                 curPos = Mouse.getPosition();
                 currentDistance = distance(point, curPos);
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
         moveCursorWithCubicBezier(curPos, point);
     }
 
@@ -46,7 +47,7 @@ public class HumanMouse extends StandardMouseAlgorithm {
         Point controlPoint2 = randomPoint(startPos, endPos);
         int steps = Calculations.random(5, 15);
 
-        if(distance(startPos, endPos) <= 30) {
+        if (distance(startPos, endPos) <= 30) {
             steps = Calculations.random(5, 8);
         }
 
@@ -57,7 +58,8 @@ public class HumanMouse extends StandardMouseAlgorithm {
                 sleep(randomSpeed());
                 Mouse.hop(pointOnCurve);
             }
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     private static Point calculateCubicBezierPoint(double t, Point p0, Point p1, Point p2, Point p3) {

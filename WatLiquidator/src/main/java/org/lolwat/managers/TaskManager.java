@@ -82,7 +82,7 @@ public class TaskManager {
     public void setCurrentTask(WatTask value, int runtime) {
         currentTask = value;
 
-        if(runtime == 0)
+        if (runtime == 0)
             taskSelectedAt = Instant.now().getEpochSecond();
 
         taskRunTime = runtime > 0
@@ -93,7 +93,7 @@ public class TaskManager {
     }
 
     private boolean preTaskSelection() {
-        if(!ConfigManager.getInstance().hasLoadedProfile() ||
+        if (!ConfigManager.getInstance().hasLoadedProfile() ||
                 (getInstance().getCheckedHoursAt() == 0 ||
                         (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
 
@@ -102,7 +102,7 @@ public class TaskManager {
             WatScript.getInstance().enableLoginManager();
         }
 
-        if(!Client.isLoggedIn()) {
+        if (!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
             return true;
         }
@@ -113,7 +113,7 @@ public class TaskManager {
             return true;
         }
 
-        if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+        if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
             setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
             Logger.log("We are hopping into a P2P world");
             return true;
@@ -124,9 +124,17 @@ public class TaskManager {
         return false;
     }
 
-    public List<WatTask> getTasks() { return tasks; }
-    public double getTaskSelectedAt() { return taskSelectedAt; }
-    public int getTaskRunTime() { return taskRunTime; }
+    public List<WatTask> getTasks() {
+        return tasks;
+    }
+
+    public double getTaskSelectedAt() {
+        return taskSelectedAt;
+    }
+
+    public int getTaskRunTime() {
+        return taskRunTime;
+    }
 
     public double getCheckedHoursAt() {
         return checkedHoursAt;

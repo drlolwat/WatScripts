@@ -13,7 +13,7 @@ public class RangedUtils {
     public static HashMap<String, Integer> getRequiredItems() {
         HashMap<String, Integer> ret = new HashMap<>();
 
-        for(String s : bestGearForLevel().values()) {
+        for (String s : bestGearForLevel().values()) {
             ret.put(s, 1);
         }
 
@@ -38,35 +38,38 @@ public class RangedUtils {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
         int defLevel = Skills.getRealLevel(Skill.DEFENCE);
 
-        if((dhide && defLevel >= 40 && Quests.isFinished(FreeQuest.DRAGON_SLAYER)) && type == DefensiveItemType.CHEST) {
+        if ((dhide && defLevel >= 40 && Quests.isFinished(FreeQuest.DRAGON_SLAYER)) && type == DefensiveItemType.CHEST) {
             dhide = false;
         }
 
-        if(dhide && GenericUtils.isMember()) {
-            if(rngLevel >= 50 && defLevel >= 40) {
+        if (dhide && GenericUtils.isMember()) {
+            if (rngLevel >= 50 && defLevel >= 40) {
                 dhide = false;
             }
         }
 
         String mat = bestArmorMaterial(rngLevel);
-        switch(type) {
+        switch (type) {
             case HELMET: {
-                if(rngLevel >= 20) { return "Coif"; } else { return "Leather cowl"; }
+                if (rngLevel >= 20) {
+                    return "Coif";
+                } else {
+                    return "Leather cowl";
+                }
             }
             case CHEST: {
                 return dhide ? bestArmorMaterial(20) + " body" : mat + " body";
             }
             case LEGS: {
-                if(rngLevel >= 40) {
+                if (rngLevel >= 40) {
                     return mat + " chaps";
-                }
-                else if(rngLevel >= 20) {
+                } else if (rngLevel >= 20) {
                     return "Studded chaps";
                 }
                 return "Leather chaps";
             }
             case GLOVES: {
-                if(rngLevel >= 40) {
+                if (rngLevel >= 40) {
                     if (GenericUtils.isMember()) {
                         if (rngLevel >= 70) {
                             return "Black d'hide vambraces";
@@ -78,8 +81,7 @@ public class RangedUtils {
                     }
 
                     return "Green d'hide vambraces";
-                }
-                else {
+                } else {
                     return "Leather vambraces";
                 }
             }
@@ -93,8 +95,8 @@ public class RangedUtils {
 
     public static String bestArmorMaterial(int rngLevel) {
         int defLevel = Skills.getRealLevel(Skill.DEFENCE);
-        if(rngLevel >= 40) {
-            if(GenericUtils.isMember()) {
+        if (rngLevel >= 40) {
+            if (GenericUtils.isMember()) {
                 if (rngLevel >= 70) {
                     return "Black d'hide";
                 } else if (rngLevel >= 60) {
@@ -105,21 +107,17 @@ public class RangedUtils {
             }
 
             return "Green d'hide";
-        }
-        else if(rngLevel >= 20) {
-            if(defLevel >= 20) {
+        } else if (rngLevel >= 20) {
+            if (defLevel >= 20) {
                 return "Studded";
-            }
-            else if(defLevel >= 10) {
+            } else if (defLevel >= 10) {
                 return "Hardleather";
             }
             return "Leather";
-        }
-        else {
-            if(defLevel >= 10) {
+        } else {
+            if (defLevel >= 10) {
                 return "Hardleather";
-            }
-            else {
+            } else {
                 return "Leather";
             }
         }
@@ -127,38 +125,30 @@ public class RangedUtils {
 
     public static String bestRangedWeapon() {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
-        if(rngLevel >= 50 && GenericUtils.isMember()) {
+        if (rngLevel >= 50 && GenericUtils.isMember()) {
             return "Magic shortbow";
-        }
-        else if(rngLevel >= 40 && GenericUtils.isMember()) {
+        } else if (rngLevel >= 40 && GenericUtils.isMember()) {
             return "Yew shortbow";
-        }
-        else if(rngLevel >= 30) {
+        } else if (rngLevel >= 30) {
             return "Maple shortbow";
-        }
-        else if(rngLevel >= 20) {
+        } else if (rngLevel >= 20) {
             return "Willow shortbow";
-        }
-        else if(rngLevel >= 5) {
+        } else if (rngLevel >= 5) {
             return "Oak shortbow";
-        }
-        else {
+        } else {
             return "Shortbow";
         }
     }
 
     public static String bestArrow() {
         int rngLevel = Skills.getRealLevel(Skill.RANGED);
-        if(rngLevel >= 50 && GenericUtils.isMember()) {
+        if (rngLevel >= 50 && GenericUtils.isMember()) {
             return "Adamant arrow";
-        }
-        else if(rngLevel >= 20) {
+        } else if (rngLevel >= 20) {
             return "Mithril arrow";
-        }
-        else if(rngLevel >= 5) {
+        } else if (rngLevel >= 5) {
             return "Steel arrow";
-        }
-        else {
+        } else {
             return "Iron arrow";
         }
     }
