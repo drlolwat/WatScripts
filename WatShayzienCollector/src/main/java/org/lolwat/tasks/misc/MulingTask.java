@@ -91,25 +91,25 @@ public class MulingTask implements WatTask {
             Logger.log("Items deposited. Resuming muling task.");
         }
 
-        if(NPCs.closest("Grand Exchange Clerk") == null) {
+        if (NPCs.closest("Grand Exchange Clerk") == null) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
             return;
         }
 
-        if(completed) {
+        if (completed) {
             TaskManager.getInstance().setCurrentTask(new HopperTask(originalWorld, postTask));
             return;
         }
 
-        if(!active) {
-            if(retries > 5) {
+        if (!active) {
+            if (retries > 5) {
                 ConfigManager.getInstance().setMuleConnectionFailed(true);
                 // put GP back
-                if(!Bank.isOpen()) {
+                if (!Bank.isOpen()) {
                     Bank.open();
                     Sleep.sleepUntil(Bank::isOpen, 10000);
 
-                    if(Inventory.contains("Coins")) {
+                    if (Inventory.contains("Coins")) {
                         Bank.depositAll("Coins");
                     }
 
@@ -117,7 +117,7 @@ public class MulingTask implements WatTask {
                     Bank.close();
                 }
 
-                if(!Inventory.contains("Coins")) {
+                if (!Inventory.contains("Coins")) {
                     TaskManager.getInstance().getNewTask();
                 }
 
@@ -125,9 +125,9 @@ public class MulingTask implements WatTask {
             }
 
             StringBuilder message = new StringBuilder("READY-REGULAR|" + Players.getLocal().getName());
-            if(reverse) {
+            if (reverse) {
                 message = new StringBuilder("READY-REVERSE|" + Players.getLocal().getName() + "|");
-                for(Map.Entry<String, Integer> kvp : reverseRequest.entrySet()) {
+                for (Map.Entry<String, Integer> kvp : reverseRequest.entrySet()) {
                     message.append(kvp.getKey()).append(":").append(kvp.getValue());
                     message.append(";");
                 }
@@ -156,7 +156,7 @@ public class MulingTask implements WatTask {
                         targetWorld = Integer.parseInt(sp[2]);
                     }
 
-                    if(target != null && !target.isEmpty()) {
+                    if (target != null && !target.isEmpty()) {
                         Logger.log("Good to go, hopping");
                         TaskManager.getInstance().setCurrentTask(new HopperTask(targetWorld, this));
                     }
@@ -164,14 +164,13 @@ public class MulingTask implements WatTask {
             } catch (Exception ignored) {
             }
             retries++;
-        }
-        else {
-            if(!Tabs.isOpen(Tab.INVENTORY)) {
+        } else {
+            if (!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
             }
 
             // do we have a target
-            if(!target.isEmpty()) {
+            if (!target.isEmpty()) {
                 // is the trade window closed
                 if (!Trade.isOpen() && (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5)) {
                     Player p = Players.closest(target);
@@ -179,13 +178,13 @@ public class MulingTask implements WatTask {
                     if (p != null) {
                         Logger.log("Detected mule nearby");
                         Sleep.sleep(4000, 8000);
-                        if(!org.dreambot.api.methods.map.Map.isTileOnScreen(p.getTile()) && Camera.rotateToEntity(p)) {
+                        if (!org.dreambot.api.methods.map.Map.isTileOnScreen(p.getTile()) && Camera.rotateToEntity(p)) {
                             Logger.log("Rotated to see mule");
                             Sleep.sleep(100, 500);
                         }
 
                         if (lastSentRequest == 0 || (Instant.now().getEpochSecond() - lastSentRequest) > 5) {
-                            if(Trade.tradeWithPlayer(p)) {
+                            if (Trade.tradeWithPlayer(p)) {
                                 lastSentRequest = Instant.now().getEpochSecond();
                                 Sleep.sleepUntil(Trade::isOpen, 5000);
                             }
@@ -198,10 +197,16 @@ public class MulingTask implements WatTask {
                 // are we on the first window
                 if (Trade.isOpen(1)) {
                     if (Inventory.contains("Coins") && Inventory.get("Coins") != null && !reverse) {
-                        Trade.addItem("Coins", Inventory.get("Coins").getAmount());
+                        Trade.addItem("Coins", Inventory.count("Coins"));
                     }
-                    Sleep.sleep(2000, 3000);
-                    Trade.acceptTrade(1);
+
+                    Sleep.sleepUntil(() -> Trade.contains(true, "Coins"), 2000);
+
+                    if (Trade.contains(true, "Coins") || Trade.contains(false, "Coins")) {
+                        Trade.acceptTrade(1);
+                    } else {
+                        Logger.log("waiting for coins");
+                    }
                 }
 
                 if (Trade.isOpen(2)) {
@@ -240,7 +245,6 @@ public class MulingTask implements WatTask {
         return 101;
     }
 
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {

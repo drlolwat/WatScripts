@@ -13,6 +13,7 @@ import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.AnimationListener;
@@ -34,19 +35,19 @@ import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
 
-@ScriptManifest(name = "WatShamans", description = "Shaman Killer", author = "lolwat", version = 0.1, category = Category.COMBAT)
+@ScriptManifest(name = "WatScript1", description = "WatScript1", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
+
     public static WatScript getInstance() {
         return instance;
     }
 
     @Override
     public void onStart(String... params) {
-        if(params.length > 0) {
+        if (params.length > 0) {
             doStart(params[0]);
-        }
-        else {
+        } else {
             doStart("default");
         }
     }
@@ -57,7 +58,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     }
 
     private void doStart(String profile) {
-        if(instance == null) {
+        if (instance == null) {
             Logger.log(Color.green, "WatShamans starting: assigning instance");
             instance = this;
         }
@@ -70,7 +71,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             ConfigManager.getInstance().loadFromProfile(profile);
         }
 
-        if(TeleportManager.getInstance() == null) {
+        if (TeleportManager.getInstance() == null) {
             Logger.log("Constructing TeleportManager singleton.");
             TeleportManager.setInstance(new TeleportManager());
         }
@@ -86,7 +87,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        if(!Menu.isMenuManipulationActive()) {
+        if (!Menu.isMenuManipulationActive()) {
             Logger.log("Enabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(true);
             Walking.toggleNoClickWalk(true);
@@ -148,15 +149,15 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onGained(ExperienceEvent ev) {
-        if(TaskManager.getInstance().getCurrentTask() != null) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onExpGained(ev.getSkill(), ev.getChange(), this);
         }
     }
 
     @Override
     public void onMessage(Message m) {
-        if(TaskManager.getInstance().getCurrentTask() != null) {
-            if(m.getMessage().startsWith("Darts")) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
+            if (m.getMessage().startsWith("Darts")) {
                 int[] data = GenericUtils.parseText(m.getMessage());
                 TaskManager.getInstance().getCurrentTask().data().put("darts", data[0]);
                 TaskManager.getInstance().getCurrentTask().data().put("scales", data[1]);
@@ -165,32 +166,37 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
             TaskManager.getInstance().getCurrentTask().onMessage(m);
         }
+
+        if (m.getMessage().equals("Oh dear, you are dead!")) {
+            Logger.log("DEATH DETECTED: STOPPING SCRIPT");
+            ScriptManager.getScriptManager().stop();
+        }
     }
 
     @Override
     public void onNpcAnimation(NPC npc, int animation, int animationDelay) {
-        if(TaskManager.getInstance().getCurrentTask() != null) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onNpcAnimation(npc, animation, animationDelay);
         }
     }
 
     @Override
     public void onNpcSpawn(NPC npc) {
-        if(TaskManager.getInstance().getCurrentTask() != null) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onNpcSpawn(npc);
         }
     }
 
     @Override
     public void onNpcDespawn(NPC npc) {
-        if(TaskManager.getInstance().getCurrentTask() != null) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onNpcDespawn(npc);
         }
     }
 
     @Override
     public void onGroundItemSpawn(GroundItem object) {
-        if(TaskManager.getInstance().getCurrentTask() != null) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onGroundItemSpawn(object);
         }
     }
