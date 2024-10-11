@@ -45,7 +45,7 @@ public class HopperTask implements WatTask {
 
     @Override
     public void execute() {
-        if(Combat.getHealthPercent() <= 65) {
+        if (Combat.getHealthPercent() <= 65) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i != null && i.interact()) {
                 return;
@@ -54,8 +54,8 @@ public class HopperTask implements WatTask {
 
         GameObject gate = GameObjects.closest(34642);
 
-        if(Worlds.getCurrentWorld() == startWorld) {
-            if(monsterArea.contains(Players.getLocal())) {
+        if (Worlds.getCurrentWorld() == startWorld) {
+            if (monsterArea.contains(Players.getLocal())) {
                 if (gate != null) {
                     if (!gate.interact()) {
                         Logger.log("failed to interact w exit gate onHop");
@@ -69,7 +69,7 @@ public class HopperTask implements WatTask {
                 return;
             }
 
-            if(!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
+            if (!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
                 Logger.log("failed to toggle protect from missiles");
             }
 
@@ -84,7 +84,13 @@ public class HopperTask implements WatTask {
             }
 
             if (world == 0) {
-                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+                WorldHopper.hopWorld(Worlds.getRandomWorld((w) ->
+                        !w.isPVP()
+                                && w.isMembers()
+                                && !w.isDeadmanMode()
+                                && !w.isHighRisk()
+                                && !w.isPvpArena() && w.isNormal()
+                                && w.getMinimumLevel() <= 100));
             } else {
                 WorldHopper.hopWorld(world);
             }
@@ -92,8 +98,8 @@ public class HopperTask implements WatTask {
             Sleep.sleepUntil(() -> Worlds.getCurrentWorld() != startWorld && Client.getGameState().equals(GameState.LOGGED_IN), 10000);
 
         } else {
-            if(Client.getGameState().equals(GameState.LOGGED_IN)) {
-                if (GenericUtils.tooManyPlayers(monsterArea, 1)) {
+            if (Client.getGameState().equals(GameState.LOGGED_IN)) {
+                if (GenericUtils.tooManyPlayers(monsterArea, 1, true)) {
                     TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
                     return;
                 }
@@ -111,7 +117,7 @@ public class HopperTask implements WatTask {
 
                 TaskManager.getInstance().setCurrentTask(postTask);
             } else {
-                if(Client.getGameState().equals(GameState.LOADING)) {
+                if (Client.getGameState().equals(GameState.LOADING)) {
                     Logger.log("hopper still loading");
                 }
             }
@@ -148,7 +154,6 @@ public class HopperTask implements WatTask {
         return 101;
     }
 
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
