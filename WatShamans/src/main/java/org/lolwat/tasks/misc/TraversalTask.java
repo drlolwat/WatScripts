@@ -101,16 +101,16 @@ public class TraversalTask implements WatTask {
 
     @Override
     public void execute() {
-        if(!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
+        if (!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
             TaskManager.getInstance().setCurrentTask(postTask);
             return;
         }
 
         Widget w = Widgets.getWidget(579);
-        if(w != null && w.isVisible()) {
+        if (w != null && w.isVisible()) {
             WidgetChild c = w.getChild(17);
-            if(c != null && c.isVisible() && c.hasAction("Yes")) {
-                if(!c.interact("Yes")) {
+            if (c != null && c.isVisible() && c.hasAction("Yes")) {
+                if (!c.interact("Yes")) {
                     Logger.log("Traversal: failed to click yes on widget");
                 }
 
@@ -229,20 +229,20 @@ public class TraversalTask implements WatTask {
 
                             if (!Dialogues.inDialogue()) {
                                 Widget scroll = Widgets.getWidget(187);
-                                if(scroll != null && scroll.isVisible()) {
+                                if (scroll != null && scroll.isVisible()) {
                                     WidgetChild c = scroll.getChild(3);
-                                    if(c != null && c.isVisible()) {
+                                    if (c != null && c.isVisible()) {
                                         WidgetChild option = null;
-                                        for(WidgetChild child : c.getChildren()) {
-                                            if(child == null) continue;
-                                            if(child.getText().contains(teleport.getOption())) {
+                                        for (WidgetChild child : c.getChildren()) {
+                                            if (child == null) continue;
+                                            if (child.getText().contains(teleport.getOption())) {
                                                 option = child;
                                                 break;
                                             }
                                         }
 
-                                        if(option != null) {
-                                            if(!option.interact("Continue")) {
+                                        if (option != null) {
+                                            if (!option.interact("Continue")) {
                                                 Logger.log("Traversal: failed to use teleport item " + teleportItem);
                                                 return;
                                             }

@@ -140,6 +140,8 @@ public class ShamanCombatTask implements WatTask {
                         || (entrance == null || !entrance.canReach()), 2000);
             }
 
+            Sleep.sleep(1500, 2500);
+
             GameObject gate = GameObjects.closest(34642);
             if (gate != null) {
                 if (!gate.interact()) {
@@ -147,7 +149,7 @@ public class ShamanCombatTask implements WatTask {
                     return;
                 }
 
-                Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 20000);
+                Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 45000);
             }
 
             return;
@@ -164,24 +166,24 @@ public class ShamanCombatTask implements WatTask {
         Item prayerPotion = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Prayer potion"));
         Item natureRune = Inventory.get(x -> x != null && x.getName().contains("Nature rune"));
         Item staminaPotion = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Stamina potion"));
-        Item amethystArrow = Equipment.get(x -> x != null && x.getName().contains("Amethyst arrow"));
+        Item ammo = Equipment.get(x -> x != null && x.getName().contains("Sunlight antler bolts"));
 
-        if (antidote == null || food == null || rangingPotion == null || prayerPotion == null || natureRune == null || amethystArrow == null) {
+        if (antidote == null || food == null || rangingPotion == null || prayerPotion == null || natureRune == null || ammo == null) {
             Logger.log("we are missing a vital item");
             reachedLocation = false;
             currentTarget = null;
 
             TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
             TaskManager.getInstance().getCurrentTask().execute();
-            if(!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
+            if (!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
                 Logger.log("failed to toggle protect from missiles");
             }
 
             return;
         }
 
-        if(!Combat.isAutoRetaliateOn()) {
-            if(!Combat.toggleAutoRetaliate(true)) {
+        if (!Combat.isAutoRetaliateOn()) {
+            if (!Combat.toggleAutoRetaliate(true)) {
                 Logger.log("failed to toggle auto retaliate on");
                 return;
             }
@@ -189,7 +191,7 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(Combat::isAutoRetaliateOn, 1000);
         }
 
-        if(Combat.getHealthPercent() <= 65) {
+        if (Combat.getHealthPercent() <= 65) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i == null || !i.interact()) {
                 Logger.log("failed to eat food");
@@ -197,16 +199,16 @@ public class ShamanCombatTask implements WatTask {
             }
         }
 
-        for(Prayer p : Prayers.getActive()) {
-            if(!p.equals(Prayer.PROTECT_FROM_MISSILES)) {
-                if(!Prayers.toggle(false, p)) {
+        for (Prayer p : Prayers.getActive()) {
+            if (!p.equals(Prayer.PROTECT_FROM_MISSILES)) {
+                if (!Prayers.toggle(false, p)) {
                     Logger.log("failed to toggle prayer off (" + p.name() + ")");
                     return;
                 }
             }
         }
 
-        if(!Prayers.toggle(true, Prayer.PROTECT_FROM_MISSILES)) {
+        if (!Prayers.toggle(true, Prayer.PROTECT_FROM_MISSILES)) {
             Logger.log("failed to toggle protect from missiles");
             return;
         }
@@ -220,7 +222,7 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(() -> !Combat.isPoisoned(), 5000);
         }
 
-        if(Skills.getBoostedLevel(Skill.PRAYER) <= 30) {
+        if (Skills.getBoostedLevel(Skill.PRAYER) <= 30) {
             if (!prayerPotion.interact("Drink")) {
                 Logger.log("failed to drink prayer potion");
                 return;
@@ -229,19 +231,19 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(() -> Skills.getBoostedLevel(Skill.PRAYER) > 30, 5000);
         }
 
-        if(Walking.getRunEnergy() <= 30) {
+        if (Walking.getRunEnergy() <= 30 && staminaPotion != null) {
             if (!staminaPotion.interact("Drink")) {
                 Logger.log("failed to drink stamina potion");
                 return;
             }
         }
 
-        if(!Walking.isRunEnabled()) {
+        if (!Walking.isRunEnabled()) {
             Walking.toggleRun();
             Sleep.sleepUntil(Walking::isRunEnabled, 5000);
         }
 
-        if(Skills.getBoostedLevel(Skill.RANGED) == Skills.getRealLevel(Skill.RANGED)) {
+        if (Skills.getBoostedLevel(Skill.RANGED) <= (Skills.getRealLevel(Skill.RANGED) + 4)) {
             if (!rangingPotion.interact("Drink")) {
                 Logger.log("failed to drink ranging potion");
                 return;
@@ -250,15 +252,15 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(() -> Skills.getBoostedLevel(Skill.RANGED) > Skills.getRealLevel(Skill.RANGED), 5000);
         }
 
-        if(GenericUtils.tooManyPlayers(monsterArea, 1) && Combat.getHealthPercent() >= 65) {
+        if (GenericUtils.tooManyPlayers(monsterArea, 1, false) && Combat.getHealthPercent() >= 65) {
             Logger.log("too many players in area, hopping worlds");
             TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
             TaskManager.getInstance().getCurrentTask().execute();
             return;
         }
 
-        if(Inventory.contains("Vial")) {
-            if(!Inventory.drop("Vial")) {
+        if (Inventory.contains("Vial")) {
+            if (!Inventory.drop("Vial")) {
                 Logger.log("failed to drop vial");
             }
         }
@@ -269,29 +271,21 @@ public class ShamanCombatTask implements WatTask {
                 && x.getName().equals("Lizardman shaman")
                 && x.isInCombat());
 
-        if(!attackingMe.isEmpty() && currentTarget == null) {
+        if (!attackingMe.isEmpty() && currentTarget == null) {
             currentTarget = attackingMe.get(0);
         }
 
-        if(currentTarget == null) {
+        if (currentTarget == null) {
             if (!Players.getLocal().isInCombat() && !Players.getLocal().isHealthBarVisible()) {
                 Logger.log("waiting to be in combat...");
             }
-        }
-        else {
-            if(!Combat.isSpecialActive() && Combat.getSpecialPercentage() >= 50) {
-                if (!Combat.toggleSpecialAttack(true)) {
-                    Logger.log("failed to toggle special attack");
-                    return;
-                }
-            }
-
-            if(!groundItemQueue.isEmpty()) {
+        } else {
+            if (!groundItemQueue.isEmpty()) {
                 processGroundItemQueue();
             }
 
-            if(Players.getLocal().canReach(currentTarget.getTile())) {
-                if(currentTarget.getTile().distance(Players.getLocal().getTile()) <= 2 && !scheduled && !Players.getLocal().isMoving()) {
+            if (Players.getLocal().canReach(currentTarget.getTile())) {
+                if (currentTarget.getTile().distance(Players.getLocal().getTile()) <= 2 && !scheduled && !Players.getLocal().isMoving()) {
                     Logger.log("running too close to npc: " + currentTarget.getName());
 
                     Area[] areas = {topLeft, topRight, bottomLeft, bottomRight};
@@ -328,7 +322,7 @@ public class ShamanCombatTask implements WatTask {
                     }
                 }
 
-                if(!Players.getLocal().isMoving()
+                if (!Players.getLocal().isMoving()
                         && !Players.getLocal().isAnimating()
                         && !Players.getLocal().isInCombat()
                         && !Players.getLocal().isHealthBarVisible()) {
@@ -338,6 +332,10 @@ public class ShamanCombatTask implements WatTask {
                     }
                 }
             }
+        }
+
+        if (!Tabs.isOpen(Tab.INVENTORY)) {
+            Tabs.open(Tab.INVENTORY);
         }
     }
 
@@ -372,18 +370,19 @@ public class ShamanCombatTask implements WatTask {
         ret.put("Shayzien gloves (5)", 1);
         ret.put("Amulet of fury", 1);
         ret.put("Ava's accumulator", 1);
-        ret.put("Magic shortbow (i)", 1);
-        ret.put("Amethyst arrow", 1000);
+        ret.put("Hunters' sunlight crossbow", 1);
+        ret.put("Sunlight antler bolts", -1000);
+        ret.put("Armadyl d'hide shield", 1);
         return ret;
     }
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         HashMap<String, Integer> ret = new HashMap<>();
-        ret.put("Ranging potion(4)", 3);
-        ret.put("Prayer potion(4)", 7);
-        ret.put("Stamina potion(4)", 1);
-        ret.put("Shark", 10);
+        ret.put("Ranging potion(4)", 2);
+        ret.put("Prayer potion(4)", 8);
+        ret.put("Stamina potion(4)", 2);
+        ret.put("Shark", 9);
         ret.put("Antidote++(4)", 2);
         ret.put("Skills necklace(", 1);
         ret.put("Nature rune", 500);
@@ -405,7 +404,7 @@ public class ShamanCombatTask implements WatTask {
     public void onNpcAnimation(NPC npc, int animation, int animationDelay) {
         if (npc == null) return;
         if (!monsterArea.contains(Players.getLocal())) return;
-        if(scheduled) return;
+        if (scheduled) return;
 
         List<Integer> runFromAnimations = Arrays.asList(7152, 7158);
         if (runFromAnimations.contains(animation)) {
@@ -456,6 +455,7 @@ public class ShamanCombatTask implements WatTask {
     public void onNpcSpawn(NPC npc) {
         if (npc == null) return;
         if (!monsterArea.contains(Players.getLocal())) return;
+        if (!monsterArea.contains(npc)) return;
 
         if (npc.getID() == 6768) {
             Logger.log("spawn has spawned lol");
@@ -493,7 +493,7 @@ public class ShamanCombatTask implements WatTask {
                         Walking.walk(finalFurthestTile);
                         performAlching();
                         scheduled = false;
-                    }, 3500, TimeUnit.MILLISECONDS);
+                    }, 3350, TimeUnit.MILLISECONDS);
                 }
             } else {
                 Logger.log("no empty quadrant during spawns");
@@ -503,7 +503,7 @@ public class ShamanCombatTask implements WatTask {
 
     private void performAlching() {
         Item i = Inventory.get(x -> x != null && !x.getName().equals("Chilli potato") && alchemyItems.contains(x.getName()));
-        if(i != null) {
+        if (i != null) {
             Logger.log("alching item: " + i.getName());
 
             if (!Tabs.isOpen(Tab.MAGIC)) {
@@ -514,10 +514,11 @@ public class ShamanCombatTask implements WatTask {
                 Logger.log("error casting HA");
                 return;
             }
-            if(!Inventory.interact(i)) {
+
+            if (!Inventory.interact(i)) {
                 Logger.log("failed to alch item: " + i.getName());
 
-                if(Magic.isSpellSelected()) {
+                if (Magic.isSpellSelected()) {
                     Magic.deselect();
                 }
             }
@@ -527,7 +528,7 @@ public class ShamanCombatTask implements WatTask {
     @Override
     public void onNpcDespawn(NPC npc) {
         if (npc == null) return;
-        if(currentTarget != null && currentTarget.equals(npc)) {
+        if (currentTarget != null && currentTarget.equals(npc)) {
             Logger.log("current target despawned");
             currentTarget = null;
         }
@@ -536,7 +537,7 @@ public class ShamanCombatTask implements WatTask {
     @Override
     public void onGroundItemSpawn(GroundItem object) {
         if (object == null) return;
-        if(!stackableItems.contains(object.getName())
+        if (!stackableItems.contains(object.getName())
                 && !alchemyItems.contains(object.getName())
                 && !object.getName().equals("Dragon warhammer")) {
             return;
@@ -546,6 +547,14 @@ public class ShamanCombatTask implements WatTask {
 
     private void processGroundItemQueue() {
         if (groundItemQueue.isEmpty()) return;
+        if (Inventory.isFull()) {
+            Item foodItem = Inventory.get(x -> x != null && x.hasAction("Eat"));
+            if (foodItem != null) {
+                if (!foodItem.interact("Eat")) {
+                    Logger.log("failed to eat food");
+                }
+            }
+        }
 
         GroundItem item = groundItemQueue.poll();
         if (item == null) return;
@@ -574,7 +583,7 @@ public class ShamanCombatTask implements WatTask {
 
             Sleep.sleepUntil(() -> Inventory.contains("Dragon warhammer"), 5000);
 
-            if(Inventory.contains("Dragon warhammer")) {
+            if (Inventory.contains("Dragon warhammer")) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this, null));
                 TaskManager.getInstance().getCurrentTask().execute();
             }
@@ -582,25 +591,29 @@ public class ShamanCombatTask implements WatTask {
             attempted = true;
         }
 
-        if ((Inventory.size() < 27 || (Inventory.contains("Coins") && !Inventory.isFull())) && alchemyItems.contains(item.getName())) {
-            if (!item.interact("Take")) {
-                Logger.log("failed to take alchable: " + item.getName());
-                Sleep.sleepUntil(() -> !item.exists(), 5000);
-            }
+        if(alchemyItems.contains(item.getName())) {
+            if (Inventory.size() <= 27 || Inventory.contains("Coins")) {
+                if (!item.interact("Take")) {
+                    Logger.log("failed to take alchable: " + item.getName());
+                    Sleep.sleepUntil(() -> !item.exists(), 5000);
+                }
 
-            attempted = true;
+                attempted = true;
+            }
         }
 
-        if ((Inventory.size() < 26 || Inventory.contains(item.getName())) && stackableItems.contains(item.getName())) {
-            if (!item.interact("Take")) {
-                Logger.log("failed to take stackable: " + item.getName());
-                Sleep.sleepUntil(() -> !item.exists(), 5000);
-            }
+        if(stackableItems.contains(item.getName())) {
+            if ((Inventory.size() <= 26 || Inventory.contains(item.getName()) || (Inventory.contains("Coins") && Inventory.size() <= 27))) {
+                if (!item.interact("Take")) {
+                    Logger.log("failed to take stackable: " + item.getName());
+                    Sleep.sleepUntil(() -> !item.exists(), 5000);
+                }
 
-            attempted = true;
+                attempted = true;
+            }
         }
 
-        if(item.exists() && attempted) {
+        if (item.exists() && attempted) {
             Logger.log("didnt pick up item, readding to queue: " + item.getName());
             groundItemQueue.add(item);
         }

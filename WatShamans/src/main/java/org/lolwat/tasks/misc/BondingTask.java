@@ -31,43 +31,43 @@ public class BondingTask implements WatTask {
     @Override
     public void execute() {
         boolean requiresHop = false;
-        if(!BankLocation.GRAND_EXCHANGE.getArea(5).contains(Players.getLocal())) {
+        if (!BankLocation.GRAND_EXCHANGE.getArea(5).contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(5), this));
             return;
         }
 
-        if(!Inventory.contains("Old school bond (untradeable)")) {
+        if (!Inventory.contains("Old school bond (untradeable)")) {
             //TaskManager.getInstance().setCurrentTask(new BankingTask(this));
             return;
         }
 
-        if(Bank.isOpen()) {
+        if (Bank.isOpen()) {
             Bank.close();
             return;
         }
 
         Sleep.sleepUntil(() -> !Bank.isOpen(), Calculations.random(500, 1000));
 
-        if(!Inventory.interact("Old school bond (untradeable)", "Redeem")) {
+        if (!Inventory.interact("Old school bond (untradeable)", "Redeem")) {
             Logger.error("Error redeeming bond, please report. #3");
             return;
         }
 
         Sleep.sleepUntil(() -> Widgets.isVisible(861), Calculations.random(500, 1000));
 
-        if(Widgets.isVisible((861))) {
+        if (Widgets.isVisible((861))) {
             WidgetChild c = Widgets.getWidget(861).getChild(12);
-            if(c != null && c.getActions() != null) {
-                if(!c.interact()) {
+            if (c != null && c.getActions() != null) {
+                if (!c.interact()) {
                     Logger.error("Error redeeming bond, please report. #1");
                     return;
                 }
 
                 Sleep.sleepUntil(() -> Widgets.isVisible(289), Calculations.random(500, 1000));
-                if(Widgets.isVisible(289)) {
+                if (Widgets.isVisible(289)) {
                     WidgetChild a = Widgets.getWidget(289).getChild(8);
-                    if(a != null && a.getActions() != null) {
-                        if(!a.interact()) {
+                    if (a != null && a.getActions() != null) {
+                        if (!a.interact()) {
                             Logger.error("Error redeeming bond, please report. #2");
                             return;
                         }
@@ -79,7 +79,7 @@ public class BondingTask implements WatTask {
             }
         }
 
-        if(requiresHop) {
+        if (requiresHop) {
             TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
             return;
         }
