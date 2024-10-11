@@ -74,7 +74,7 @@ public class GrandExchangeTask implements WatTask {
         }
 
 
-        if(NPCs.closest("Grand Exchange Clerk") != null) {
+        if (NPCs.closest("Grand Exchange Clerk") != null) {
             Logger.log("Opening Grand Exchange");
 
             if (!GrandExchange.isOpen()) {
@@ -92,16 +92,16 @@ public class GrandExchangeTask implements WatTask {
                 if (GrandExchange.getFirstOpenSlot() == -1) {
                     Sleep.sleep(500, 900);
 
-                    if(GrandExchange.isReadyToCollect()) {
+                    if (GrandExchange.isReadyToCollect()) {
                         GrandExchange.collect();
                     }
 
                     Sleep.sleep(500, 900);
 
                     if (GrandExchange.getFirstOpenSlot() == -1) {
-                        for(GrandExchangeItem gxIt : GrandExchange.getItems()) {
+                        for (GrandExchangeItem gxIt : GrandExchange.getItems()) {
 
-                            if(gxIt.isReadyToCollect()) {
+                            if (gxIt.isReadyToCollect()) {
                                 GrandExchange.collect();
                             } else {
                                 GrandExchange.cancelOffer(gxIt.getSlot());
@@ -117,9 +117,9 @@ public class GrandExchangeTask implements WatTask {
                 }
 
                 int slot = GrandExchange.getFirstOpenSlot();
-                if(slot == -1) {
+                if (slot == -1) {
                     Logger.log("Cancelling/collecting offers to free G.E spots");
-                    for(GrandExchangeItem i : GrandExchange.getItems()) {
+                    for (GrandExchangeItem i : GrandExchange.getItems()) {
                         if (i.isReadyToCollect()) {
                             GrandExchange.collect();
                             Sleep.sleep(100, 300);
@@ -140,62 +140,60 @@ public class GrandExchangeTask implements WatTask {
                 }
 
                 // pre collect
-                if(GrandExchange.isReadyToCollect()) {
+                if (GrandExchange.isReadyToCollect()) {
                     GrandExchange.collect();
                 }
 
-                if(GrandExchange.getItem(item.getKey()) != null) {
+                if (GrandExchange.getItem(item.getKey()) != null) {
                     Logger.log("Tell lolwat");
                 }
 
                 if (isSelling) {
                     Logger.log("Selling: " + item.getKey());
-                    if(Inventory.contains(item.getKey())) {
+                    if (Inventory.contains(item.getKey())) {
                         Inventory.get(item.getKey()).interact();
                         Sleep.sleep(100, 600);
 
-                        for(int i = 0; i <= 3; i++) {
-                            if(!GrandExchange.getDecreasePriceFivePercentButton().interact()) {
+                        for (int i = 0; i <= 3; i++) {
+                            if (!GrandExchange.getDecreasePriceFivePercentButton().interact()) {
                                 Logger.log("error lowering g.e price");
                             }
 
                             Sleep.sleep(100, 300);
                         }
 
-                        if(!GrandExchange.confirm()) {
+                        if (!GrandExchange.confirm()) {
                             Logger.log("error confirming g.e offer");
                             continue;
                         }
 
                         Sleep.sleepUntil(GrandExchange::isReadyToCollect, Calculations.random(800, 1800));
 
-                        if(!GrandExchange.isReadyToCollect()) {
+                        if (!GrandExchange.isReadyToCollect()) {
                             Logger.log("item did not sell instantly");
                             continue;
                         }
 
-                        if(!GrandExchange.collect()) {
+                        if (!GrandExchange.collect()) {
                             Logger.log("error collecting items from g.e");
                             continue;
                         }
 
                         Sleep.sleep(100, 500);
-                    }
-                    else {
+                    } else {
                         Logger.log("Item was not in inventory: " + item.getKey());
                     }
                 } else {
                     String itemFinal = item.getKey();
-                    if(itemFinal.equals("Old school bond (untradeable)")) {
+                    if (itemFinal.equals("Old school bond (untradeable)")) {
                         itemFinal = "Old school bond";
-                    }
-                    else if(TeleportManager.getInstance().isTeleportItem(itemFinal)) {
+                    } else if (TeleportManager.getInstance().isTeleportItem(itemFinal)) {
                         itemFinal = TeleportManager.getInstance().getChargedItemName(itemFinal);
                     }
 
                     Logger.log("Buying: " + itemFinal);
 
-                    if(!GrandExchange.isBuyOpen() && !GrandExchange.openBuyScreen(slot)) {
+                    if (!GrandExchange.isBuyOpen() && !GrandExchange.openBuyScreen(slot)) {
                         Logger.error("Error opening buy screen in G.E, returning to postTask");
                         TaskManager.getInstance().setCurrentTask(postTask);
                         return;
@@ -203,23 +201,23 @@ public class GrandExchangeTask implements WatTask {
 
                     Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
-                    while(item.getValue() != 0) {
-                        if(retries >= 5) {
+                    while (item.getValue() != 0) {
+                        if (retries >= 5) {
                             retries = 0;
                             Logger.log("Something went wrong with the G.E loop, breaking it.");
                             break;
                         }
 
-                        if(!GrandExchange.isBuyOpen()) {
+                        if (!GrandExchange.isBuyOpen()) {
                             Sleep.sleep(1000, 2000);
 
-                            if(!GrandExchange.openBuyScreen(slot)) {
+                            if (!GrandExchange.openBuyScreen(slot)) {
                                 Logger.log("Error ensuring buy screen is open in G.E");
                             }
 
                             Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
 
-                            if(!GrandExchange.isBuyOpen()) {
+                            if (!GrandExchange.isBuyOpen()) {
                                 Logger.log("Buy screen was not open when it was meant to be.");
                                 retries++;
                                 continue;
@@ -238,14 +236,14 @@ public class GrandExchangeTask implements WatTask {
                                 return;
                             }
 
-                            if(GrandExchange.setPrice(itemCost)) {
+                            if (GrandExchange.setPrice(itemCost)) {
                                 Sleep.sleep(100, 200);
                             }
 
                             Sleep.sleep(100, 300);
 
                             if (item.getValue() != 1) {
-                                if(!TeleportManager.getInstance().isTeleportItem(item.getKey()) &&
+                                if (!TeleportManager.getInstance().isTeleportItem(item.getKey()) &&
                                         ItemUtils.SINGULAR_ITEMS.contains(item.getKey())) {
                                     GrandExchange.setQuantity(1);
                                 } else {
@@ -259,9 +257,9 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleep(100, 300);
 
                             Widget w = Widgets.getWidget(289);
-                            if(w != null) {
+                            if (w != null) {
                                 WidgetChild c = w.getChild(8); // yes button
-                                if(c.interact()) {
+                                if (c.interact()) {
                                     Sleep.sleep(100, 200);
                                 } else {
                                     Logger.log("unable to interact with G.E warning");
@@ -271,22 +269,23 @@ public class GrandExchangeTask implements WatTask {
                             Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
 
                             if (GrandExchange.isReadyToCollect(slot)) {
-                                if(!GrandExchange.collect()) {
+                                if (!GrandExchange.collect()) {
                                     Logger.log("Error collecting items");
                                 }
                                 item.setValue(0);
                             } else {
-                                if(GrandExchange.cancelOffer(slot)) {
+                                if (GrandExchange.cancelOffer(slot)) {
                                     Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
-                                    if(!GrandExchange.collect()) {
+                                    if (!GrandExchange.collect()) {
                                         retries++;
                                         item.setValue(0);
                                         Logger.error("Error collecting cancelled item from G.E");
                                     } else {
+                                        Logger.log("cancelling offer");
                                         Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
                                         NumUtils.raisePrice(item.getKey());
 
-                                        if(NumUtils.getItemPrice(item.getKey()) > Inventory.count("Coins")) {
+                                        if (NumUtils.getItemPrice(item.getKey()) > Inventory.count("Coins")) {
                                             Logger.log("Item price is higher than coin stack, breaking");
                                             break;
                                         }
@@ -301,7 +300,7 @@ public class GrandExchangeTask implements WatTask {
             }
 
             Sleep.sleep(3000);
-            if(GrandExchange.isReadyToCollect()) {
+            if (GrandExchange.isReadyToCollect()) {
                 GrandExchange.collect();
             }
 
@@ -316,8 +315,7 @@ public class GrandExchangeTask implements WatTask {
 
             Sleep.sleep(300, 800);
             TaskManager.getInstance().setCurrentTask(postTask);
-        }
-        else {
+        } else {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
         }
     }
@@ -347,7 +345,6 @@ public class GrandExchangeTask implements WatTask {
         return 101;
     }
 
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {

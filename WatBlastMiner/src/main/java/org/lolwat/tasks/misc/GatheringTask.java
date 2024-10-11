@@ -37,18 +37,18 @@ public class GatheringTask implements WatTask {
 
     @Override
     public void execute() {
-        if(Inventory.count(inventoryName) >= amount) {
+        if (Inventory.count(inventoryName) >= amount) {
             Logger.log("Have enough of item: " + inventoryName + " (" + amount + "), moving on");
             TaskManager.getInstance().setCurrentTask(postTask);
             return;
         }
 
-        if(!location.contains(Players.getLocal())) {
+        if (!location.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(location, this));
             return;
         }
 
-        if(!ground) {
+        if (!ground) {
             GameObject i = GameObjects.closest(x -> x != null && x.exists() && x.getName().equals(objectName));
             if (i != null) {
                 if (!i.interact()) {
