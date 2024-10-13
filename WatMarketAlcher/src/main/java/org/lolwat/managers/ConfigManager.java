@@ -37,6 +37,9 @@ public class ConfigManager {
         defaultProfile.addProperty("mule_at_gp", 100000000);
         defaultProfile.addProperty("keep_gp", 150000);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
+        defaultProfile.addProperty("shield_type", "Armadyl d'hide shield");
+        defaultProfile.addProperty("arrow_type", "Sunlight antler bolts");
+        defaultProfile.addProperty("weapon_type", "Hunters' sunlight crossbow");
 
         JsonObject items = new JsonObject();
         items.addProperty("Chaos rune", -100);
