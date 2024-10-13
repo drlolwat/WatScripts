@@ -24,6 +24,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
@@ -114,6 +115,14 @@ public class ShamanCombatTask implements WatTask {
                     Logger.log("missing " + entry.getKey());
                     TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
                     return;
+                }
+
+                if(entry.getKey().contains("bolt") || entry.getKey().contains("arrow")) {
+                    if(Equipment.count(entry.getKey()) < 500) {
+                        Logger.log("missing " + entry.getKey() + " with decent qty");
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
+                        return;
+                    }
                 }
             }
         }
@@ -370,9 +379,9 @@ public class ShamanCombatTask implements WatTask {
         ret.put("Shayzien gloves (5)", 1);
         ret.put("Amulet of fury", 1);
         ret.put("Ava's accumulator", 1);
-        ret.put("Hunters' sunlight crossbow", 1);
-        ret.put("Sunlight antler bolts", -1000);
-        ret.put("Armadyl d'hide shield", 1);
+        ret.put(ConfigManager.getInstance().getConfigString("weapon_type"), 1);
+        ret.put(ConfigManager.getInstance().getConfigString("arrow_type"), -1000);
+        ret.put(ConfigManager.getInstance().getConfigString("shield_type"), 1);
         return ret;
     }
 
