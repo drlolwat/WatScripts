@@ -49,7 +49,6 @@ public class GrandExchangeTask implements WatTask {
     @Override
     public void execute() {
         if (Inventory.isFull()) {
-            Logger.log("Inventory is full, going to bank to deposit items.");
             if (!Bank.open(BankLocation.GRAND_EXCHANGE)) {
                 Logger.log("Unable to open bank at Grand Exchange.");
                 return;
@@ -72,7 +71,6 @@ public class GrandExchangeTask implements WatTask {
                 return;
             }
         }
-
 
         if (NPCs.closest("Grand Exchange Clerk") != null) {
             Logger.log("Opening Grand Exchange");
