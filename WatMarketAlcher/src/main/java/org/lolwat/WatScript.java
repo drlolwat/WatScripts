@@ -34,11 +34,15 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 @ScriptManifest(name = "WatScript1", description = "WatScript1", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
-
     public static WatScript getInstance() {
         return instance;
     }
@@ -50,6 +54,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         } else {
             doStart("default");
         }
+    }
+
+    private static String getScriptName() {
+        return "WatScript1";
     }
 
     @Override
@@ -97,6 +105,39 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
         WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
+    }
+
+    public void sendWebhook(String message) {
+        String webhookUrl = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
+        try {
+            int responseCode = getResponseCode(message, webhookUrl);
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                Logger.log("webhook failed1");
+            }
+        } catch (Exception e) {
+            Logger.log("webhook failed2");
+        }
+    }
+
+    private static int getResponseCode(String message, String webhookUrl) throws IOException {
+        URL url = new URL(webhookUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+
+        String jsonPayload = String.format(
+                "{\"embeds\": [{\"title\": \"%s\", \"description\": \"%s\", \"color\": 255}]}",
+                getScriptName(), message
+        );
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = connection.getResponseCode();
+        return responseCode;
     }
 
     @Override
