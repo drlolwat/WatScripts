@@ -35,7 +35,7 @@ import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
 
-@ScriptManifest(name = "WatScript1", description = "WatScript1", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatScript1Preparer", description = "WatScript1Preparer", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
 
@@ -59,7 +59,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     private void doStart(String profile) {
         if (instance == null) {
-            Logger.log(Color.green, "WatShamans starting: assigning instance");
+            Logger.log(Color.green, "WatPreparer1 starting: assigning instance");
             instance = this;
         }
 

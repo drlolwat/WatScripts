@@ -3,7 +3,6 @@ package org.lolwat.managers;
 import com.google.common.collect.Lists;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
@@ -12,7 +11,7 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
+import org.lolwat.tasks.prep.PreparationTask;
 
 import java.awt.*;
 import java.time.Instant;
@@ -33,7 +32,7 @@ public class TaskManager {
 
     public TaskManager() {
         tasks = Lists.newArrayList();
-        tasks.add(new ShamanCombatTask());
+        tasks.add(new PreparationTask());
 
         setCheckedHoursAt(0);
         setMinutesPlayed(0);
@@ -53,22 +52,7 @@ public class TaskManager {
     }
 
     public void getNewTask(boolean noQuest) {
-        if (preTaskSelection()) {
-            return;
-        }
-
-        for (WatTask task : tasks) {
-            if (task.trainsSkill().equals(Skill.HITPOINTS))
-                continue;
-
-            if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember()
-                    || !task.requiresMembers() && !GenericUtils.isMember()) && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
-                Logger.log("TaskManager: Selected task: " + task.getName());
-                setCurrentTask(task, 0);
-                return;
-            }
-
-        }
+        setCurrentTask(new PreparationTask(), 0);
     }
 
     public WatTask getCurrentTask() {
