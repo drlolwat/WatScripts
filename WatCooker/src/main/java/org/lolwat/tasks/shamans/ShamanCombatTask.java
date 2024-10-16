@@ -24,6 +24,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -105,7 +106,7 @@ public class ShamanCombatTask implements WatTask {
             for (Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
                 if (!ItemUtils.inventoryContains(entry.getKey(), entry.getValue(), false)) {
                     Logger.log("missing " + entry.getKey());
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 3, this, null));
                     return;
                 }
             }
@@ -113,17 +114,17 @@ public class ShamanCombatTask implements WatTask {
             for (Map.Entry<String, Integer> entry : clothesRequired().entrySet()) {
                 if (!ItemUtils.equipmentContains(entry.getKey(), entry.getValue())) {
                     Logger.log("missing " + entry.getKey());
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 3, this, null));
                     return;
                 }
 
-                if(entry.getKey().contains("bolt") || entry.getKey().contains("arrow")) {
+                /*if(entry.getKey().contains("bolt") || entry.getKey().contains("arrow")) {
                     if(Equipment.count(entry.getKey()) < 500) {
                         Logger.log("missing " + entry.getKey() + " with decent qty");
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 5, this, null));
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 3, this, null));
                         return;
                     }
-                }
+                }*/
             }
         }
 
@@ -573,6 +574,7 @@ public class ShamanCombatTask implements WatTask {
         boolean attempted = false;
 
         if (item.getName().equals("Dragon warhammer")) {
+            WatScript.getInstance().sendWebhook("Anotha one");
             if (Inventory.isFull()) {
                 Logger.log("inventory is full, dropping items");
                 for (Item i : Inventory.all()) {
