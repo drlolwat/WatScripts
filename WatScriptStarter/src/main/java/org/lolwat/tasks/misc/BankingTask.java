@@ -422,6 +422,25 @@ public class BankingTask implements WatTask {
                     Bank.depositAllExcept("Coins");
                     Sleep.sleep(100, 200);
                 }
+
+                if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
+                    if (Bank.contains("Coins")) {
+                        finalPrice -= Bank.count("Coins");
+                    }
+
+                    if (Inventory.contains("Coins")) {
+                        finalPrice -= Inventory.count("Coins");
+                    }
+
+                    Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
+                    int totalPrice = finalPrice;
+                    TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                        {
+                            put("Coins", totalPrice);
+                        }
+                    }, this));
+                    return;
+                }
             }
         }
 
