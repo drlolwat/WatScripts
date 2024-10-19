@@ -5,13 +5,11 @@ import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
-import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.shamans.ShamanCombatTask;
 
 import java.awt.*;
@@ -93,12 +91,8 @@ public class TaskManager {
     }
 
     private boolean preTaskSelection() {
-        if (!ConfigManager.getInstance().hasLoadedProfile() ||
-                (getInstance().getCheckedHoursAt() == 0 ||
-                        (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
-
+        if (!ConfigManager.getInstance().hasLoadedProfile()) {
             ConfigManager.getInstance().setHasLoadedProfile(true);
-            setCheckedHoursAt(Instant.now().getEpochSecond());
             WatScript.getInstance().enableLoginManager();
         }
 
@@ -107,15 +101,8 @@ public class TaskManager {
             return true;
         }
 
-        if (!GenericUtils.isMember()) {
-            setCurrentTask(new BondingTask(null), 0);
-            Logger.log("We are making our account a member");
-            return true;
-        }
-
-        if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
-            setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
-            Logger.log("We are hopping into a P2P world");
+        if(!GenericUtils.isMember()) {
+            setCurrentTask(new BondingTask(new ShamanCombatTask()));
             return true;
         }
 
