@@ -1,5 +1,7 @@
 package org.lolwat;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
@@ -10,6 +12,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -20,6 +23,7 @@ import org.dreambot.api.script.listener.AnimationListener;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.script.listener.SpawnListener;
+import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -107,37 +111,41 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
     }
 
-    public void sendWebhook(String message) {
-        String webhookUrl = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
+    public void sendWebhook(String message, boolean error) {
+        String webhookUrl = "https://api.botbuddy.net/ws_discord.php";
         try {
-            int responseCode = getResponseCode(message, webhookUrl);
+            int responseCode = getResponseCode(message, webhookUrl, error);
             if (responseCode != HttpURLConnection.HTTP_OK) {
-                Logger.log("webhook failed1");
+                Logger.log("webhook failed: " + responseCode);
             }
         } catch (Exception e) {
-            Logger.log("webhook failed2");
+            Logger.log("webhook: " + e.getMessage());
         }
     }
 
-    private static int getResponseCode(String message, String webhookUrl) throws IOException {
+    private static int getResponseCode(String message, String webhookUrl, boolean error) throws IOException {
         URL url = new URL(webhookUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setDoOutput(true);
 
-        String jsonPayload = String.format(
-                "{\"embeds\": [{\"title\": \"%s\", \"description\": \"%s\", \"color\": 255}]}",
-                getScriptName(), message
-        );
+        JsonObject embed = new JsonObject();
+        embed.addProperty("title", "Notification");
+        embed.addProperty("description", message);
+        embed.addProperty("color", error ? 16711680 : 3447003);
+
+        JsonObject payload = new JsonObject();
+        payload.add("embeds", new Gson().toJsonTree(new JsonObject[]{embed}));
+
+        String jsonPayload = new Gson().toJson(payload);
 
         try (OutputStream os = connection.getOutputStream()) {
             byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
 
-        int responseCode = connection.getResponseCode();
-        return responseCode;
+        return connection.getResponseCode();
     }
 
     @Override
@@ -152,8 +160,18 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         if (ConfigManager.getInstance().isFirstStart()) {
-            Sleep.sleep(5000);
             ConfigManager.getInstance().setFirstStart(false);
+        }
+
+        if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)) {
+            if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+                TaskManager.getInstance().setCurrentTask(new HopperTask(0,
+                        (TaskManager.getInstance().getCurrentTask() != null) ?
+                                TaskManager.getInstance().getCurrentTask() : null), 0);
+
+                Logger.log("We are hopping into a P2P world");
+                return 300;
+            }
         }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
@@ -172,7 +190,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             Sleep.sleep(50, 120);
         }
 
-        // double check here
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if (!Client.isLoggedIn() && TaskManager.getInstance().getCurrentTask().requiresLogin()) {
                 Logger.log("Waiting for login...");
@@ -209,6 +226,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         if (m.getMessage().equals("Oh dear, you are dead!")) {
+            sendWebhook(AccountManager.getAccountNickname() + " has fallen and cannot get up", true);
             Logger.log("DEATH DETECTED: STOPPING SCRIPT");
             ScriptManager.getScriptManager().stop();
         }
