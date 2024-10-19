@@ -634,13 +634,14 @@ public class BankingTask implements WatTask {
 
                     for (String n : inventoryRequired().keySet()) {
                         if (i.getName().contains(n)) {
+                            Logger.log("Keeping item: " + i.getName());
                             toKeep.add(i.getName());
                         }
                     }
                 }
 
+                Logger.log("Banking: Depositing all except: " + toKeep.toString());
                 Bank.depositAllExcept(toKeep.toArray(new String[0]));
-
             } else {
                 for (Item i : Inventory.all()) {
                     if (i == null) continue;
