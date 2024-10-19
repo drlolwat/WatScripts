@@ -94,7 +94,7 @@ public class GenericUtils {
     }
 
     public static boolean isMember() {
-        return PlayerSettings.getConfig(1780) > 0;
+        return PlayerSettings.getConfig(1780) > 1;
     }
 
     public static void handleSpecial() {
