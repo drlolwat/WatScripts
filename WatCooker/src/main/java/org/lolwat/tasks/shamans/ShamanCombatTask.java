@@ -574,7 +574,6 @@ public class ShamanCombatTask implements WatTask {
         boolean attempted = false;
 
         if (item.getName().equals("Dragon warhammer")) {
-            WatScript.getInstance().sendWebhook("Anotha one");
             if (Inventory.isFull()) {
                 Logger.log("inventory is full, dropping items");
                 for (Item i : Inventory.all()) {
@@ -595,8 +594,12 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(() -> Inventory.contains("Dragon warhammer"), 5000);
 
             if (Inventory.contains("Dragon warhammer")) {
+                WatScript.getInstance().sendWebhook("Anotha one", false);
                 TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this, null));
                 TaskManager.getInstance().getCurrentTask().execute();
+                if (!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
+                    Logger.log("failed to toggle protect from missiles");
+                }
             }
 
             attempted = true;
