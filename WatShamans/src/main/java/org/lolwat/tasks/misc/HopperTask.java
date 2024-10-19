@@ -4,6 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.data.GameState;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -45,6 +46,18 @@ public class HopperTask implements WatTask {
 
     @Override
     public void execute() {
+        if (postTask instanceof BondingTask) {
+            if (Bank.isOpen()) {
+                Bank.close();
+                Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+            }
+
+            if (startWorld == world) {
+                TaskManager.getInstance().setCurrentTask(postTask);
+                return;
+            }
+        }
+
         if (Combat.getHealthPercent() <= 65) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i != null && i.interact()) {
@@ -53,7 +66,6 @@ public class HopperTask implements WatTask {
         }
 
         GameObject gate = GameObjects.closest(34642);
-
         if (Worlds.getCurrentWorld() == startWorld) {
             if (monsterArea.contains(Players.getLocal())) {
                 if (gate != null) {
@@ -96,7 +108,6 @@ public class HopperTask implements WatTask {
             }
 
             Sleep.sleepUntil(() -> Worlds.getCurrentWorld() != startWorld && Client.getGameState().equals(GameState.LOGGED_IN), 10000);
-
         } else {
             if (Client.getGameState().equals(GameState.LOGGED_IN)) {
                 if (GenericUtils.tooManyPlayers(monsterArea, 1, true)) {
