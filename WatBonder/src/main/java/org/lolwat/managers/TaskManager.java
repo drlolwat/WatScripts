@@ -1,42 +1,17 @@
 package org.lolwat.managers;
 
-import com.google.common.collect.Lists;
-import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.world.Worlds;
-import org.dreambot.api.utilities.Logger;
-import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
-import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.prep.PreparationTask;
-
-import java.awt.*;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
 
 public class TaskManager {
-    private List<WatTask> tasks;
-
     // ---- RUNTIME VARIABLES ----
     private static TaskManager instance;
     private WatTask currentTask;
-    private int tasksUntilBreak;
-    private double taskSelectedAt;
     private int taskRunTime;
-    private double checkedHoursAt;
-    private int minutesPlayed;
 
     public TaskManager() {
-        tasks = Lists.newArrayList();
-        tasks.add(new PreparationTask());
-
-        setCheckedHoursAt(0);
-        setMinutesPlayed(0);
-        Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
 
     public static TaskManager getInstance() {
@@ -52,7 +27,7 @@ public class TaskManager {
     }
 
     public void getNewTask(boolean noQuest) {
-        setCurrentTask(new PreparationTask(), 0);
+        setCurrentTask(new BondingTask(), 0);
     }
 
     public WatTask getCurrentTask() {
@@ -65,10 +40,6 @@ public class TaskManager {
 
     public void setCurrentTask(WatTask value, int runtime) {
         currentTask = value;
-
-        if (runtime == 0)
-            taskSelectedAt = Instant.now().getEpochSecond();
-
         taskRunTime = runtime > 0
                 ? runtime
                 : Calculations.random(1200, 1800 + (value != null && value.trainsSkill() != null
@@ -76,63 +47,7 @@ public class TaskManager {
                 : 0));
     }
 
-    private boolean preTaskSelection() {
-        if (!ConfigManager.getInstance().hasLoadedProfile() ||
-                (getInstance().getCheckedHoursAt() == 0 ||
-                        (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
-
-            ConfigManager.getInstance().setHasLoadedProfile(true);
-            setCheckedHoursAt(Instant.now().getEpochSecond());
-            WatScript.getInstance().enableLoginManager();
-        }
-
-        if (!Client.isLoggedIn()) {
-            Logger.log("Awaiting login...");
-            return true;
-        }
-
-        if (!GenericUtils.isMember()) {
-            setCurrentTask(new BondingTask(null), 0);
-            Logger.log("We are making our account a member");
-            return true;
-        }
-
-        if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
-            setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
-            Logger.log("We are hopping into a P2P world");
-            return true;
-        }
-
-        tasksUntilBreak--;
-        Collections.shuffle(tasks);
-        return false;
-    }
-
-    public List<WatTask> getTasks() {
-        return tasks;
-    }
-
-    public double getTaskSelectedAt() {
-        return taskSelectedAt;
-    }
-
     public int getTaskRunTime() {
         return taskRunTime;
-    }
-
-    public double getCheckedHoursAt() {
-        return checkedHoursAt;
-    }
-
-    public void setCheckedHoursAt(double checkedHoursAt) {
-        this.checkedHoursAt = checkedHoursAt;
-    }
-
-    public int getMinutesPlayed() {
-        return minutesPlayed;
-    }
-
-    public void setMinutesPlayed(int minutesPlayed) {
-        this.minutesPlayed = minutesPlayed;
     }
 }

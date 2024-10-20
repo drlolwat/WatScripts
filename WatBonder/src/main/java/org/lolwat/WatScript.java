@@ -1,5 +1,7 @@
 package org.lolwat;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
@@ -24,7 +26,6 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
@@ -34,8 +35,13 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
-@ScriptManifest(name = "WatScript1Preparer", description = "WatScript1Preparer", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatBonder", description = "WatBonder", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
 
@@ -66,7 +72,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if (ConfigManager.getInstance() == null) {
             Logger.log("Constructing ConfigManager singleton.");
             ConfigManager.setInstance(new ConfigManager());
-            ConfigManager.getInstance().setNetWorth(0);
             ConfigManager.getInstance().setNetWorthGeneratedAt(0);
             ConfigManager.getInstance().loadFromProfile(profile);
         }
@@ -87,16 +92,13 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        if (!Menu.isMenuManipulationActive()) {
-            Logger.log("Enabling menu manipulation and noclick walk");
-            Menu.toggleMenuManipulation(true);
-            Walking.toggleNoClickWalk(true);
-        }
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
         WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
+
+        sendWebhook("WatBonder started");
     }
 
     @Override
@@ -108,6 +110,15 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                 enableLoginManager();
                 return 3000;
             }
+            return 300;
+        }
+
+        if(GenericUtils.isMember()) {
+            Logger.log("account is a member");
+            Logger.log("WAIO: job done");
+            Tabs.logout();
+            ScriptManager.getScriptManager().stop();
+            return -1;
         }
 
         if (ConfigManager.getInstance().isFirstStart()) {
@@ -207,5 +218,42 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     public void enableLoginManager() {
         getRandomManager().enableSolver(RandomEvent.LOGIN);
+    }
+
+    public void sendWebhook(String message) {
+        String webhookUrl = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
+        try {
+            int responseCode = getResponseCode(message, webhookUrl);
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                Logger.log("webhook failed: " + responseCode);
+            }
+        } catch (Exception e) {
+            Logger.log("webhook: " + e.getMessage());
+        }
+    }
+
+    private static int getResponseCode(String message, String webhookUrl) throws IOException {
+        URL url = new URL(webhookUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+
+        JsonObject embed = new JsonObject();
+        embed.addProperty("title", "Notification");
+        embed.addProperty("description", message);
+        embed.addProperty("color", 3447003);
+
+        JsonObject payload = new JsonObject();
+        payload.add("embeds", new Gson().toJsonTree(new JsonObject[]{embed}));
+
+        String jsonPayload = new Gson().toJson(payload);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+        }
+
+        return connection.getResponseCode();
     }
 }

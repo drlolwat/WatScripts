@@ -10,6 +10,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
@@ -97,7 +98,16 @@ public class MulingTask implements WatTask {
         }
 
         if (completed) {
-            TaskManager.getInstance().setCurrentTask(new HopperTask(originalWorld, postTask));
+            if(originalWorld != Worlds.getCurrentWorld()) {
+                TaskManager.getInstance().setCurrentTask(new HopperTask(originalWorld, postTask));
+            } else {
+                TaskManager.getInstance().setCurrentTask(postTask);
+            }
+            return;
+        }
+
+        if(Bank.isOpen()) {
+            Bank.close();
             return;
         }
 
@@ -157,8 +167,12 @@ public class MulingTask implements WatTask {
                     }
 
                     if (target != null && !target.isEmpty()) {
-                        Logger.log("Good to go, hopping");
-                        TaskManager.getInstance().setCurrentTask(new HopperTask(targetWorld, this));
+                        if(Worlds.getCurrentWorld() != targetWorld) {
+                            Logger.log("Good to go, hopping");
+                            TaskManager.getInstance().setCurrentTask(new HopperTask(targetWorld, this));
+                        } else {
+                            Logger.log("Good to go, already here");
+                        }
                     }
                 }
             } catch (Exception ignored) {
