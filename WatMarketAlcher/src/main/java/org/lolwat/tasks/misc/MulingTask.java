@@ -38,6 +38,7 @@ public class MulingTask implements WatTask {
     boolean reverse;
     HashMap<String, Integer> reverseRequest;
     private final WatTask postTask;
+    double startedAt;
 
     public MulingTask(String taskName, int currentWorld, WatTask post) {
         name = taskName;
@@ -47,6 +48,7 @@ public class MulingTask implements WatTask {
         reverse = false;
         reverseRequest = new HashMap<>();
         postTask = post;
+        startedAt = Instant.now().getEpochSecond();
     }
 
     public MulingTask(String taskName, int currentWorld, HashMap<String, Integer> request, WatTask post) {
@@ -57,6 +59,7 @@ public class MulingTask implements WatTask {
         reverse = true;
         reverseRequest = request;
         postTask = post;
+        startedAt = Instant.now().getEpochSecond();
     }
 
     @Override
@@ -71,6 +74,12 @@ public class MulingTask implements WatTask {
 
     @Override
     public void execute() {
+        if (Instant.now().getEpochSecond() - startedAt > 180) {
+            Logger.log("mule task running too long (3min) cancelling to try ag");
+            TaskManager.getInstance().setCurrentTask(postTask);
+            return;
+        }
+
         if (Inventory.isFull()) {
             Logger.log("Inventory is full. Depositing items except for coins.");
             if (!Bank.open(BankLocation.GRAND_EXCHANGE)) {
