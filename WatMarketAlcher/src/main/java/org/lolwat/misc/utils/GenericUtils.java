@@ -97,6 +97,10 @@ public class GenericUtils {
         return PlayerSettings.getConfig(1780) > 1;
     }
 
+    public static int getMemberDays() {
+        return PlayerSettings.getConfig(1780);
+    }
+
     public static void handleSpecial() {
         List<String> weapons = new ArrayList<String>() {
             {
