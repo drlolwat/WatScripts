@@ -102,23 +102,23 @@ public class BondingTask implements WatTask {
         Sleep.sleepUntil(Dialogues::canContinue, 25000);
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            if(Client.isLoggedIn()) {
+            if(Client.isLoggedIn() && GenericUtils.getMemberDays() == 0) {
                 if(!Tabs.isOpen(Tab.LOGOUT)) {
                     Tabs.open(Tab.LOGOUT);
                     Sleep.sleepUntil(() -> Tabs.isOpen(Tab.LOGOUT), 5000);
                 }
 
                 Tabs.logout();
-
-                if(post != null) {
-                    TaskManager.getInstance().setCurrentTask(post);
-                }
             }
         }
 
         if (!Menu.isMenuManipulationActive()) {
             Logger.log("Enabling menu manipulation, bonding complete");
             Menu.toggleMenuManipulation(true);
+        }
+
+        if(post != null) {
+            TaskManager.getInstance().setCurrentTask(post);
         }
     }
 
