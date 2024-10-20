@@ -2,8 +2,6 @@ package org.lolwat.tasks.misc;
 
 import org.dreambot.api.Client;
 import org.dreambot.api.data.GameState;
-import org.dreambot.api.methods.combat.Combat;
-import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -17,7 +15,6 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
-import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -46,21 +43,14 @@ public class HopperTask implements WatTask {
 
     @Override
     public void execute() {
-        if (postTask instanceof BondingTask) {
+        if (postTask instanceof BondingTask || postTask instanceof MulingTask) {
             if (Bank.isOpen()) {
                 Bank.close();
                 Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
             }
 
-            if (startWorld == world) {
+            if (startWorld == world || Worlds.getCurrentWorld() == world) {
                 TaskManager.getInstance().setCurrentTask(postTask);
-                return;
-            }
-        }
-
-        if (Combat.getHealthPercent() <= 65) {
-            Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-            if (i != null && i.interact()) {
                 return;
             }
         }
