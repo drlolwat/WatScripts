@@ -171,7 +171,7 @@ public class ShamanCombatTask implements WatTask {
         }
 
         Item antidote = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Antidote++"));
-        Item food = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Eat") && x.getName().contains("Shark"));
+        Item food = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Eat"));
         Item rangingPotion = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Ranging potion"));
         Item prayerPotion = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Prayer potion"));
         Item natureRune = Inventory.get(x -> x != null && x.getName().contains("Nature rune"));
@@ -201,7 +201,7 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(Combat::isAutoRetaliateOn, 1000);
         }
 
-        if (Combat.getHealthPercent() <= 65) {
+        if (Combat.getHealthPercent() <= 75) {
             Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (i == null || !i.interact()) {
                 Logger.log("failed to eat food");
