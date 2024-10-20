@@ -35,7 +35,9 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.mouse.HumanMouse;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -163,7 +165,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)) {
+        if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
+                && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
+                && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
+
             if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
                 TaskManager.getInstance().setCurrentTask(new HopperTask(0,
                         (TaskManager.getInstance().getCurrentTask() != null) ?
@@ -172,6 +177,14 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                 Logger.log("We are hopping into a P2P world");
                 return 300;
             }
+        }
+
+        if(!GenericUtils.isMember()) {
+            TaskManager.getInstance().setCurrentTask(new BondingTask(
+                    (TaskManager.getInstance().getCurrentTask() != null) ?
+                            TaskManager.getInstance().getCurrentTask() : null
+            ));
+            return 300;
         }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
