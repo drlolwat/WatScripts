@@ -9,7 +9,6 @@ import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.shamans.ShamanCombatTask;
 
 import java.awt.*;
@@ -98,11 +97,6 @@ public class TaskManager {
 
         if (!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
-            return true;
-        }
-
-        if(!GenericUtils.isMember()) {
-            setCurrentTask(new BondingTask(new ShamanCombatTask()));
             return true;
         }
 
