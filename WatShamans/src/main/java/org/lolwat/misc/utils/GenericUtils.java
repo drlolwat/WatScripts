@@ -94,7 +94,7 @@ public class GenericUtils {
     }
 
     public static boolean isMember() {
-        return PlayerSettings.getConfig(1780) > 1;
+        return PlayerSettings.getConfig(1780) >= 2;
     }
 
     public static int getMemberDays() {
