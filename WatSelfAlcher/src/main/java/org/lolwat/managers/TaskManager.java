@@ -3,12 +3,10 @@ package org.lolwat.managers;
 import com.google.common.collect.Lists;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
-import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.shamans.ShamanCombatTask;
 
 import java.awt.*;
@@ -54,18 +52,7 @@ public class TaskManager {
             return;
         }
 
-        for (WatTask task : tasks) {
-            if (task.trainsSkill().equals(Skill.HITPOINTS))
-                continue;
-
-            if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember()
-                    || !task.requiresMembers() && !GenericUtils.isMember()) && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
-                Logger.log("TaskManager: Selected task: " + task.getName());
-                setCurrentTask(task, 0);
-                return;
-            }
-
-        }
+        setCurrentTask(new ShamanCombatTask(), 0);
     }
 
     public WatTask getCurrentTask() {
