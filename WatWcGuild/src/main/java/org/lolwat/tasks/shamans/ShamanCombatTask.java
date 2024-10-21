@@ -402,7 +402,7 @@ public class ShamanCombatTask implements WatTask {
 
     @Override
     public boolean requiresMembers() {
-        return true;
+        return false;
     }
 
     @Override
