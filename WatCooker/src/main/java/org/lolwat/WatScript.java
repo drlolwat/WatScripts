@@ -38,6 +38,7 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
+import org.lolwat.tasks.shamans.ShamanCombatTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -45,6 +46,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 @ScriptManifest(name = "WatScript1", description = "WatScript1", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
@@ -52,6 +55,12 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     public static WatScript getInstance() {
         return instance;
     }
+
+    List<String> logoutMessages = Arrays.asList(
+            "You've been playing for a while, consider taking a break from your screen.",
+            "You will be logged out in approximately 30 minutes. Make sure you move to a safe area or log out now.",
+            "You will be logged out in approximately 10 minutes. Make sure you move to a safe area or log out now.",
+            "You will be logged out in approximately 5 minutes. Make sure you move to a safe area or log out now.");
 
     @Override
     public void onStart(String... params) {
@@ -168,7 +177,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
                 && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
                 && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
-
             if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
                 TaskManager.getInstance().setCurrentTask(new HopperTask(0,
                         (TaskManager.getInstance().getCurrentTask() != null) ?
@@ -179,7 +187,8 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(!GenericUtils.isMember()) {
+        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+            Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(
                     (TaskManager.getInstance().getCurrentTask() != null) ?
                             TaskManager.getInstance().getCurrentTask() : null
@@ -242,6 +251,16 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             sendWebhook(AccountManager.getAccountNickname() + " has fallen and cannot get up", true);
             Logger.log("DEATH DETECTED: STOPPING SCRIPT");
             ScriptManager.getScriptManager().stop();
+        }
+
+        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+            TaskManager.getInstance().setCurrentTask
+                    (
+                            new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
+                                    ? TaskManager.getInstance().getCurrentTask()
+                                    : null
+                            )
+                    );
         }
     }
 
