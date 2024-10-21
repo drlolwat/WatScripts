@@ -40,7 +40,7 @@ public class BondingTask implements WatTask {
             return;
         }
 
-        if(GenericUtils.isMember()) {
+        if(GenericUtils.getMemberDays() >= 2) {
             TaskManager.getInstance().setCurrentTask(post != null ? post : null);
             return;
         }
@@ -102,19 +102,24 @@ public class BondingTask implements WatTask {
         Sleep.sleepUntil(Dialogues::canContinue, 25000);
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            if(Client.isLoggedIn() && GenericUtils.getMemberDays() == 0) {
-                if(!Tabs.isOpen(Tab.LOGOUT)) {
-                    Tabs.open(Tab.LOGOUT);
-                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.LOGOUT), 5000);
-                }
-
-                Tabs.logout();
+            if (!Menu.isMenuManipulationActive()) {
+                Logger.log("Enabling menu manipulation, bonding complete");
+                Menu.toggleMenuManipulation(true);
             }
-        }
 
-        if (!Menu.isMenuManipulationActive()) {
-            Logger.log("Enabling menu manipulation, bonding complete");
-            Menu.toggleMenuManipulation(true);
+            if(Client.isLoggedIn()) {
+                if(GenericUtils.getMemberDays() == 0) {
+                    if (!Tabs.isOpen(Tab.LOGOUT)) {
+                        Tabs.open(Tab.LOGOUT);
+                        Sleep.sleepUntil(() -> Tabs.isOpen(Tab.LOGOUT), 5000);
+                    }
+
+                    Tabs.logout();
+                } else {
+                    TaskManager.getInstance().setCurrentTask(new HopperTask(0, post));
+                    return;
+                }
+            }
         }
 
         if(post != null) {
