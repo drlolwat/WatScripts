@@ -37,30 +37,7 @@ public class ConfigManager {
         defaultProfile.addProperty("mule_at_gp", 100000000);
         defaultProfile.addProperty("keep_gp", 150000);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
-        defaultProfile.addProperty("shield_type", "Armadyl d'hide shield");
-        defaultProfile.addProperty("arrow_type", "Sunlight antler bolts");
-        defaultProfile.addProperty("weapon_type", "Hunters' sunlight crossbow");
-
-        JsonObject items = new JsonObject();
-        items.addProperty("Chaos rune", -100);
-        items.addProperty("Death rune", -100);
-        items.addProperty("Coal", -100);
-        items.addProperty("Iron ore", -100);
-        items.addProperty("Runite ore", -30);
-        items.addProperty("Grimy kwuarm", -50);
-        items.addProperty("Grimy cadantine", -50);
-        items.addProperty("Grimy dwarf weed", -50);
-        items.addProperty("Grimy lantadyme", -50);
-        items.addProperty("Ranarr seed", -15);
-        items.addProperty("Snapdragon seed", -15);
-        items.addProperty("Yew seed", -15);
-        items.addProperty("Magic seed", -15);
-        items.addProperty("Palm tree seed", -15);
-        items.addProperty("Dragonfruit tree seed", -2);
-        items.addProperty("Celastrus seed", -15);
-        items.addProperty("Redwood tree seed", -15);
-        items.addProperty("Dragon warhammer", -1);
-        defaultProfile.add("item_thresholds", items);
+        defaultProfile.addProperty("min_bow_count", 2000);
         return defaultProfile;
     }
 
@@ -69,7 +46,7 @@ public class ConfigManager {
     }
 
     public void loadFromProfile(String p) {
-        String filePath = System.getProperty("user.dir") + "/WatShamans/" + p + ".json";
+        String filePath = System.getProperty("user.dir") + "/WatAlcher/" + p + ".json";
 
         try {
             Gson gson = new Gson();
