@@ -1,38 +1,21 @@
 package org.lolwat.managers;
 
-import com.google.common.collect.Lists;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
-
-import java.awt.*;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
+import org.lolwat.tasks.fletching.FletchingTask;
 
 public class TaskManager {
-    private List<WatTask> tasks;
-
     // ---- RUNTIME VARIABLES ----
     private static TaskManager instance;
     private WatTask currentTask;
-    private int tasksUntilBreak;
-    private double taskSelectedAt;
     private int taskRunTime;
-    private double checkedHoursAt;
-    private int minutesPlayed;
 
     public TaskManager() {
-        tasks = Lists.newArrayList();
-        tasks.add(new ShamanCombatTask());
 
-        setCheckedHoursAt(0);
-        setMinutesPlayed(0);
-        Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
 
     public static TaskManager getInstance() {
@@ -52,7 +35,7 @@ public class TaskManager {
             return;
         }
 
-        setCurrentTask(new ShamanCombatTask(), 0);
+        setCurrentTask(new FletchingTask(true), 0);
     }
 
     public WatTask getCurrentTask() {
@@ -65,10 +48,6 @@ public class TaskManager {
 
     public void setCurrentTask(WatTask value, int runtime) {
         currentTask = value;
-
-        if (runtime == 0)
-            taskSelectedAt = Instant.now().getEpochSecond();
-
         taskRunTime = runtime > 0
                 ? runtime
                 : Calculations.random(1200, 1800 + (value != null && value.trainsSkill() != null
@@ -87,36 +66,10 @@ public class TaskManager {
             return true;
         }
 
-        tasksUntilBreak--;
-        Collections.shuffle(tasks);
         return false;
-    }
-
-    public List<WatTask> getTasks() {
-        return tasks;
-    }
-
-    public double getTaskSelectedAt() {
-        return taskSelectedAt;
     }
 
     public int getTaskRunTime() {
         return taskRunTime;
-    }
-
-    public double getCheckedHoursAt() {
-        return checkedHoursAt;
-    }
-
-    public void setCheckedHoursAt(double checkedHoursAt) {
-        this.checkedHoursAt = checkedHoursAt;
-    }
-
-    public int getMinutesPlayed() {
-        return minutesPlayed;
-    }
-
-    public void setMinutesPlayed(int minutesPlayed) {
-        this.minutesPlayed = minutesPlayed;
     }
 }

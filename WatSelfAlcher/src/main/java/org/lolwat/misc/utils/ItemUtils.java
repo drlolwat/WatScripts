@@ -82,7 +82,7 @@ public class ItemUtils {
     }
 
     public static boolean bankContains(String item, int itemQty) {
-        return Bank.contains(x -> x != null && x.getName().contains(item) && x.getAmount() >= itemQty);
+        return Bank.contains(x -> x != null && x.getName().equals(item) && x.getAmount() >= itemQty);
     }
 
     public static boolean equipmentContains(String item, int itemQty) {

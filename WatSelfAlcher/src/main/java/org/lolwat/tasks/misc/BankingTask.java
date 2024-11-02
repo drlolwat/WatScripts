@@ -5,7 +5,6 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -19,8 +18,10 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
+import org.lolwat.tasks.alching.HighAlchemyTask;
+import org.lolwat.tasks.fletching.FletchingTask;
+import org.lolwat.tasks.fletching.StringingTask;
 
-import java.time.Instant;
 import java.util.*;
 
 public class BankingTask implements WatTask {
@@ -98,6 +99,18 @@ public class BankingTask implements WatTask {
     public void execute() {
         if (!Bank.isOpen()) {
             ItemUtils.bank(this);
+            return;
+        }
+
+        if(ItemUtils.bankContains("Yew longbow", ConfigManager.getInstance().getConfigInt("min_bow_count")) && !(postTask instanceof HighAlchemyTask)) {
+            Logger.log("Satisfied yew longbow count, alching");
+            TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
+            return;
+        }
+
+        if(ItemUtils.bankContains("Yew longbow (u)", ConfigManager.getInstance().getConfigInt("min_bow_count")) && !(postTask instanceof StringingTask)) {
+            Logger.log("Satisfied yew longbow (u) count, stringing");
+            TaskManager.getInstance().setCurrentTask(new StringingTask());
             return;
         }
 
@@ -329,6 +342,11 @@ public class BankingTask implements WatTask {
                     }
 
                     toWithdraw -= reduceBy;
+
+                    if(postTask != null && postTask instanceof HighAlchemyTask && !entry.getKey().contains("rune") && !entry.getKey().contains("coin")) {
+                        ItemUtils.setBankMode(BankMode.NOTE);
+                    }
+
                     for (String s : ItemUtils.SINGULAR_ITEMS) {
                         if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
                             toWithdraw = 1;
@@ -395,6 +413,12 @@ public class BankingTask implements WatTask {
                 String itemFinal = entry.getKey();
                 if (itemFinal.equals("Old school bond (untradeable)")) {
                     itemFinal = "Old school bond";
+                }
+
+                if(itemFinal.equals("Yew longbow") || itemFinal.equals("Yew longbow (u)")) {
+                    Logger.log("We need to create more yew longbows");
+                    TaskManager.getInstance().setCurrentTask(new FletchingTask(false));
+                    return;
                 }
 
                 int itemMultiplier = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
@@ -473,43 +497,8 @@ public class BankingTask implements WatTask {
             }
         }
 
-        Logger.log("Final checks: Net worth, etc.");
-
         if (postTask != null && !(postTask instanceof MulingTask)) {
             depositNonRequired();
-        }
-
-        // calculate net worth
-        if (ConfigManager.getInstance().getNetWorthGeneratedAt() == 0) {
-            int total = 0;
-            for (Item i : Bank.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    total += LivePrices.get(i) * i.getAmount();
-                } else {
-                    total += LivePrices.get(i);
-                }
-            }
-
-            for (Item i : Inventory.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    total += LivePrices.get(i) * i.getAmount();
-                } else {
-                    total += LivePrices.get(i);
-                }
-            }
-
-            ConfigManager.getInstance().setNetWorth(total);
-            ConfigManager.getInstance().setNetWorthGeneratedAt(Instant.now().getEpochSecond());
-        } else {
-            if ((Instant.now().getEpochSecond() - ConfigManager.getInstance().getNetWorthGeneratedAt()) >= 3600) {
-                ConfigManager.getInstance().setNetWorthGeneratedAt(0); // will generate net worth next time.
-            }
         }
 
         Logger.log("Banking: Complete");
@@ -634,7 +623,6 @@ public class BankingTask implements WatTask {
 
                     for (String n : inventoryRequired().keySet()) {
                         if (i.getName().contains(n)) {
-                            Logger.log("Keeping item: " + i.getName());
                             toKeep.add(i.getName());
                         }
                     }
