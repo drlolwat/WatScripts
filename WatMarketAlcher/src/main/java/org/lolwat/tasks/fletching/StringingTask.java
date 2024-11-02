@@ -5,6 +5,8 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
@@ -38,6 +40,15 @@ public class StringingTask implements WatTask {
         if(Bank.isOpen()) {
             Bank.close();
             Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+        }
+
+        if(!Tabs.isOpen(Tab.INVENTORY)) {
+            if(!Tabs.open(Tab.INVENTORY)) {
+                Logger.log("Failed to open inventory tab");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 5000);
         }
 
         if(!Inventory.use("Bow string")) {
