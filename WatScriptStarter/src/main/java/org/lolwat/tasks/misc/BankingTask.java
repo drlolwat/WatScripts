@@ -108,7 +108,9 @@ public class BankingTask implements WatTask {
             return;
         }
 
-        if(ItemUtils.bankContains("Yew longbow (u)", ConfigManager.getInstance().getConfigInt("min_bow_count")) && !(postTask instanceof StringingTask)) {
+        if(ItemUtils.bankContains("Yew longbow (u)", ConfigManager.getInstance().getConfigInt("min_bow_count"))
+                && !(postTask instanceof StringingTask)
+                && !(postTask instanceof HighAlchemyTask)) {
             Logger.log("Satisfied yew longbow (u) count, stringing");
             TaskManager.getInstance().setCurrentTask(new StringingTask());
             return;
