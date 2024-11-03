@@ -16,6 +16,7 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.LiquidationTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class FletchingTask implements WatTask {
     public void execute() {
         if(Skills.getRealLevel(Skill.FLETCHING) >= 70 && stopAtGoal) {
             Logger.log("Fletching is at 70, handing off to next task");
-            TaskManager.getInstance().setCurrentTask(new FletchingTask(false));
+            TaskManager.getInstance().setCurrentTask(new LiquidationTask(new FletchingTask(false), 0));
             return;
         }
 

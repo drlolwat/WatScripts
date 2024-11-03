@@ -3,7 +3,6 @@ package org.lolwat.tasks.fletching;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -74,7 +73,7 @@ public class StringingTask implements WatTask {
             }
         }
 
-        Sleep.sleepUntil(() -> !Inventory.contains("Yew longbow (u)") && !Players.getLocal().isAnimating(), 35000);
+        Sleep.sleepUntil(() -> !Inventory.contains("Yew longbow (u)"), 35000);
     }
 
     @Override

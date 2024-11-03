@@ -1,5 +1,7 @@
 package org.lolwat.managers;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.skills.Skills;
@@ -9,21 +11,15 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.fletching.FletchingTask;
 
 public class TaskManager {
-    // ---- RUNTIME VARIABLES ----
+    @Getter @Setter
     private static TaskManager instance;
+    @Getter
     private WatTask currentTask;
+    @Getter
     private int taskRunTime;
 
     public TaskManager() {
 
-    }
-
-    public static TaskManager getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(TaskManager value) {
-        instance = value;
     }
 
     public void getNewTask() {
@@ -36,10 +32,6 @@ public class TaskManager {
         }
 
         setCurrentTask(new FletchingTask(true), 0);
-    }
-
-    public WatTask getCurrentTask() {
-        return currentTask;
     }
 
     public void setCurrentTask(WatTask task) {
@@ -56,20 +48,12 @@ public class TaskManager {
     }
 
     private boolean preTaskSelection() {
-        if (!ConfigManager.getInstance().hasLoadedProfile()) {
-            ConfigManager.getInstance().setHasLoadedProfile(true);
-            WatScript.getInstance().enableLoginManager();
-        }
-
         if (!Client.isLoggedIn()) {
+            WatScript.getInstance().enableLoginManager();
             Logger.log("Awaiting login...");
             return true;
         }
 
         return false;
-    }
-
-    public int getTaskRunTime() {
-        return taskRunTime;
     }
 }

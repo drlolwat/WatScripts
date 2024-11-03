@@ -3,6 +3,8 @@ package org.lolwat.managers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import lombok.Getter;
+import lombok.Setter;
 import org.dreambot.api.utilities.Logger;
 
 import java.io.File;
@@ -13,20 +15,22 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class ConfigManager {
+    @Getter @Setter
     private static ConfigManager instance;
-    private final HashMap<Object, Object> config;
+    @Getter @Setter
     private boolean hasLoaded;
-    private int netWorth;
-    private double netWorthGeneratedAt;
+    @Getter @Setter
     private boolean firstStart;
-    private HashMap<String, Integer> levelUps;
+    @Setter
     private boolean muleConnectionFailed;
+
+    private final HashMap<Object, Object> config;
     private final HashMap<String, Integer> itemThresholds;
 
     public ConfigManager() {
         config = new HashMap<>();
         hasLoaded = false;
-        levelUps = new HashMap<>();
+        HashMap<String, Integer> levelUps = new HashMap<>();
         firstStart = true;
         muleConnectionFailed = false;
         itemThresholds = new HashMap<>();
@@ -111,51 +115,8 @@ public class ConfigManager {
         return Double.parseDouble(config.get(key).toString());
     }
 
-    public int getNetWorth() {
-        return netWorth;
-    }
-
-    public void setNetWorth(int netWorth) {
-        this.netWorth = netWorth;
-    }
-
-    public double getNetWorthGeneratedAt() {
-        return netWorthGeneratedAt;
-    }
-
-    public void setNetWorthGeneratedAt(double netWorthGeneratedAt) {
-        this.netWorthGeneratedAt = netWorthGeneratedAt;
-    }
-
-    public static ConfigManager getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(ConfigManager inst) {
-        instance = inst;
-    }
-
-    public boolean hasLoadedProfile() {
-        return hasLoaded;
-    }
-
-    public void setHasLoadedProfile(boolean hasLoaded) {
-        this.hasLoaded = hasLoaded;
-    }
-
-    public boolean isFirstStart() {
-        return firstStart;
-    }
-
-    public void setFirstStart(boolean firstStart) {
-        this.firstStart = firstStart;
-    }
-
     public boolean hasMuleConnectionFailed() {
         return muleConnectionFailed;
     }
 
-    public void setMuleConnectionFailed(boolean muleConnectionFailed) {
-        this.muleConnectionFailed = muleConnectionFailed;
-    }
 }

@@ -1,5 +1,7 @@
 package org.lolwat.managers;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.dreambot.api.methods.map.Tile;
 import org.lolwat.managers.types.Teleport;
 
@@ -7,19 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeleportManager {
+    @Setter @Getter
     private static TeleportManager instance;
     private List<Teleport> teleports;
 
     public TeleportManager() {
         setupTeleports();
-    }
-
-    public static void setInstance(TeleportManager inst) {
-        instance = inst;
-    }
-
-    public static TeleportManager getInstance() {
-        return instance;
     }
 
     public boolean isTeleportItem(String item) {
