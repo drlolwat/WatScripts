@@ -27,8 +27,8 @@ public class NumUtils {
             return itemPrices.get(item);
         }
 
-        double livePrice = LivePrices.get(item);
-        int adjustedPrice = (int) Math.ceil(livePrice * 1.5);
+        int livePrice = LivePrices.get(item);
+        int adjustedPrice = (int) Math.ceil(livePrice * 1.2);
         itemPrices.put(item, adjustedPrice);
         Logger.log("Price of " + item + " is " + adjustedPrice);
         return adjustedPrice;

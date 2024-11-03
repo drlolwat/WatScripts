@@ -16,14 +16,12 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
-import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.AnimationListener;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.script.listener.SpawnListener;
-import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -34,11 +32,13 @@ import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.paint.CustomPaint;
+import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
+import org.lolwat.tasks.blast.BlastMiningTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -46,15 +46,31 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
-@ScriptManifest(name = "WatScript1", description = "WatScript1", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatScript2", description = "WatScript2", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
+    private final CustomPaint paint = new CustomPaint(new Paint(),
+            CustomPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN,
+            new Color[]{Color.WHITE}, // Text color
+            "Verdana",
+            new Color[]{new Color(60, 60, 60)}, // Background color
+            new Color[]{Color.BLACK}, // Border color
+            1, false, 5, 3, 0);
+
+    private final RenderingHints aa = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
     private static WatScript instance;
     public static WatScript getInstance() {
         return instance;
     }
+
+    public static int oresPicked = 0;
+    public static int dynamitePlaced = 0;
+    public static final Instant startTime = Instant.now();
 
     List<String> logoutMessages = Arrays.asList(
             "You've been playing for a while, consider taking a break from your screen.",
@@ -72,7 +88,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     }
 
     private static String getScriptName() {
-        return "WatScript1";
+        return "WatScript2";
     }
 
     @Override
@@ -82,7 +98,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     private void doStart(String profile) {
         if (instance == null) {
-            Logger.log(Color.green, "WatShamans starting: assigning instance");
+            Logger.log(Color.green, "WatScript starting: assigning instance");
             instance = this;
         }
 
@@ -187,7 +203,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof BlastMiningTask) {
             Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(
                     (TaskManager.getInstance().getCurrentTask() != null) ?
@@ -236,24 +252,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
-        if (TaskManager.getInstance().getCurrentTask() != null) {
-            if (m.getMessage().startsWith("Darts")) {
-                int[] data = GenericUtils.parseText(m.getMessage());
-                TaskManager.getInstance().getCurrentTask().data().put("darts", data[0]);
-                TaskManager.getInstance().getCurrentTask().data().put("scales", data[1]);
-                Logger.log("Darts: " + data[0] + ", Scales: " + data[1] + " sent to task");
-            }
-
-            TaskManager.getInstance().getCurrentTask().onMessage(m);
-        }
-
-        if (m.getMessage().equals("Oh dear, you are dead!")) {
-            sendWebhook(AccountManager.getAccountNickname() + " has fallen and cannot get up", true);
-            Logger.log("DEATH DETECTED: STOPPING SCRIPT");
-            ScriptManager.getScriptManager().stop();
-        }
-
-        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof BlastMiningTask) {
             TaskManager.getInstance().setCurrentTask
                     (
                             new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
@@ -290,6 +289,21 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if (TaskManager.getInstance().getCurrentTask() != null) {
             TaskManager.getInstance().getCurrentTask().onGroundItemSpawn(object);
         }
+    }
+
+    @Override
+    public void onPaint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHints(aa);
+        paint.paint(g2d);
+    }
+
+    public String getElapsedTime() {
+        Duration duration = Duration.between(startTime, Instant.now());
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+        long seconds = duration.getSeconds() % 60;
+        return String.format("%dh %dm %ds", hours, minutes, seconds);
     }
 
     public void disableLoginManager() {

@@ -30,45 +30,6 @@ public class BankingTask implements WatTask {
     private WatTask postTask;
     private HashMap<String, WatTask> gatheringTasks;
 
-    private final List<String> restrictedItems = new ArrayList<String>() {
-        {
-            add("oak logs");
-            add("willow logs");
-            add("yew logs");
-            add("raw shrimps");
-            add("shrimps");
-            add("raw anchovies");
-            add("anchovies");
-            add("raw lobster");
-            add("lobster");
-            add("clay");
-            add("soft clay");
-            add("copper ore");
-            add("tin ore");
-            add("iron ore");
-            add("silver ore");
-            add("gold ore");
-            add("coal");
-            add("mithril ore");
-            add("adamantite ore");
-            add("runite ore");
-            add("cowhide");
-            add("vial");
-            add("vial of water");
-            add("jug of water");
-            add("fishing bait");
-            add("feather");
-            add("eye of newt");
-            add("wine of zamorak");
-            add("air rune");
-            add("water rune");
-            add("earth rune");
-            add("fire rune");
-            add("mind rune");
-            add("chaos rune");
-        }
-    };
-
     public BankingTask(HashMap<String, Integer> invRequired, HashMap<String, Integer> sellList, Integer inventories, WatTask post, HashMap<String, WatTask> gathering) {
         if (invRequired == null || invRequired.isEmpty())
             inventoryRequired = new HashMap<>();
@@ -244,8 +205,12 @@ public class BankingTask implements WatTask {
                             }
                         }
                     } else {
-                        buyingRequired.put(entry.getKey(), amountRequired);
-                        Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                        if(!entry.getKey().contains("Graceful")) {
+                            buyingRequired.put(entry.getKey(), amountRequired);
+                            Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                        } else {
+                            Logger.log("Equipment: Skipping non-owned graceful item: " + entry.getKey());
+                        }
                     }
                 }
             }
@@ -281,21 +246,27 @@ public class BankingTask implements WatTask {
         if (!inventoryRequired.isEmpty()) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
                 Logger.log("Inventory: Checking for: " + entry.getKey());
-                ItemUtils.setBankMode(BankMode.ITEM);
+
+                if(entry.getValue() > 0) {
+                    ItemUtils.setBankMode(BankMode.ITEM);
+
+                    if (entry.getValue() > 0 && Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()) && x.isNoted())) {
+                        Logger.log("Inventory: Depositing noted: " + entry.getKey());
+                        Bank.depositAll(entry.getKey());
+                        Sleep.sleepUntil(() -> !Inventory.contains(entry.getKey()), 1500);
+                    }
+                } else {
+                    ItemUtils.setBankMode(BankMode.NOTE);
+                }
+
                 int amountRequired;
                 if (ItemUtils.SINGULAR_ITEMS.contains(entry.getKey()))
                     amountRequired = 1;
                 else {
-                    amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
+                    amountRequired = entry.getValue() != 0 ? entry.getValue() : 1;
                 }
 
-                if (Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()) && x.isNoted())) {
-                    Logger.log("Inventory: Depositing noted: " + entry.getKey());
-                    Bank.depositAll(entry.getKey());
-                    Sleep.sleepUntil(() -> !Inventory.contains(entry.getKey()), 1500);
-                }
-
-                if (ItemUtils.inventoryContains(entry.getKey(), amountRequired, false)) {
+                if (ItemUtils.inventoryContains(entry.getKey(), amountRequired, true)) {
                     if (entry.getValue() > 0 && ItemUtils.inventoryCount(entry.getKey(), false) > amountRequired) {
                         Logger.log("Inventory: Depositing extras of: " + entry.getKey());
                         Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
@@ -359,11 +330,28 @@ public class BankingTask implements WatTask {
                         }
                     }
 
-                    if (entry.getValue().equals(1))
+                    if (entry.getValue().equals(1) && !entry.getKey().contains("potion"))
                         amountToBuy = 1;
 
-                    buyingRequired.put(entry.getKey(), amountToBuy);
-                    Logger.log("Inventory: We need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                    String name = entry.getKey();
+                    if(entry.getKey().endsWith("(")) {
+                        amountToBuy = amountToBuy * 4;
+                        if(entry.getKey().startsWith("Stamina")) {
+                            name = entry.getKey() + "4)";
+                        }
+                        else if(entry.getKey().startsWith("Ring of wealth")) {
+                            name = entry.getKey() + "5)";
+                        }
+                        else if(entry.getKey().startsWith("Games necklace")) {
+                            name = entry.getKey() + "8)";
+                        }
+                        else if(entry.getKey().startsWith("Ring of dueling")) {
+                            name = entry.getKey() + "8)";
+                        }
+                    }
+
+                    buyingRequired.put(name, amountToBuy);
+                    Logger.log("Inventory: We need to buy " + amountToBuy + " of: " + name);
                 }
             }
         }
@@ -401,6 +389,8 @@ public class BankingTask implements WatTask {
                 int initialPrice = NumUtils.getItemPrice(itemFinal);
                 int multipliedPrice = initialPrice * itemMultiplier;
                 finalPrice += multipliedPrice;
+                Logger.log("Exchanger: " + itemFinal + " costs " + multipliedPrice + " gp");
+                Logger.log("we are buying " + itemMultiplier + " of " + itemFinal);
             }
 
             int toWithdraw = finalPrice;

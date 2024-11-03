@@ -38,7 +38,7 @@ public class GenericUtils {
             if (area.contains(ply)) {
                 playerEntryTimes.putIfAbsent(ply, currentTime);
 
-                if (ignoreTime || currentTime - playerEntryTimes.get(ply) > 8000) {
+                if (ignoreTime || currentTime - playerEntryTimes.get(ply) > 5000) {
                     playerCount++;
                 }
             } else {

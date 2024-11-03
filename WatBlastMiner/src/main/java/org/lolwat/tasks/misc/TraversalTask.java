@@ -159,7 +159,7 @@ public class TraversalTask implements WatTask {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
             double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
-            if (targetDistance >= 1000 && !hasTeleported) {
+            if (targetDistance >= 700 && !hasTeleported) {
                 Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
                 if (teleport != null) {
                     Logger.log("Traversal: selected teleport " + teleport.getName() + " for destination "
@@ -274,6 +274,15 @@ public class TraversalTask implements WatTask {
                 Logger.log("Traversal: slashed " + t);
                 Sleep.sleepUntil(() -> GameObjects.closest(t) == null || !GameObjects.closest(t).exists(), 5000);
                 return;
+            }
+        }
+
+        if(Walking.getRunEnergy() <= 20 || (Walking.getRunEnergy() <= 70 && !Walking.isStaminaActive())) {
+            Item i = Inventory.get(x -> x != null && !x.isNoted() && x.getName().contains("Stamina pot") && x.hasAction("Drink"));
+            if(i != null) {
+                if(!i.interact("Drink")) {
+                    Logger.log("failed to drink stamina potion");
+                }
             }
         }
 

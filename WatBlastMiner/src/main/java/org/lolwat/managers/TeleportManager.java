@@ -59,11 +59,11 @@ public class TeleportManager {
 
     public void setupTeleports() {
         teleports = new ArrayList<>();
-        teleports.add(new Teleport("Farming Guild",
-                new Tile(1249, 3718, 0),
-                "Skills necklace(",
-                "Skills necklace(6)",
-                "Farming Guild"));
+        teleports.add(new Teleport("Wintertodt Camp",
+                new Tile(1628, 3947, 0),
+                "Games necklace(",
+                "Games necklace(8)",
+                "Wintertodt Camp"));
 
         teleports.add(new Teleport("Grand Exchange",
                 new Tile(3164, 3485, 0),
