@@ -2,6 +2,7 @@ package org.lolwat;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import lombok.Getter;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
@@ -41,22 +42,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 @ScriptManifest(name = "WatAlcher", description = "WatAlcher", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
+    @Getter
     private static WatScript instance;
-    public static WatScript getInstance() {
-        return instance;
-    }
-
-    List<String> logoutMessages = Arrays.asList(
-            "You've been playing for a while, consider taking a break from your screen.",
-            "You will be logged out in approximately 30 minutes. Make sure you move to a safe area or log out now.",
-            "You will be logged out in approximately 10 minutes. Make sure you move to a safe area or log out now.",
-            "You will be logged out in approximately 5 minutes. Make sure you move to a safe area or log out now.");
-
     @Override
     public void onStart(String... params) {
         if (params.length > 0) {
@@ -64,10 +54,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         } else {
             doStart("default");
         }
-    }
-
-    private static String getScriptName() {
-        return "WatScript1";
     }
 
     @Override
@@ -84,8 +70,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if (ConfigManager.getInstance() == null) {
             Logger.log("Constructing ConfigManager singleton.");
             ConfigManager.setInstance(new ConfigManager());
-            ConfigManager.getInstance().setNetWorth(0);
-            ConfigManager.getInstance().setNetWorthGeneratedAt(0);
             ConfigManager.getInstance().loadFromProfile(profile);
         }
 

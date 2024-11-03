@@ -15,6 +15,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatScript;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.WatUtils;
@@ -58,7 +59,7 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        if (!Inventory.contains(x -> x != null && x.isNoted() && x.getName().equals(item))) {
+        if (!Inventory.contains(x -> x != null && x.getName().equals(item))) {
             Logger.log("We need to grab HA target (" + item + ")");
             TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, this, null));
             return;
@@ -152,8 +153,8 @@ public class HighAlchemyTask implements WatTask {
     public HashMap<String, Integer> inventoryRequired() {
         return new HashMap<String, Integer>() {
             {
-                put("Yew longbow", -2000);
-                put("Nature rune", 2000);
+                put("Yew longbow", -ConfigManager.getInstance().getConfigInt("min_bows"));
+                put("Nature rune", ConfigManager.getInstance().getConfigInt("min_bows"));
             }
         };
     }
