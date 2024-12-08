@@ -98,7 +98,6 @@ public class ErnestTheChickenSolver implements WatTask {
                         Sleep.sleepUntil(ob::isOnScreen, 5000);
                     }
 
-                    //Mouse.move(ob.getClickablePoint());
                     Sleep.sleepUntil(() -> ob.getClickablePoint().distance(Mouse.getPosition()) < 5, 2000);
 
                     if (Players.getLocal().isMoving() || Players.getLocal().isAnimating() || !Players.getLocal().isStandingStill()) {

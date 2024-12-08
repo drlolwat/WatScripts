@@ -74,6 +74,7 @@ public class ConfigManager {
         defaultProfile.addProperty("rest_after_tut", 0);
         defaultProfile.addProperty("logout_after_ttl", 0);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
+        defaultProfile.addProperty("use_menu_manip", true);
 
         JsonObject items = new JsonObject();
         items.addProperty("Logs", -500);
