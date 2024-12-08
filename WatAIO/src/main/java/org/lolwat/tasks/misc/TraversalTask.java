@@ -115,15 +115,6 @@ public class TraversalTask implements WatTask {
             return;
         }
 
-        /*if(!hadNoobChance && !(postTask instanceof AeglenModeTask)) {
-            int noobMode = Calculations.random(Combat.getCombatLevel() * 2);
-            if(noobMode < Combat.getCombatLevel()) {
-                TaskManager.getInstance().setCurrentTask(new AeglenModeTask(this, Calculations.random(120)));
-                return;
-            }
-            hadNoobChance = true;
-        }*/
-
         if(Dialogues.inDialogue()) {
             DialogueUtils.solve(possibleDialogues);
         }

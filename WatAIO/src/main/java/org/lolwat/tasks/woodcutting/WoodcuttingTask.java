@@ -57,26 +57,14 @@ public class WoodcuttingTask implements WatTask {
         data = new HashMap<>();
     }
 
-    public WoodcuttingTask(TreeType type, Area startingLocation, int minLevel, int maxLevel, HashMap<String, Integer> sellingList, boolean drop, boolean money) {
-        treeType = type;
-        area = startingLocation;
-        avoidAfterLevel = maxLevel;
-        minimumLevel = minLevel;
-        sellList = sellingList;
-        lastGotLog = 0;
-        dropping = drop;
-        moneyMaking = money;
-        data = new HashMap<>();
-    }
-
     @Override
     public void execute() {
         if(data.containsKey("gp_to_generate")) {
             int logsNeeded = (int)data.get("gp_to_generate") / LivePrices.get(WoodcuttingUtils.getLogName(treeType));
 
             if(Bank.isOpen()) {
-                int coins = (Bank.contains("Coins") ? Bank.get("Coins").getAmount() : 0)
-                        + (Inventory.contains("Coins") ? Inventory.get("Coins").getAmount() : 0);
+                int coins = (Bank.contains("Coins") ? Bank.count("Coins") : 0)
+                        + (Inventory.contains("Coins") ? Inventory.count("Coins") : 0);
 
                 if(coins >= (int)data.get("gp_to_generate")) {
                     WatTask t = (WatTask)data.get("previous_task");
@@ -120,6 +108,7 @@ public class WoodcuttingTask implements WatTask {
                     return;
                 } else {
                     for (Item it : Inventory.all()) {
+                        if(it == null) continue;
                         if (it.getName().equals(WoodcuttingUtils.getLogName(treeType))) {
                             Inventory.drop(it.getName());
                             Sleep.sleep(800, 1200);
