@@ -164,7 +164,7 @@ public class WitchsPotionQuest implements QuestTask {
                     DialogueUtils.continueWhilePossible();
                 } else {
                     if (cauldron != null) {
-                        if (!cauldron.interact("Drink from")) {
+                        if (!cauldron.interact("Drink-from")) {
                             Logger.log("Failed to interact with cauldron");
                         }
 
