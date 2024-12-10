@@ -170,14 +170,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             if (TaskManager.getInstance().getCurrentTask().questTask() == null) {
                 if (TaskManager.getInstance().getCurrentTask().trainsSkill() != null) {
                     if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) > TaskManager.getInstance().getCurrentTask().avoidAfterLevel()) {
-                        Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (task) level, picking new task..");
-                        TaskManager.getInstance().getSpecificSkillTask(TaskManager.getInstance().getCurrentTask().trainsSkill());
-                        return 1000;
+                        if(!TaskManager.getInstance().getCurrentTask().data().containsKey("gp_to_generate")) {
+                            Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (task) level, picking new task..");
+                            TaskManager.getInstance().getSpecificSkillTask(TaskManager.getInstance().getCurrentTask().trainsSkill());
+                            return 1000;
+                        }
                     }
                     else { //TODO skip the skill if it's already at the target level instead of ending up on break
                         if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) >=
                                 ConfigManager.getInstance().getSkillTarget(TaskManager.getInstance().getCurrentTask().trainsSkill())) {
-
                             if (!TaskManager.getInstance().getCurrentTask().data().containsKey("gp_to_generate")) {
                                 Logger.log("We are now avoiding this task " + TaskManager.getInstance().getCurrentTask().getName() + " due to (target) level, picking new task..");
                                 TaskManager.getInstance().getNewTask();
