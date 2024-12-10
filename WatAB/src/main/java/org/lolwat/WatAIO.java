@@ -48,7 +48,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO P2P", description = "All in one P2P-exclusive account building script for Dreambot.", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one P2P-exclusive account building script for Dreambot.", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;

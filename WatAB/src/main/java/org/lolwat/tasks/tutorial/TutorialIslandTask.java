@@ -507,9 +507,12 @@ public class TutorialIslandTask implements WatTask {
                     if(!Equipment.contains("Bronze dagger")) {
                         if(!Inventory.interact("Bronze dagger", "Wield")) {
                             Logger.error("Tutorial: Problem wielding bronze dagger");
-                        } else {
-                            Sleep.sleepUntil(() -> Equipment.contains("Bronze dagger"), 5000);
+                            if(!Inventory.interact("Bronze dagger", "Equip")) {
+                                Logger.error("Tutorial: Problem equipping bronze dagger");
+                            }
                         }
+
+                        Sleep.sleepUntil(() -> Equipment.contains("Bronze dagger"), 5000);
                     }
                     break;
                 }
