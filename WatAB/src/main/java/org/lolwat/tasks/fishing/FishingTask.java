@@ -12,6 +12,7 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.types.mixed.FishType;
@@ -28,14 +29,16 @@ public class FishingTask implements WatTask {
     private final HashMap<String, Integer> sellingItems;
     private final int minimumLevel;
     private final int maximumLevel;
+    private final boolean drop;
     private Tile currentSpot;
 
-    public FishingTask(FishType type, int minLevel, int maxLevel, Tile startingLocation, HashMap<String, Integer> sellItems) {
+    public FishingTask(FishType type, int minLevel, int maxLevel, Tile startingLocation, HashMap<String, Integer> sellItems, boolean drop) {
         fishType = type;
         area = startingLocation.getArea(10);
         sellingItems = sellItems;
         minimumLevel = minLevel;
         maximumLevel = maxLevel;
+        this.drop = drop;
     }
 
     @Override
@@ -74,9 +77,24 @@ public class FishingTask implements WatTask {
             }
 
             if(Inventory.isFull()) {
-                Logger.log("My inventory is full, to the bank!");
-                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, sellingItems, 1, this));
-                return;
+                if(!drop) {
+                    Logger.log("My inventory is full, to the bank!");
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, sellingItems, 1, this));
+                    return;
+                } else {
+                    for(Item it : Inventory.all()) {
+                        if (it == null) continue;
+                        if (!requiredItems.containsKey(it.getName())) {
+                            int count = Inventory.size();
+                            if (!Inventory.drop(it.getName())) {
+                                Logger.log("Failed to drop fish");
+                                continue;
+                            }
+
+                            Sleep.sleepUntil(() -> Inventory.size() < count, 2000);
+                        }
+                    }
+                }
             }
 
             if(Dialogues.canContinue()) {
