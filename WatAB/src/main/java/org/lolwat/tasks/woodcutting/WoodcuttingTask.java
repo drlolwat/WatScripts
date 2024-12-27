@@ -110,8 +110,13 @@ public class WoodcuttingTask implements WatTask {
                     for (Item it : Inventory.all()) {
                         if(it == null) continue;
                         if (it.getName().equals(WoodcuttingUtils.getLogName(treeType))) {
-                            Inventory.drop(it.getName());
-                            Sleep.sleep(800, 1200);
+                            int logCount = Inventory.count(it.getName());
+                            if(!Inventory.drop(it.getName())) {
+                                Logger.log("Failed to drop log");
+                                continue;
+                            }
+
+                            Sleep.sleepUntil(() -> Inventory.count(it.getName()) < logCount, 2000);
                         }
                     }
                 }
