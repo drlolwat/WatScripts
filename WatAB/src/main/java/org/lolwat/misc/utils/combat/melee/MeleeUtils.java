@@ -1,6 +1,5 @@
 package org.lolwat.misc.utils.combat.melee;
 
-import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
@@ -40,22 +39,16 @@ public class MeleeUtils {
     public static HashMap<EquipmentSlot, String> bestGearForLevel() {
         HashMap<EquipmentSlot, String> ret = new HashMap<>();
 
-        if(Combat.getCombatLevel() < 10) {
-            ret.put(EquipmentSlot.WEAPON, "Bronze sword");
-            ret.put(EquipmentSlot.SHIELD, "Wooden shield");
-        }
-        else {
-            ret.put(EquipmentSlot.HAT, defensiveItemByType(DefensiveItemType.HELMET, false));
-            ret.put(EquipmentSlot.CHEST, defensiveItemByType(DefensiveItemType.CHEST, Skills.getRealLevel(Skill.DEFENCE) >= 40));
-            ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, ConfigManager.getInstance().getConfigBoolean("profile_use_plateskirt")));
-            ret.put(EquipmentSlot.SHIELD, defensiveItemByType(DefensiveItemType.OFFHAND, false));
-            ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
-            ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
-            ret.put(EquipmentSlot.FEET, defensiveItemByType(DefensiveItemType.FEET, false));
-            ret.put(EquipmentSlot.HANDS, "Leather gloves");
-            if (ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
-                ret.put(EquipmentSlot.CAPE, ConfigManager.getInstance().getConfigString("profile_cape_type"));
-            }
+        ret.put(EquipmentSlot.HAT, defensiveItemByType(DefensiveItemType.HELMET, false));
+        ret.put(EquipmentSlot.CHEST, defensiveItemByType(DefensiveItemType.CHEST, Skills.getRealLevel(Skill.DEFENCE) >= 40));
+        ret.put(EquipmentSlot.LEGS, defensiveItemByType(DefensiveItemType.LEGS, ConfigManager.getInstance().getConfigBoolean("profile_use_plateskirt")));
+        ret.put(EquipmentSlot.SHIELD, defensiveItemByType(DefensiveItemType.OFFHAND, false));
+        ret.put(EquipmentSlot.WEAPON, bestMeleeWeapon());
+        ret.put(EquipmentSlot.AMULET, GenericUtils.isMember() ? "Amulet of glory" : "Amulet of strength");
+        ret.put(EquipmentSlot.FEET, defensiveItemByType(DefensiveItemType.FEET, false));
+        ret.put(EquipmentSlot.HANDS, "Leather gloves");
+        if (ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
+            ret.put(EquipmentSlot.CAPE, ConfigManager.getInstance().getConfigString("profile_cape_type"));
         }
 
         return ret;
