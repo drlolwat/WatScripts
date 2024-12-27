@@ -40,14 +40,16 @@ public class MiningTask implements WatTask {
     private boolean gotRock = false;
     private Tile rockTile;
     private final int minLevel;
+    private final boolean dropping;
     private Integer maxMiningLevel = 0;
 
-    public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct) {
+    public MiningTask(int miningLevel, int maxMining, Tile startPosition, String pRockName, HashMap<String, Integer> sellableProduct, boolean drop) {
         minLevel = miningLevel;
         defaultSquare = startPosition;
         rockName = pRockName;
         sellingItems = sellableProduct;
         maxMiningLevel = maxMining;
+        dropping = drop;
     }
 
     @Override
@@ -86,10 +88,25 @@ public class MiningTask implements WatTask {
             // We use -1000 so the script knows to check for 1000, but also to sell all of it.
             // If we checked for 1000, then it would only withdraw 1000.
             if (Inventory.isFull()) {
-                Logger.log("My inventory is full, to the bank!");
-                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellingItems, 1, this));
-                lastSuccessfulRock = 0;
-                return;
+                if(!dropping) {
+                    Logger.log("My inventory is full, to the bank!");
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<>(), sellingItems, 1, this));
+                    lastSuccessfulRock = 0;
+                    return;
+                } else {
+                    for(Item it : Inventory.all()) {
+                        if (it == null) continue;
+                        if (!inventoryRequired().containsKey(it.getName()) && !clothesRequired().containsKey(it.getName())) {
+                            int count = Inventory.size();
+                            if (!Inventory.drop(it.getName())) {
+                                Logger.log("Failed to drop ore");
+                                continue;
+                            }
+
+                            Sleep.sleepUntil(() -> Inventory.size() < count, 2000);
+                        }
+                    }
+                }
             }
 
             if (!Map.isTileOnScreen(defaultSquare)) {
