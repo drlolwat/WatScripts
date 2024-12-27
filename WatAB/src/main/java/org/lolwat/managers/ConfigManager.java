@@ -75,6 +75,11 @@ public class ConfigManager {
         defaultProfile.addProperty("logout_after_ttl", 0);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
         defaultProfile.addProperty("use_menu_manip", true);
+        defaultProfile.addProperty("min_task_time", 10);
+        defaultProfile.addProperty("max_task_time", 30);
+        defaultProfile.addProperty("keep_min_gold", 100000);
+        defaultProfile.addProperty("min_sleep_time", 500);
+        defaultProfile.addProperty("max_sleep_time", 1500);
 
         JsonObject items = new JsonObject();
         items.addProperty("Logs", -500);
