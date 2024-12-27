@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class NumUtils {
     private static HashMap<String, Integer> itemPrices;
+    private static double multiplier = 1.2;
     public static String simplifyNumber(double number) {
         if (number >= 1000000) {
             return String.format("%.2fM", number / 1000000);
@@ -25,7 +26,13 @@ public class NumUtils {
             return itemPrices.get(item);
         }
 
-        itemPrices.put(item, LivePrices.getHigh(item));
+        int num = (int) (LivePrices.getHigh(item) * multiplier);
+
+        if(num < 100) {
+            num = num * 10;
+        }
+
+        itemPrices.put(item, num);
         return itemPrices.get(item);
     }
 
@@ -36,18 +43,16 @@ public class NumUtils {
             itemPrices.remove(item);
         }
         else {
-            num = LivePrices.getHigh(item);
+            num = (int) (LivePrices.getHigh(item) * multiplier);
         }
-
-        if(num < 10) {
-            num = num * 2;
-        }
-
-        num = (int) (num * 1.2);
 
         int currentHigh = LivePrices.getHigh(item);
-        if(num > (currentHigh * 3)) {
+        if(num > (currentHigh * 20)) {
             num = currentHigh;
+        }
+
+        if(num < 100) {
+            num = num * 10;
         }
 
         itemPrices.put(item, num);
