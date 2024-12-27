@@ -199,14 +199,16 @@ public class TaskManager {
     public void setCurrentTask(WatTask value, int runtime) {
         currentTask = value;
 
-        if(runtime == 0)
+        if (runtime == 0)
             taskSelectedAt = Instant.now().getEpochSecond();
 
         taskRunTime = runtime > 0
                 ? runtime
-                : Calculations.random(1200, 1800 + (value != null && value.trainsSkill() != null
-                ? (60 * Skills.getRealLevel(value.trainsSkill()))
-                : 0));
+                : Calculations.random
+                (
+                        ConfigManager.getInstance().getConfigInt("min_task_time") * 60,
+                        ConfigManager.getInstance().getConfigInt("max_task_time") * 60
+                );
     }
 
     public void resetBreaks() {
@@ -605,99 +607,36 @@ public class TaskManager {
                 },
                 false));
 
-
         return tasks;
     }
 
     private List<WatTask> createMagicTasks() {
         List<WatTask> tasks = new ArrayList<>();
+        // falador chickens outside
+        tasks.add(new MagicCombatTask( 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
+        }, new ArrayList<>()));
 
-        tasks.add(new MagicCombatTask(1, 5, new Area(
-                new Tile(3170, 3289, 0),
-                new Tile(3183, 3289, 0),
-                new Tile(3185, 3291, 0),
-                new Tile(3185, 3295, 0),
-                new Tile(3186, 3296, 0),
-                new Tile(3186, 3298, 0),
-                new Tile(3185, 3299, 0),
-                new Tile(3185, 3301, 0),
-                new Tile(3183, 3302, 0),
-                new Tile(3182, 3302, 0),
-                new Tile(3182, 3303, 0),
-                new Tile(3181, 3303, 0),
-                new Tile(3179, 3303, 0),
-                new Tile(3179, 3307, 0),
-                new Tile(3174, 3307, 0),
-                new Tile(3172, 3302, 0),
-                new Tile(3170, 3300, 0),
-                new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
-        }, Lists.newArrayList()));
+        // falador chickens inside
+        tasks.add(new MagicCombatTask( 1, 10, new Area(3014, 3298, 3019, 3282), "Chicken", new HashMap<String, Integer>() {
+        }, new ArrayList<>()));
 
-        // lumbridge chickens east
-        tasks.add(new MagicCombatTask(1, 10, new Area(
-                new Tile(3231, 3295, 0),
-                new Tile(3231, 3287, 0),
-                new Tile(3236, 3287, 0),
-                new Tile(3236, 3300, 0),
-                new Tile(3226, 3301, 0),
-                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, Lists.newArrayList()));
+        // goblins sarim
+        tasks.add(new MagicCombatTask( 12, 30, new Area(2987, 3220, 3007, 3199), "Goblin",
+                new HashMap<>(),
+                new ArrayList<>()));
 
-        // lumbridge cows north
-        tasks.add(new MagicCombatTask(5, 20, new Area(
-                new Tile(3193, 3300, 0),
-                new Tile(3193, 3286, 0),
-                new Tile(3197, 3282, 0),
-                new Tile(3201, 3283, 0),
-                new Tile(3205, 3283, 0),
-                new Tile(3207, 3284, 0),
-                new Tile(3211, 3284, 0),
-                new Tile(3212, 3285, 0),
-                new Tile(3212, 3289, 0),
-                new Tile(3213, 3290, 0),
-                new Tile(3213, 3292, 0),
-                new Tile(3211, 3295, 0),
-                new Tile(3210, 3297, 0),
-                new Tile(3210, 3301, 0),
-                new Tile(3209, 3302, 0),
-                new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
-            {
-                put("Trout", 12);
-            }
-        }, Lists.newArrayList()));
-
-        // lumbridge cows north 2
-        tasks.add(new MagicCombatTask( 5, 20, new Area(
-                new Tile(3154, 3344, 0),
-                new Tile(3155, 3316, 0),
-                new Tile(3161, 3316, 0),
-                new Tile(3165, 3320, 0),
-                new Tile(3172, 3317, 0),
-                new Tile(3178, 3317, 0),
-                new Tile(3181, 3315, 0),
-                new Tile(3185, 3315, 0),
-                new Tile(3190, 3311, 0),
-                new Tile(3204, 3310, 0),
-                new Tile(3199, 3334, 0)), "Cow", new HashMap<String, Integer>() {
-            {
-                put("Trout", 12);
-            }
-        }, Lists.newArrayList()));
-
-        // lumbridge east cows
-        tasks.add(new MagicCombatTask( 5, 20, new Area(
-                new Tile(3252, 3277, 0),
-                new Tile(3242, 3286, 0),
-                new Tile(3243, 3297, 0),
-                new Tile(3264, 3297, 0),
-                new Tile(3265, 3256, 0),
-                new Tile(3254, 3256, 0)), "Cow", new HashMap<String, Integer>() {
-            {
-                put("Trout", 12);
-            }
-        }, Lists.newArrayList()));
+        // goblins lumbridge
+        tasks.add(new MagicCombatTask( 12, 30, new Area(
+                new Tile(3241, 3248, 0),
+                new Tile(3251, 3224, 0),
+                new Tile(3266, 3215, 0),
+                new Tile(3263, 3253, 0))
+                , "Goblin",
+                new HashMap<>(),
+                new ArrayList<>()));
 
         // falador cows
-        tasks.add(new MagicCombatTask( 5, 20, new Area(
+        tasks.add(new MagicCombatTask( 5, 30, new Area(
                 new Tile(3043, 3306, 0),
                 new Tile(3043, 3311, 0),
                 new Tile(3041, 3313, 0),
@@ -710,7 +649,20 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }, Lists.newArrayList()));
+        }, new ArrayList<>()));
+
+        // crafting guild
+        tasks.add(new MagicCombatTask( 5, 30, new Area(
+                new Tile(2915, 3291, 0),
+                new Tile(2916, 3287, 0),
+                new Tile(2925, 3278, 0),
+                new Tile(2928, 3280, 0),
+                new Tile(2928, 3284, 0),
+                new Tile(2926, 3291, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }, new ArrayList<>()));
 
         tasks.add(new MagicCombatTask(20, 30, new Area(
                 new Tile(3044, 3498, 0),
@@ -771,93 +723,31 @@ public class TaskManager {
 
     private List<WatTask> createRangedTasks() {
         List<WatTask> tasks = new ArrayList<>();
+        // falador chickens outside
+        tasks.add(new RangedCombatTask( 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
+        }, new ArrayList<>()));
 
-        tasks.add(new RangedCombatTask(1, 10, new Area(
-                new Tile(3170, 3289, 0),
-                new Tile(3183, 3289, 0),
-                new Tile(3185, 3291, 0),
-                new Tile(3185, 3295, 0),
-                new Tile(3186, 3296, 0),
-                new Tile(3186, 3298, 0),
-                new Tile(3185, 3299, 0),
-                new Tile(3185, 3301, 0),
-                new Tile(3183, 3302, 0),
-                new Tile(3182, 3302, 0),
-                new Tile(3182, 3303, 0),
-                new Tile(3181, 3303, 0),
-                new Tile(3179, 3303, 0),
-                new Tile(3179, 3307, 0),
-                new Tile(3174, 3307, 0),
-                new Tile(3172, 3302, 0),
-                new Tile(3170, 3300, 0),
-                new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
-        }, Lists.newArrayList()));
+        // falador chickens inside
+        tasks.add(new RangedCombatTask( 1, 10, new Area(3014, 3298, 3019, 3282), "Chicken", new HashMap<String, Integer>() {
+        }, new ArrayList<>()));
 
-        // lumbridge chickens east
-        tasks.add(new RangedCombatTask(1, 10, new Area(
-                new Tile(3231, 3295, 0),
-                new Tile(3231, 3287, 0),
-                new Tile(3236, 3287, 0),
-                new Tile(3236, 3300, 0),
-                new Tile(3226, 3301, 0),
-                new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() { }, Lists.newArrayList()));
+        // goblins sarim
+        tasks.add(new RangedCombatTask( 12, 30, new Area(2987, 3220, 3007, 3199), "Goblin",
+                new HashMap<>(),
+                new ArrayList<>()));
 
-        // lumbridge cows north
-        tasks.add(new RangedCombatTask(5, 20, new Area(
-                new Tile(3193, 3300, 0),
-                new Tile(3193, 3286, 0),
-                new Tile(3197, 3282, 0),
-                new Tile(3201, 3283, 0),
-                new Tile(3205, 3283, 0),
-                new Tile(3207, 3284, 0),
-                new Tile(3211, 3284, 0),
-                new Tile(3212, 3285, 0),
-                new Tile(3212, 3289, 0),
-                new Tile(3213, 3290, 0),
-                new Tile(3213, 3292, 0),
-                new Tile(3211, 3295, 0),
-                new Tile(3210, 3297, 0),
-                new Tile(3210, 3301, 0),
-                new Tile(3209, 3302, 0),
-                new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
-            {
-                put("Trout", 12);
-            }
-        }, Lists.newArrayList()));
-
-        // lumbridge cows north 2
-        tasks.add(new RangedCombatTask( 5, 20, new Area(
-                new Tile(3154, 3344, 0),
-                new Tile(3155, 3316, 0),
-                new Tile(3161, 3316, 0),
-                new Tile(3165, 3320, 0),
-                new Tile(3172, 3317, 0),
-                new Tile(3178, 3317, 0),
-                new Tile(3181, 3315, 0),
-                new Tile(3185, 3315, 0),
-                new Tile(3190, 3311, 0),
-                new Tile(3204, 3310, 0),
-                new Tile(3199, 3334, 0)), "Cow", new HashMap<String, Integer>() {
-            {
-                put("Trout", 12);
-            }
-        }, Lists.newArrayList()));
-
-        // lumbridge east cows
-        tasks.add(new RangedCombatTask( 5, 20, new Area(
-                new Tile(3252, 3277, 0),
-                new Tile(3242, 3286, 0),
-                new Tile(3243, 3297, 0),
-                new Tile(3264, 3297, 0),
-                new Tile(3265, 3256, 0),
-                new Tile(3254, 3256, 0)), "Cow", new HashMap<String, Integer>() {
-            {
-                put("Trout", 12);
-            }
-        }, Lists.newArrayList()));
+        // goblins lumbridge
+        tasks.add(new RangedCombatTask( 12, 30, new Area(
+                new Tile(3241, 3248, 0),
+                new Tile(3251, 3224, 0),
+                new Tile(3266, 3215, 0),
+                new Tile(3263, 3253, 0))
+                , "Goblin",
+                new HashMap<>(),
+                new ArrayList<>()));
 
         // falador cows
-        tasks.add(new RangedCombatTask( 5, 20, new Area(
+        tasks.add(new RangedCombatTask( 5, 30, new Area(
                 new Tile(3043, 3306, 0),
                 new Tile(3043, 3311, 0),
                 new Tile(3041, 3313, 0),
@@ -870,7 +760,20 @@ public class TaskManager {
             {
                 put("Trout", 12);
             }
-        }, Lists.newArrayList()));
+        }, new ArrayList<>()));
+
+        // crafting guild
+        tasks.add(new RangedCombatTask( 5, 30, new Area(
+                new Tile(2915, 3291, 0),
+                new Tile(2916, 3287, 0),
+                new Tile(2925, 3278, 0),
+                new Tile(2928, 3280, 0),
+                new Tile(2928, 3284, 0),
+                new Tile(2926, 3291, 0)), "Cow", new HashMap<String, Integer>() {
+            {
+                put("Trout", 12);
+            }
+        }, new ArrayList<>()));
 
         tasks.add(new RangedCombatTask(20, 30, new Area(
                 new Tile(3044, 3498, 0),
@@ -966,99 +869,26 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
         for (Skill sk : s) {
-            // lumbridge chickens north
-            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
-                    new Tile(3170, 3289, 0),
-                    new Tile(3183, 3289, 0),
-                    new Tile(3185, 3291, 0),
-                    new Tile(3185, 3295, 0),
-                    new Tile(3186, 3296, 0),
-                    new Tile(3186, 3298, 0),
-                    new Tile(3185, 3299, 0),
-                    new Tile(3185, 3301, 0),
-                    new Tile(3183, 3302, 0),
-                    new Tile(3182, 3302, 0),
-                    new Tile(3182, 3303, 0),
-                    new Tile(3181, 3303, 0),
-                    new Tile(3179, 3303, 0),
-                    new Tile(3179, 3307, 0),
-                    new Tile(3174, 3307, 0),
-                    new Tile(3172, 3302, 0),
-                    new Tile(3170, 3300, 0),
-                    new Tile(3169, 3293, 0)), "Chicken", new HashMap<String, Integer>() {
+            // falador chickens outside
+            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
             }, new ArrayList<>()));
 
-
-            // lumbridge chickens east
-            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
-                    new Tile(3231, 3295, 0),
-                    new Tile(3231, 3287, 0),
-                    new Tile(3236, 3287, 0),
-                    new Tile(3236, 3300, 0),
-                    new Tile(3226, 3301, 0),
-                    new Tile(3225, 3295, 0)), "Chicken", new HashMap<String, Integer>() {
+            // falador chickens inside
+            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(3014, 3298, 3019, 3282), "Chicken", new HashMap<String, Integer>() {
             }, new ArrayList<>()));
 
-            // lumbridge cows north
-            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
-                    new Tile(3193, 3300, 0),
-                    new Tile(3193, 3286, 0),
-                    new Tile(3197, 3282, 0),
-                    new Tile(3201, 3283, 0),
-                    new Tile(3205, 3283, 0),
-                    new Tile(3207, 3284, 0),
-                    new Tile(3211, 3284, 0),
-                    new Tile(3212, 3285, 0),
-                    new Tile(3212, 3289, 0),
-                    new Tile(3213, 3290, 0),
-                    new Tile(3213, 3292, 0),
-                    new Tile(3211, 3295, 0),
-                    new Tile(3210, 3297, 0),
-                    new Tile(3210, 3301, 0),
-                    new Tile(3209, 3302, 0),
-                    new Tile(3194, 3302, 0)), "Cow", new HashMap<String, Integer>() {
-                {
-                    put("Trout", 12);
-                }
-            }, new ArrayList<>()));
+            // goblins sarim
+            tasks.add(new MeleeCombatTask(sk, 12, 30, new Area(2987, 3220, 3007, 3199), "Goblin",
+                    new HashMap<>(),
+                    new ArrayList<>()));
 
-            // lumbridge cows north 2
-            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
-                    new Tile(3154, 3344, 0),
-                    new Tile(3155, 3316, 0),
-                    new Tile(3161, 3316, 0),
-                    new Tile(3165, 3320, 0),
-                    new Tile(3172, 3317, 0),
-                    new Tile(3178, 3317, 0),
-                    new Tile(3181, 3315, 0),
-                    new Tile(3185, 3315, 0),
-                    new Tile(3190, 3311, 0),
-                    new Tile(3204, 3310, 0),
-                    new Tile(3199, 3334, 0)), "Cow", new HashMap<String, Integer>() {
-                {
-                    put("Trout", 12);
-                }
-            }, new ArrayList<>()));
-
-            // lumbridge east cows
-            tasks.add(new MeleeCombatTask(sk, 5, 30, new Area(
-                    new Tile(3252, 3277, 0),
-                    new Tile(3242, 3286, 0),
-                    new Tile(3243, 3297, 0),
-                    new Tile(3264, 3297, 0),
-                    new Tile(3265, 3256, 0),
-                    new Tile(3254, 3256, 0)), "Cow", new HashMap<String, Integer>() {
-                {
-                    put("Trout", 12);
-                }
-            }, new ArrayList<>()));
-
-            // lumbridge goblins
+            // goblins lumbridge
             tasks.add(new MeleeCombatTask(sk, 12, 30, new Area(
                     new Tile(3241, 3248, 0),
                     new Tile(3251, 3224, 0),
                     new Tile(3266, 3215, 0),
-                    new Tile(3263, 3253, 0)), "Goblin",
+                    new Tile(3263, 3253, 0))
+                    , "Goblin",
                     new HashMap<>(),
                     new ArrayList<>()));
 
@@ -1078,6 +908,57 @@ public class TaskManager {
                 }
             }, new ArrayList<>()));
 
+            // crafting guild
+            tasks.add(new MeleeCombatTask(sk,  5, 30, new Area(
+                    new Tile(2915, 3291, 0),
+                    new Tile(2916, 3287, 0),
+                    new Tile(2925, 3278, 0),
+                    new Tile(2928, 3280, 0),
+                    new Tile(2928, 3284, 0),
+                    new Tile(2926, 3291, 0)), "Cow", new HashMap<String, Integer>() {
+                {
+                    put("Trout", 12);
+                }
+            }, new ArrayList<>()));
+
+            tasks.add(new MeleeCombatTask(sk, 20, 99, new Area(3039, 9828, 3053, 9812),
+                    "Dwarf", new HashMap<String, Integer>() {
+                {
+                    put("Trout", 12);
+                }}, Lists.newArrayList()));
+
+            tasks.add(new MeleeCombatTask(sk, 20, 99, new Area(
+                    new Tile(3016, 9812, 0),
+                    new Tile(3021, 9804, 0),
+                    new Tile(3022, 9798, 0),
+                    new Tile(3026, 9799, 0),
+                    new Tile(3027, 9802, 0),
+                    new Tile(3027, 9807, 0),
+                    new Tile(3029, 9811, 0),
+                    new Tile(3031, 9812, 0),
+                    new Tile(3030, 9818, 0),
+                    new Tile(3033, 9825, 0),
+                    new Tile(3032, 9836, 0),
+                    new Tile(3017, 9836, 0)), "Dwarf", new HashMap<String, Integer>() {
+                {
+                    put("Trout", 12);
+                }}, Lists.newArrayList()));
+
+            // varrock guards
+            tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
+                    new Tile(3206, 3476, 2),
+                    new Tile(3201, 3476, 2),
+                    new Tile(3201, 3487, 2),
+                    new Tile(3207, 3487, 2),
+                    new Tile(3208, 3478, 2),
+                    new Tile(3210, 3476, 2),
+                    new Tile(3218, 3476, 2),
+                    new Tile(3218, 3467, 2),
+                    new Tile(3209, 3467, 2)), "Guard", new HashMap<String, Integer>() {
+                {
+                    put("Trout", 20);
+                }
+            }, new ArrayList<>()));
 
             // al kharid warriors east
             tasks.add(new MeleeCombatTask(sk, 25, 45, new Area(3299, 3177, 3302, 3167), "Al Kharid warrior", new HashMap<String, Integer>() {
@@ -1093,19 +974,7 @@ public class TaskManager {
                 }
             }, new ArrayList<>()));
 
-            // varrock guards, palace upstairs north
-            tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
-                    new Tile(3207, 3490, 1),
-                    new Tile(3200, 3490, 1),
-                    new Tile(3200, 3499, 1),
-                    new Tile(3202, 3501, 1),
-                    new Tile(3205, 3501, 1),
-                    new Tile(3207, 3499, 1)), "Guard", new HashMap<String, Integer>() {
-                {
-                    put("Trout", 20);
-                }
-            }, new ArrayList<>()));
-
+            // zamorak monks
             tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
                     new Tile(2930, 3516, 0),
                     new Tile(2930, 3514, 0),
@@ -1120,19 +989,6 @@ public class TaskManager {
                     put("Trout", 12);
                 }
             }, Collections.singletonList("Zamorak monk bottom")));
-
-            // varrock guards, palace courtyard
-            tasks.add(new MeleeCombatTask(sk, 35, 55, new Area(
-                    new Tile(3202, 3468, 0),
-                    new Tile(3202, 3461, 0),
-                    new Tile(3204, 3459, 0),
-                    new Tile(3222, 3459, 0),
-                    new Tile(3224, 3461, 0),
-                    new Tile(3224, 3469, 0),
-                    new Tile(3217, 3471, 0),
-                    new Tile(3207, 3471, 0)), "Guard", new HashMap<String, Integer>() {{
-                put("Trout", 20);
-            }}, new ArrayList<>()));
 
             // hill giants (plateau)
             tasks.add(new MeleeCombatTask(sk, 40, 70, new Area(
@@ -1238,14 +1094,8 @@ public class TaskManager {
     private List<WatTask> createCookingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        tasks.add(new CookingFishTask(FishType.SHRIMPS, 1, 5, 15, new HashMap<String, Integer>() {{
+        tasks.add(new CookingFishTask(FishType.SHRIMPS, 1, 15, 15, new HashMap<String, Integer>() {{
             put("Shrimp", -100);
-        }}));
-
-        tasks.add(new CookingFishTask(FishType.HERRING, 5, 15, 15, new HashMap<String, Integer>() {{
-            put("Shrimp", -1);
-            put("Raw shrimps", -1);
-            put("Herring", -Calculations.random(200, 400));
         }}));
 
         tasks.add(new CookingFishTask(FishType.TROUT, 15, 50, 15, new HashMap<String, Integer>() {
@@ -1258,33 +1108,13 @@ public class TaskManager {
             }
         }));
 
-        tasks.add(new CookingFishTask(FishType.SALMON, 25, 55, 15, new HashMap<String, Integer>() {
+        tasks.add(new CookingFishTask(FishType.SALMON, 25, 99, 15, new HashMap<String, Integer>() {
             {
                 put("Shrimp", -1);
                 put("Raw shrimps", -1);
                 put("Herring", -1);
                 put("Raw herring", -1);
                 put("Salmon", -Calculations.random(200, 400));
-            }
-        }));
-
-        tasks.add(new CookingFishTask(FishType.TUNA, 35, 70, 15, new HashMap<String, Integer>() {
-            {
-                put("Shrimp", -1);
-                put("Raw shrimps", -1);
-                put("Herring", -1);
-                put("Raw herring", -1);
-                put("Tuna", -Calculations.random(200, 400));
-            }
-        }));
-
-        tasks.add(new CookingFishTask(FishType.LOBSTER, 45, 99, 15, new HashMap<String, Integer>() {
-            {
-                put("Shrimp", -1);
-                put("Raw shrimps", -1);
-                put("Herring", -1);
-                put("Raw herring", -1);
-                put("Lobster", -Calculations.random(200, 400));
             }
         }));
 
@@ -1330,99 +1160,69 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // lumbridge
-        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 10, new Tile(3243, 3157), new HashMap<String, Integer>() {{ put("Raw shrimps", -Calculations.random(200, 400)); put("Raw anchovies", -Calculations.random(200, 400)); }}));
-        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<String, Integer>() {{put("Raw herring", -Calculations.random(200, 400)); put("Raw sardine", -Calculations.random(200, 400)); put("Raw shrimps", -1); put("Raw anchovies", -1);}}));
+        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 10, new Tile(3243, 3157), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<>(), true));
+
+        // n1c lumbridge
+        tasks.add(new FishingTask(FishType.SARDINE, 5, 15, new Tile(3241, 3245), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3241, 3245), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.PIKE, 25, 99, new Tile(3241, 3245), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.SALMON, 30, 99, new Tile(3241, 3245), new HashMap<>(), true));
+
+        // n1c al kharid
+        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 15, new Tile(3275, 3143), new HashMap<>(), true));
+
         // barbarian village
-        tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw pike", -Calculations.random(200, 400)); }}));
-        tasks.add(new FishingTask(FishType.SALMON, 35, 99, new Tile(3108, 3433), new HashMap<String, Integer>() {{ put("Raw salmon", -Calculations.random(200, 400)); put("Raw trout", -Calculations.random(200, 400)); }}));
+        tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.SALMON, 35, 99, new Tile(3108, 3433), new HashMap<>(), true));
 
         return tasks;
     }
 
     private List<WatTask> createWoodcuttingTasks() {
         List<WatTask> tasks = new ArrayList<>();
+        Area[] trees = {
+                new Area(3150, 3229, 3123, 3206),
+                new Area(3031, 3274, 3058, 3261),
+                new Area(2990, 3263, 3008, 3246),
+                new Area(2992, 3236, 3007, 3205),
+                new Area(3062, 3324, 3014, 3316),
+                new Area(3062, 3454, 3035, 3417),
+                new Area(3134, 3405, 3149, 3391),
+                new Area(3265, 3484, 3310, 3469),
+                new Area(3265, 3343, 3301, 3333),
+                new Area(2982, 3503, 2962, 3475)
+        };
 
-        // ------------- REGULAR LOGS
-        // VARROCK EAST
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
-                new Tile(3272, 3438, 0),
-                new Tile(3293, 3438, 0),
-                new Tile(3294, 3485, 0),
-                new Tile(3273, 3485, 0)), 1, 21,
-                new HashMap<String, Integer>() {
-                    {
-                        put("Logs", -Calculations.random(200, 400));
-                    }
-                },
-                false));
+        Area[] oaks = {
+                new Area(3033, 3274, 3042, 3256),
+                new Area(2995, 3261, 3002, 3253),
+                new Area(2979, 3210, 2990, 3199),
+                new Area(3026, 3173, 3014, 3168),
+                new Area(3265, 3481, 3290, 3472),
+                new Area(3288, 3493, 3296, 3481),
+                new Area(3279, 3342, 3304, 3333),
+                new Area(3145, 3227, 3152, 3216),
+                new Area(3112, 3232, 3120, 3223)
+        };
 
-        // LUMBRIDGE WEST
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
-                new Tile(3204, 3255, 0),
-                new Tile(3204, 3238, 0),
-                new Tile(3150, 3238, 0),
-                new Tile(3150, 3255, 0),
-                new Tile(3153, 3261, 0)), 1, 21,
-                new HashMap<String, Integer>() {
-                    {
-                        put("Logs", -Calculations.random(200, 400));
-                    }
-                },
-                false));
+        Area[] willows = {
+                new Area(2910, 3305, 2925, 3294),
+                new Area(2960, 3200, 2977, 3192),
+                new Area(3010, 3158, 2995, 3171)
+        };
 
-        // VARROCK WEST
-        tasks.add(new WoodcuttingTask(TreeType.TREE, new Area(
-                new Tile(3158, 3417, 0),
-                new Tile(3158, 3380, 0),
-                new Tile(3174, 3378, 0),
-                new Tile(3172, 3426, 0)), 1, 21,
-                new HashMap<String, Integer>() {
-                    {
-                        put("Logs", -Calculations.random(200, 400));
-                    }
-                },
-                false));
+        for(Area tree : trees) {
+            tasks.add(new WoodcuttingTask(TreeType.TREE, tree, 1, 20, new HashMap<>(), true));
+        }
 
-        // ------------- OAK LOGS
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3277, 3429).getArea(10), 21, 50, new HashMap<String, Integer>() {
-            {
-                put("Oak logs", -Calculations.random(200, 400));
-                put("Logs", -1);
-            }
-        }, false)); //varrock east
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3165, 3422).getArea(10), 21, 50, new HashMap<String, Integer>() {
-            {
-                put("Oak logs", -Calculations.random(200, 400));
-                put("Logs", -1);
-            }
-        }, false)); //varrock west
-        tasks.add(new WoodcuttingTask(TreeType.OAK, new Tile(3203, 3243).getArea(10), 21, 50, new HashMap<String, Integer>() {
-            {
-                put("Oak logs", -Calculations.random(200, 400));
-                put("Logs", -1);
-            }
-        }, false)); //lumbridge
+        for(Area oak : oaks) {
+            tasks.add(new WoodcuttingTask(TreeType.OAK, oak, 15, 30, new HashMap<>(), true));
+        }
 
-        // ------------- WILLOW LOGS
-        tasks.add(new WoodcuttingTask(TreeType.WILLOW, new Tile(3176, 3276).getArea(10), 50, 99, new HashMap<String, Integer>() {
-            {
-                put("Willow logs", -2000);
-                put("Oak logs", -1);
-                put("Logs", -1);
-            }
-        }, false)); //lumbridge
-
-        // ------------- YEW LOGS
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3088, 3475).getArea(10), 60, 99, new HashMap<String, Integer>() {
-            {
-                put("Yew logs", -Calculations.random(200, 400));
-            }
-        }, false)); //edge
-        tasks.add(new WoodcuttingTask(TreeType.YEW, new Tile(3206, 3502).getArea(10), 60, 99, new HashMap<String, Integer>() {
-            {
-                put("Yew logs", -Calculations.random(200, 400));
-            }
-        }, false)); //g.e
+        for(Area willow : willows) {
+            tasks.add(new WoodcuttingTask(TreeType.WILLOW, willow, 30, 99, new HashMap<>(), true));
+        }
 
         return tasks;
     }
@@ -1529,23 +1329,23 @@ public class TaskManager {
 
         // Varrock East Copper
         tasks.add(new MiningTask(1, 20, new Tile(3289, 3362), "Copper rocks",
-                        new HashMap<String, Integer>() {{ put("Copper ore", -Calculations.random(800, 1200)); }}));
+                        new HashMap<String, Integer>() {{ put("Copper ore", -Calculations.random(800, 1200)); }}, true));
 
         // Varrock East Tin
         tasks.add(new MiningTask(1, 20, new Tile(3282, 3363), "Tin rocks",
-                new HashMap<String, Integer>() {{ put("Tin ore", -Calculations.random(800, 1200)); }}));
+                new HashMap<String, Integer>() {{ put("Tin ore", -Calculations.random(800, 1200)); }}, true));
 
         // Varrock East Iron
         tasks.add(new MiningTask(15, 60, new Tile(3286, 3368), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}));
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, true));
 
         // Mining Guild Iron
         tasks.add(new MiningTask(60, 70, new Tile(3033, 9738), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}));
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, true));
 
         // Mining Guild Coal
         tasks.add(new MiningTask(70, 100, new Tile(3033, 9738), "Coal rocks",
-                new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}));
+                new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}, true));
 
         return tasks;
     }
