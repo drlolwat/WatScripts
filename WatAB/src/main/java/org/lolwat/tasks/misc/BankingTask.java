@@ -562,11 +562,18 @@ public class BankingTask implements WatTask {
                             finalPrice -= Inventory.count("Coins");
                         }
 
+                        int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
+                        if(totalCoins < ConfigManager.getInstance().getConfigInt("keep_min_gold")) {
+                            finalPrice += ConfigManager.getInstance().getConfigInt("keep_min_gold");
+                            Logger.log("Triggered minimum gold threshold, adding " + ConfigManager.getInstance().getConfigInt("keep_min_gold") + " gp");
+                        }
+
                         Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
-                        int totalPrice = finalPrice;
+
+                        int finalTotalPrice = finalPrice;
                         TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                             {
-                                put("Coins", totalPrice);
+                                put("Coins", finalTotalPrice);
                             }
                         }, this));
                         return;
@@ -587,8 +594,15 @@ public class BankingTask implements WatTask {
 
                         Bank.depositAllItems();
                         Sleep.sleep(100, 200);
-                        Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
+
+                        int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
+                        if(totalCoins < ConfigManager.getInstance().getConfigInt("keep_min_gold")) {
+                            finalPrice += ConfigManager.getInstance().getConfigInt("keep_min_gold");
+                            Logger.log("Triggered minimum gold threshold, adding " + ConfigManager.getInstance().getConfigInt("keep_min_gold") + " gp");
+                        }
+
                         int totalPrice = finalPrice;
+                        Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
                         TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                             {
                                 put("Coins", totalPrice);
