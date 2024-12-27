@@ -6,7 +6,7 @@
 
     <groupId>org.lolwat</groupId>
     <artifactId>WatAIO</artifactId>
-    <version>1.24-RELEASE</version>
+    <version>N1C</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
