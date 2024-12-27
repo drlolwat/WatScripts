@@ -10,6 +10,7 @@ public class FishingUtils {
             default: return null; //return net later
             case SHRIMPS: return "Small fishing net";
             case HERRING:
+            case SARDINE:
             case PIKE: return "Fishing rod";
             case TUNA:
             case SWORDFISH: return "Harpoon";
@@ -23,6 +24,7 @@ public class FishingUtils {
             default: return null;
             case SHRIMPS: return "Net";
             case HERRING:
+            case SARDINE:
             case PIKE: return "Bait";
             case TUNA:
             case SWORDFISH: return "Harpoon";
@@ -38,6 +40,7 @@ public class FishingUtils {
             default: break;
             case LOBSTER: map.put("Coins", 25); break;
             case HERRING:
+            case SARDINE:
             case PIKE: map.put("Fishing bait", -1000); break;
             case SALMON: map.put("Feather", -1000); break;
         }
