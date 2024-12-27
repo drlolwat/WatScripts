@@ -8,5 +8,6 @@ public enum FishType {
     SALMON,
     LOBSTER,
     SWORDFISH,
-    TROUT
+    TROUT,
+    SARDINE
 }
