@@ -55,6 +55,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public static WatAIO getInstance() {
         return instance;
     }
+    private static int uniqueSleep;
 
     @Override
     public void onStart(String... params) {
@@ -86,6 +87,15 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             ConfigManager.getInstance().loadFromProfile(profile);
         }
 
+        uniqueSleep = Calculations.random(ConfigManager.getInstance().getConfigInt("min_sleep_time"),
+                ConfigManager.getInstance().getConfigInt("max_sleep_time"));
+
+        if(uniqueSleep < 110) {
+            uniqueSleep = 110;
+        }
+
+        Logger.log("Unique sleep time: " + uniqueSleep + " give or take 100ms each loop");
+
         if(TeleportManager.getInstance() == null) {
             Logger.log("Constructing TeleportManager singleton.");
             TeleportManager.setInstance(new TeleportManager());
@@ -98,8 +108,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(m);
+
+        try {
+            Logger.log("Setting HumanMouse algorithm.");
+            HumanMouse m = new HumanMouse();
+            Mouse.setMouseAlgorithm(m);
+        } catch(Exception e) {
+            Logger.log(e);
+        }
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
@@ -176,7 +192,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                             return 1000;
                         }
                     }
-                    else { //TODO skip the skill if it's already at the target level instead of ending up on break
+                    else {
                         if (Skills.getRealLevel(TaskManager.getInstance().getCurrentTask().trainsSkill()) >=
                                 ConfigManager.getInstance().getSkillTarget(TaskManager.getInstance().getCurrentTask().trainsSkill())) {
                             if (!TaskManager.getInstance().getCurrentTask().data().containsKey("gp_to_generate")) {
@@ -215,7 +231,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             TaskManager.getInstance().getCurrentTask().execute();
 
             return TaskManager.getInstance().getCurrentTask() != null ? (TaskManager.getInstance().getCurrentTask().loopTime() > 0 ?
-                    TaskManager.getInstance().getCurrentTask().loopTime() : 300) : 300;
+                    TaskManager.getInstance().getCurrentTask().loopTime() : 300) : 300 + (uniqueSleep + Calculations.random(-100, 100));
         }
 
         return 100;
