@@ -29,7 +29,15 @@ public class NumUtils {
         int num = (int) (LivePrices.getHigh(item) * multiplier);
 
         if(num < 100) {
-            num = num * 10;
+            num = num * 7;
+        }
+        else if(num < 500) {
+            num = num * 5;
+        }
+        else if(num < 1000) {
+            num = num * 2;
+        } else {
+            num = (int) (num * multiplier);
         }
 
         itemPrices.put(item, num);
@@ -52,7 +60,16 @@ public class NumUtils {
         }
 
         if(num < 100) {
-            num = num * 10;
+            num = num * 7;
+        }
+        else if(num < 500) {
+            num = num * 5;
+        }
+        else if(num < 1000) {
+            num = num * 2;
+        }
+        else {
+            num = (int) (num * multiplier);
         }
 
         itemPrices.put(item, num);
