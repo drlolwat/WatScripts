@@ -1164,10 +1164,9 @@ public class TaskManager {
         tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3243, 3157), new HashMap<>(), true));
 
         // n1c lumbridge
-        tasks.add(new FishingTask(FishType.SARDINE, 5, 15, new Tile(3241, 3245), new HashMap<>(), true));
-        tasks.add(new FishingTask(FishType.HERRING, 10, 30, new Tile(3241, 3245), new HashMap<>(), true));
         tasks.add(new FishingTask(FishType.PIKE, 25, 99, new Tile(3241, 3245), new HashMap<>(), true));
         tasks.add(new FishingTask(FishType.SALMON, 30, 99, new Tile(3241, 3245), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.TROUT, 30, 99, new Tile(3241, 3245), new HashMap<>(), true));
 
         // n1c al kharid
         tasks.add(new FishingTask(FishType.SHRIMPS, 1, 15, new Tile(3275, 3143), new HashMap<>(), true));
