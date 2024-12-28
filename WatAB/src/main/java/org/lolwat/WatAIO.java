@@ -130,10 +130,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
 
-        if(ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && !Menu.isMenuManipulationActive()) {
+        if(ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && (!Menu.isMenuManipulationActive() || !Walking.isNoClickWalkEnabled())) {
             Logger.log("Enabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(true);
             Walking.toggleNoClickWalk(true);
+        } else if(!ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && (Menu.isMenuManipulationActive() || Walking.isNoClickWalkEnabled())) {
+            Logger.log("Disabling menu manipulation and noclick walk");
+            Menu.toggleMenuManipulation(false);
+            Walking.toggleNoClickWalk(false);
         }
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
