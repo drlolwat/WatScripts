@@ -100,13 +100,14 @@ public class VampyreSlayerQuest implements QuestTask {
                             if (bartender != null && bartender.exists() && bartender.canReach()) {
                                 if (!bartender.interact()) {
                                     Logger.log("Failed to interact with Bartender");
+                                    return;
                                 }
 
                                 Sleep.sleepUntil(Dialogues::inDialogue, 5000);
                                 return;
                             }
                         } else {
-                            DialogueUtils.solve(Collections.singletonList("A glass of your finest ale please."));
+                            DialogueUtils.solve(Arrays.asList("A glass of your finest ale please."));
                         }
                     }
 
@@ -121,7 +122,7 @@ public class VampyreSlayerQuest implements QuestTask {
                             return;
                         }
                     } else {
-                        DialogueUtils.solve(Arrays.asList("Morgan needs your help!"));
+                        DialogueUtils.solve(Arrays.asList("Morgan needs your help!", "Okay mate."));
                     }
                 } else {
                     if (Players.getLocal().isInCombat() || Players.getLocal().isHealthBarVisible()) {
