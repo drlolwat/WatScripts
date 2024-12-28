@@ -35,7 +35,7 @@ public class GetSilverlight implements WatTask {
 
     @Override
     public String getName() {
-        return "";
+        return "Grabbing silverlight";
     }
 
     @Override
@@ -48,21 +48,21 @@ public class GetSilverlight implements WatTask {
         // wizard traiborns key
         if(!ItemUtils.inventoryContains(2399, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2399, 1,
-                    new GetTraibornKey(this), this));
+                    new GetTraibornKey(wrapper), wrapper));
             return;
         }
 
         // sir prysins key
         if (!ItemUtils.inventoryContains(2401, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2401, 1,
-                    new GetPrysinKey(this), this));
+                    new GetPrysinKey(wrapper), wrapper));
             return;
         }
 
         // captain rovins key
         if (!ItemUtils.inventoryContains(2400, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2400, 1,
-                    new GetRovinsKey(this), this));
+                    new GetRovinsKey(wrapper), wrapper));
             return;
         }
 

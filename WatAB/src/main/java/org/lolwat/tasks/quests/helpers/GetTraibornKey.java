@@ -47,15 +47,6 @@ public class GetTraibornKey implements WatTask {
                 new Tile(3114, 3163, 1),
                 new Tile(3111, 3165, 1));
 
-        if (!Inventory.contains(x -> x.getName().equalsIgnoreCase("bones") && !x.isNoted()) || Inventory.count("Bones") < 25) {
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
-                {
-                    put("Bones", 25);
-                }
-            }, null, 1, wrapper));
-            return;
-        }
-
         if (!Dialogues.inDialogue() && !traibornArea.contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(traibornArea, wrapper));
             return;
@@ -63,14 +54,23 @@ public class GetTraibornKey implements WatTask {
 
         if (Dialogues.inDialogue()) {
             DialogueUtils.wipeOptions();
-            DialogueUtils.continueWhilePossible();
             DialogueUtils.solve(Arrays.asList("Talk about Demon Slayer.",
                     "He told me you were looking after it for him.",
                     "Well, have you got any keys knocking around?",
                     "I'll get the bones for you."));
+            return;
         }
 
         if (!Dialogues.inDialogue()) {
+            if (!Inventory.contains(x -> x.getName().equalsIgnoreCase("bones") && !x.isNoted()) || Inventory.count("Bones") < 25) {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                    {
+                        put("Bones", 25);
+                    }
+                }, null, 1, wrapper));
+                return;
+            }
+
             NPC traiborn = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("wizard traiborn")
                     && x.canReach());
 
