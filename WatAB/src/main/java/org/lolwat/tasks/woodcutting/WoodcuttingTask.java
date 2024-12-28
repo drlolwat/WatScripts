@@ -135,7 +135,9 @@ public class WoodcuttingTask implements WatTask {
                 return;
             }
 
-            GameObject tree = GameObjects.closest(x -> x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) && area.contains(x));
+            GameObject tree = GameObjects.closest(x ->
+                    (x.getName().equalsIgnoreCase(WoodcuttingUtils.getTreeName(treeType)) || treeType.equals(TreeType.TREE) && x.getName().contains("Evergreen"))
+                            && area.contains(x));
             if (tree != null && tree.interact()) {
                 gotLog = false;
                 Sleep.sleepUntil(() -> (treeType.equals(TreeType.TREE) && gotLog) ||
