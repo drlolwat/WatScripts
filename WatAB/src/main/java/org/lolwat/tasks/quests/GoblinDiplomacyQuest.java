@@ -44,7 +44,8 @@ public class GoblinDiplomacyQuest implements QuestTask {
             "I have some blue armour here.",
             "I have some brown armour here.",
             "How am I meant to get blue armour?",
-            "How am I meant to get orange armour?");
+            "How am I meant to get orange armour?",
+            "No, he doesn't look fat.");
 
     @Override
     public Quest completes() {
