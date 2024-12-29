@@ -254,11 +254,6 @@ public class MulingTask implements WatTask {
         return Skill.HITPOINTS;
     }
 
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
 
     @Override
     public HashMap<String, Integer> clothesRequired() {

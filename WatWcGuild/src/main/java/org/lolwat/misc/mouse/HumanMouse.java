@@ -20,8 +20,13 @@ public class HumanMouse extends StandardMouseAlgorithm {
         isMoving = true;
         Point suitPos = abstractMouseDestination.getSuitablePoint();
         generatePoints(suitPos);
-        isMoving = false;
 
+        // Final check and correction step
+        if (distance(Mouse.getPosition(), suitPos) >= 2) {
+            moveCursorWithCubicBezier(Mouse.getPosition(), suitPos);
+        }
+
+        isMoving = false;
         return distance(Mouse.getPosition(), suitPos) < 2;
     }
 

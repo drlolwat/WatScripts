@@ -191,6 +191,10 @@ public class GrandExchangeTask implements WatTask {
                         itemFinal = TeleportManager.getInstance().getChargedItemName(itemFinal);
                     }
 
+                    if(itemFinal.startsWith("Stamina potion(")) {
+                        itemFinal = "Stamina potion(4)";
+                    }
+
                     Logger.log("Buying: " + itemFinal);
 
                     if (!GrandExchange.isBuyOpen() && !GrandExchange.openBuyScreen(slot)) {
@@ -338,11 +342,6 @@ public class GrandExchangeTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
-    }
-
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
     }
 
 

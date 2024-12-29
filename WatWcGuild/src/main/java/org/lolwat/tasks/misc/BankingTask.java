@@ -5,7 +5,8 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.grandexchange.LivePrices;
+import org.dreambot.api.methods.prayer.Prayer;
+import org.dreambot.api.methods.prayer.Prayers;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -16,11 +17,11 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.BankUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 
-import java.time.Instant;
 import java.util.*;
 
 public class BankingTask implements WatTask {
@@ -97,7 +98,15 @@ public class BankingTask implements WatTask {
     @Override
     public void execute() {
         if (!Bank.isOpen()) {
-            ItemUtils.bank(this);
+            if (Prayers.isActive(Prayer.PROTECT_FROM_MISSILES) && !Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
+                Logger.log("failed to toggle protect from missiles");
+            }
+
+            if(GenericUtils.performEmergencyWork()) {
+                return;
+            }
+
+            BankUtils.bank(this);
             return;
         }
 
@@ -208,7 +217,6 @@ public class BankingTask implements WatTask {
         if (postTask != null) {
             Logger.log("post task not null: " + postTask.getName());
             if (!postTask.clothesRequired().isEmpty()) {
-                Logger.log("clothes required");
                 for (Map.Entry<String, Integer> entry : postTask.clothesRequired().entrySet()) {
                     Logger.log(entry.getKey() + ": " + entry.getValue());
                     int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
@@ -230,7 +238,7 @@ public class BankingTask implements WatTask {
                         continue;
                     }
 
-                    if (Bank.contains(x -> x != null && x.getName().contains(entry.getKey()) && x.getAmount() >= entry.getValue())) {
+                    if (ItemUtils.bankContains(entry.getKey(), entry.getValue())) {
                         Logger.log("contains");
                         if (Inventory.isFull()) {
                             Bank.depositAllItems();
@@ -238,7 +246,7 @@ public class BankingTask implements WatTask {
                         }
 
                         if (Bank.withdraw(x -> x != null && x.getName().contains(entry.getKey()), amountRequired)) {
-                            Sleep.sleepUntil(() -> Inventory.contains(entry.getKey()), Calculations.random(5000, 10000));
+                            Sleep.sleepUntil(() -> Inventory.contains(x -> x != null && !x.isNoted() && x.getName().contains(entry.getKey())) && Inventory.count(x -> x != null && x.getName().contains(entry.getKey())) >= entry.getValue(), Calculations.random(5000, 10000));
                             if (Inventory.contains(entry.getKey())) {
                                 Logger.log("Equipment: Successfully withdrew: " + entry.getKey());
                             }
@@ -271,8 +279,6 @@ public class BankingTask implements WatTask {
                     Sleep.sleepUntil(Bank::isOpen, Calculations.random(5000, 10000));
                 }
             }
-
-            //handleEquipmentDeposit();
         }
 
         Logger.log("Equipment: Finished checking");
@@ -280,42 +286,60 @@ public class BankingTask implements WatTask {
         Logger.log("Inventory: Beginning checks");
         if (!inventoryRequired.isEmpty()) {
             for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
-                Logger.log("Inventory: Checking for: " + entry.getKey());
+                String itemName;
+                if(entry.getKey().endsWith("(") && (entry.getKey().contains("potion") || entry.getKey().contains("Antidote"))) {
+                    itemName = entry.getKey() + "4)";
+                } else {
+                    itemName = entry.getKey();
+                }
+
+                Logger.log("Inventory: Checking for: " + itemName);
                 ItemUtils.setBankMode(BankMode.ITEM);
                 int amountRequired;
-                if (ItemUtils.SINGULAR_ITEMS.contains(entry.getKey()))
+                if (ItemUtils.SINGULAR_ITEMS.contains(itemName))
                     amountRequired = 1;
                 else {
-                    amountRequired = entry.getValue() > 0 ? entry.getValue() : 1;
+                    amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
                 }
 
-                if (Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()) && x.isNoted())) {
-                    Logger.log("Inventory: Depositing noted: " + entry.getKey());
-                    Bank.depositAll(entry.getKey());
-                    Sleep.sleepUntil(() -> !Inventory.contains(entry.getKey()), 1500);
+                if (Inventory.contains(x -> x != null && x.getName().contains(itemName) && x.isNoted())) {
+                    Logger.log("Inventory: Depositing noted: " + itemName);
+                    Bank.depositAll(x -> x != null && x.isNoted() && x.getName().contains(itemName));
+                    Sleep.sleepUntil(() -> !Inventory.contains(x -> x != null && x.isNoted() && x.getName().contains(itemName)), 1500);
                 }
 
-                if (ItemUtils.inventoryContains(entry.getKey(), amountRequired, false)) {
-                    if (entry.getValue() > 0 && ItemUtils.inventoryCount(entry.getKey(), false) > amountRequired) {
-                        Logger.log("Inventory: Depositing extras of: " + entry.getKey());
-                        Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
-                        Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
+                if (ItemUtils.inventoryContains(itemName, amountRequired, false)) {
+                    if (entry.getValue() > 0 && ItemUtils.inventoryCount(itemName, false) > amountRequired) {
+                        Logger.log("Inventory: Depositing extras of: " + itemName);
+                        Bank.deposit(itemName, (Inventory.count(itemName) - amountRequired));
+                        Sleep.sleepUntil(() -> Inventory.count(itemName) == amountRequired, 1500);
                     }
 
                     Logger.log("Inventory: We have enough of " + entry.getKey() + " already");
                     continue;
                 }
 
-                if (Equipment.contains(entry.getKey())) {
+                if (Equipment.contains(itemName)) {
                     Logger.log("Inventory item is actually equipped, skipping: " + entry.getKey());
                     Sleep.sleep(100, 200);
                     continue;
                 }
 
-                if (ItemUtils.bankContains(entry.getKey(), entry.getValue())) {
+                int needWithdraw = amountRequired;
+                int amountAlready = Inventory.count(x -> x != null && !x.isNoted() && x.getName().contains(itemName));
+                if (amountAlready > 0) {
+                    needWithdraw -= amountAlready;
+                }
+
+                if(needWithdraw == 0) {
+                    Logger.log("Inventory: We have enough of " + entry.getKey() + " already(2)");
+                    continue;
+                }
+
+                if (ItemUtils.bankContains(itemName, needWithdraw)) {
                     int toWithdraw = entry.getValue() > 0
                             ? entry.getValue()
-                            : Bank.count(x -> x != null && x.getName().contains(entry.getKey()));
+                            : Bank.count(x -> x != null && x.getName().contains(itemName));
 
                     if (Inventory.isFull()) {
                         Logger.log("Inventory: Depositing all items, reason: Full, need space");
@@ -324,36 +348,39 @@ public class BankingTask implements WatTask {
                     }
 
                     int reduceBy = 0;
-                    if (Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()))) {
-                        reduceBy = Inventory.count(x -> x != null && x.getName().contains(entry.getKey()));
+                    if (Inventory.contains(x -> x != null && x.getName().contains(itemName))) {
+                        reduceBy = Inventory.count(x -> x != null && x.getName().contains(itemName));
                     }
 
                     toWithdraw -= reduceBy;
                     for (String s : ItemUtils.SINGULAR_ITEMS) {
-                        if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
+                        if (s.toLowerCase().contains(itemName.toLowerCase())) {
                             toWithdraw = 1;
                             break;
                         }
                     }
 
                     if (buyingRequired.isEmpty()) {
-                        if (!Bank.withdraw(x -> x != null && x.getName().contains(entry.getKey()), toWithdraw)) {
-                            Logger.error("Inventory: Issue withdrawing " + entry.getKey());
+                        if (!Bank.withdraw(x -> x != null && x.getName().contains(itemName), toWithdraw)) {
+                            Logger.error("Inventory: Issue withdrawing " + itemName);
                         } else {
-                            Logger.log("Inventory: Withdrew " + toWithdraw + " of: " + entry.getKey());
+                            Logger.log("Inventory: Withdrew " + toWithdraw + " of: " + itemName);
                         }
 
-                        Sleep.sleepUntil(() -> Inventory.contains(x -> x != null && x.getName().contains(entry.getKey())), Calculations.random(5000, 10000));
+                        Sleep.sleepUntil(() -> Inventory.contains(x -> x != null && !x.isNoted() && x.getName().contains(itemName)) && Inventory.count(x -> x != null && x.getName().contains(itemName)) >= entry.getValue(), Calculations.random(5000, 10000));
                     }
                 } else {
-                    if (Inventory.contains(entry.getKey()) && (Inventory.count(entry.getKey()) >= amountRequired || Inventory.get(entry.getKey()).getAmount() >= amountRequired)) {
-                        Logger.log("Inventory: We have enough of " + entry.getKey() + " already");
+                    if (Inventory.count(itemName) >= amountRequired) {
+                        Logger.log("Inventory: We have enough of " + itemName + " already");
                         continue;
                     }
 
                     int amountToBuy = (entry.getValue() > 0 ? entry.getValue() : -entry.getValue()) * inventoriesWorth;
+
+                    Logger.log("prelim: we need to buy " + amountToBuy + " of: " + itemName);
+
                     for (String s : ItemUtils.SINGULAR_ITEMS) {
-                        if (s.toLowerCase().contains(entry.getKey().toLowerCase())) {
+                        if (s.toLowerCase().contains(itemName.toLowerCase())) {
                             amountToBuy = 1;
                             break;
                         }
@@ -362,8 +389,37 @@ public class BankingTask implements WatTask {
                     if (entry.getValue().equals(1))
                         amountToBuy = 1;
 
-                    buyingRequired.put(entry.getKey(), amountToBuy);
-                    Logger.log("Inventory: We need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                    String name = itemName;
+                    if(itemName.endsWith("(") || itemName.contains("potion")) {
+                        amountToBuy = amountToBuy * 4;
+                        if(entry.getKey().startsWith("Ring of wealth")) {
+                            name = entry.getKey() + "5)";
+                        }
+                        else if(entry.getKey().startsWith("Games necklace")) {
+                            name = entry.getKey() + "8)";
+                        }
+                        else if(entry.getKey().startsWith("Ring of dueling")) {
+                            name = entry.getKey() + "8)";
+                        }
+                    }
+
+                    int amountOwned = Bank.count(
+                            x -> x != null && x.getName().contains(itemName)
+                    ) + Inventory.count(
+                            x -> x != null && !x.isNoted() && x.getName().contains(itemName)
+                    ) + Equipment.count(
+                            x -> x != null && x.getName().contains(itemName)
+                    );
+
+                    if(amountOwned > 0)
+                        amountToBuy = amountToBuy - amountOwned;
+
+                    Logger.log("postlim: we own " + amountOwned + " of: " + name + " so need to buy " + amountToBuy);
+
+                    if(amountToBuy > 0) {
+                        buyingRequired.put(name, amountToBuy);
+                        Logger.log("Inventory: We need to buy " + amountToBuy + " of: " + name);
+                    }
                 }
             }
         }
@@ -479,39 +535,6 @@ public class BankingTask implements WatTask {
             depositNonRequired();
         }
 
-        // calculate net worth
-        if (ConfigManager.getInstance().getNetWorthGeneratedAt() == 0) {
-            int total = 0;
-            for (Item i : Bank.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    total += LivePrices.get(i) * i.getAmount();
-                } else {
-                    total += LivePrices.get(i);
-                }
-            }
-
-            for (Item i : Inventory.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    total += LivePrices.get(i) * i.getAmount();
-                } else {
-                    total += LivePrices.get(i);
-                }
-            }
-
-            ConfigManager.getInstance().setNetWorth(total);
-            ConfigManager.getInstance().setNetWorthGeneratedAt(Instant.now().getEpochSecond());
-        } else {
-            if ((Instant.now().getEpochSecond() - ConfigManager.getInstance().getNetWorthGeneratedAt()) >= 3600) {
-                ConfigManager.getInstance().setNetWorthGeneratedAt(0); // will generate net worth next time.
-            }
-        }
-
         Logger.log("Banking: Complete");
 
         if (postTask != null) {
@@ -584,7 +607,7 @@ public class BankingTask implements WatTask {
         }
     }
 
-    private void depositNonRequired() {
+    /*private void depositNonRequired() {
         if (Inventory.isEmpty()) {
             return;
         }
@@ -640,7 +663,7 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                Logger.log("Banking: Depositing all except: " + toKeep.toString());
+                Logger.log("Banking: Depositing all except: " + toKeep);
                 Bank.depositAllExcept(toKeep.toArray(new String[0]));
             } else {
                 for (Item i : Inventory.all()) {
@@ -663,6 +686,86 @@ public class BankingTask implements WatTask {
                 Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
             }
         }
+    }*/
+
+    private void depositNonRequired() {
+        Logger.log("Depositing non required items");
+
+        if (Inventory.isEmpty()) {
+            Logger.log("Inventory is empty, nothing to deposit");
+            return;
+        }
+
+        boolean canDepositAll = true;
+        for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+            if (Inventory.contains(x -> x != null && x.getName().contains(entry.getKey()))) {
+                Logger.log("Inventory contains required item: " + entry.getKey());
+                canDepositAll = false;
+                break;
+            }
+        }
+
+        for (String i : inventoryTolerated()) {
+            if (Inventory.contains(x -> x != null && x.getName().contains(i))) {
+                Logger.log("Inventory contains tolerated item: " + i);
+                canDepositAll = false;
+                break;
+            }
+        }
+
+        if (!canDepositAll) {
+            Logger.log("Not all items can be deposited");
+
+            if (!inventoryRequired.isEmpty()) {
+                for (Map.Entry<String, Integer> entry : inventoryRequired.entrySet()) {
+                    Logger.log("Checking required item: " + entry.getKey());
+                    if (Inventory.contains(x -> x != null && x.getName().contains(entry.getKey())) && entry.getValue() > 0) {
+                        if (Inventory.count(x -> x != null && x.getName().contains(entry.getKey())) > entry.getValue()) {
+                            if (Inventory.count(x -> x.getName().contains(entry.getKey()) && x.isNoted()) > 0) {
+                                Logger.log("Depositing noted item: " + entry.getKey());
+                                Bank.depositAll(x -> x.getName().contains(entry.getKey()) && x.isNoted());
+                                Sleep.sleepUntil(() -> !Inventory.contains(x -> x != null && x.getName().contains(entry.getKey())), 1500);
+                            } else {
+                                Logger.log("Depositing extras of: " + entry.getKey() + ", have: " + Inventory.count(x -> x != null && x.getName().contains(entry.getKey())) + ", need: " + entry.getValue());
+                                Bank.deposit(entry.getKey(), (Inventory.count(x -> x != null && x.getName().contains(entry.getKey())) - entry.getValue()));
+                                Sleep.sleepUntil(() -> Inventory.count(x -> x != null && x.getName().contains(entry.getKey())) == entry.getValue(), 1500);
+                            }
+                        }
+                    }
+                }
+
+                List<String> toKeep = new ArrayList<>();
+                for (Item i : Inventory.all()) {
+                    if (i == null) continue;
+                    for (String n : inventoryRequired().keySet()) {
+                        if (i.getName().contains(n)) {
+                            Logger.log("Keeping item: " + i.getName());
+                            toKeep.add(i.getName());
+                        }
+                    }
+                }
+
+                Logger.log("Depositing all except: " + toKeep);
+                Bank.depositAllExcept(toKeep.toArray(new String[0]));
+            } else {
+                for (Item i : Inventory.all()) {
+                    if (i == null) continue;
+                    if (postTask != null && postTask.inventoryTolerated().contains(i.getName())) {
+                        Logger.log("Inventory tolerates item: " + i.getName());
+                        continue;
+                    }
+                    Logger.log("Depositing item: " + i.getName());
+                    Bank.depositAll(i.getName());
+                    Sleep.sleepUntil(() -> !Inventory.contains(i.getName()), 5000);
+                }
+            }
+        } else {
+            Logger.log("Depositing all items");
+            Bank.depositAllItems();
+            Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
+        }
+
+        Logger.log("Finished depositing non required items");
     }
 
     @Override
@@ -688,11 +791,6 @@ public class BankingTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
-    }
-
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
     }
 
     @Override

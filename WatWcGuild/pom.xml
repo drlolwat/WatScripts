@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lolwat</groupId>
-    <artifactId>WatScript1</artifactId>
-    <version>0.1-RELEASE</version>
+    <artifactId>WatShamans</artifactId>
+    <version>1.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

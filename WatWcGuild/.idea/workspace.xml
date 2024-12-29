@@ -7,9 +7,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="updates">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="WatScript: handle 6hr logout message">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/CustomPaint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/PaintInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/PaintableText.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/BankUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LogoutTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanLobbyTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/types/WatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/HumanMouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/HumanMouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/GenericUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/ItemUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/ItemUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GatheringTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GatheringTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/HopperTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/HopperTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanCombatTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,13 +115,13 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatMiner&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/chchp/IdeaProjects/wat-shamans/src/main/java/org/lolwat/misc&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
@@ -111,15 +130,21 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chchp\IdeaProjects\wat-shamans\src\main\java\org\lolwat\misc" />
+    </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.lolwat.misc.utils.BankUtils" />
       <recent name="org.lolwat.misc.utils.ItemUtils" />
       <recent name="org.lolwat.misc.utils.TutorialUtils" />
       <recent name="org.lolwat.misc.utils.smithing.SmithingUtils" />
       <recent name="org.lolwat.misc.utils.crafting.CraftingUtils" />
-      <recent name="org.lolwat.misc.utils.fishing.FishingUtils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.tasks.misc" />
     </key>
   </component>
   <component name="RunManager">
@@ -138,8 +163,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -218,7 +243,17 @@
       <workItem from="1728682661396" duration="5642000" />
       <workItem from="1728784419530" duration="7000" />
       <workItem from="1728784765412" duration="1208000" />
-      <workItem from="1728788171721" duration="2534000" />
+      <workItem from="1728788171721" duration="54910000" />
+      <workItem from="1730590888817" duration="41000" />
+      <workItem from="1730680545804" duration="820000" />
+      <workItem from="1730933292443" duration="1090000" />
+      <workItem from="1731290186008" duration="395000" />
+      <workItem from="1731719123698" duration="41024000" />
+      <workItem from="1733277177839" duration="5082000" />
+      <workItem from="1733590843585" duration="12806000" />
+      <workItem from="1734397825285" duration="5618000" />
+      <workItem from="1734800079397" duration="552000" />
+      <workItem from="1735264792268" duration="3551000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -563,7 +598,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="683" />
+    <option name="localTasksCounter" value="707" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -610,32 +645,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ErnestTheChickenQuest: bank if inventory is full" />
-    <MESSAGE value="LogoutTask: address double-int cast error" />
-    <MESSAGE value="DoricsQuest: robustness" />
-    <MESSAGE value="ItemUtils: new methods: setBankMode, bank, bankContains, inventoryContains" />
-    <MESSAGE value="LiquidationTask: use ItemUtils" />
-    <MESSAGE value="BankingTask: use ItemUtils" />
-    <MESSAGE value="RuneMysteriesQuest: add dialogue to wizard dude" />
-    <MESSAGE value="WatAIO: version change" />
-    <MESSAGE value="new task: QuickWithdrawTask" />
-    <MESSAGE value="new task: GetPrysinKey" />
-    <MESSAGE value="new task: GetRovinsKey" />
-    <MESSAGE value="new task: GetTraibornKey" />
-    <MESSAGE value="new task: GetSilverlight" />
-    <MESSAGE value="DemonSlayerQuest: will collect items correctly, bank if needed" />
-    <MESSAGE value="QuickWithdrawTask: named" />
-    <MESSAGE value="ItemUtils: new method: equipmentContains" />
-    <MESSAGE value="GetSilverlight: inherit correct post task" />
-    <MESSAGE value="initial commit" />
-    <MESSAGE value="gets in and out like a champ" />
-    <MESSAGE value="dont talk about fight club" />
-    <MESSAGE value="dont talk about fight club again" />
-    <MESSAGE value="dont talk about fight club again 2" />
-    <MESSAGE value="dont talk about fight club again for real" />
-    <MESSAGE value="cleanup" />
     <MESSAGE value="updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="updates" />
+    <MESSAGE value="will start logging changes after this commit" />
+    <MESSAGE value="BankingTask: add reverse muling" />
+    <MESSAGE value="Combat: comment arrow doublecheck" />
+    <MESSAGE value="WatScript: add webhooks" />
+    <MESSAGE value="BankingTask: added logging" />
+    <MESSAGE value="BondingTask: new task" />
+    <MESSAGE value="GenericUtils: consider 1 day left of members as not a member" />
+    <MESSAGE value="HopperTask: add logic to deal with same world stuff" />
+    <MESSAGE value="MulingTask: dont hop if in the same world already" />
+    <MESSAGE value="CombatTask: add webhook, ensure prayer off when Anotha one" />
+    <MESSAGE value="TaskManager: dirty but its ok" />
+    <MESSAGE value="WatScript: add p2p hopper into main loop" />
+    <MESSAGE value="BondingTask: modify to work with WS1" />
+    <MESSAGE value="GenericUtils: new method: getMemberDays" />
+    <MESSAGE value="HopperTask: handle diff for BondingTask and MulingTask" />
+    <MESSAGE value="MulingTask: track start time and cancel/retry after 3min to avoid stuckness" />
+    <MESSAGE value="CombatTask: consider all edibles food not just shark (for vital items)" />
+    <MESSAGE value="TaskManager: move isMember check to onLoop" />
+    <MESSAGE value="WatScript: handle bonding/member days in onLoop" />
+    <MESSAGE value="BondingTask: fixes" />
+    <MESSAGE value="GenericUtils: change isMember method" />
+    <MESSAGE value="CombatTask: set req members to false to enforce bonding" />
+    <MESSAGE value="TaskManager: force combat task on null task" />
+    <MESSAGE value="WatScript: handle 6hr logout message" />
+    <option name="LAST_COMMIT_MESSAGE" value="WatScript: handle 6hr logout message" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
