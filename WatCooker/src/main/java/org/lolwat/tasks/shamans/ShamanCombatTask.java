@@ -1,9 +1,11 @@
 package org.lolwat.tasks.shamans;
 
 import org.dreambot.api.methods.combat.Combat;
+import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -44,7 +46,7 @@ public class ShamanCombatTask implements WatTask {
     private NPC currentTarget = null;
     private boolean scheduled = false;
 
-    private final Area monsterArea = new Area(1289, 10100, 1296, 10093);
+    private final Area westArea = new Area(1289, 10100, 1296, 10093);
     private final Area topLeft = new Area(1292, 10100, 1289, 10097);
     private final Area topRight = new Area(1296, 10100, 1293, 10097);
     private final Area bottomLeft = new Area(1289, 10096, 1292, 10093);
@@ -102,6 +104,12 @@ public class ShamanCombatTask implements WatTask {
 
     @Override
     public void execute() {
+        if(Combat.getHealthPercent() <= 20) {
+            Logger.log("escaping due to emergency");
+            TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 3, this, null));
+            return;
+        }
+
         if (!reachedLocation) {
             for (Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
                 if (!ItemUtils.inventoryContains(entry.getKey(), entry.getValue(), false)) {
@@ -117,18 +125,10 @@ public class ShamanCombatTask implements WatTask {
                     TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 3, this, null));
                     return;
                 }
-
-                /*if(entry.getKey().contains("bolt") || entry.getKey().contains("arrow")) {
-                    if(Equipment.count(entry.getKey()) < 500) {
-                        Logger.log("missing " + entry.getKey() + " with decent qty");
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 3, this, null));
-                        return;
-                    }
-                }*/
             }
         }
 
-        if (!monsterArea.contains(Players.getLocal())) {
+        if (!westArea.contains(Players.getLocal())) {
             Area lowerLanding = new Tile(1312, 10086).getArea(3);
             if (!lowerLanding.contains(Players.getLocal())) {
                 Area topEntrance = new Tile(1313, 3683, 0).getArea(2);
@@ -159,7 +159,7 @@ public class ShamanCombatTask implements WatTask {
                     return;
                 }
 
-                Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 45000);
+                Sleep.sleepUntil(() -> westArea.contains(Players.getLocal()), 45000);
             }
 
             return;
@@ -168,6 +168,13 @@ public class ShamanCombatTask implements WatTask {
         if (!reachedLocation) {
             Logger.log("reached location for monster");
             reachedLocation = true;
+        }
+
+        if(Combat.getCombatStyle() != CombatStyle.RANGED_RAPID) {
+            if(!Combat.setCombatStyle(CombatStyle.RANGED_RAPID)) {
+                Logger.log("failed to set combat style to rapid");
+                return;
+            }
         }
 
         Item antidote = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Antidote++"));
@@ -262,7 +269,7 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(() -> Skills.getBoostedLevel(Skill.RANGED) > Skills.getRealLevel(Skill.RANGED), 5000);
         }
 
-        if (GenericUtils.tooManyPlayers(monsterArea, 1, false) && Combat.getHealthPercent() >= 65) {
+        if (GenericUtils.tooManyPlayers(westArea, 1, false) && Combat.getHealthPercent() >= 65) {
             Logger.log("too many players in area, hopping worlds");
             TaskManager.getInstance().setCurrentTask(new HopperTask(0, this));
             TaskManager.getInstance().getCurrentTask().execute();
@@ -365,11 +372,6 @@ public class ShamanCombatTask implements WatTask {
     }
 
     @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
-    @Override
     public HashMap<String, Integer> clothesRequired() {
         HashMap<String, Integer> ret = new HashMap<>();
         ret.put("Ring of wealth (", 1);
@@ -389,20 +391,15 @@ public class ShamanCombatTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         HashMap<String, Integer> ret = new HashMap<>();
-        ret.put("Ranging potion(4)", 2);
-        ret.put("Prayer potion(4)", 8);
-        ret.put("Stamina potion(4)", 2);
+        ret.put("Ranging potion(", 2);
+        ret.put("Prayer potion(", 8);
+        ret.put("Stamina potion(", 2);
         ret.put("Shark", 9);
-        ret.put("Antidote++(4)", 2);
+        ret.put("Antidote++(", 2);
         ret.put("Skills necklace(", 1);
         ret.put("Nature rune", 500);
         ret.put("Fire rune", 500 * 5);
         return ret;
-    }
-
-    @Override
-    public boolean requiresMembers() {
-        return false;
     }
 
     @Override
@@ -413,7 +410,7 @@ public class ShamanCombatTask implements WatTask {
     @Override
     public void onNpcAnimation(NPC npc, int animation, int animationDelay) {
         if (npc == null) return;
-        if (!monsterArea.contains(Players.getLocal())) return;
+        if (!westArea.contains(Players.getLocal())) return;
         if (scheduled) return;
 
         List<Integer> runFromAnimations = Arrays.asList(7152, 7158);
@@ -464,8 +461,8 @@ public class ShamanCombatTask implements WatTask {
     @Override
     public void onNpcSpawn(NPC npc) {
         if (npc == null) return;
-        if (!monsterArea.contains(Players.getLocal())) return;
-        if (!monsterArea.contains(npc)) return;
+        if (!westArea.contains(Players.getLocal())) return;
+        if (!westArea.contains(npc)) return;
 
         if (npc.getID() == 6768) {
             Logger.log("spawn has spawned lol");
@@ -531,6 +528,8 @@ public class ShamanCombatTask implements WatTask {
                 if (Magic.isSpellSelected()) {
                     Magic.deselect();
                 }
+            } else {
+                WatScript.getInstance().setGoldAlched(WatScript.getInstance().getGoldAlched() + i.getHighAlchValue());
             }
         }
     }
@@ -541,18 +540,20 @@ public class ShamanCombatTask implements WatTask {
         if (currentTarget != null && currentTarget.equals(npc)) {
             Logger.log("current target despawned");
             currentTarget = null;
+            WatScript.getInstance().setShamansKilled(WatScript.getInstance().getShamansKilled() + 1);
         }
     }
 
     @Override
-    public void onGroundItemSpawn(GroundItem object) {
-        if (object == null) return;
-        if (!stackableItems.contains(object.getName())
-                && !alchemyItems.contains(object.getName())
-                && !object.getName().equals("Dragon warhammer")) {
+    public void onGroundItemSpawn(GroundItem item) {
+        if (item == null) return;
+        if (!stackableItems.contains(item.getName())
+                && !alchemyItems.contains(item.getName())
+                && !item.getName().equals("Dragon warhammer")) {
             return;
         }
-        groundItemQueue.add(object);
+
+        groundItemQueue.add(item);
     }
 
     private void processGroundItemQueue() {
@@ -561,7 +562,8 @@ public class ShamanCombatTask implements WatTask {
             Item foodItem = Inventory.get(x -> x != null && x.hasAction("Eat"));
             if (foodItem != null) {
                 if (!foodItem.interact("Eat")) {
-                    Logger.log("failed to eat food");
+                    Logger.log("failed to eat food to drop");
+                    return;
                 }
             }
         }
@@ -594,7 +596,9 @@ public class ShamanCombatTask implements WatTask {
             Sleep.sleepUntil(() -> Inventory.contains("Dragon warhammer"), 5000);
 
             if (Inventory.contains("Dragon warhammer")) {
-                WatScript.getInstance().sendWebhook("Anotha one", false);
+                WatScript.getInstance().setItemWorthPicked(WatScript.getInstance().getItemWorthPicked() + LivePrices.get("Dragon warhammer"));
+                WatScript.getInstance().sendWebhook("Main drop detected", false);
+                WatScript.getInstance().setDwhCollected(WatScript.getInstance().getDwhCollected() + 1);
                 TaskManager.getInstance().setCurrentTask(new BankingTask(inventoryRequired(), null, 1, this, null));
                 TaskManager.getInstance().getCurrentTask().execute();
                 if (!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
@@ -609,9 +613,9 @@ public class ShamanCombatTask implements WatTask {
             if (Inventory.size() <= 27 || Inventory.contains("Coins")) {
                 if (!item.interact("Take")) {
                     Logger.log("failed to take alchable: " + item.getName());
-                    Sleep.sleepUntil(() -> !item.exists(), 5000);
                 }
 
+                Sleep.sleepUntil(() -> !item.exists(), 3000);
                 attempted = true;
             }
         }
@@ -620,10 +624,14 @@ public class ShamanCombatTask implements WatTask {
             if ((Inventory.size() <= 26 || Inventory.contains(item.getName()) || (Inventory.contains("Coins") && Inventory.size() <= 27))) {
                 if (!item.interact("Take")) {
                     Logger.log("failed to take stackable: " + item.getName());
-                    Sleep.sleepUntil(() -> !item.exists(), 5000);
                 }
 
+                Sleep.sleepUntil(() -> !item.exists(), 3000);
                 attempted = true;
+
+                if(!item.exists() && !alchemyItems.contains(item.getName())) {
+                    WatScript.getInstance().setItemWorthPicked(WatScript.getInstance().getItemWorthPicked() + (LivePrices.get(item.getName()) * item.getAmount()));
+                }
             }
         }
 
