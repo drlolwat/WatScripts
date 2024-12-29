@@ -12,8 +12,12 @@ import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.settings.PlayerSettings;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
@@ -28,6 +32,7 @@ import java.util.regex.Pattern;
 
 public class GenericUtils {
     private static final Map<Player, Long> playerEntryTimes = new HashMap<>();
+    private static int hopperTime = Calculations.random(8, 20);
 
     public static boolean tooManyPlayers(Area area, int count, boolean ignoreTime) {
         long currentTime = System.currentTimeMillis();
@@ -38,7 +43,7 @@ public class GenericUtils {
             if (area.contains(ply)) {
                 playerEntryTimes.putIfAbsent(ply, currentTime);
 
-                if (ignoreTime || currentTime - playerEntryTimes.get(ply) > 8000) {
+                if (ignoreTime || currentTime - playerEntryTimes.get(ply) > (hopperTime * 1000L)) {
                     playerCount++;
                 }
             } else {
@@ -119,6 +124,74 @@ public class GenericUtils {
         }
     }
 
+    public static boolean performEmergencyWork() {
+        if(!GenericUtils.isMember()) {
+            return false;
+        }
+
+        if(WorldHopper.isWorldHopperOpen()) {
+            if(!WorldHopper.closeWorldHopper()) {
+                Logger.log("failed to close world hopper in emergency");
+                return false;
+            }
+        }
+
+        if (Combat.isPoisoned() || Combat.isEnvenomed() || Combat.isDiseased()) {
+            Logger.log("we are poisoned during a non combat task, handling");
+            Item antidote = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Antidote++"));
+            if(antidote != null) {
+                if (!antidote.interact("Drink")) {
+                    Logger.log("failed to drink antidote in emergency");
+                }
+            }
+
+            Sleep.sleepUntil(() -> !Combat.isPoisoned(), 5000);
+            return true;
+        }
+
+        if(!Tabs.isOpen(Tab.INVENTORY)) {
+            if(!Tabs.open(Tab.INVENTORY)) {
+                Logger.log("failed to open inventory in emergency");
+                return false;
+            }
+        }
+
+        if(Combat.getHealthPercent() <= 40) {
+            Item food = Inventory.get(x -> x != null && x.hasAction("Eat"));
+            if(food != null) {
+                if(!food.interact("Eat")) {
+                    Logger.log("failed to eat food in emergency");
+                }
+
+                return true;
+            }
+        }
+
+        if(Walking.getRunEnergy() <= 30) {
+            Item potion = Inventory.get(x -> x != null && x.getName().contains("Stamina potion") && x.hasAction("Drink"));
+            if(potion != null) {
+                if(!potion.interact("Drink")) {
+                    Logger.log("failed to drink stamina potion in emergency");
+                }
+
+                return true;
+            }
+        }
+
+        if(Skills.getBoostedLevel(Skill.PRAYER) <= 30) {
+            Item potion = Inventory.get(x -> x != null && x.getName().contains("Prayer potion") && x.hasAction("Drink"));
+            if(potion != null) {
+                if(!potion.interact("Drink")) {
+                    Logger.log("failed to drink prayer potion in emergency");
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static void castHomeTeleport() {
         if (Magic.canCast(Normal.HOME_TELEPORT)) {
             if (!Tabs.isOpen(Tab.MAGIC)) {
@@ -138,7 +211,7 @@ public class GenericUtils {
         }
     }
 
-    public static int[] parseText(String text) {
+    public static int[] parseBlowpipeData(String text) {
         int darts = 0;
         int scales = 0;
 
@@ -159,5 +232,13 @@ public class GenericUtils {
         }
 
         return new int[]{darts, scales};
+    }
+
+    public static int getHopperTime() {
+        return hopperTime;
+    }
+
+    public static void setHopperTime(int hopperTime) {
+        GenericUtils.hopperTime = hopperTime;
     }
 }

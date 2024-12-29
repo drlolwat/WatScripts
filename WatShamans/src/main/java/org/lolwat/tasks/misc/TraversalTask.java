@@ -46,6 +46,7 @@ public class TraversalTask implements WatTask {
     double taskStartedAt;
     Tile startedOnTile;
     boolean hadNoobChance;
+
     List<String> possibleDialogues = Arrays.asList(
             "Nobody.",
             "Don't tell them anything and ignore them.",
@@ -106,6 +107,10 @@ public class TraversalTask implements WatTask {
             return;
         }
 
+        if(GenericUtils.performEmergencyWork()) {
+            return;
+        }
+
         Widget w = Widgets.getWidget(579);
         if (w != null && w.isVisible()) {
             WidgetChild c = w.getChild(17);
@@ -119,41 +124,6 @@ public class TraversalTask implements WatTask {
                 return;
             }
         }
-
-        /*
-        int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
-        if (sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
-            Logger.log("Traversal: havent moved for 15 seconds, checking for portals etc");
-            GameObject portal = GameObjects.closest(x -> x != null && x.canReach() & x.getName().toLowerCase().contains("portal"));
-            if (portal != null) {
-                if (!portal.isOnScreen()) {
-                    Camera.rotateToEntity(portal);
-                    Sleep.sleepUntil(portal::isOnScreen, 5000);
-                }
-
-                if (portal.interact()) {
-                    Logger.log("Traversal: interacted with portal");
-                    Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(startedOnTile) && Players.getLocal().isStandingStill()
-                            && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating(), 5000);
-                }
-
-                return;
-            }
-
-            if (sinceStartedTask >= 90) {
-                GenericUtils.castHomeTeleport();
-
-                Logger.log("Traversal: havent moved for 90 seconds, home teleporting and moving on");
-                if (postTask != null) {
-                    TaskManager.getInstance().setCurrentTask(postTask);
-                } else {
-                    TaskManager.getInstance().setCurrentTask(null);
-                }
-
-                Tile current = Players.getLocal().getTile();
-                Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(current), 15000);
-            }
-        }*/
 
         if (GenericUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
@@ -255,8 +225,11 @@ public class TraversalTask implements WatTask {
                         }
 
                         Tile currentTile = Players.getLocal().getTile();
-                        Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
-                        hasTeleported = true;
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(3000, 5000));
+
+                        if(!Players.getLocal().getTile().equals(currentTile)) {
+                            hasTeleported = true;
+                        }
                         return;
                     }
                 } else {
@@ -353,11 +326,6 @@ public class TraversalTask implements WatTask {
         return Skill.HITPOINTS;
     }
 
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
@@ -378,6 +346,10 @@ public class TraversalTask implements WatTask {
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
+        if (postTask != null) {
+            return postTask.inventoryRequired();
+        }
+
         return new HashMap<>();
     }
 

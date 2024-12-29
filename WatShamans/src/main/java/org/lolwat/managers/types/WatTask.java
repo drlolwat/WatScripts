@@ -19,16 +19,12 @@ public interface WatTask {
 
     boolean requiresLogin();
 
-    Skill trainsSkill();
-
-    Integer avoidAfterLevel();
+    default Skill trainsSkill() {
+        return Skill.HITPOINTS;
+    }
 
     default int loopTime() {
         return 400;
-    }
-
-    default QuestTask questTask() {
-        return null;
     }
 
     default HashMap<String, Integer> clothesRequired() {
@@ -48,10 +44,6 @@ public interface WatTask {
     }
 
     default void onMessage(Message m) {
-    }
-
-    default boolean requiresMembers() {
-        return false;
     }
 
     default void onExpGained(Skill skill, int amount, WatScript instance) {
