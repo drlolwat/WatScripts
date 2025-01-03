@@ -158,7 +158,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         }
 
         if (ConfigManager.getInstance().isFirstStart()) {
-            Sleep.sleep(5000);
             ConfigManager.getInstance().setFirstStart(false);
         }
 
