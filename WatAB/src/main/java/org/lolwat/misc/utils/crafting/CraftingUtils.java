@@ -1,5 +1,7 @@
 package org.lolwat.misc.utils.crafting;
 
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.misc.types.crafting.CraftingType;
 
 import java.util.HashMap;
@@ -12,6 +14,25 @@ public class CraftingUtils {
             case BOWSTRING: return "Flax";
             case ROPE: return "Hair";
         }
+    }
+
+    public static String getBestGemToCut() {
+        int level = Skills.getRealLevel(Skill.CRAFTING);
+        String name = "opal";
+        if(level >= 43) {
+            name = "diamond";
+        }
+        else if(level >= 34) {
+            name = "ruby";
+        }
+        else if(level >= 27) {
+            name = "emerald";
+        }
+        else if(level >= 20) {
+            name = "sapphire";
+        }
+
+        return "Uncut " + name;
     }
 
     public static HashMap<String, Integer> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
