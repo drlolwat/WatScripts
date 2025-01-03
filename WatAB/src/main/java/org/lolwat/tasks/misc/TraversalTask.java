@@ -213,6 +213,10 @@ public class TraversalTask implements WatTask {
 
                                 Logger.log("Traversal: missing teleport item " + teleportItem);
                                 return;
+                            } else {
+                                Logger.log("Traversal: missing teleport item " + teleportItem + ", too far from G.E, walking");
+                                hasTeleported = true;
+                                return;
                             }
                         }
                     } else {
