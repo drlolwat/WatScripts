@@ -22,7 +22,6 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.types.prayer.BoneType;
@@ -36,8 +35,8 @@ import org.lolwat.tasks.combat.MagicCombatTask;
 import org.lolwat.tasks.combat.MeleeCombatTask;
 import org.lolwat.tasks.combat.RangedCombatTask;
 import org.lolwat.tasks.cooking.CookingFishTask;
-import org.lolwat.tasks.crafting.JewelryTask;
-import org.lolwat.tasks.crafting.SpinningTask;
+import org.lolwat.tasks.crafting.GemCuttingTask;
+import org.lolwat.tasks.crafting.LeatherCraftingTask;
 import org.lolwat.tasks.firemaking.FiremakingTask;
 import org.lolwat.tasks.fishing.FishingTask;
 import org.lolwat.tasks.herblore.CleanHerbTask;
@@ -97,6 +96,8 @@ public class TaskManager {
             return;
         }
 
+        Logger.log("TaskManager: Selecting a new task..");
+
         DialogueUtils.wipeOptions();
 
         boolean quest = !noQuest
@@ -111,11 +112,12 @@ public class TaskManager {
                     continue;
 
                 if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
-                    if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember()
-                            || !task.requiresMembers() && !GenericUtils.isMember()) && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
+                    if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
                         Logger.log("TaskManager: Selected task: " + task.getName());
                         setCurrentTask(task, 0);
                         return;
+                    } else {
+                        Logger.log("TaskManager: Skipping task: " + task.getName());
                     }
                 }
             }
@@ -356,13 +358,6 @@ public class TaskManager {
 
         if(minutesPlayed == 0) {
             checkPlayTime();
-        }
-
-        boolean devMode = false; // change at compile time
-        if(devMode) {
-            setCurrentTask(new AdvertiseTask(), 0);
-            Logger.log("We are going to spam BotBuddy at the G.E");
-            return true;
         }
 
         if (!GenericUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
@@ -612,6 +607,17 @@ public class TaskManager {
 
     private List<WatTask> createMagicTasks() {
         List<WatTask> tasks = new ArrayList<>();
+        //lvl 2 rats
+        tasks.add(new MagicCombatTask(1, 10, new Area(
+                new Tile(3227, 9867, 0),
+                new Tile(3235, 9864, 0),
+                new Tile(3249, 9864, 0),
+                new Tile(3253, 9867, 0),
+                new Tile(3254, 9871, 0),
+                new Tile(3234, 9870, 0),
+                new Tile(3227, 9870, 0)), "Rat", new HashMap<String, Integer>() {
+        }, new ArrayList<>()));
+
         // falador chickens outside
         tasks.add(new MagicCombatTask( 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
         }, new ArrayList<>()));
@@ -723,6 +729,17 @@ public class TaskManager {
 
     private List<WatTask> createRangedTasks() {
         List<WatTask> tasks = new ArrayList<>();
+        // lvl 2 rats
+        tasks.add(new RangedCombatTask(1, 10, new Area(
+                new Tile(3227, 9867, 0),
+                new Tile(3235, 9864, 0),
+                new Tile(3249, 9864, 0),
+                new Tile(3253, 9867, 0),
+                new Tile(3254, 9871, 0),
+                new Tile(3234, 9870, 0),
+                new Tile(3227, 9870, 0)), "Rat", new HashMap<String, Integer>() {
+        }, new ArrayList<>()));
+
         // falador chickens outside
         tasks.add(new RangedCombatTask( 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
         }, new ArrayList<>()));
@@ -869,6 +886,17 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
         for (Skill sk : s) {
+            // lvl 2 rats
+            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
+                    new Tile(3227, 9867, 0),
+                    new Tile(3235, 9864, 0),
+                    new Tile(3249, 9864, 0),
+                    new Tile(3253, 9867, 0),
+                    new Tile(3254, 9871, 0),
+                    new Tile(3234, 9870, 0),
+                    new Tile(3227, 9870, 0)), "Rat", new HashMap<String, Integer>() {
+            }, new ArrayList<>()));
+
             // falador chickens outside
             tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
             }, new ArrayList<>()));
@@ -1143,15 +1171,17 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // wool, only uses lumbridge castle at the moment
-        tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 8, new HashMap<String, Integer>() { { put("Ball of wool", -Calculations.random(200, 400)); }}));
+        //tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 8, new HashMap<String, Integer>() { { put("Ball of wool", -Calculations.random(200, 400)); }}));
+        tasks.add(new LeatherCraftingTask(20));
+        tasks.add(new GemCuttingTask(ConfigManager.getInstance().getSkillTarget(Skill.CRAFTING)));
         // jewelry
-        tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -Calculations.random(200, 400)); }}));
-        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -Calculations.random(200, 400)); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 20, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -Calculations.random(200, 400)); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.EMERALDRING, 27, 32, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald ring", -200); put("Sapphire ring", -1); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.EMERALDNECKLACE, 29, 40, new HashMap<String, Integer>() { { put("Emerald necklace", -Calculations.random(200, 400)); put("Emerald ring", -1); put("Sapphire ring", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.RUBYNECKLACE, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby necklace", -Calculations.random(200, 400)); put("Emerald necklace", -1); put("Gold necklace", -1); }}));
-        tasks.add(new JewelryTask(CraftingType.DIAMONDNECKLACE, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond necklace", -Calculations.random(200, 400)); put("Ruby necklace", -1); put("Emerald necklace", -1); }}));
+        //tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -Calculations.random(200, 400)); }}));
+        //tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -Calculations.random(200, 400)); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        //tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 20, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -Calculations.random(200, 400)); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        //tasks.add(new JewelryTask(CraftingType.EMERALDRING, 27, 32, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald ring", -200); put("Sapphire ring", -1); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        //tasks.add(new JewelryTask(CraftingType.EMERALDNECKLACE, 29, 40, new HashMap<String, Integer>() { { put("Emerald necklace", -Calculations.random(200, 400)); put("Emerald ring", -1); put("Sapphire ring", -1); }}));
+        //tasks.add(new JewelryTask(CraftingType.RUBYNECKLACE, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby necklace", -Calculations.random(200, 400)); put("Emerald necklace", -1); put("Gold necklace", -1); }}));
+        //tasks.add(new JewelryTask(CraftingType.DIAMONDNECKLACE, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond necklace", -Calculations.random(200, 400)); put("Ruby necklace", -1); put("Emerald necklace", -1); }}));
 
         return tasks;
     }
@@ -1169,7 +1199,7 @@ public class TaskManager {
         tasks.add(new FishingTask(FishType.TROUT, 30, 99, new Tile(3241, 3245), new HashMap<>(), true));
 
         // n1c al kharid
-        tasks.add(new FishingTask(FishType.SHRIMPS, 1, 15, new Tile(3275, 3143), new HashMap<>(), true));
+        tasks.add(new FishingTask(FishType.SHRIMPS2, 1, 15, new Tile(3275, 3143), new HashMap<>(), true));
 
         // barbarian village
         tasks.add(new FishingTask(FishType.PIKE, 30, 99, new Tile(3108, 3433), new HashMap<>(), true));
@@ -1335,15 +1365,23 @@ public class TaskManager {
                 new HashMap<String, Integer>() {{ put("Tin ore", -Calculations.random(800, 1200)); }}, true));
 
         // Varrock East Iron
-        tasks.add(new MiningTask(15, 60, new Tile(3286, 3368), "Iron rocks",
-                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, true));
+        //tasks.add(new MiningTask(15, 60, new Tile(3286, 3368), "Iron rocks",
+        //        new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, true));
 
         // Mining Guild Iron
-        tasks.add(new MiningTask(60, 70, new Tile(3033, 9738), "Iron rocks",
+        tasks.add(new MiningTask(60, 75, new Tile(3033, 9738), "Iron rocks",
                 new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, true));
 
         // Mining Guild Coal
         tasks.add(new MiningTask(70, 100, new Tile(3033, 9738), "Coal rocks",
+                new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}, true));
+
+        // iron
+        tasks.add(new MiningTask(15, 75, new Tile(3403, 3169), "Iron rocks",
+                new HashMap<String, Integer>() {{ put("Iron ore", -Calculations.random(800, 1200)); }}, true));
+
+        // coal
+        tasks.add(new MiningTask(70, 99, new Tile(3403, 3169), "Coal rocks",
                 new HashMap<String, Integer>() {{ put("Coal", -Calculations.random(800, 1200)); }}, true));
 
         return tasks;
