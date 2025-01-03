@@ -133,6 +133,12 @@ public class ConfigManager {
         items.addProperty("Iron bar", -1);
         items.addProperty("Steel bar", -1);
         items.addProperty("Gold bar", -1);
+        items.addProperty("Leather gloves", -300);
+        items.addProperty("Opal", -100);
+        items.addProperty("Sapphire", -150);
+        items.addProperty("Emerald", -150);
+        items.addProperty("Ruby", -150);
+        items.addProperty("Diamond", -150);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
