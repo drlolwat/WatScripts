@@ -22,6 +22,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.types.prayer.BoneType;
@@ -36,6 +37,7 @@ import org.lolwat.tasks.combat.MeleeCombatTask;
 import org.lolwat.tasks.combat.RangedCombatTask;
 import org.lolwat.tasks.cooking.CookingFishTask;
 import org.lolwat.tasks.crafting.GemCuttingTask;
+import org.lolwat.tasks.crafting.JewelryTask;
 import org.lolwat.tasks.crafting.LeatherCraftingTask;
 import org.lolwat.tasks.firemaking.FiremakingTask;
 import org.lolwat.tasks.fishing.FishingTask;
@@ -105,12 +107,16 @@ public class TaskManager {
                 && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3
                 && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("quest_min_ttl");
 
+        if(!ConfigManager.getInstance().getConfigBoolean("quests_enabled"))
+            quest = false;
+
         if (!quest) {
             Logger.log("TaskManager: Selecting skill task");
             Collections.shuffle(skillsAvailable);
             for (Skill skill : skillsAvailable) {
                 List<WatTask> skillTasks = tasksBySkill.get(skill);
                 if (skillTasks != null && !skillTasks.isEmpty() && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
+                    Collections.shuffle(skillTasks);
                     for (WatTask task : skillTasks) {
                         if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
                             if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
@@ -1178,18 +1184,16 @@ public class TaskManager {
     private List<WatTask> createCraftingTasks() {
         List<WatTask> tasks = new ArrayList<>();
 
-        // wool, only uses lumbridge castle at the moment
-        //tasks.add(new SpinningTask(CraftingType.WOOL, 1, 5, 8, new HashMap<String, Integer>() { { put("Ball of wool", -Calculations.random(200, 400)); }}));
         tasks.add(new LeatherCraftingTask(20));
         tasks.add(new GemCuttingTask(ConfigManager.getInstance().getSkillTarget(Skill.CRAFTING)));
-        // jewelry
-        //tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -Calculations.random(200, 400)); }}));
-        //tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -Calculations.random(200, 400)); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        //tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 20, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -Calculations.random(200, 400)); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        //tasks.add(new JewelryTask(CraftingType.EMERALDRING, 27, 32, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald ring", -200); put("Sapphire ring", -1); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
-        //tasks.add(new JewelryTask(CraftingType.EMERALDNECKLACE, 29, 40, new HashMap<String, Integer>() { { put("Emerald necklace", -Calculations.random(200, 400)); put("Emerald ring", -1); put("Sapphire ring", -1); }}));
-        //tasks.add(new JewelryTask(CraftingType.RUBYNECKLACE, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby necklace", -Calculations.random(200, 400)); put("Emerald necklace", -1); put("Gold necklace", -1); }}));
-        //tasks.add(new JewelryTask(CraftingType.DIAMONDNECKLACE, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond necklace", -Calculations.random(200, 400)); put("Ruby necklace", -1); put("Emerald necklace", -1); }}));
+
+        tasks.add(new JewelryTask(CraftingType.RING, 5, 15, new HashMap<String, Integer>() { { put("Ball of wool", -1); put("Wool", -1); put("Gold ring", -Calculations.random(200, 400)); }}));
+        tasks.add(new JewelryTask(CraftingType.AMULET, 15, 20, new HashMap<String, Integer>() { { put("Gold amulet (u)", -Calculations.random(200, 400)); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.SAPPHIRERING, 20, 27, new HashMap<String, Integer>() { { put("Sapphire ring", -Calculations.random(200, 400)); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.EMERALDRING, 27, 32, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald ring", -200); put("Sapphire ring", -1); put("Gold amulet (u)", -1); put("Gold ring", -1); put("Wool", -1); put("Ball of wool", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.EMERALDNECKLACE, 29, 40, new HashMap<String, Integer>() { { put("Emerald necklace", -Calculations.random(200, 400)); put("Emerald ring", -1); put("Sapphire ring", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.RUBYNECKLACE, 40, 56, new HashMap<String, Integer>() { { put("Emerald", -1); put("Ruby necklace", -Calculations.random(200, 400)); put("Emerald necklace", -1); put("Gold necklace", -1); }}));
+        tasks.add(new JewelryTask(CraftingType.DIAMONDNECKLACE, 56, 99, new HashMap<String, Integer>() { { put("Sapphire", -1); put("Emerald", -1); put("Ruby", -1); put("Diamond necklace", -Calculations.random(200, 400)); put("Ruby necklace", -1); put("Emerald necklace", -1); }}));
 
         return tasks;
     }
