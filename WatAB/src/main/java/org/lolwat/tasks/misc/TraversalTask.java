@@ -365,7 +365,7 @@ public class TraversalTask implements WatTask {
 
     @Override
     public Skill trainsSkill() {
-        return Skill.HITPOINTS;
+        return postTask != null ? postTask.trainsSkill() : Skill.HITPOINTS;
     }
 
     @Override
