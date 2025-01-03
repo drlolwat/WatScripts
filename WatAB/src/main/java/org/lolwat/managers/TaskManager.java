@@ -58,6 +58,7 @@ import java.util.*;
 public class TaskManager {
     private List<WatTask> tasks;
     private HashMap<Skill, List<WatTask>> tasksBySkill;
+    private List<Skill> skillsAvailable;
     private List<WatTask> restrictedMoneyMakingTasks;
     private List<WatTask> unrestrictedMoneyMakingTasks;
 
@@ -92,7 +93,7 @@ public class TaskManager {
     }
 
     public void getNewTask(boolean noQuest) {
-        if(preTaskSelection()) {
+        if (preTaskSelection()) {
             return;
         }
 
@@ -104,31 +105,33 @@ public class TaskManager {
                 && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3
                 && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("quest_min_ttl");
 
-        //quest = true;
-
-        if(!quest) {
-            for (WatTask task : tasks) {
-                if (task.trainsSkill().equals(Skill.HITPOINTS))
-                    continue;
-
-                if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
-                    if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
-                        Logger.log("TaskManager: Selected task: " + task.getName());
-                        setCurrentTask(task, 0);
-                        return;
-                    } else {
-                        Logger.log("TaskManager: Skipping task: " + task.getName());
+        if (!quest) {
+            Logger.log("TaskManager: Selecting skill task");
+            Collections.shuffle(skillsAvailable);
+            for (Skill skill : skillsAvailable) {
+                List<WatTask> skillTasks = tasksBySkill.get(skill);
+                if (skillTasks != null && !skillTasks.isEmpty() && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
+                    for (WatTask task : skillTasks) {
+                        if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
+                            if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
+                                Logger.log("TaskManager: Selected skill: " + task.trainsSkill());
+                                setCurrentTask(task, 0);
+                                return;
+                            }
+                        }
                     }
+                } else {
+                    Logger.log("TaskManager: No tasks available for skill: " + skill.getName());
                 }
             }
         } else {
-            Logger.log("TaskManager: Selected questing, now selecting quest..");
+            Logger.log("TaskManager: Selected questing");
             Quest incompleteQuest = QuestManager.getInstance().getIncompleteQuest();
-            if(incompleteQuest != null) {
+            if (incompleteQuest != null) {
                 setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), Calculations.random(3600, 7200));
                 Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
             } else {
-                tasksUntilBreak++; // so we dont decrement it if we dont get a quest
+                tasksUntilBreak++; // so we don't decrement it if we don't get a quest
                 Logger.log("TaskManager: All available quests completed, selecting a skill-based task..");
                 getNewTask(true);
             }
@@ -409,6 +412,7 @@ public class TaskManager {
         tasksBySkill = new HashMap<>();
         restrictedMoneyMakingTasks = new ArrayList<>();
         unrestrictedMoneyMakingTasks = new ArrayList<>();
+        skillsAvailable = new ArrayList<>();
 
         tasks.addAll(createMiningTasks());
         tasks.addAll(createSmithingTasks());
@@ -432,6 +436,10 @@ public class TaskManager {
                 }
             } else {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
+            }
+
+            if(!skillsAvailable.contains(task.trainsSkill())) {
+                skillsAvailable.add(task.trainsSkill());
             }
         }
 
