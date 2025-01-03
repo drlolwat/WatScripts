@@ -76,7 +76,7 @@ public class GemCuttingTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return Skills.getRealLevel(Skill.CRAFTING) < avoidAfterLevel;
+        return Skills.getRealLevel(Skill.CRAFTING) < avoidAfterLevel && Skills.getRealLevel(Skill.CRAFTING) >= 20;
     }
 
     @Override
