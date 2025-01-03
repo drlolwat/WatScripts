@@ -153,7 +153,7 @@ public class MeleeCombatTask implements WatTask {
 
             NPC closestFriend = NPCs.closest(x -> x != null && x.canReach() && x.exists() && x.getName().equalsIgnoreCase(name) && !x.isInCombat() && !x.isHealthBarVisible() && zone.contains(x));
             if (closestFriend != null && !closestFriend.isInCombat() && !closestFriend.isHealthBarVisible() && !closestFriend.interact("Attack")) {
-                Logger.error("Error attacking NPC during MeleeCombatTask");
+                return;
             }
 
             Sleep.sleepUntil(() -> Players.getLocal().isInCombat(), Calculations.random(3000, 5000));
