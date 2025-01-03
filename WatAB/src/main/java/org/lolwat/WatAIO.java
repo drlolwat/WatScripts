@@ -48,7 +48,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one P2P-exclusive account building script for Dreambot.", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one P2P-exclusive account building script for Dreambot.", author = "lolwat", version = 2.00, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;
@@ -350,19 +350,17 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if (!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
-                boolean enableGpt = false; // change at compile time
-                if (enableGpt) {
-                    if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
-                        ConfigManager.getInstance().setWaitingForResponse(true);
-                        new Thread(() -> {
-                            String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
-                            if (!response.isEmpty()) {
-                                Keyboard.type(response, true);
-                            }
-                            ConfigManager.getInstance().setWaitingForResponse(false);
-                        }).start();
-                    }
+                if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
+                    ConfigManager.getInstance().setWaitingForResponse(true);
+                    new Thread(() -> {
+                        String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
+                        if (!response.isEmpty()) {
+                            Keyboard.type(response, true);
+                        }
+                        ConfigManager.getInstance().setWaitingForResponse(false);
+                    }).start();
                 }
+
             }
 
             TaskManager.getInstance().getCurrentTask().onMessage(m);
