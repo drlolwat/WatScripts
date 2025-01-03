@@ -120,15 +120,12 @@ public class ConfigManager {
         items.addProperty("Coal", -150);
         items.addProperty("Tin ore", -150);
         items.addProperty("Copper ore", -150);
-        items.addProperty("Bones", -1);
+        items.addProperty("Bones", -150);
         items.addProperty("Emerald necklace", -100);
         items.addProperty("Gold ring", -100);
         items.addProperty("Ruby necklace", -100);
         items.addProperty("Sapphire ring", -100);
         items.addProperty("Zamorak monk bottom", 1);
-        items.addProperty("Sapphire", -1);
-        items.addProperty("Ruby", -1);
-        items.addProperty("Diamond", -1);
         items.addProperty("Bronze bar", -1);
         items.addProperty("Iron bar", -1);
         items.addProperty("Steel bar", -1);
