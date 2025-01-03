@@ -45,9 +45,9 @@ public class HopperTask implements WatTask {
 
         if(world == 0) {
             if(!GenericUtils.isMember()) {
-                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && w.isNormal() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
             } else {
-                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
+                WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isNormal() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
             }
         }
         else {
