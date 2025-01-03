@@ -1,63 +1,78 @@
 package org.lolwat.misc.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.dreambot.api.Client;
+import org.dreambot.api.utilities.Logger;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class WebUtils {
-    private static final String WEBHOOK_URL = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
-    private static final String GPT_URL = "https://api.botbuddy.net/wat.php";
-    private static final Gson gson = new Gson();
     private static long lastCallTime = 0;
 
-    public static void postWebhook(String title, String message) {
+    private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
+        put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+    }};
+
+    public static void sendWebhook(String message, boolean error) {
+        String webhookUrl = "https://api.botbuddy.net/ws_discord.php";
         try {
-            URL url = new URL(WEBHOOK_URL);
-            HttpURLConnection http = (HttpURLConnection) url.openConnection();
-            http.setRequestMethod("POST");
-            http.setDoOutput(true);
-            http.setRequestProperty("Content-Type", "application/json");
-
-            Map<String, String> embed = new HashMap<>();
-            embed.put("title", "[" + Client.getForumUser().getUsername() + "] " + title);
-            embed.put("description", message);
-
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("embeds", new Map[]{embed});
-
-            String jsonPayload = gson.toJson(payload);
-
-            OutputStream os = http.getOutputStream();
-            os.write(jsonPayload.getBytes());
-            os.flush();
-            os.close();
-            http.getResponseCode();
+            sendToDiscordApi(message, webhookUrl, error);
         } catch (Exception e) {
-            postWebhook("\uD83D\uDE21 \uD83D\uDD95 Error thrown: " + e.getMessage(), Arrays.toString(e.getStackTrace()));
+            Logger.log("webhook: " + e.getMessage());
         }
+    }
+
+    public static void sendToDiscordApi(String message, String webhookUrl, boolean error) throws IOException {
+        if(Client.getForumUser() == null || !webhookUrls.containsKey(Client.getForumUser().getUsername().toLowerCase()))
+            return;
+
+        URL url = new URL(webhookUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setDoOutput(true);
+
+        JsonObject embed = new JsonObject();
+        embed.addProperty("title", "WatAIO Notification");
+        embed.addProperty("description", message);
+        embed.addProperty("color", error ? 16711680 : 3447003);
+
+        JsonObject payload = new JsonObject();
+        payload.add("embeds", new Gson().toJsonTree(new JsonObject[]{embed}));
+        payload.addProperty("webhook_url", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+
+        String jsonPayload = new Gson().toJson(payload);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+        }
+
+        connection.getResponseCode();
     }
 
     public static String getRealResponse(String nm, String msg, String task) {
         try {
+            if(Client.getForumUser() == null || !webhookUrls.containsKey(Client.getForumUser().getUsername().toLowerCase()))
+                return "";
+
             long currentTime = System.currentTimeMillis();
-            if (currentTime - lastCallTime < 5 * 60 * 1000) {
+            if (currentTime - lastCallTime < 15 * 60 * 1000) {
                 return "";
             }
+
             lastCallTime = currentTime;
 
-            String urlParameters = "nm=" + nm + "&msg=" + msg + "&task=";
+            String urlParameters = "nm=" + nm + "&msg=" + msg + "&task=" + task;
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
+            String GPT_URL = "https://api.botbuddy.net/wat.php";
             HttpURLConnection con = (HttpURLConnection) new URL(GPT_URL).openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -82,9 +97,17 @@ public class WebUtils {
                 }
             } else {
                 response.append("POST request did not work. Response Code: ").append(responseCode);
+                return "";
             }
 
-            WebUtils.postWebhook("Chat message", "Replying to " + nm + " with '" + response + "', they sent: '" + msg + "'.");
+            String formattedMessage = String.format(
+                    "**Dreambot user**: %s\n**Replying to**: %s\n**Player sent**: %s\n**Bot sent**: %s",
+                    Client.getForumUser().getUsername(),
+                    nm,
+                    msg,
+                    response);
+
+            sendWebhook(formattedMessage, false);
             return response.toString();
         } catch (Exception ex) {
             return "";
