@@ -48,28 +48,28 @@ public class GetSilverlight implements WatTask {
         // wizard traiborns key
         if(!ItemUtils.inventoryContains(2399, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2399, 1,
-                    new GetTraibornKey(wrapper), wrapper));
+                    new GetTraibornKey(wrapper), this));
             return;
         }
 
         // sir prysins key
         if (!ItemUtils.inventoryContains(2401, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2401, 1,
-                    new GetPrysinKey(wrapper), wrapper));
+                    new GetPrysinKey(wrapper), this));
             return;
         }
 
         // captain rovins key
         if (!ItemUtils.inventoryContains(2400, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2400, 1,
-                    new GetRovinsKey(wrapper), wrapper));
+                    new GetRovinsKey(wrapper), this));
             return;
         }
 
         Logger.log("Need to get Silverlight");
 
         if(!prysinArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(prysinArea, wrapper));
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(prysinArea, this));
             return;
         }
 

@@ -48,7 +48,7 @@ public class GetRovinsKey implements WatTask {
                 new Tile(3202, 3500, 2));
 
         if (!Dialogues.inDialogue() && !rovinArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(rovinArea, wrapper));
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(rovinArea, this));
             return;
         }
 

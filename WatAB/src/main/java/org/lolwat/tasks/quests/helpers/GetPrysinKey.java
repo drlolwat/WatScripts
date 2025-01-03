@@ -45,13 +45,13 @@ public class GetPrysinKey implements WatTask {
                     {
                         put("Bucket of water", 1);
                     }
-                }, null, 1, wrapper));
+                }, null, 1, this));
                 return;
             }
 
             Area drainArea = new Area(3225, 3497, 3227, 3491);
             if (!drainArea.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(drainArea, wrapper));
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(drainArea, this));
                 return;
             }
 
@@ -75,7 +75,7 @@ public class GetPrysinKey implements WatTask {
                     new Tile(3226, 9900, 0));
 
             if (!skeletons.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(skeletons, wrapper));
+                TaskManager.getInstance().setCurrentTask(new TraversalTask(skeletons, this));
                 return;
             }
 

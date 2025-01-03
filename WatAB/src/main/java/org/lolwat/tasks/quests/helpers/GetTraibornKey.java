@@ -48,7 +48,7 @@ public class GetTraibornKey implements WatTask {
                 new Tile(3111, 3165, 1));
 
         if (!Dialogues.inDialogue() && !traibornArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(traibornArea, wrapper));
+            TaskManager.getInstance().setCurrentTask(new TraversalTask(traibornArea, this));
             return;
         }
 
@@ -67,7 +67,7 @@ public class GetTraibornKey implements WatTask {
                     {
                         put("Bones", 25);
                     }
-                }, null, 1, wrapper));
+                }, null, 1, this));
                 return;
             }
 
