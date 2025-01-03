@@ -339,15 +339,13 @@ public class GrandExchangeTask implements WatTask {
 
     @Override
     public Skill trainsSkill() {
-        return Skill.HITPOINTS;
+        return postTask != null ? postTask.trainsSkill() : Skill.HITPOINTS;
     }
 
     @Override
     public Integer avoidAfterLevel() {
         return 101;
     }
-
-    
 
     @Override
     public HashMap<String, Integer> clothesRequired() {
