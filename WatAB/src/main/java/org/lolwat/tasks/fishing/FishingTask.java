@@ -108,9 +108,10 @@ public class FishingTask implements WatTask {
             }
 
             if(currentSpot == null || getNpcOnTile(currentSpot) == null) {
-                currentSpot = NPCs.closest(n -> n != null && n.getTile() != null && n.hasAction(FishingUtils.getMenuItemByFishType(fishType))).getTile();
-                if(currentSpot == null)
-                    return;
+                NPC spot = NPCs.closest(n -> n != null && n.getTile() != null && n.hasAction(FishingUtils.getMenuItemByFishType(fishType)));
+                if(spot != null) {
+                    currentSpot = spot.getTile();
+                }
             }
 
             if(currentSpot != null && getNpcOnTile(currentSpot) != null) {
