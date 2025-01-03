@@ -9,7 +9,7 @@ public class CookingUtils {
         HashMap<String, Integer> ret = new HashMap<>();
 
         switch(type) {
-            default: case SHRIMPS: ret.put("Raw shrimps", fullInventory ? 28 * inventoryCount : 1); break;
+            default: case SHRIMPS2: case SHRIMPS: ret.put("Raw shrimps", fullInventory ? 28 * inventoryCount : 1); break;
             case HERRING: ret.put("Raw herring", fullInventory ? 28 * inventoryCount : 1); break;
             case PIKE: ret.put("Raw pike", fullInventory ? 28 * inventoryCount : 1); break;
             case TUNA: ret.put("Raw tuna", fullInventory ? 28 * inventoryCount : 1); break;
