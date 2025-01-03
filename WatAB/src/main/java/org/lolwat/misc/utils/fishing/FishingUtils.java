@@ -8,12 +8,14 @@ public class FishingUtils {
     public static String getToolByFishType(FishType type) {
         switch(type) {
             default: return null; //return net later
+            case SHRIMPS2:
             case SHRIMPS: return "Small fishing net";
             case HERRING:
             case SARDINE:
             case PIKE: return "Fishing rod";
             case TUNA:
             case SWORDFISH: return "Harpoon";
+            case TROUT:
             case SALMON: return "Fly fishing rod";
             case LOBSTER: return "Lobster pot";
         }
@@ -22,12 +24,14 @@ public class FishingUtils {
     public static String getMenuItemByFishType(FishType type) {
         switch(type) {
             default: return null;
+            case SHRIMPS2: return "Small Net";
             case SHRIMPS: return "Net";
             case HERRING:
             case SARDINE:
             case PIKE: return "Bait";
             case TUNA:
             case SWORDFISH: return "Harpoon";
+            case TROUT:
             case SALMON: return "Lure";
             case LOBSTER: return "Cage";
         }
@@ -42,6 +46,7 @@ public class FishingUtils {
             case HERRING:
             case SARDINE:
             case PIKE: map.put("Fishing bait", -1000); break;
+            case TROUT:
             case SALMON: map.put("Feather", -1000); break;
         }
 
