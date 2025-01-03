@@ -447,9 +447,8 @@ public class BankingTask implements WatTask {
 
                     Item i = Bank.get(x -> x != null && x.getName().equals(entry.getKey()));
                     if(i != null) {
-                        if(Bank.needToScroll(i)) {
+                        while(Bank.needToScroll(i)) {
                             Bank.scroll(entry.getKey());
-                            Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
                         }
                     }
 
@@ -529,15 +528,7 @@ public class BankingTask implements WatTask {
                 toWithdraw -= Inventory.count("Coins");
             }
 
-            if ((Bank.contains("Coins") && Bank.count("Coins") >= toWithdraw)) {
-                Item i = Bank.get("Coins");
-                if(i != null) {
-                    if(Bank.needToScroll(i)) {
-                        Bank.scroll("Coins");
-                        Sleep.sleepUntil(() -> !Bank.needToScroll(i), 5000);
-                    }
-                }
-
+            if (Bank.count("Coins") >= toWithdraw) {
                 Bank.withdraw("Coins", Bank.count("Coins"));
                 Sleep.sleep(100, 200);
                 Bank.close();
