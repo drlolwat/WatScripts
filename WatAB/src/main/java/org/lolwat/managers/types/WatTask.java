@@ -12,7 +12,6 @@ public interface WatTask {
     String getName();
     void execute();
     boolean canPerformTask();
-    boolean requiresLogin();
     Skill trainsSkill();
     Integer avoidAfterLevel();
     default int loopTime() { return 400; }
@@ -29,5 +28,6 @@ public interface WatTask {
     default boolean requiresMembers() {
         return false;
     }
+    default boolean requiresLogin() { return true; }
     default void onExpGained(Skill skill, int amount, WatAIO instance) { }
 }
