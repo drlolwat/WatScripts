@@ -60,10 +60,10 @@ public class NumUtils {
         }
 
         if(num < 100) {
-            num = num * 7;
+            num = num * 3;
         }
         else if(num < 500) {
-            num = num * 5;
+            num = num * 3;
         }
         else if(num < 1000) {
             num = num * 2;
