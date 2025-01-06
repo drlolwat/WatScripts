@@ -8,7 +8,7 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 
 import java.util.ArrayList;
 import java.util.List;

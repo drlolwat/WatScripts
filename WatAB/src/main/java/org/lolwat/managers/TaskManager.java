@@ -21,7 +21,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.types.mixed.TreeType;

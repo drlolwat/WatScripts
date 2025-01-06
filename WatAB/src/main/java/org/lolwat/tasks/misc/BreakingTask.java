@@ -4,7 +4,7 @@ import org.dreambot.api.Client;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 
 import java.time.Instant;
 import java.util.HashMap;

@@ -16,7 +16,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 
 import java.io.InputStream;
 import java.io.OutputStream;

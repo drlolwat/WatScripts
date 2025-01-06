@@ -16,7 +16,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
 import org.lolwat.tasks.misc.BankingTask;

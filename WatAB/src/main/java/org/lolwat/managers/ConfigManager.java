@@ -3,6 +3,8 @@ package org.lolwat.managers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import lombok.Getter;
+import lombok.Setter;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
@@ -20,16 +22,31 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ConfigManager {
+    @Getter
+    private int toolFailures = 0;
+    @Getter
+    @Setter
     private static ConfigManager instance;
     private final HashMap<Object, Object> config;
     private boolean hasLoaded;
+    @Getter
+    @Setter
     private int netWorth;
+    @Getter
+    @Setter
     private double netWorthGeneratedAt;
+    @Getter
+    @Setter
     private boolean firstStart;
+    @Getter
+    @Setter
     private boolean waitingForResponse;
+    @Getter
+    @Setter
     private HashMap<String, Integer> levelUps;
+    @Setter
     private boolean muleConnectionFailed;
-    private HashMap<String, Integer> itemThresholds;
+    private final HashMap<String, Integer> itemThresholds;
 
     public ConfigManager() {
         config = new HashMap<>();
@@ -276,30 +293,6 @@ public class ConfigManager {
                 (TaskManager.getInstance().getMinutesPlayed() >= 1200 && Quests.getQuestPoints() >= 10);
     }
 
-    public int getNetWorth() {
-        return netWorth;
-    }
-
-    public void setNetWorth(int netWorth) {
-        this.netWorth = netWorth;
-    }
-
-    public double getNetWorthGeneratedAt() {
-        return netWorthGeneratedAt;
-    }
-
-    public void setNetWorthGeneratedAt(double netWorthGeneratedAt) {
-        this.netWorthGeneratedAt = netWorthGeneratedAt;
-    }
-
-    public static ConfigManager getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(ConfigManager inst) {
-        instance = inst;
-    }
-
     public boolean hasLoadedProfile() {
         return hasLoaded;
     }
@@ -308,35 +301,14 @@ public class ConfigManager {
         this.hasLoaded = hasLoaded;
     }
 
-    public boolean isFirstStart() {
-        return firstStart;
-    }
-
-    public void setFirstStart(boolean firstStart) {
-        this.firstStart = firstStart;
-    }
-
-    public boolean isWaitingForResponse() {
-        return waitingForResponse;
-    }
-
-    public void setWaitingForResponse(boolean waitingForResponse) {
-        this.waitingForResponse = waitingForResponse;
-    }
-
-    public HashMap<String, Integer> getLevelUps() {
-        return levelUps;
-    }
-
-    public void setLevelUps(HashMap<String, Integer> levelUps) {
-        this.levelUps = levelUps;
-    }
-
     public boolean hasMuleConnectionFailed() {
         return muleConnectionFailed;
     }
 
-    public void setMuleConnectionFailed(boolean muleConnectionFailed) {
-        this.muleConnectionFailed = muleConnectionFailed;
+    public void incrementToolFailures() {
+        toolFailures++;
+    }
+    public void resetToolFailures() {
+        toolFailures = 0;
     }
 }

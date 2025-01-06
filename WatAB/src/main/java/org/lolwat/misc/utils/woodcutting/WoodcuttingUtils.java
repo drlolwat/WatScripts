@@ -2,7 +2,7 @@ package org.lolwat.misc.utils.woodcutting;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.managers.types.WatConfig;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.mixed.TreeType;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class WoodcuttingUtils {
     public static String getBestHatchetForLevel() {
         int level = Skills.getRealLevel(Skill.WOODCUTTING);
 
-        if(WatConfig.getToolFailures() >= 3) {
+        if(ConfigManager.getInstance().getToolFailures() >= 3) {
             return hatchetTypes.get(1);
         }
 

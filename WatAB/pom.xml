@@ -6,7 +6,7 @@
 
     <groupId>org.lolwat</groupId>
     <artifactId>WatAIO</artifactId>
-    <version>N1C</version>
+    <version>2.0.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -29,6 +29,12 @@
             <groupId>org.dreambot</groupId>
             <artifactId>client</artifactId>
             <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

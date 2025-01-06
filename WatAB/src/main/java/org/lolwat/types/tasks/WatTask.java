@@ -1,4 +1,4 @@
-package org.lolwat.managers.types;
+package org.lolwat.types.tasks;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.wrappers.widgets.message.Message;

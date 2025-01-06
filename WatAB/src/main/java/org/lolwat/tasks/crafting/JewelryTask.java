@@ -11,7 +11,7 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 import org.lolwat.misc.types.crafting.CraftingType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;

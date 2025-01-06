@@ -5,8 +5,8 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.QuestTask;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.QuestTask;
+import org.lolwat.types.tasks.WatTask;
 
 import java.util.HashMap;
 import java.util.List;

@@ -3,7 +3,7 @@ package org.lolwat.managers;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
-import org.lolwat.managers.types.QuestTask;
+import org.lolwat.types.tasks.QuestTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.quests.*;
 

@@ -18,9 +18,9 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatConfig;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.mining.MiningUtils;
 import org.lolwat.tasks.misc.BankingTask;
@@ -71,7 +71,7 @@ public class MiningTask implements WatTask {
         }
 
         if ((!Inventory.contains(pickaxe) && !Equipment.contains(pickaxe)) || (Inventory.contains(pickaxe) && Inventory.get(pickaxe).isNoted())) {
-            WatConfig.incrementToolFailures();
+            ConfigManager.getInstance().incrementToolFailures();
             Logger.log("I don't own the best pickaxe available for me: " + pickaxe);
             TaskManager.getInstance().setCurrentTask(new BankingTask(null, sellingItems, 1, this));
         } else {

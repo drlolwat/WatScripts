@@ -25,7 +25,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 import org.lolwat.tasks.mining.MiningTask;
 import org.lolwat.tasks.woodcutting.WoodcuttingTask;
 

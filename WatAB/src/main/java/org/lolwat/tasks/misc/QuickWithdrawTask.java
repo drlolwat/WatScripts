@@ -3,7 +3,7 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.types.WatTask;
+import org.lolwat.types.tasks.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 
 public class QuickWithdrawTask implements WatTask {
