@@ -1,5 +1,6 @@
 package org.lolwat.misc.utils;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 public class NumUtils {
     private static HashMap<String, Integer> itemPrices;
     private static double multiplier = 1.2;
+
     public static String simplifyNumber(double number) {
         if (number >= 1000000) {
             return String.format("%.2fM", number / 1000000);
@@ -26,13 +28,14 @@ public class NumUtils {
             return itemPrices.get(item);
         }
 
+        int randomizer = Calculations.random(5, 30);
         int num = (int) (LivePrices.getHigh(item) * multiplier);
 
         if(num < 100) {
-            num = num * 7;
+            num = num * 3;
         }
         else if(num < 500) {
-            num = num * 5;
+            num = (int) Math.ceil(num * 2.5);
         }
         else if(num < 1000) {
             num = num * 2;
@@ -40,7 +43,7 @@ public class NumUtils {
             num = (int) (num * multiplier);
         }
 
-        itemPrices.put(item, num);
+        itemPrices.put(item, num + randomizer);
         return itemPrices.get(item);
     }
 
@@ -63,12 +66,11 @@ public class NumUtils {
             num = num * 3;
         }
         else if(num < 500) {
-            num = num * 3;
+            num = (int) Math.ceil(num * 2.5);
         }
         else if(num < 1000) {
             num = num * 2;
-        }
-        else {
+        } else {
             num = (int) (num * multiplier);
         }
 
