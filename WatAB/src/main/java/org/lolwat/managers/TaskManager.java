@@ -621,17 +621,6 @@ public class TaskManager {
 
     private List<WatTask> createMagicTasks() {
         List<WatTask> tasks = new ArrayList<>();
-        //lvl 2 rats
-        tasks.add(new MagicCombatTask(1, 10, new Area(
-                new Tile(3227, 9867, 0),
-                new Tile(3235, 9864, 0),
-                new Tile(3249, 9864, 0),
-                new Tile(3253, 9867, 0),
-                new Tile(3254, 9871, 0),
-                new Tile(3234, 9870, 0),
-                new Tile(3227, 9870, 0)), "Rat", new HashMap<String, Integer>() {
-        }, new ArrayList<>()));
-
         // falador chickens outside
         tasks.add(new MagicCombatTask( 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
         }, new ArrayList<>()));
@@ -743,16 +732,6 @@ public class TaskManager {
 
     private List<WatTask> createRangedTasks() {
         List<WatTask> tasks = new ArrayList<>();
-        // lvl 2 rats
-        tasks.add(new RangedCombatTask(1, 10, new Area(
-                new Tile(3227, 9867, 0),
-                new Tile(3235, 9864, 0),
-                new Tile(3249, 9864, 0),
-                new Tile(3253, 9867, 0),
-                new Tile(3254, 9871, 0),
-                new Tile(3234, 9870, 0),
-                new Tile(3227, 9870, 0)), "Rat", new HashMap<String, Integer>() {
-        }, new ArrayList<>()));
 
         // falador chickens outside
         tasks.add(new RangedCombatTask( 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
@@ -900,17 +879,6 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
         List<Skill> s = Arrays.asList(Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE);
         for (Skill sk : s) {
-            // lvl 2 rats
-            tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(
-                    new Tile(3227, 9867, 0),
-                    new Tile(3235, 9864, 0),
-                    new Tile(3249, 9864, 0),
-                    new Tile(3253, 9867, 0),
-                    new Tile(3254, 9871, 0),
-                    new Tile(3234, 9870, 0),
-                    new Tile(3227, 9870, 0)), "Rat", new HashMap<String, Integer>() {
-            }, new ArrayList<>()));
-
             // falador chickens outside
             tasks.add(new MeleeCombatTask(sk, 1, 10, new Area(3026, 3289, 3036, 3284), "Chicken", new HashMap<String, Integer>() {
             }, new ArrayList<>()));
