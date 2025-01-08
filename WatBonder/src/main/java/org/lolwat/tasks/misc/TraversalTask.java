@@ -46,36 +46,6 @@ public class TraversalTask implements WatTask {
     double taskStartedAt;
     Tile startedOnTile;
     boolean hadNoobChance;
-    List<String> possibleDialogues = Arrays.asList(
-            "Nobody.",
-            "Don't tell them anything and ignore them.",
-            "Talk to any banker in RuneScape.",
-            "Nothing.",
-            "Memorable.", "Use the Account Recovery System.",
-            "Politely tell them no and then use the 'Report Abuse' button.",
-            "Virus scan my device then change my password.",
-            "Don't tell them anything and inform Jagex through the game website.",
-            "No, it might steal my password.",
-            "Don't give them my password.",
-            "To recover my account if i don't remember my password.",
-            "Nowhere.", "Don't give out your password to anyone. Not even close friends.",
-            "No.", "Me.",
-            "Through account settings on oldschool.runescape.com.",
-            "To help me recover my password if I forget it or if it is stolen.", "Delete it - it's a fake!",
-            "Read the text and follow the advice given.",
-            "Secure my device and reset my password.",
-            "Recovering your account if you forget your password.",
-            "Decline the offer and report that player.",
-            "Game Inbox on the RuneScape website.",
-            "Set up 2 step authentication with my email provider.", "No, you should never buy an account.",
-            "Do not visit the website and report the player who messaged you.",
-            "Only on the Old School RuneScape website.", "Report the incident and do not click any links.",
-            "Authenticator and two-step login on my registered email.",
-            "Report the player for phishing.",
-            "Don't share your information and report the player.",
-            "The birthday of a famous person or event.", "No, you should never allow anyone to level your account.", "Nothing, it's a fake.",
-            "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!");
-
     List<String> npcsTriggerPost = Arrays.asList("Delrith");
 
     @Override

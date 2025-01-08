@@ -9,8 +9,10 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
+import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
@@ -48,6 +50,11 @@ public class BondingTask implements WatTask {
                 }
             }, null, 1, this, null));
             return;
+        }
+
+        if(Menu.isMenuManipulationActive()) {
+            Menu.toggleMenuManipulation(false);
+            Logger.log("Menu manipulation was active, toggling off");
         }
 
         if (Bank.isOpen()) {
@@ -94,6 +101,7 @@ public class BondingTask implements WatTask {
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
             Logger.log("WAIO: job done");
+            ScriptManager.getScriptManager().stop();
         }
     }
 

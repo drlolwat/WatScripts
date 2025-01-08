@@ -1,7 +1,5 @@
 package org.lolwat;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
@@ -35,11 +33,6 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 @ScriptManifest(name = "WatBonder", description = "WatBonder", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
@@ -65,7 +58,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     private void doStart(String profile) {
         if (instance == null) {
-            Logger.log(Color.green, "WatPreparer1 starting: assigning instance");
+            Logger.log(Color.green, "WatBonder starting: assigning instance");
             instance = this;
         }
 
@@ -97,8 +90,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
         WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
-
-        sendWebhook("WatBonder started");
     }
 
     @Override
@@ -218,42 +209,5 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     public void enableLoginManager() {
         getRandomManager().enableSolver(RandomEvent.LOGIN);
-    }
-
-    public void sendWebhook(String message) {
-        String webhookUrl = "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME";
-        try {
-            int responseCode = getResponseCode(message, webhookUrl);
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                Logger.log("webhook failed: " + responseCode);
-            }
-        } catch (Exception e) {
-            Logger.log("webhook: " + e.getMessage());
-        }
-    }
-
-    private static int getResponseCode(String message, String webhookUrl) throws IOException {
-        URL url = new URL(webhookUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setDoOutput(true);
-
-        JsonObject embed = new JsonObject();
-        embed.addProperty("title", "Notification");
-        embed.addProperty("description", message);
-        embed.addProperty("color", 3447003);
-
-        JsonObject payload = new JsonObject();
-        payload.add("embeds", new Gson().toJsonTree(new JsonObject[]{embed}));
-
-        String jsonPayload = new Gson().toJson(payload);
-
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
-        }
-
-        return connection.getResponseCode();
     }
 }

@@ -504,7 +504,6 @@ public class BankingTask implements WatTask {
                 }
             }
 
-            ConfigManager.getInstance().setNetWorth(total);
             ConfigManager.getInstance().setNetWorthGeneratedAt(Instant.now().getEpochSecond());
         } else {
             if ((Instant.now().getEpochSecond() - ConfigManager.getInstance().getNetWorthGeneratedAt()) >= 3600) {
@@ -720,4 +719,4 @@ public class BankingTask implements WatTask {
 
         return new ArrayList<>();
     }
-}
+}/**/

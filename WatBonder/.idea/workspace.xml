@@ -7,15 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="updates">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="qol">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/prep/PreparationTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +86,7 @@
     &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatAIO [test].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatBonder [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatScript1 [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatScript1Preparer [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatShamans [package].executor&quot;: &quot;Run&quot;,
@@ -144,8 +142,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -228,7 +226,11 @@
       <workItem from="1729029334930" duration="11983000" />
       <workItem from="1729043024911" duration="5762000" />
       <workItem from="1729116411275" duration="7037000" />
-      <workItem from="1729441567222" duration="53000" />
+      <workItem from="1729441567222" duration="2016000" />
+      <workItem from="1730934915185" duration="466000" />
+      <workItem from="1732583208376" duration="1806000" />
+      <workItem from="1735514914182" duration="1166000" />
+      <workItem from="1736204700669" duration="2484000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -573,7 +575,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="683" />
+    <option name="localTasksCounter" value="684" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -620,7 +622,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ErnestTheChickenQuest: bank if inventory is full" />
     <MESSAGE value="LogoutTask: address double-int cast error" />
     <MESSAGE value="DoricsQuest: robustness" />
     <MESSAGE value="ItemUtils: new methods: setBankMode, bank, bankContains, inventoryContains" />
@@ -645,7 +646,8 @@
     <MESSAGE value="dont talk about fight club again for real" />
     <MESSAGE value="cleanup" />
     <MESSAGE value="updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="updates" />
+    <MESSAGE value="qol" />
+    <option name="LAST_COMMIT_MESSAGE" value="qol" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
