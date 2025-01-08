@@ -1,8 +1,8 @@
 package org.lolwat;
 
+import lombok.Getter;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
-import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.input.Camera;
@@ -14,8 +14,6 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
-import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
-import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -25,14 +23,10 @@ import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
-import org.lolwat.managers.QuestManager;
+import org.lolwat.managers.ScriptManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.TeleportManager;
-import org.lolwat.managers.types.WatConfig;
-import org.lolwat.misc.mouse.HumanMouse;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.tasks.mining.MiningTask;
@@ -48,14 +42,13 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one P2P-exclusive account building script for Dreambot.", author = "lolwat", version = 2.00, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one account building script for OSRS", author = "lolwat", version = 2.00, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
-    private static BufferedImage image;
+    @Getter
     private static WatAIO instance;
-    public static WatAIO getInstance() {
-        return instance;
-    }
+
     private static int uniqueSleep;
+    private static BufferedImage image;
 
     @Override
     public void onStart(String... params) {
@@ -78,13 +71,12 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             instance = this;
         }
 
-        if (ConfigManager.getInstance() == null) {
-            Logger.log("Constructing ConfigManager singleton.");
-            ConfigManager.setInstance(new ConfigManager());
-            ConfigManager.getInstance().setLevelUps(new HashMap<>());
-            ConfigManager.getInstance().setNetWorth(0);
-            ConfigManager.getInstance().setNetWorthGeneratedAt(0);
-            ConfigManager.getInstance().loadFromProfile(profile);
+        ScriptManager.start(profile);
+
+        try {
+            image = ImageIO.read(new URL("https://api.botbuddy.net/paint.png")); //300x143
+        } catch (Exception ignored) {
+
         }
 
         uniqueSleep = Calculations.random(ConfigManager.getInstance().getConfigInt("min_sleep_time"),
@@ -96,54 +88,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Logger.log("Unique sleep time: " + uniqueSleep + " give or take 100ms each loop");
 
-        if(TeleportManager.getInstance() == null) {
-            Logger.log("Constructing TeleportManager singleton.");
-            TeleportManager.setInstance(new TeleportManager());
-        }
-
-        if(QuestManager.getInstance() == null) {
-            Logger.log("Constructing QuestManager singleton.");
-            QuestManager.setInstance(new QuestManager());
-        }
-
+        getRandomManager().disableSolver(RandomEvent.DISMISS);
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-
-        try {
-            Logger.log("Setting HumanMouse algorithm.");
-            HumanMouse m = new HumanMouse();
-            Mouse.setMouseAlgorithm(m);
-        } catch(Exception e) {
-            Logger.log(e);
-        }
-
-        if (TaskManager.getInstance() == null) {
-            Logger.log("Constructing TaskManager singleton.");
-            TaskManager.setInstance(new TaskManager());
-        }
-
-        try {
-            image = ImageIO.read(new URL("https://api.botbuddy.net/paint.png")); //300x143
-        } catch (Exception ignored) {
-
-        }
-
-        getRandomManager().disableSolver(RandomEvent.DISMISS);
-
-        if(ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && (!Menu.isMenuManipulationActive() || !Walking.isNoClickWalkEnabled())) {
-            Logger.log("Enabling menu manipulation and noclick walk");
-            Menu.toggleMenuManipulation(true);
-            Walking.toggleNoClickWalk(true);
-        } else if(!ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && (Menu.isMenuManipulationActive() || Walking.isNoClickWalkEnabled())) {
-            Logger.log("Disabling menu manipulation and noclick walk");
-            Menu.toggleMenuManipulation(false);
-            Walking.toggleNoClickWalk(false);
-        }
-
-        WebFinder.getWebFinder().disableEquipmentTeleports();
-        WebFinder.getWebFinder().disableEquippingTeleports();
-        WebFinder.getWebFinder().disableInventoryTeleports();
-        WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
     }
 
     @Override
@@ -161,7 +108,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        if (WatConfig.getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
+        if (ConfigManager.getInstance().getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
             if (!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof TraversalTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof BankingTask) &&
@@ -169,7 +116,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                     !(TaskManager.getInstance().getCurrentTask() instanceof WoodcuttingTask)) {
 
                 Logger.log(TaskManager.getInstance().getCurrentTask().getName() + ": Resetting tool failures, no longer on task");
-                WatConfig.resetToolFailures();
+                ConfigManager.getInstance().resetToolFailures();
             }
         }
 
