@@ -1,6 +1,7 @@
 package org.lolwat.tasks.blast;
 
 import org.dreambot.api.methods.Calculations;
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -30,6 +31,7 @@ import org.lolwat.misc.blastmine.BlastArea;
 import org.lolwat.misc.blastmine.MineCavity;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.tasks.food.HealingTask;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.TraversalTask;
@@ -42,11 +44,6 @@ public class BlastMiningTask implements WatTask {
     private int currentIteration = 1;
 
     public BlastMiningTask() {
-        // ZONE 1
-
-        // END ZONE 1
-
-        // ZONE 2
         final Tile bTileA = new Tile(1504, 3863);
         final Tile bTileB = new Tile(1506, 3865);
         final Tile bTileC = new Tile(1506, 3867);
@@ -97,75 +94,8 @@ public class BlastMiningTask implements WatTask {
                         new MineCavity(bTileF, bCavityF, "Load"),
                         new MineCavity(bTileF, bCavityF, "Light"),
                         new MineCavity(bTileF, bCavityF, "Take")
-                )));
-
-
-        /*Area start = new Tile(1477, 3875).getArea(2);
-
-        // do all
-        Tile tileA = new Tile(1475, 3875);
-        Tile cavityA = new Tile(1474, 3875);
-
-        // exc, load, light
-        Tile tileB_C = new Tile(1476, 3879);
-        Tile cavityB = new Tile(1476, 3880);
-        Tile cavityC = new Tile(1475, 3879);
-
-        Tile tileD = new Tile(1475, 3876);
-        Tile cavityD = new Tile(1474, 3876);
-
-        Tile tileE_F = new Tile(1477, 3879);
-        Tile cavityE = new Tile(1477, 3880);
-        Tile cavityF = new Tile(1478, 3879);
-
-        Tile tileG = new Tile(1479, 3877);
-        Tile cavityG = new Tile(1479, 3878);
-
-        Tile tileH = new Tile(1476, 3878);
-        Tile cavityH = new Tile(1475, 3878);
-
-        areas.add(new BlastArea(
-                start, new Area(1473, 3880, 1479, 3875),
-                Arrays.asList(
-                        new MineCavity(tileA, cavityA, "Excavate"),
-                        new MineCavity(tileA, cavityA, "Load"),
-                        new MineCavity(tileA, cavityA, "Light"),
-                        new MineCavity(tileA, cavityA, "Take"),
-
-                        new MineCavity(tileB_C, cavityB, "Excavate"),
-                        new MineCavity(tileB_C, cavityB, "Load"),
-                        new MineCavity(tileB_C, cavityC, "Excavate"),
-                        new MineCavity(tileB_C, cavityC, "Load"),
-                        new MineCavity(tileB_C, cavityC, "Light"),
-                        new MineCavity(tileB_C, cavityB, "Light"),
-                        new MineCavity(tileB_C, cavityC, "Take"),
-
-                        new MineCavity(tileD, cavityD, "Excavate"),
-                        new MineCavity(tileD, cavityD, "Load"),
-                        new MineCavity(tileD, cavityD, "Light"),
-                        new MineCavity(tileD, cavityD, "Take"),
-
-                        new MineCavity(tileE_F, cavityE, "Excavate"),
-                        new MineCavity(tileE_F, cavityE, "Load"),
-                        new MineCavity(tileE_F, cavityF, "Excavate"),
-                        new MineCavity(tileE_F, cavityF, "Load"),
-                        new MineCavity(tileE_F, cavityF, "Light"),
-                        new MineCavity(tileE_F, cavityE, "Light"),
-                        new MineCavity(tileE_F, cavityF, "Take"),
-
-                        new MineCavity(tileG, cavityG, "Excavate"),
-                        new MineCavity(tileG, cavityG, "Load"),
-                        new MineCavity(tileG, cavityG, "Light"),
-                        new MineCavity(tileG, cavityG, "Take"),
-
-                        new MineCavity(tileH, cavityH, "Excavate"),
-                        new MineCavity(tileH, cavityH, "Load"),
-                        new MineCavity(tileH, cavityH, "Light"),
-                        new MineCavity(tileH, cavityH, "Take")
-
-                        //TODO add deposit
-                )
-        ));*/
+                ))
+        );
 
         Collections.shuffle(areas);
         usingArea = areas.get(0);
@@ -178,6 +108,11 @@ public class BlastMiningTask implements WatTask {
 
     @Override
     public void execute() {
+        if(Combat.getHealthPercent() <= 30) {
+            TaskManager.getInstance().setCurrentTask(new HealingTask(this));
+            return;
+        }
+
         if (!bank() && !Map.isTileOnMap(usingArea.getStartArea().getRandomTile())) {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(usingArea.getStartArea(), this));
             return;
@@ -219,6 +154,11 @@ public class BlastMiningTask implements WatTask {
                 continue;
             } else {
                 currentIteration = iteration;
+            }
+
+            if(Combat.getHealthPercent() <= 30) {
+                TaskManager.getInstance().setCurrentTask(new HealingTask(this));
+                return;
             }
 
             Logger.log("running iteration " + iteration);
@@ -415,7 +355,8 @@ public class BlastMiningTask implements WatTask {
                         }
 
                         Sleep.sleepUntil(() -> !cavity.exists()
-                                        || (!Players.getLocal().isAnimating() && !cavity.hasAction(c.getAction())),
+                                        || (!Players.getLocal().isAnimating() && !cavity.hasAction(c.getAction()))
+                                        || Dialogues.inDialogue(),
                                 5000);
 
                         Sleep.sleep(Calculations.random(100, 300));

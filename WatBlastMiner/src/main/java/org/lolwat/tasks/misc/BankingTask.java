@@ -5,7 +5,6 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -20,7 +19,6 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 
-import java.time.Instant;
 import java.util.*;
 
 public class BankingTask implements WatTask {
@@ -330,6 +328,13 @@ public class BankingTask implements WatTask {
                         }
                     }
 
+                    int amountOwned = Bank.count(entry.getKey()) + Inventory.count(entry.getKey());
+                    if(amountOwned > 0)
+                        amountToBuy = amountRequired - amountOwned;
+
+                    if (entry.getValue().equals(1))
+                        amountToBuy = 1;
+
                     if (entry.getValue().equals(1) && !entry.getKey().contains("potion"))
                         amountToBuy = 1;
 
@@ -350,8 +355,10 @@ public class BankingTask implements WatTask {
                         }
                     }
 
-                    buyingRequired.put(name, amountToBuy);
-                    Logger.log("Inventory: We need to buy " + amountToBuy + " of: " + name);
+                    if(amountToBuy > 0) {
+                        buyingRequired.put(name, amountToBuy);
+                        Logger.log("Inventory: We need to buy " + amountToBuy + " of: " + entry.getKey());
+                    }
                 }
             }
         }
@@ -467,39 +474,6 @@ public class BankingTask implements WatTask {
 
         if (postTask != null && !(postTask instanceof MulingTask)) {
             depositNonRequired();
-        }
-
-        // calculate net worth
-        if (ConfigManager.getInstance().getNetWorthGeneratedAt() == 0) {
-            int total = 0;
-            for (Item i : Bank.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    total += LivePrices.get(i) * i.getAmount();
-                } else {
-                    total += LivePrices.get(i);
-                }
-            }
-
-            for (Item i : Inventory.all()) {
-                if (i == null)
-                    continue;
-
-                if (i.getAmount() > 1) {
-                    total += LivePrices.get(i) * i.getAmount();
-                } else {
-                    total += LivePrices.get(i);
-                }
-            }
-
-            ConfigManager.getInstance().setNetWorth(total);
-            ConfigManager.getInstance().setNetWorthGeneratedAt(Instant.now().getEpochSecond());
-        } else {
-            if ((Instant.now().getEpochSecond() - ConfigManager.getInstance().getNetWorthGeneratedAt()) >= 3600) {
-                ConfigManager.getInstance().setNetWorthGeneratedAt(0); // will generate net worth next time.
-            }
         }
 
         Logger.log("Banking: Complete");

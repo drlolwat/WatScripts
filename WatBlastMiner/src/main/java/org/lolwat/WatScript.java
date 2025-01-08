@@ -7,6 +7,7 @@ import org.dreambot.api.input.Mouse;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
+import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -22,6 +23,7 @@ import org.dreambot.api.script.listener.AnimationListener;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.script.listener.SpawnListener;
+import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -35,10 +37,10 @@ import org.lolwat.misc.mouse.HumanMouse;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.blast.BlastMiningTask;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
-import org.lolwat.tasks.blast.BlastMiningTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -158,12 +160,13 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         connection.setDoOutput(true);
 
         JsonObject embed = new JsonObject();
-        embed.addProperty("title", "Notification");
+        embed.addProperty("title", error ? "Alert" : "Notification");
         embed.addProperty("description", message);
         embed.addProperty("color", error ? 16711680 : 3447003);
 
         JsonObject payload = new JsonObject();
         payload.add("embeds", new Gson().toJsonTree(new JsonObject[]{embed}));
+        payload.addProperty("webhook_url", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
 
         String jsonPayload = new Gson().toJson(payload);
 
@@ -174,7 +177,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
         return connection.getResponseCode();
     }
-
     @Override
     public int onLoop() {
         if (!Client.isLoggedIn()) {
@@ -252,6 +254,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
+        if (m.getMessage().equals("Oh dear, you are dead!")) {
+            sendWebhook(AccountManager.getAccountNickname() + " has blown themselves up", true);
+        }
+
         if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof BlastMiningTask) {
             TaskManager.getInstance().setCurrentTask
                     (
@@ -296,6 +302,19 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHints(aa);
         paint.paint(g2d);
+    }
+
+    @Override
+    public void onLevelUp(ExperienceEvent event) {
+        if(event.getSkill().equals(Skill.MINING)) {
+            if(event.getSkill().getLevel() == 99) {
+                sendWebhook(AccountManager.getAccountNickname() + " has reached 99 mining", false);
+            }
+        } else if(event.getSkill().equals(Skill.FIREMAKING)) {
+            if(event.getSkill().getLevel() == 99) {
+                sendWebhook(AccountManager.getAccountNickname() + " has reached 99 firemaking", false);
+            }
+        }
     }
 
     public String getElapsedTime() {
