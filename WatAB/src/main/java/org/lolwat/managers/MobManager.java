@@ -5,7 +5,8 @@ import lombok.Setter;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
-import org.lolwat.types.Mob;
+import org.lolwat.types.mobs.Mob;
+import org.lolwat.types.mobs.logic.DefaultLogic;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +22,15 @@ public class MobManager {
         instance = this;
     }
 
+    public Mob getBestMob(Skill s) {
+        return mobs.get(0);
+    }
+
     public void createMobs() {
 
     }
 
-    private void addMob(String name, HashMap<String, Area> locations, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements, boolean membersOnly) {
-        mobs.add(new Mob(name, locations, levelRequirements, questRequirements, membersOnly));
+    private void addBasicMob(String name, HashMap<String, Area> locations, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements, boolean membersOnly) {
+        mobs.add(new Mob(name, locations, levelRequirements, questRequirements, membersOnly, new DefaultLogic()));
     }
 }
