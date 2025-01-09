@@ -11,7 +11,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.interfaces.WatTask;
 
 public class GatheringTask implements WatTask {
     private final String objectName;

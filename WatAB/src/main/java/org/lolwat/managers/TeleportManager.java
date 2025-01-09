@@ -1,7 +1,7 @@
 package org.lolwat.managers;
 
 import org.dreambot.api.methods.map.Tile;
-import org.lolwat.types.Teleport;
+import org.lolwat.types.teleports.Teleport;
 
 import java.util.ArrayList;
 import java.util.List;

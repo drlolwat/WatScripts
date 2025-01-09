@@ -1,5 +1,6 @@
 package org.lolwat.tasks.misc;
 
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
@@ -8,7 +9,8 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 
 import java.util.HashMap;
@@ -91,12 +93,12 @@ public class HopperTask implements WatTask {
     
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         return new HashMap<>();
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         return new HashMap<>();
     }
 }

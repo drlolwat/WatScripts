@@ -4,6 +4,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -16,7 +17,8 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.runecrafting.RunecraftingUtils;
 import org.lolwat.tasks.misc.BankingTask;
@@ -133,7 +135,7 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         return new HashMap<String, Integer>() {{
             put(GenericUtils.uppercaseFirst(runeType) + " tiara", 1);
             putAll(GenericUtils.getSkillingGear());
@@ -141,7 +143,7 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         return new HashMap<String, Integer>() {{
             put("Pure essence", 28);
         }};

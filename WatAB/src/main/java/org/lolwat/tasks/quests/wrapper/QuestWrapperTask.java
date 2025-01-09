@@ -1,12 +1,14 @@
 package org.lolwat.tasks.quests.wrapper;
 
 import com.google.common.collect.Lists;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.QuestTask;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +64,7 @@ public class QuestWrapperTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         if(questTask() != null)
             return questTask().clothesRequired();
 
@@ -70,7 +72,7 @@ public class QuestWrapperTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         if(questTask() != null)
             return questTask().inventoryRequired();
 

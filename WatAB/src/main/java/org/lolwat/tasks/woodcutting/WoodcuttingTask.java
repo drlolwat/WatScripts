@@ -19,7 +19,8 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
@@ -185,7 +186,7 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         return new HashMap<String, Integer>() {
             {
                 if(!moneyMaking) {
@@ -196,7 +197,7 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         return new HashMap<String, Integer>() {
             {
                 put(WoodcuttingUtils.getBestHatchetForLevel(), 1);

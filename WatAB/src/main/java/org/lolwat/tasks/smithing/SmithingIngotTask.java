@@ -2,6 +2,7 @@ package org.lolwat.tasks.smithing;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -16,7 +17,8 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
@@ -120,7 +122,7 @@ public class SmithingIngotTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         return GenericUtils.getSkillingGear();
     }
 }

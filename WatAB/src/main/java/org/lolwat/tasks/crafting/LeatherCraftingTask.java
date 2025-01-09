@@ -12,7 +12,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.tasks.misc.BankingTask;
 
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class LeatherCraftingTask implements WatTask {
 
     @Override
     public void execute() {
-        for(Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
+        for(Map.Entry<String, Integer> entry : inventory().entrySet()) {
             if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals(entry.getKey()))) {
                 Logger.log("Missing " + entry.getKey());
                 TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
@@ -87,7 +87,7 @@ public class LeatherCraftingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         HashMap<String, Integer> reqs = new HashMap<>();
         reqs.put("Leather", 25);
         reqs.put("Needle", 1);

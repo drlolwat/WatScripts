@@ -4,6 +4,7 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.magic.Magic;
@@ -16,7 +17,8 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.combat.magic.MagicUtils;
 import org.lolwat.tasks.misc.BankingTask;
@@ -85,7 +87,7 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        for(String s : clothesRequired().keySet()) {
+        for(String s : loadout().keySet()) {
             if(!Equipment.contains(s)) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
                 return;
@@ -162,7 +164,7 @@ public class HighAlchemyTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         return new HashMap<String, Integer>() {
             {
                 putAll(GenericUtils.getSkillingGear());

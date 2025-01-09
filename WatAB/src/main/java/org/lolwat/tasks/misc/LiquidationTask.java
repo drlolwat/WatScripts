@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.skills.Skill;
@@ -13,7 +14,8 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 
@@ -56,7 +58,7 @@ public class LiquidationTask implements WatTask {
                     continue;
 
                 if(postScript != null) {
-                    if(postScript.clothesRequired().containsKey(i.getName()) || postScript.inventoryRequired().containsKey(i.getName())) {
+                    if(postScript.loadout().containsKey(i.getName()) || postScript.inventory().containsKey(i.getName())) {
                         continue;
                     }
                 }
@@ -78,7 +80,7 @@ public class LiquidationTask implements WatTask {
                 HashMap<String, Integer> currentlySelling = new HashMap<>();
                 for (Map.Entry<String, Integer> m : toWithdraw.entrySet()) {
                     if(postScript != null) {
-                        if(postScript.clothesRequired().containsKey(m.getKey()) || postScript.inventoryRequired().containsKey(m.getKey())) {
+                        if(postScript.loadout().containsKey(m.getKey()) || postScript.inventory().containsKey(m.getKey())) {
                             continue;
                         }
                     }
@@ -132,12 +134,12 @@ public class LiquidationTask implements WatTask {
     
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         return new HashMap<>();
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         return new HashMap<>();
     }
 }

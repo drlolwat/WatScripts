@@ -25,8 +25,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
-import org.lolwat.types.tasks.WatTask;
-import org.lolwat.tasks.mining.MiningTask;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.tasks.woodcutting.WoodcuttingTask;
 
 import java.io.BufferedReader;
@@ -81,9 +80,7 @@ public class GenericUtils {
     };
 
     public static String getFallbackTool(WatTask taskType) {
-        if(taskType instanceof MiningTask)
-            return "Bronze pickaxe";
-        else if(taskType instanceof WoodcuttingTask)
+        if(taskType instanceof WoodcuttingTask)
             return "Bronze axe";
 
         return "";

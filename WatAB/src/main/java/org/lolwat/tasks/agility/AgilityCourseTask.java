@@ -3,6 +3,7 @@ package org.lolwat.tasks.agility;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
@@ -16,10 +17,11 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
 import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,16 +148,6 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public boolean requiresLogin() {
-        return true;
-    }
-
-    @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
     public void onExpGained(Skill skill, int amount, WatAIO instance) {
         nextObstacle = true;
     }
@@ -171,19 +163,19 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<String, Integer>() { {
-            put("Graceful hood", 1);
-            put("Graceful top", 1);
-            put("Graceful legs", 1);
-            put("Graceful gloves", 1);
-            put("Graceful boots", 1);
-            put("Graceful cape", 1);
+    public HashMap<EquipmentSlot, GearItem> loadout() {
+        return new HashMap<EquipmentSlot, GearItem>() { {
+            put(EquipmentSlot.HAT, new GearItem("Graceful hood", 1));
+            put(EquipmentSlot.CHEST, new GearItem("Graceful top", 1));
+            put(EquipmentSlot.LEGS, new GearItem("Graceful legs", 1));
+            put(EquipmentSlot.HANDS, new GearItem("Graceful gloves", 1));
+            put(EquipmentSlot.FEET, new GearItem("Graceful boots", 1));
+            put(EquipmentSlot.CAPE, new GearItem("Graceful cape", 1));
         } };
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         HashMap<String, Integer> ret = new HashMap<>();
 
         if(needsEat) {

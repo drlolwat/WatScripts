@@ -29,13 +29,12 @@ import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.types.Teleport;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.teleports.Teleport;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
-import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
-import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 
 import java.time.Instant;
 import java.util.*;
@@ -375,9 +374,9 @@ public class TraversalTask implements WatTask {
 
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         if (postTask != null) {
-            return postTask.clothesRequired();
+            return postTask.loadout();
         }
 
         HashMap<String, Integer> ret = new HashMap<>();
@@ -392,7 +391,7 @@ public class TraversalTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         return new HashMap<>();
     }
 

@@ -1,4 +1,4 @@
-package org.lolwat.types;
+package org.lolwat.types.teleports;
 
 import lombok.Getter;
 import org.dreambot.api.methods.map.Tile;

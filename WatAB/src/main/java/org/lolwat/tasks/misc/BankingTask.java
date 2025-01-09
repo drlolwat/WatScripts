@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
@@ -15,17 +16,14 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.tasks.WatTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.OutfitUtils;
-import org.lolwat.tasks.combat.warriorguild.FightArmorSetTask;
-import org.lolwat.tasks.combat.warriorguild.FightCyclopsTask;
 import org.lolwat.tasks.magic.HighAlchemyTask;
-import org.lolwat.tasks.prayer.BuryBonesTask;
 import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
-
 import java.time.Instant;
 import java.util.*;
 
@@ -34,7 +32,7 @@ public class BankingTask implements WatTask {
     private final HashMap<String, Integer> sellingItems; // Check this at the very top of banking operations
     private final int inventoriesWorth;
     private WatTask postTask;
-    private HashMap<String, WatTask> gatheringTasks;
+    private final HashMap<String, WatTask> gatheringTasks;
 
     private final List<String> restrictedItems = new ArrayList<String>() {
         {
@@ -93,8 +91,8 @@ public class BankingTask implements WatTask {
         inventoriesWorth = inventories;
         postTask = post;
 
-        if(post != null && !post.inventoryRequired().isEmpty()) {
-            inventoryRequired = post.inventoryRequired();
+        if(post != null && !post.inventory().isEmpty()) {
+            inventoryRequired = post.inventory();
         }
 
         if(gathering != null) {
@@ -127,11 +125,11 @@ public class BankingTask implements WatTask {
         for(Item i : Bank.all()) {
             if(i == null) continue;
             if(postTask != null) { // we dont want to sell items that are required for the next task
-                if(postTask.inventoryRequired().containsKey(i.getName())) {
+                if(postTask.inventory().containsKey(i.getName())) {
                     continue;
                 }
 
-                if(postTask.clothesRequired().containsKey(i.getName())) {
+                if(postTask.loadout().containsKey(i.getName())) {
                     continue;
                 }
             }
@@ -240,8 +238,8 @@ public class BankingTask implements WatTask {
 
         Logger.log("Equipment: Beginning checks");
         if(postTask != null) {
-            if (!postTask.clothesRequired().isEmpty()) {
-                for (Map.Entry<String, Integer> entry : postTask.clothesRequired().entrySet()) {
+            if (!postTask.loadout().isEmpty()) {
+                for (Map.Entry<String, Integer> entry : postTask.loadout().entrySet()) {
                     int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
                     if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getKey()) >= amountRequired) {
                         Logger.log("Equipment: Already equipped: " + entry.getKey());
@@ -363,8 +361,8 @@ public class BankingTask implements WatTask {
 
             Sleep.sleep(500, 1000);
 
-            if(!postTask.clothesRequired().isEmpty()) {
-                for (Map.Entry<String, Integer> entry : postTask.clothesRequired().entrySet()) {
+            if(!postTask.loadout().isEmpty()) {
+                for (Map.Entry<String, Integer> entry : postTask.loadout().entrySet()) {
                     if (!Equipment.contains(entry.getKey()) && Inventory.contains(entry.getKey())) {
                         if(Bank.isOpen()) {
                             Bank.close();
@@ -692,12 +690,12 @@ public class BankingTask implements WatTask {
 
     private void handleEquipmentDeposit() {
         List<String> toUnequip = new ArrayList<>();
-        if (!postTask.clothesRequired().isEmpty() && !Equipment.isEmpty()) {
+        if (!postTask.loadout().isEmpty() && !Equipment.isEmpty()) {
             for(Item i : Equipment.all()) {
                 if(i == null) continue;
                 if(!postTask.inventoryTolerated().contains(i.getName())
-                        && !postTask.clothesRequired().containsKey(i.getName())
-                        && !postTask.inventoryRequired().containsKey(i.getName())) {
+                        && !postTask.loadout().containsKey(i.getName())
+                        && !postTask.inventory().containsKey(i.getName())) {
 
                     Logger.log("Task " + postTask.getName() + " does not require/tolerate: " + i.getName() + ", adding to list");
                     toUnequip.add(i.getName());
@@ -874,18 +872,18 @@ public class BankingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> loadout() {
         if(postTask != null) {
-            return postTask.clothesRequired();
+            return postTask.loadout();
         }
 
         return new HashMap<>();
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<String, Integer> inventory() {
         if(postTask != null) {
-            return postTask.inventoryRequired();
+            return postTask.inventory();
         }
 
         return new HashMap<>();

@@ -1,4 +1,4 @@
-package org.lolwat.types.tasks;
+package org.lolwat.types.interfaces;
 
 import org.dreambot.api.methods.quest.book.Quest;
 
