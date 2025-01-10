@@ -187,7 +187,7 @@ public class WoodcuttingTask implements WatTask {
 
     @Override
     public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<String, Integer>() {
+        return new HashMap<EquipmentSlot, GearItem>() {
             {
                 if(!moneyMaking) {
                     putAll(GenericUtils.getSkillingGear());

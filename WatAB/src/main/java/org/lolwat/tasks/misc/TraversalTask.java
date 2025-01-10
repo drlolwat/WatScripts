@@ -26,15 +26,14 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.types.gear.GearItem;
-import org.lolwat.types.teleports.Teleport;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
+import org.lolwat.types.teleports.Teleport;
 
 import java.time.Instant;
 import java.util.*;
@@ -289,7 +288,7 @@ public class TraversalTask implements WatTask {
             }
         }
 
-        if (postTask instanceof FightCyclopsTask) {
+        /*if (postTask instanceof FightCyclopsTask) {
             if (!Inventory.contains("Warrior guild token") || Inventory.count("Warrior guild token") < 100) {
                 String defender = "";
                 if (Equipment.slotContains(EquipmentSlot.SHIELD, x -> x.getName().contains("defender"))) {
@@ -305,7 +304,7 @@ public class TraversalTask implements WatTask {
                 }, defender));
                 return;
             }
-        }
+        }*/
 
         if (!usingArea) {
             if (completedTile && Map.isTileOnMap(target)) {
@@ -343,21 +342,6 @@ public class TraversalTask implements WatTask {
     }
 
     @Override
-    public boolean requiresLogin() {
-        return true;
-    }
-
-    @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -379,20 +363,15 @@ public class TraversalTask implements WatTask {
             return postTask.loadout();
         }
 
-        HashMap<String, Integer> ret = new HashMap<>();
+        HashMap<EquipmentSlot, GearItem> ret = new HashMap<>();
         for (Item i : Equipment.all()) {
             if (i == null)
                 continue;
 
-            ret.put(i.getName(), 1);
+            ret.put(EquipmentSlot.forSlotId(i.getSlot()), new GearItem(i.getName(), 1));
         }
 
         return ret;
-    }
-
-    @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<>();
     }
 
     @Override

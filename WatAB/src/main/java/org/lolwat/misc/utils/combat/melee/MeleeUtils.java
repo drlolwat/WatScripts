@@ -9,14 +9,17 @@ import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.misc.types.combat.DefensiveItemType;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.types.gear.GearItem;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MeleeUtils {
-    public static HashMap<String, Integer> getRequiredItems(boolean replaceDefender, boolean useSilverlight) {
-        HashMap<String, Integer> ret = new HashMap<>();
+    public static HashMap<EquipmentSlot, GearItem> getRequiredItems(boolean replaceDefender, boolean useSilverlight) {
+        HashMap<EquipmentSlot, GearItem> ret = new HashMap<>();
 
-        for(String s : bestGearForLevel().values()) {
+        for(Map.Entry<EquipmentSlot, String> map : bestGearForLevel().entrySet()) {
+            String s = map.getValue();
             if(replaceDefender) {
                 if(s.contains("defender")) {
                     s = s.replace("Dragon", "Rune"); // lolwat
@@ -30,7 +33,7 @@ public class MeleeUtils {
                 }
             }
 
-            ret.put(s, 1);
+            ret.put(map.getKey(), new GearItem(s, 1));
         }
 
         return ret;

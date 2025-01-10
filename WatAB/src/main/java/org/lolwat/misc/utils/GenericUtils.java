@@ -25,6 +25,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.types.gear.GearItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.tasks.woodcutting.WoodcuttingTask;
 
@@ -188,12 +189,12 @@ public class GenericUtils {
         return Inventory.get(item).isNoted();
     }
 
-    public static HashMap<String, Integer> getSkillingGear() {
-        HashMap<String, Integer> ret = new HashMap<>();
+    public static HashMap<EquipmentSlot, GearItem> getSkillingGear() {
+        HashMap<EquipmentSlot, GearItem> ret = new HashMap<>();
         if(Skills.getTotalLevel() >= 75) {
-            ret.put("Leather boots", 1);
+            ret.put(EquipmentSlot.FEET, new GearItem("Leather boots", 1));
             if(ConfigManager.getInstance().getConfigBoolean("use_profile_cape")) {
-                ret.put(ConfigManager.getInstance().getConfigString("profile_cape_type"), 1);
+                ret.put(EquipmentSlot.CAPE, new GearItem(ConfigManager.getInstance().getConfigString("profile_cape_type"), 1));
             }
         }
         return ret;

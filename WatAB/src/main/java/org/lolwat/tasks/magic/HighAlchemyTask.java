@@ -87,8 +87,8 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        for(String s : loadout().keySet()) {
-            if(!Equipment.contains(s)) {
+        for(GearItem g : loadout().values()) {
+            if(!Equipment.contains(g.getName())) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
                 return;
             }
@@ -165,10 +165,10 @@ public class HighAlchemyTask implements WatTask {
 
     @Override
     public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<String, Integer>() {
+        return new HashMap<EquipmentSlot, GearItem>() {
             {
                 putAll(GenericUtils.getSkillingGear());
-                put("Staff of fire", 1);
+                put(EquipmentSlot.WEAPON, new GearItem("Staff of fire", 1));
             }
         };
     }

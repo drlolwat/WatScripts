@@ -120,11 +120,6 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public boolean requiresLogin() {
-        return true;
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.RUNECRAFTING;
     }
@@ -136,8 +131,8 @@ public class RunecraftingTask implements WatTask {
 
     @Override
     public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<String, Integer>() {{
-            put(GenericUtils.uppercaseFirst(runeType) + " tiara", 1);
+        return new HashMap<EquipmentSlot, GearItem>() {{
+            put(EquipmentSlot.HAT, new GearItem(GenericUtils.uppercaseFirst(runeType) + " tiara", 1));
             putAll(GenericUtils.getSkillingGear());
         }};
     }

@@ -2,6 +2,7 @@ package org.lolwat.tasks.quests;
 
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -16,6 +17,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.GearItem;
 import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -193,7 +195,7 @@ public class VampyreSlayerQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> clothesRequired() {
+    public HashMap<EquipmentSlot, GearItem> clothesRequired() {
         return MeleeUtils.getRequiredItems(false, false);
     }
 }
