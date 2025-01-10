@@ -30,7 +30,11 @@ public class MobManager {
 
     }
 
-    private void addBasicMob(String name, HashMap<String, Area> locations, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements, boolean membersOnly) {
-        mobs.add(new Mob(name, locations, levelRequirements, questRequirements, membersOnly, new DefaultLogic()));
+    private void addBasicMob(String name, HashMap<String, Area> locations, HashMap<Skill, Integer> levelRequirements) {
+        mobs.add(new Mob(name, locations, levelRequirements, null, true, new DefaultLogic()));
+    }
+
+    private void addQuestedMob(String name, HashMap<String, Area> locations, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
+        mobs.add(new Mob(name, locations, levelRequirements, questRequirements, true, new DefaultLogic()));
     }
 }
