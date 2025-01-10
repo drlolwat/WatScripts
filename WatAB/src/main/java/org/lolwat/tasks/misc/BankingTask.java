@@ -239,33 +239,36 @@ public class BankingTask implements WatTask {
         Logger.log("Equipment: Beginning checks");
         if(postTask != null) {
             if (!postTask.loadout().isEmpty()) {
-                for (Map.Entry<String, Integer> entry : postTask.loadout().entrySet()) {
-                    int amountRequired = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                    if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getKey()) >= amountRequired) {
+                for (Map.Entry<EquipmentSlot, GearItem> entry : postTask.loadout().entrySet()) {
+                    int amountRequired = entry.getValue().getQuantity() > 0
+                            ? entry.getValue().getQuantity()
+                            : -entry.getValue().getQuantity();
+
+                    if (Equipment.contains(entry.getKey()) && Equipment.count(entry.getValue().getName()) >= amountRequired) {
                         Logger.log("Equipment: Already equipped: " + entry.getKey());
                         Sleep.sleep(200, 400);
                         continue;
                     }
 
-                    if (Inventory.count(entry.getKey()) > amountRequired) {
+                    if (Inventory.count(entry.getValue().getName()) > amountRequired) {
                         Logger.log("Equipment: Depositing extras of: " + entry.getKey());
-                        Bank.deposit(entry.getKey(), (Inventory.count(entry.getKey()) - amountRequired));
-                        Sleep.sleepUntil(() -> Inventory.count(entry.getKey()) == amountRequired, 1500);
+                        Bank.deposit(entry.getValue().getName(), (Inventory.count(entry.getValue().getName()) - amountRequired));
+                        Sleep.sleepUntil(() -> Inventory.count(entry.getValue().getName()) == amountRequired, 1500);
                     }
 
-                    if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getKey()) >= amountRequired) {
+                    if (Inventory.contains(entry.getKey()) && Inventory.count(entry.getValue().getName()) >= amountRequired) {
                         Logger.log("Equipment: Already in inventory: " + entry.getKey());
                         Sleep.sleep(200, 400);
                         continue;
                     }
 
-                    if (Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= amountRequired) {
+                    if (Bank.contains(entry.getKey()) && Bank.count(entry.getValue().getName()) >= amountRequired) {
                         if (Inventory.isFull()) {
                             Bank.depositAllItems();
                             Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
                         }
 
-                        if (Bank.withdraw(entry.getKey(), amountRequired)) {
+                        if (Bank.withdraw(entry.getValue().getName(), amountRequired)) {
                             Sleep.sleepUntil(() -> Inventory.contains(entry.getKey()), Calculations.random(5000, 10000));
                             if (Inventory.contains(entry.getKey())) {
                                 Logger.log("Equipment: Successfully withdrew: " + entry.getKey());
@@ -274,7 +277,7 @@ public class BankingTask implements WatTask {
 
                     } else {
                         //TODO a path to obtaining untradeables that isnt hardcoded per shit
-                        if (entry.getKey().contains("defender")) {
+                        if (entry.getValue().getName().contains("defender")) {
                             Logger.log("We are going to go and obtain a " + entry.getKey() + " first. Restarting loop.");
 
                             String latestObtained = "";
@@ -300,23 +303,25 @@ public class BankingTask implements WatTask {
 
                             int tokens = Bank.count("Warrior guild token") + Inventory.count("Warrior guild token");
                             if (tokens >= 200) {
-                                TaskManager.getInstance().setCurrentTask(new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
+                                /*TaskManager.getInstance().setCurrentTask(new FightCyclopsTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                     {
                                         put("Lobster", 20);
                                     }
-                                }, latestObtained));
+                                }, latestObtained));*/
+                                Logger.log("defender triggered");
                                 return;
                             } else {
-                                TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
+                                /*TaskManager.getInstance().setCurrentTask(new FightArmorSetTask(postTask.trainsSkill(), new HashMap<String, Integer>() {
                                     {
                                         put("Lobster", 20);
                                     }
-                                }, latestObtained));
+                                }, latestObtained));*/
+                                Logger.log("defender triggered (armor set)");
                             }
                             return;
                         } else {
-                            if (OutfitUtils.isOutfitItem(entry.getKey())) {
-                                if (OutfitUtils.isGracefulItem(entry.getKey())) {
+                            if (OutfitUtils.isOutfitItem(entry.getValue().getName())) {
+                                if (OutfitUtils.isGracefulItem(entry.getValue().getName())) {
                                     if (Bank.contains("Mark of grace")) {
                                         // calculate total cost of missing pieces, and then see which ones we can get
                                         // using the marks that we have.
@@ -351,8 +356,8 @@ public class BankingTask implements WatTask {
                                 }
                             } else { // probably a else if untradeable, obtain path here. similar to defenders but less hardcoded lol
                                 // need to buy.
-                                buyingRequired.put(entry.getKey(), amountRequired);
-                                Logger.log("Equipment: Need to buy " + (entry.getValue() > 0 ? amountRequired : -entry.getValue()) + " of: " + entry.getKey());
+                                buyingRequired.put(entry.getValue().getName(), amountRequired);
+                                Logger.log("Equipment: Need to buy " + (entry.getValue().getQuantity() > 0 ? amountRequired : -entry.getValue().getQuantity() + " of: " + entry.getValue().getName()));
                             }
                         }
                     }
@@ -362,15 +367,15 @@ public class BankingTask implements WatTask {
             Sleep.sleep(500, 1000);
 
             if(!postTask.loadout().isEmpty()) {
-                for (Map.Entry<String, Integer> entry : postTask.loadout().entrySet()) {
+                for (Map.Entry<EquipmentSlot, GearItem> entry : postTask.loadout().entrySet()) {
                     if (!Equipment.contains(entry.getKey()) && Inventory.contains(entry.getKey())) {
                         if(Bank.isOpen()) {
                             Bank.close();
                             Sleep.sleepUntil(() -> !Bank.isOpen(), Calculations.random(5000, 10000));
                         }
 
-                        if (!GenericUtils.equipItem(entry.getKey(), null)) {
-                            Logger.error("Equipment: Error equipping item");
+                        if (!GenericUtils.equipItem(entry.getValue().getName(), null)) {
+                            Logger.error("Equipment: Error equipping item: " + entry.getValue().getName());
                         }
                     }
                 }
@@ -680,7 +685,7 @@ public class BankingTask implements WatTask {
         Logger.log("Banking: Complete");
 
         if (postTask != null) {
-            if(postTask instanceof BuryBonesTask || postTask instanceof BreakingTask || postTask instanceof QuestWrapperTask) {
+            if(postTask instanceof BreakingTask || postTask instanceof QuestWrapperTask) {
                 Bank.close();
             }
 
