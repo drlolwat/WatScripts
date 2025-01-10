@@ -27,6 +27,7 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
+import org.lolwat.tasks.combat.CombatTask;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.HopperTask;
@@ -68,6 +69,7 @@ public class TaskManager {
         resetBreaks();
         setCheckedHoursAt(0);
         setMinutesPlayed(0);
+        skillsAvailable.addAll(Arrays.asList(Skill.values()));
 
         Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
@@ -97,19 +99,26 @@ public class TaskManager {
             Collections.shuffle(skillsAvailable);
             for (Skill skill : skillsAvailable) {
                 List<WatTask> skillTasks = tasksBySkill.get(skill);
-                if (skillTasks != null && !skillTasks.isEmpty() && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
-                    Collections.shuffle(skillTasks);
-                    for (WatTask task : skillTasks) {
-                        if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
-                            if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
-                                Logger.log("TaskManager: Selected skill: " + task.trainsSkill());
-                                setCurrentTask(task, 0);
-                                return;
+                if(isCombatSkill(skill) && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
+                    Logger.log("TaskManager: Selecting combat for skill: " + skill);
+                    setCurrentTask(new CombatTask(skill), 0);
+                } else {
+                    if (skillTasks != null && !skillTasks.isEmpty() && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
+                        Collections.shuffle(skillTasks);
+                        for (WatTask task : skillTasks) {
+                            if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
+                                if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
+                                    Logger.log("TaskManager: Selected skilling skill: " + task.trainsSkill());
+                                    Logger.log("TaskManager: Selected task: " + task.getName());
+                                    setCurrentTask(task, 0);
+                                    return;
+                                }
                             }
                         }
+                    } else {
+                        Logger.log("TaskManager: No tasks available for skill: " + skill.getName());
+                        skillsAvailable.remove(skill);
                     }
-                } else {
-                    Logger.log("TaskManager: No tasks available for skill: " + skill.getName());
                 }
             }
         } else {
@@ -124,6 +133,14 @@ public class TaskManager {
                 getNewTask(true);
             }
         }
+    }
+
+    private boolean isCombatSkill(Skill s) {
+        return s.equals(Skill.ATTACK)
+                || s.equals(Skill.DEFENCE)
+                || s.equals(Skill.STRENGTH)
+                || s.equals(Skill.MAGIC)
+                || s.equals(Skill.RANGED);
     }
 
     public void getSpecificSkillTask(Skill sk) {
@@ -407,10 +424,6 @@ public class TaskManager {
                 }
             } else {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
-            }
-
-            if(!skillsAvailable.contains(task.trainsSkill())) {
-                skillsAvailable.add(task.trainsSkill());
             }
         }
     }
