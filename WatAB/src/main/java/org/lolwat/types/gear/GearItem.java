@@ -2,27 +2,62 @@ package org.lolwat.types.gear;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.dreambot.api.methods.quest.book.Quest;
+import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.misc.utils.NumUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Getter
 public class GearItem {
     private final String name;
     private final String searchFor;
-    private final int quantity;
     @Setter
-    private int price;
+    private int priceEach;
+    @Getter
+    private final HashMap<Skill, Integer> levelRequirements;
+    @Getter
+    private final List<Quest> questRequirements;
 
-    public GearItem(String name, String searchFor, int quantity) {
+    public GearItem(String name, String searchFor) {
         this.name = name;
         this.searchFor = searchFor;
-        this.quantity = quantity;
-        this.price = NumUtils.getItemPrice(name);
+        this.priceEach = NumUtils.getItemPrice(name);
+        this.levelRequirements = new HashMap<>();
+        this.questRequirements = new ArrayList<>();
     }
 
-    public GearItem(String name, int quantity) {
+    public GearItem(String name) {
         this.name = name;
         this.searchFor = name;
-        this.quantity = quantity;
-        this.price = NumUtils.getItemPrice(name);
+        this.priceEach = NumUtils.getItemPrice(name);
+        this.levelRequirements = new HashMap<>();
+        this.questRequirements = new ArrayList<>();
+    }
+
+    public GearItem(String name, String searchFor, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
+        this.name = name;
+        this.searchFor = searchFor;
+        this.priceEach = NumUtils.getItemPrice(name);
+        this.levelRequirements = levelRequirements;
+        this.questRequirements = questRequirements;
+    }
+
+    public GearItem(String name, HashMap<Skill, Integer> levelRequirements) {
+        this.name = name;
+        this.searchFor = name;
+        this.priceEach = NumUtils.getItemPrice(name);
+        this.levelRequirements = levelRequirements;
+        this.questRequirements = new ArrayList<>();
+    }
+
+    public GearItem(String name, List<Quest> questRequirements) {
+        this.name = name;
+        this.searchFor = name;
+        this.priceEach = NumUtils.getItemPrice(name);
+        this.levelRequirements = new HashMap<>();
+        this.questRequirements = questRequirements;
     }
 }

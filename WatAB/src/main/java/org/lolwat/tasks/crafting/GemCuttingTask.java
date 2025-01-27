@@ -11,14 +11,14 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.GearItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GemCuttingTask implements WatTask {
     private int avoidAfterLevel = 0;
@@ -36,9 +36,9 @@ public class GemCuttingTask implements WatTask {
 
     @Override
     public void execute() {
-        for(Map.Entry<String, Integer> entry : inventory().entrySet()) {
-            if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals(entry.getKey()))) {
-                Logger.log("Missing " + entry.getKey());
+        for(GearItem i : inventory()) {
+            if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals(i.getName()))) {
+                Logger.log("Missing " + i.getName());
                 TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
                 return;
             }
@@ -90,10 +90,10 @@ public class GemCuttingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
-        HashMap<String, Integer> reqs = new HashMap<>();
-        reqs.put(CraftingUtils.getBestGemToCut(), 27);
-        reqs.put("Chisel", 1);
+    public List<GearItem> inventory() {
+        List<GearItem> reqs = new ArrayList<>();
+        reqs.add(ItemManager.getInstance().getGearItem(CraftingUtils.getBestGemToCut(), 27));
+        reqs.add(ItemManager.getInstance().getGearItem("Chisel", 1));
         return reqs;
     }
 }

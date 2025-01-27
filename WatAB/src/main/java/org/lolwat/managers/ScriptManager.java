@@ -39,6 +39,11 @@ public class ScriptManager {
             MobManager.getInstance().createMobs();
         }
 
+        if(ItemManager.getInstance() == null) {
+            Logger.log("Constructing ItemManager singleton.");
+            ItemManager.setInstance(new ItemManager());
+        }
+
         if (ConfigManager.getInstance() == null) {
             Logger.log("Constructing ConfigManager singleton.");
             ConfigManager.setInstance(new ConfigManager());

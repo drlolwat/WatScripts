@@ -1,5 +1,7 @@
 package org.lolwat.managers;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
@@ -11,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class QuestManager {
+    @Setter
+    @Getter
     private static QuestManager instance;
     private HashMap<Quest, QuestTask> questTasks;
 
@@ -48,11 +52,4 @@ public class QuestManager {
         //questTasks.put(FreeQuest.DEMON_SLAYER, new DemonSlayerQuest());
     }
 
-    public static QuestManager getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(QuestManager inst) {
-        instance = inst;
-    }
 }

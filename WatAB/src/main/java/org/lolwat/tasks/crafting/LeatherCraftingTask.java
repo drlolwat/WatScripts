@@ -11,13 +11,14 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.WatTask;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.interfaces.WatTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class LeatherCraftingTask implements WatTask {
     int avoidAfterLevel = 0;
@@ -35,9 +36,9 @@ public class LeatherCraftingTask implements WatTask {
 
     @Override
     public void execute() {
-        for(Map.Entry<String, Integer> entry : inventory().entrySet()) {
-            if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals(entry.getKey()))) {
-                Logger.log("Missing " + entry.getKey());
+        for(GearItem i  : inventory()) {
+            if(!ItemUtils.inventoryContains(i.getName(), i.getQuantity(), false)) {
+                Logger.log("Missing " + i.getName() + " x" + i.getQuantity());
                 TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
                 return;
             }
@@ -87,11 +88,11 @@ public class LeatherCraftingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
-        HashMap<String, Integer> reqs = new HashMap<>();
-        reqs.put("Leather", 25);
-        reqs.put("Needle", 1);
-        reqs.put("Thread", 25 / 5);
+    public List<GearItem> inventory() {
+        List<GearItem> reqs = new ArrayList<>();
+        reqs.add(ItemManager.getInstance().getGearItem("Leather", 25));
+        reqs.add(ItemManager.getInstance().getGearItem("Needle", 1));
+        reqs.add(ItemManager.getInstance().getGearItem("Thread", 6));
         return reqs;
     }
 }

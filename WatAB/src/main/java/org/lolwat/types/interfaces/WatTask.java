@@ -19,7 +19,7 @@ public interface WatTask {
     default int loopTime() { return 400; }
     default QuestTask questTask() { return null; }
     default HashMap<EquipmentSlot, GearItem> loadout() { return new HashMap<>(); }
-    default HashMap<String, Integer> inventory() { return new HashMap<>(); }
+    default HashMap<GearItem, Integer> inventory() { return new HashMap<>(); }
     default List<String> inventoryTolerated() {
         return new ArrayList<>();
     }

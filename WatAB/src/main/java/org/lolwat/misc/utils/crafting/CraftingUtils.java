@@ -3,8 +3,12 @@ package org.lolwat.misc.utils.crafting;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.misc.types.crafting.CraftingType;
+import org.lolwat.types.gear.GearItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CraftingUtils {
     public static String getCraftingItemName(CraftingType type) {
@@ -35,7 +39,7 @@ public class CraftingUtils {
         return "Uncut " + name;
     }
 
-    public static HashMap<String, Integer> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
+    public static List<GearItem> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
         HashMap<String, Integer> ret = new HashMap<>();
 
         String mouldType;
@@ -86,7 +90,13 @@ public class CraftingUtils {
         String extra = mouldType + " mould";
         ret.put(extra, 1);
 
-        return ret;
+        List<GearItem> trueRet = new ArrayList<>();
+
+        for(Map.Entry<String, Integer> entry : ret.entrySet()) {
+            trueRet.add(new GearItem(entry.getKey(), entry.getValue()));
+        }
+
+        return trueRet;
     }
 
     public static int getSpinnerWidgetId(CraftingType type) {

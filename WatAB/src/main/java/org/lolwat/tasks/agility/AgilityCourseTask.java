@@ -175,17 +175,6 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
-        HashMap<String, Integer> ret = new HashMap<>();
-
-        if(needsEat) {
-            ret.put("Monkfish", -10);
-        }
-
-        return ret;
-    }
-
-    @Override
     public boolean requiresMembers() {
         return true;
     }

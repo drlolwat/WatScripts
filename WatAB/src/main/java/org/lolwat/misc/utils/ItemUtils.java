@@ -14,8 +14,8 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,15 +44,23 @@ public class ItemUtils {
     }
 
     public static boolean inventoryContains(int itemId, int itemQty, boolean allowNoted) {
-        return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty);
+        return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
+    }
+
+    public static boolean inventoryContains(String itemId, int itemQty, boolean allowNoted) {
+        return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getName().equals(itemId) && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
     }
 
     public static boolean equipmentContains(int itemId, int itemQty) {
-        return Inventory.contains(x -> x != null && x.getID() == itemId && x.getAmount() >= itemQty);
+        return Inventory.contains(x -> x != null && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
+    }
+
+    public static boolean equipmentSlotContains(String name, int itemQty) {
+        return Inventory.contains(x -> x != null && x.getName().equals(name) && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
     }
 
     public static boolean bankContains(int itemId, int itemQty, boolean allowNoted) {
-        return Bank.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty);
+        return Bank.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
     }
 
     public static void bank(WatTask task) {
