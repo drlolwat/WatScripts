@@ -32,10 +32,10 @@ public class NumUtils {
             num = num * 7;
         }
         else if(num < 500) {
-            num = num * 5;
+            num = num * 2;
         }
         else if(num < 1000) {
-            num = num * 2;
+            num = (int)Math.ceil(num * 1.5);
         } else {
             num = (int) (num * multiplier);
         }
