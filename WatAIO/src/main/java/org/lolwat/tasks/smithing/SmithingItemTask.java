@@ -9,6 +9,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.widget.helpers.Smithing;
+import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
@@ -55,11 +56,11 @@ public class SmithingItemTask implements WatTask {
         SmithingType itemType = SmithingUtils.getBestSmithingChoice(ingotType);
         // check to see if we have enough bars
         for(java.util.Map.Entry<String, Integer> m : SmithingUtils.materialsForSmithing(itemType, ingotType,false, 1).entrySet()) {
-            if(!Inventory.contains(m.getKey()) || Inventory.count(m.getKey()) < m.getValue()) {
+            if(Inventory.count(x -> x != null && !x.isNoted() && x.getName().equals(m.getKey())) < m.getValue()) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(
                         SmithingUtils.materialsForSmithing(itemType, ingotType, true, 1),
                         byproducts, maximumInventories, this));
-
+                Logger.log("banking, missing: " + m.getKey());
                 return;
             }
         }
