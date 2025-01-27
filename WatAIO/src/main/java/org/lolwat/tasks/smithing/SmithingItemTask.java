@@ -30,15 +30,13 @@ public class SmithingItemTask implements WatTask {
     private final int maximumLevel;
     private final Area selectedArea;
     private final int maximumInventories;
-    private final HashMap<String, Integer> byproducts;
 
-    public SmithingItemTask(IngotType type, int minLevel, int maxLevel, Area area, int maxInventories, HashMap<String, Integer> toSell) {
+    public SmithingItemTask(IngotType type, int minLevel, int maxLevel, Area area) {
         ingotType = type;
         minimumLevel = minLevel;
         maximumLevel = maxLevel;
         selectedArea = area;
-        maximumInventories = Calculations.random(3, maxInventories);
-        byproducts = toSell;
+        maximumInventories = Calculations.random(3, 20);
     }
 
     @Override
@@ -59,7 +57,7 @@ public class SmithingItemTask implements WatTask {
             if(Inventory.count(x -> x != null && !x.isNoted() && x.getName().equals(m.getKey())) < m.getValue()) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(
                         SmithingUtils.materialsForSmithing(itemType, ingotType, true, 1),
-                        byproducts, maximumInventories, this));
+                        null, maximumInventories, this));
                 Logger.log("banking, missing: " + m.getKey());
                 return;
             }
