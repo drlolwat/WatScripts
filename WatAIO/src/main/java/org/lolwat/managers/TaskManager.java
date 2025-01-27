@@ -1443,15 +1443,15 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // actual items, followed wiki for most efficient leveling
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 1, 5, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 5, 9, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 9, 18, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 18, 33, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.IRON, 33, 48, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.STEEL, 48, 68, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.MITHRIL, 68, 88, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.ADAMANTITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
-        tasks.add(new SmithingItemTask(IngotType.RUNITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 1, 5, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 5, 9, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 9, 18, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 18, 33, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.IRON, 33, 48, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.STEEL, 48, 68, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.MITHRIL, 68, 88, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.ADAMANTITE, 88, 98, new Area(3185, 3427, 3190, 3420)));
+        tasks.add(new SmithingItemTask(IngotType.RUNITE, 88, 98, new Area(3185, 3427, 3190, 3420)));
 
         return tasks;
     }
