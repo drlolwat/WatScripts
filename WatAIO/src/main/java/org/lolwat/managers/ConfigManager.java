@@ -29,7 +29,7 @@ public class ConfigManager {
     private boolean waitingForResponse;
     private HashMap<String, Integer> levelUps;
     private boolean muleConnectionFailed;
-    private HashMap<String, Integer> itemThresholds;
+    private final HashMap<String, Integer> itemThresholds;
 
     public ConfigManager() {
         config = new HashMap<>();
@@ -74,20 +74,9 @@ public class ConfigManager {
         defaultProfile.addProperty("rest_after_tut", 0);
         defaultProfile.addProperty("logout_after_ttl", 0);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
-        defaultProfile.addProperty("use_menu_manip", true);
+        defaultProfile.addProperty("use_menu_manip", false);
 
         JsonObject items = new JsonObject();
-        items.addProperty("Logs", -500);
-        items.addProperty("Oak logs", -500);
-        items.addProperty("Yew logs", -500);
-        items.addProperty("Raw shrimp", -100);
-        items.addProperty("Raw pike", -200);
-        items.addProperty("Raw trout", -200);
-        items.addProperty("Raw salmon", -200);
-        items.addProperty("Lobster", -100); // cook/eat
-        items.addProperty("Raw lobster", -1); // we dont fish this
-        items.addProperty("Raw tuna", -1); // we dont fish this either
-        items.addProperty("Tuna", -150); // only cook atm
         items.addProperty("Iron full helm", 1);
         items.addProperty("Iron platebody", 1);
         items.addProperty("Iron platelegs", 1);
@@ -111,23 +100,7 @@ public class ConfigManager {
         items.addProperty("Amulet of strength", 1);
         items.addProperty("Amulet of power", 1);
         items.addProperty("Amulet of magic", 1);
-        items.addProperty("Iron ore", -150);
-        items.addProperty("Coal", -150);
-        items.addProperty("Tin ore", -150);
-        items.addProperty("Copper ore", -150);
-        items.addProperty("Bones", -1);
-        items.addProperty("Emerald necklace", -100);
-        items.addProperty("Gold ring", -100);
-        items.addProperty("Ruby necklace", -100);
-        items.addProperty("Sapphire ring", -100);
         items.addProperty("Zamorak monk bottom", 1);
-        items.addProperty("Sapphire", -1);
-        items.addProperty("Ruby", -1);
-        items.addProperty("Diamond", -1);
-        items.addProperty("Bronze bar", -1);
-        items.addProperty("Iron bar", -1);
-        items.addProperty("Steel bar", -1);
-        items.addProperty("Gold bar", -1);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
