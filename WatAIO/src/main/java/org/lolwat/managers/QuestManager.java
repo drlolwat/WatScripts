@@ -44,8 +44,8 @@ public class QuestManager {
         questTasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
         questTasks.put(FreeQuest.RUNE_MYSTERIES, new RuneMysteriesQuest());
         questTasks.put(FreeQuest.ERNEST_THE_CHICKEN, new ErnestTheChickenQuest());
-        questTasks.put(FreeQuest.VAMPIRE_SLAYER, new VampyreSlayerQuest());
-        questTasks.put(FreeQuest.DEMON_SLAYER, new DemonSlayerQuest());
+        //questTasks.put(FreeQuest.VAMPIRE_SLAYER, new VampyreSlayerQuest());
+        //questTasks.put(FreeQuest.DEMON_SLAYER, new DemonSlayerQuest());
     }
 
     public static QuestManager getInstance() {
