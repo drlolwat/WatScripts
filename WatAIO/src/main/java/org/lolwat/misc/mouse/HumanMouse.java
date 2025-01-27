@@ -27,37 +27,53 @@ public class HumanMouse extends StandardMouseAlgorithm {
 
     public void generatePoints(Point point) {
         Point curPos = Mouse.getPosition();
-        double initialDistance = distance(point, curPos);
-        double currentDistance = initialDistance;
-
         try {
-            while (currentDistance / initialDistance > 0.05 && Calculations.random(1) == 2) {
-                Point rp = randomPoint(curPos, point);
-                moveCursorWithCubicBezier(curPos, rp);
-                curPos = Mouse.getPosition();
-                currentDistance = distance(point, curPos);
+            // Occasionally add a loop-de-loop
+            if (Calculations.random(1, 30) == 1) {
+                Point[] loopPoints = generateLoopPoints(curPos, point);
+                for (Point loopPoint : loopPoints) {
+                    moveCursorWithCubicBezier(curPos, loopPoint, false);
+                    curPos = Mouse.getPosition();
+                }
             }
         } catch (Exception ignored) { }
+
         moveCursorWithCubicBezier(curPos, point);
     }
 
-    private void moveCursorWithCubicBezier(Point startPos, Point endPos) {
+    private Point[] generateLoopPoints(Point start, Point end) {
+        int loopSize = 20; // Size of the loop
+        Point midPoint = new Point((start.x + end.x) / 2, (start.y + end.y) / 2);
+        return new Point[]{
+                new Point(midPoint.x - loopSize, midPoint.y),
+                new Point(midPoint.x, midPoint.y - loopSize),
+                new Point(midPoint.x + loopSize, midPoint.y),
+                new Point(midPoint.x, midPoint.y + loopSize),
+                new Point(midPoint.x - loopSize, midPoint.y)
+        };
+    }
+
+    private void moveCursorWithCubicBezier(Point startPos, Point endPos, boolean quick) {
         Point controlPoint1 = randomPoint(startPos, endPos);
         Point controlPoint2 = randomPoint(startPos, endPos);
-        int steps = Calculations.random(5, 15);
+        int steps = quick ? Calculations.random(3, 5) : Calculations.random(5, 15);
 
         if(distance(startPos, endPos) <= 30) {
-            steps = Calculations.random(5, 8);
+            steps = quick ? Calculations.random(3, 5) : Calculations.random(5, 8);
         }
 
         try {
             for (int i = 0; i <= steps; i++) {
                 double t = (double) i / steps;
                 Point pointOnCurve = calculateCubicBezierPoint(t, startPos, controlPoint1, controlPoint2, endPos);
-                sleep(randomSpeed());
+                sleep(quick ? Calculations.random(10, 30) : randomSpeed());
                 Mouse.hop(pointOnCurve);
             }
         } catch (Exception ignored) { }
+    }
+
+    private void moveCursorWithCubicBezier(Point startPos, Point endPos) {
+        moveCursorWithCubicBezier(startPos, endPos, false);
     }
 
     private static Point calculateCubicBezierPoint(double t, Point p0, Point p1, Point p2, Point p3) {

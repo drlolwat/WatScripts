@@ -12,6 +12,7 @@ import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
@@ -75,28 +76,30 @@ public class GrandExchangeTask implements WatTask {
 
 
         if(NPCs.closest("Grand Exchange Clerk") != null) {
-            Logger.log("Opening Grand Exchange");
-
             if (!GrandExchange.isOpen()) {
-                GrandExchange.open();
+                Logger.log("Opening Grand Exchange");
+                if(!GrandExchange.open()) {
+                    Logger.log("Unable to open Grand Exchange.");
+                    return;
+                }
+
                 Sleep.sleepUntil(GrandExchange::isOpen, Calculations.random(5000, 10000));
                 return;
             }
-
-            Sleep.sleep(1000, 3000);
 
             Logger.log("==== Beginning G.E Main Operations ====");
             Logger.log("We have " + itemList.size() + " items to deal with");
             for (java.util.Map.Entry<String, Integer> item : itemList.entrySet()) {
                 // Get a slot. If unavailable, will cancel the other offers we have going
                 if (GrandExchange.getFirstOpenSlot() == -1) {
-                    Sleep.sleep(500, 900);
-
                     if(GrandExchange.isReadyToCollect()) {
-                        GrandExchange.collect();
-                    }
+                        if(!GrandExchange.collect()) {
+                            Logger.log("Error collecting items from G.E");
+                            return;
+                        }
 
-                    Sleep.sleep(500, 900);
+                        Sleep.sleepUntil(() -> !GrandExchange.isReadyToCollect(), 5000);
+                    }
 
                     if (GrandExchange.getFirstOpenSlot() == -1) {
                         for(GrandExchangeItem gxIt : GrandExchange.getItems()) {
@@ -141,18 +144,31 @@ public class GrandExchangeTask implements WatTask {
 
                 // pre collect
                 if(GrandExchange.isReadyToCollect()) {
-                    GrandExchange.collect();
+                    if(!GrandExchange.collect()) {
+                        Logger.log("Error collecting items from G.E");
+                        return;
+                    }
+
+                    Sleep.sleepUntil(() -> !GrandExchange.isReadyToCollect(), 5000);
                 }
 
                 if(GrandExchange.getItem(item.getKey()) != null) {
                     Logger.log("Tell lolwat");
+                    return;
                 }
 
                 if (isSelling) {
                     Logger.log("Selling: " + item.getKey());
                     if(Inventory.contains(item.getKey())) {
-                        Inventory.get(item.getKey()).interact();
-                        Sleep.sleep(100, 600);
+                        Item item1 = Inventory.get(item.getKey());
+                        if (item1 != null) {
+                            if (!item1.interact()) {
+                                Logger.log("Error interacting with item in inventory: " + item.getKey());
+                                continue;
+                            }
+
+                            Sleep.sleepUntil(GrandExchange::isSellOpen, 5000);
+                        }
 
                         for(int i = 0; i <= 3; i++) {
                             if(!GrandExchange.getDecreasePriceFivePercentButton().interact()) {
@@ -211,10 +227,10 @@ public class GrandExchangeTask implements WatTask {
                         }
 
                         if(!GrandExchange.isBuyOpen()) {
-                            Sleep.sleep(1000, 2000);
-
                             if(!GrandExchange.openBuyScreen(slot)) {
                                 Logger.log("Error ensuring buy screen is open in G.E");
+                                retries++;
+                                continue;
                             }
 
                             Sleep.sleepUntil(GrandExchange::isBuyOpen, 10000);
