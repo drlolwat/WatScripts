@@ -329,7 +329,7 @@ public class TraversalTask implements WatTask {
             }
         }
 
-        if (Walking.shouldWalk(5) || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
+        if (Walking.shouldWalk(7) || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 2 : 3))) {
             if (target == null && usingArea)
                 Walking.walk(area);
             else
