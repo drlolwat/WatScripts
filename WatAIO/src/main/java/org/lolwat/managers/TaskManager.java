@@ -61,6 +61,7 @@ public class TaskManager {
     private HashMap<Skill, List<WatTask>> tasksBySkill;
     private List<WatTask> restrictedMoneyMakingTasks;
     private List<WatTask> unrestrictedMoneyMakingTasks;
+    private List<Skill> skillsAvailable;
 
     // ---- RUNTIME VARIABLES ----
     private static TaskManager instance;
@@ -93,9 +94,11 @@ public class TaskManager {
     }
 
     public void getNewTask(boolean noQuest) {
-        if(preTaskSelection()) {
+        if (preTaskSelection()) {
             return;
         }
+
+        Logger.log("TaskManager: Selecting a new task..");
 
         DialogueUtils.wipeOptions();
 
@@ -103,35 +106,39 @@ public class TaskManager {
                 && Calculations.random(1, ConfigManager.getInstance().getConfigBoolean("faster_quests") ? 4 : 8) == 3
                 && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("quest_min_ttl");
 
-        //quest = true;
-
-        if(!quest) {
-            for (WatTask task : tasks) {
-                if (task.trainsSkill().equals(Skill.HITPOINTS))
-                    continue;
-
-                if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
-                    if (task.canPerformTask() && (task.requiresMembers() && GenericUtils.isMember()
-                            || !task.requiresMembers() && !GenericUtils.isMember()) && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
-                        Logger.log("TaskManager: Selected task: " + task.getName());
-                        setCurrentTask(task, 0);
-                        return;
+        if (!quest) {
+            Logger.log("TaskManager: Selecting skill task");
+            Collections.shuffle(skillsAvailable);
+            for (Skill skill : skillsAvailable) {
+                List<WatTask> skillTasks = tasksBySkill.get(skill);
+                if (skillTasks != null && !skillTasks.isEmpty() && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
+                    for (WatTask task : skillTasks) {
+                        if (ConfigManager.getInstance().getSkillTarget(task.trainsSkill()) > Skills.getRealLevel(task.trainsSkill())) {
+                            if (task.canPerformTask() && Skills.getRealLevel(task.trainsSkill()) < task.avoidAfterLevel()) {
+                                Logger.log("TaskManager: Selected skill: " + task.trainsSkill());
+                                setCurrentTask(task, 0);
+                                return;
+                            }
+                        }
                     }
+                } else {
+                    Logger.log("TaskManager: No tasks available for skill: " + skill.getName());
                 }
             }
         } else {
-            Logger.log("TaskManager: Selected questing, now selecting quest..");
+            Logger.log("TaskManager: Selected questing");
             Quest incompleteQuest = QuestManager.getInstance().getIncompleteQuest();
-            if(incompleteQuest != null) {
+            if (incompleteQuest != null) {
                 setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), Calculations.random(3600, 7200));
                 Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
             } else {
-                tasksUntilBreak++; // so we dont decrement it if we dont get a quest
+                tasksUntilBreak++; // so we don't decrement it if we don't get a quest
                 Logger.log("TaskManager: All available quests completed, selecting a skill-based task..");
                 getNewTask(true);
             }
         }
     }
+
 
     public void getSpecificSkillTask(Skill sk) {
         getSpecificSkillTask(sk, 0);
@@ -412,6 +419,7 @@ public class TaskManager {
         tasksBySkill = new HashMap<>();
         restrictedMoneyMakingTasks = new ArrayList<>();
         unrestrictedMoneyMakingTasks = new ArrayList<>();
+        skillsAvailable = new ArrayList<>();
 
         tasks.addAll(createMiningTasks());
         tasks.addAll(createSmithingTasks());
@@ -435,6 +443,10 @@ public class TaskManager {
                 }
             } else {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
+            }
+
+            if(!skillsAvailable.contains(task.trainsSkill())) {
+                skillsAvailable.add(task.trainsSkill());
             }
         }
 
@@ -1431,95 +1443,15 @@ public class TaskManager {
         List<WatTask> tasks = new ArrayList<>();
 
         // actual items, followed wiki for most efficient leveling
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 1, 5, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -100);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 5, 9, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -100);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 9, 18, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -30);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.BRONZE, 18, 33, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -1);
-                put("Bronze platebody", -30);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.IRON, 33, 48, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -1);
-                put("Bronze platebody", -2);
-                put("Iron platebody", -30);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.STEEL, 48, 68, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -1);
-                put("Bronze platebody", -2);
-                put("Iron platebody", -2);
-                put("Steel platebody", -30);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.MITHRIL, 68, 88, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -1);
-                put("Bronze platebody", -2);
-                put("Iron platebody", -2);
-                put("Steel platebody", -2);
-                put("Mithril platebody", -30);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.ADAMANTITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -1);
-                put("Bronze platebody", -2);
-                put("Iron platebody", -2);
-                put("Steel platebody", -2);
-                put("Mithril platebody", -2);
-                put("Adamant platebody", -30);
-            }
-        }));
-
-        tasks.add(new SmithingItemTask(IngotType.RUNITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<String, Integer>() {
-            {
-                put("Bronze axe", -1);
-                put("Bronze scimitar", -1);
-                put("Bronze warhammer", -1);
-                put("Bronze platebody", -2);
-                put("Iron platebody", -2);
-                put("Steel platebody", -2);
-                put("Mithril platebody", -2);
-                put("Adamant platebody", -2);
-                put("Rune platelegs", -30);
-            }
-        }));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 1, 5, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 5, 9, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 9, 18, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.BRONZE, 18, 33, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.IRON, 33, 48, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.STEEL, 48, 68, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.MITHRIL, 68, 88, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.ADAMANTITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
+        tasks.add(new SmithingItemTask(IngotType.RUNITE, 88, 98, new Area(3185, 3427, 3190, 3420), 10, new HashMap<>()));
 
         return tasks;
     }
