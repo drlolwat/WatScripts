@@ -4,9 +4,12 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 
 import java.util.*;
 
@@ -25,6 +28,7 @@ public class DialogueUtils {
     }
 
     public static void solve(List<String> answers) {
+        // look for 219 1
         if (Dialogues.getOptions() != null && !answers.isEmpty()) {
             final List<String> options = Arrays.asList(Dialogues.getOptions());
 
@@ -39,6 +43,29 @@ public class DialogueUtils {
 
             if (usedOptions.isEmpty()) {
                 Logger.log("No unused options found: " + Arrays.toString(Dialogues.getOptions()));
+            }
+        }
+
+        Widget dialogue = Widgets.getWidget(219);
+        if(dialogue != null && dialogue.isVisible()) {
+            WidgetChild dialogueOptions = dialogue.getChild(1);
+            if(dialogueOptions != null && dialogueOptions.isVisible()) {
+                for(WidgetChild option : dialogueOptions.getChildren()) {
+                    if(option == null) {
+                        continue;
+                    }
+
+                    if(answers.contains(option.getText())) {
+                        Logger.log("Selecting dialogue option: " + option.getText());
+                        if(!option.interact()) {
+                            Logger.error("Failed to interact with dialogue option: " + option.getText());
+                            return;
+                        }
+
+                        Sleep.sleepUntil(() -> (Dialogues.canContinue() || !option.isVisible()), Calculations.random(500, 1500));
+                        break;
+                    }
+                }
             }
         }
 
