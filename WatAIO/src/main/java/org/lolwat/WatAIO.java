@@ -27,6 +27,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
+import org.dreambot.api.wrappers.widgets.message.MessageType;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
@@ -48,7 +49,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one F2P Account Building script for Old School RuneScape", author = "lolwat", version = 1.26, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one F2P Account Building script for Old School RuneScape", author = "lolwat", version = 1.28, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;
@@ -329,8 +330,9 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if (!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
-                boolean enableGpt = true; // change at compile time
-                if (enableGpt) {
+                if (!m.getType().equals(MessageType.TRADE)
+                        && !m.getType().equals(MessageType.TRADE_COMPLETE)
+                        && !m.getType().equals(MessageType.TRADE_SENT)) {
                     if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
                         ConfigManager.getInstance().setWaitingForResponse(true);
                         new Thread(() -> {
