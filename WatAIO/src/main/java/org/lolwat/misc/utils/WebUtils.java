@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.dreambot.api.Client;
 import org.dreambot.api.script.ScriptManager;
-import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 
 import java.io.*;
@@ -99,8 +98,7 @@ public class WebUtils {
             }
 
             String formattedMessage = String.format(
-                    "**Account**: %s\n**Replying to**: %s\n**They sent**: %s\n**You sent**: %s",
-                    AccountManager.getAccountNickname(),
+                    "**Replying to**: %s\n**They sent**: %s\n**You sent**: %s",
                     nm,
                     msg,
                     response);
