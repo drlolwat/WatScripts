@@ -8,6 +8,7 @@ import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -53,9 +54,8 @@ import java.util.HashMap;
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;
-    public static WatAIO getInstance() {
-        return instance;
-    }
+    public static WatAIO getInstance() { return instance; }
+    private final Area noTalkZone = new Area(3137, 3517, 3189, 3467);
 
     @Override
     public void onStart(String... params) {
@@ -329,6 +329,14 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
     @Override
     public void onMessage(Message m) {
         if (TaskManager.getInstance().getCurrentTask() != null) {
+            if(TaskManager.getInstance().getCurrentTask() instanceof BankingTask || TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) {
+                return;
+            }
+
+            if(noTalkZone.contains(Players.getLocal())) {
+                return;
+            }
+
             if (!ConfigManager.getInstance().isWaitingForResponse() && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
                 if (!m.getType().equals(MessageType.TRADE)
                         && !m.getType().equals(MessageType.TRADE_COMPLETE)
