@@ -1,10 +1,7 @@
 package org.lolwat.misc.paint;
 
-import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.world.Worlds;
 import org.lolwat.WatScript;
-import org.lolwat.misc.utils.NumUtils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,30 +25,19 @@ public class Paint implements PaintInfo {
     public String[] getPaintInfo() {
         String elapsedTimeStr = WatScript.getInstance().getElapsedTime();
         long elapsedTimeMillis = parseElapsedTime(elapsedTimeStr);
-        double elapsedTimeHours = elapsedTimeMillis / 3600000.0; // Convert milliseconds to hours
+        double elapsedTimeHours = elapsedTimeMillis / 3600000.0;
 
-        int shamansKilled = WatScript.getInstance().getShamansKilled();;
-        int dwhCollected = WatScript.getInstance().getDwhCollected();
-        int totalProfit = WatScript.getInstance().getItemWorthPicked() + WatScript.getInstance().getGoldAlched();
+        int planksCreated = WatScript.getInstance().getPlanksCreated();;
+        double planksPerHour = planksCreated / elapsedTimeHours;
 
-        double shamanPerHour = shamansKilled / elapsedTimeHours;
-        double dwhPerHour = dwhCollected / elapsedTimeHours;
-        double goldAlched = WatScript.getInstance().getGoldAlched() / elapsedTimeHours;
-        double itemsWorthPerHour = WatScript.getInstance().getItemWorthPicked() / elapsedTimeHours;
-        double xpPerHour = (Skills.getExperience(Skill.RANGED) - WatScript.getInstance().getStartRangedXp()) / elapsedTimeHours;
-        double deathPerHour = WatScript.getInstance().getDeaths() / elapsedTimeHours;
-        double totalProfitPerHour = totalProfit / elapsedTimeHours;
+        int sipsTaken = WatScript.getInstance().getSipsTaken();
+        double sipsPerHour = sipsTaken / elapsedTimeHours;
 
         return new String[] {
-                "WatShamans",
+                "Wat WC Guild",
                 "Time running: " + WatScript.getInstance().getElapsedTime(),
-                "Shamans killed: " + shamansKilled + " (" + String.format("%.2f", shamanPerHour) + "/h)",
-                "Warhammers collected: " + dwhCollected + " (" + String.format("%.2f", dwhPerHour) + "/h)",
-                "Gold alched: " + NumUtils.simplifyNumber(WatScript.getInstance().getGoldAlched()) + " (" + NumUtils.simplifyNumber(goldAlched) + "/h)",
-                "Item worth picked up: " + NumUtils.simplifyNumber(WatScript.getInstance().getItemWorthPicked()) + " (" + NumUtils.simplifyNumber(itemsWorthPerHour) + "/h)",
-                "Total profit: " + NumUtils.simplifyNumber(totalProfit) + " (" + NumUtils.simplifyNumber(totalProfitPerHour) + "/h)",
-                "Ranged level: " + Skills.getRealLevel(Skill.RANGED) + (WatScript.getInstance().getRangedLevelsGained() > 0 ? " +" + WatScript.getInstance().getRangedLevelsGained() : "") + " (" + String.format("%.2f", xpPerHour) + " xp/h)",
-                "Deaths: " + WatScript.getInstance().getDeaths() + " (" + String.format("%.2f", deathPerHour) + "/h)",
+                "Planks created: " + planksCreated + " (" + String.format("%.2f", planksPerHour) + "/h)",
+                "Sips taken: " + sipsTaken + " (" + String.format("%.2f", sipsPerHour) + "/h)",
                 "Ping: " + ping + "ms"
         };
     }

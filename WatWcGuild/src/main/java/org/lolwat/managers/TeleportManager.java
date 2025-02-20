@@ -70,5 +70,11 @@ public class TeleportManager {
                 "Ring of wealth (",
                 "Ring of wealth (5)",
                 "Grand Exchange"));
+
+        teleports.add(new Teleport("Woodcutting Guild",
+                new Tile(1589, 3496, 0),
+                "Skills necklace(",
+                "Skills necklace(6)",
+                "Woodcutting Guild"));
     }
 }

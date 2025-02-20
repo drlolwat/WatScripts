@@ -24,7 +24,7 @@ public class ItemUtils {
             "Ring of dueling"
     );
 
-    public static final List<BankLocation> allowedLocations = Arrays.asList(BankLocation.GRAND_EXCHANGE, BankLocation.LUMBRIDGE, BankLocation.VARROCK_WEST);
+    public static final List<BankLocation> allowedLocations = Arrays.asList(BankLocation.GRAND_EXCHANGE, BankLocation.WOODCUTTING_GUILD, BankLocation.LUMBRIDGE);
 
     public static BankLocation getClosestAllowedBank() {
         BankLocation closestBank = null;

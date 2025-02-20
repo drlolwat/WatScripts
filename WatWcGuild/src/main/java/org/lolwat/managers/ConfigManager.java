@@ -69,7 +69,7 @@ public class ConfigManager {
     }
 
     public void loadFromProfile(String p) {
-        String filePath = System.getProperty("user.dir") + "/WatShamans/" + p + ".json";
+        String filePath = System.getProperty("user.dir") + "/WatWCGuild/" + p + ".json";
 
         try {
             Gson gson = new Gson();

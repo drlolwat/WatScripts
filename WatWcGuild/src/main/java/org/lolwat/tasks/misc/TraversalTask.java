@@ -77,7 +77,7 @@ public class TraversalTask implements WatTask {
             "The birthday of a famous person or event.", "No, you should never allow anyone to level your account.", "Nothing, it's a fake.",
             "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!");
 
-    List<String> npcsTriggerPost = Arrays.asList("Delrith");
+    List<String> npcsTriggerPost = Arrays.asList("Delrith", "Sawmill operator");
 
     @Override
     public String getName() {
@@ -104,10 +104,6 @@ public class TraversalTask implements WatTask {
     public void execute() {
         if (!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
             TaskManager.getInstance().setCurrentTask(postTask);
-            return;
-        }
-
-        if(GenericUtils.performEmergencyWork()) {
             return;
         }
 
@@ -160,7 +156,15 @@ public class TraversalTask implements WatTask {
                             hasTeleported = true;
                             return;
                         } else {
-                            if (targetDistance > exchangeDistance
+                            BankLocation closestBank = Bank.getClosestBankLocation();
+                            double bankDistance;
+                            if(closestBank != null) {
+                                bankDistance = Players.getLocal().tileDistance(closestBank.getCenter());
+                            } else {
+                                bankDistance = exchangeDistance;
+                            }
+
+                            if (targetDistance > bankDistance
                                     && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
 
                                 TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
@@ -171,6 +175,8 @@ public class TraversalTask implements WatTask {
 
                                 Logger.log("Traversal: missing teleport item " + teleportItem);
                                 return;
+                            } else {
+                                Logger.log("Target distance was too far");
                             }
                         }
                     } else {

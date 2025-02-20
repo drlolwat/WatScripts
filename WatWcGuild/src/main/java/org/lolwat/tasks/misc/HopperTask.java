@@ -100,10 +100,6 @@ public class HopperTask implements WatTask {
             Sleep.sleepUntil(() -> Worlds.getCurrentWorld() != startWorld && Client.getGameState().equals(GameState.LOGGED_IN), 10000);
         } else {
             if (Client.getGameState().equals(GameState.LOGGED_IN)) {
-                if(GenericUtils.performEmergencyWork()) {
-                    return;
-                }
-
                 if (GenericUtils.tooManyPlayers(monsterArea, 1, true)) {
                     TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
                     return;

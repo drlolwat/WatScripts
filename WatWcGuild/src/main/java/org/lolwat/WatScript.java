@@ -9,8 +9,6 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -45,7 +43,7 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
+import org.lolwat.tasks.work.MakePlankTask;
 
 import java.awt.*;
 import java.io.*;
@@ -58,7 +56,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@ScriptManifest(name = "WatShamans", description = "Shaman killer", author = "lolwat", version = 1.0, category = Category.MISC)
+@ScriptManifest(name = "WatWCGuild", description = "WatWCGuild", author = "lolwat", version = 1.0, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
     public static WatScript getInstance() {
@@ -74,27 +72,21 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
         put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
-        put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
 
     private final CustomPaint paint = new CustomPaint(new Paint(),
             CustomPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN,
             new Color[]{Color.WHITE}, // Text color
             "Verdana",
-            new Color[]{new Color(20, 54, 16)}, // Background color
+            new Color[]{Color.DARK_GRAY}, // Background color
             new Color[]{Color.BLACK}, // Border color
             1, false, 5, 3, 0);
 
     private final RenderingHints aa = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     public static final Instant startTime = Instant.now();
 
-    private int shamansKilled = 0;
-    private int dwhCollected = 0;
-    private int deaths = 0;
-    private int startRangedXp = 0;
-    private int rangedLevelsGained = 0;
-    private int goldAlched = 0;
-    private int itemWorthPicked = 0;
+    private int planksCreated = 0;
+    private int sipsTaken = 0;
 
     private long GPT_LAST_CALL = 0;
     private boolean GPT_WAITING_FOR_REPLY;
@@ -143,7 +135,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         if (instance == null) {
-            Logger.log(Color.green, "WatShamans starting: assigning instance");
+            Logger.log(Color.green, "WatWCGuild starting: assigning instance");
             instance = this;
         }
 
@@ -235,10 +227,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(startRangedXp == 0) {
-            startRangedXp = Skills.getExperience(Skill.RANGED);
-        }
-
         if (ConfigManager.getInstance().isFirstStart()) {
             ConfigManager.getInstance().setFirstStart(false);
         }
@@ -256,7 +244,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof MakePlankTask) {
             Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(
                     (TaskManager.getInstance().getCurrentTask() != null) ?
@@ -299,9 +287,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onLevelChange(ExperienceEvent event) {
-        if (event.getSkill() == Skill.RANGED) {
-            rangedLevelsGained++;
-        }
     }
 
     @Override
@@ -324,11 +309,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             TaskManager.getInstance().getCurrentTask().onMessage(m);
         }
 
-        if (m.getMessage().equals("Oh dear, you are dead!")) {
-            handleDeath();
-        }
-
-        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof MakePlankTask) {
             TaskManager.getInstance().setCurrentTask
                     (
                             new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
@@ -342,7 +323,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             return;
 
         boolean enableGpt = (Client.getForumUser().getUsername().equals("user1") || Client.getForumUser().getUsername().equals("lolwat"));
-        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof MakePlankTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
             if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1 && !GPT_WAITING_FOR_REPLY) {
                 setWaitingForReply(true);
                 new Thread(() -> {
@@ -419,11 +400,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onPlayerAnimation(Player player, int anim, int animDelay) {
-        if(player.equals(Players.getLocal())) {
-            if(anim == 836) {
-                handleDeath();
-            }
-        }
+
     }
 
     @Override
@@ -462,13 +439,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         paint.paint(g2d);
     }
 
-    public void handleDeath() {
-        sendWebhook(AccountManager.getAccountNickname() + " has fallen and cannot get up", true);
-        Logger.log("DEATH DETECTED: STOPPING SCRIPT");
-        setDeaths(getDeaths() + 1);
-        ScriptManager.getScriptManager().stop();
-    }
-
     public String getElapsedTime() {
         Duration duration = Duration.between(startTime, Instant.now());
         long hours = duration.toHours();
@@ -477,52 +447,20 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         return String.format("%dh %dm %ds", hours, minutes, seconds);
     }
 
-    public int getDwhCollected() {
-        return dwhCollected;
+    public int getSipsTaken() {
+        return sipsTaken;
     }
 
-    public void setDwhCollected(int dwhCollected) {
-        this.dwhCollected = dwhCollected;
+    public void setSipsTaken(int sipsTaken) {
+        this.sipsTaken = sipsTaken;
     }
 
-    public int getShamansKilled() {
-        return shamansKilled;
+    public int getPlanksCreated() {
+        return planksCreated;
     }
 
-    public void setShamansKilled(int shamansKilled) {
-        this.shamansKilled = shamansKilled;
-    }
-
-    public int getDeaths() {
-        return deaths;
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
-
-    public int getStartRangedXp() {
-        return startRangedXp;
-    }
-
-    public int getRangedLevelsGained() {
-        return rangedLevelsGained;
-    }
-
-    public int getGoldAlched() {
-        return goldAlched;
-    }
-
-    public void setGoldAlched(int goldAlched) {
-        this.goldAlched = goldAlched;
-    }
-
-    public int getItemWorthPicked() {
-        return itemWorthPicked;
-    }
-
-    public void setItemWorthPicked(int itemWorthPicked) {
-        this.itemWorthPicked = itemWorthPicked;
+    public void setPlanksCreated(int planksCreated) {
+        this.planksCreated = planksCreated;
     }
 
     public void setWaitingForReply(boolean GPT_WAITING_FOR_REPLY) {
