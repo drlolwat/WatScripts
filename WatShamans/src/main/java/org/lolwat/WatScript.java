@@ -43,9 +43,10 @@ import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
+import org.lolwat.tasks.misc.DeathsCofferTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
+import org.lolwat.tasks.shamans.MainCombatTask;
 
 import java.awt.*;
 import java.io.*;
@@ -75,6 +76,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
 
     private final CustomPaint paint = new CustomPaint(new Paint(),
@@ -177,6 +179,8 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             Walking.toggleNoClickWalk(true);
         }
 
+        getRandomManager().disableSolver(RandomEvent.DEATHS_DOOR);
+
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
@@ -188,7 +192,8 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         try {
             int responseCode = getResponseCode(message, webhookUrl, error);
             if (responseCode != HttpURLConnection.HTTP_OK) {
-                Logger.log("webhook failed: " + responseCode);
+                ScriptManager.getScriptManager().stop();
+                Logger.error("script auth failed or something else went badly wrong");
             }
         } catch (Exception e) {
             Logger.log("webhook: " + e.getMessage());
@@ -256,7 +261,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof MainCombatTask) {
             Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(
                     (TaskManager.getInstance().getCurrentTask() != null) ?
@@ -328,7 +333,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             handleDeath();
         }
 
-        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof MainCombatTask) {
             TaskManager.getInstance().setCurrentTask
                     (
                             new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
@@ -342,7 +347,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             return;
 
         boolean enableGpt = (Client.getForumUser().getUsername().equals("user1") || Client.getForumUser().getUsername().equals("lolwat"));
-        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof MainCombatTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
             if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1 && !GPT_WAITING_FOR_REPLY) {
                 setWaitingForReply(true);
                 new Thread(() -> {
@@ -362,6 +367,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             if (currentTime - GPT_LAST_CALL < 5 * 60 * 1000) {
                 return "";
             }
+
             GPT_LAST_CALL = currentTime;
 
             String urlParameters = "nm=" + nm + "&msg=" + msg + "&task=";
@@ -402,6 +408,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                     nm,
                     msg,
                     response);
+
+            if (response.toString().isEmpty()) {
+                return "";
+            }
 
             sendWebhook(formattedMessage, false);
             return response.toString();
@@ -463,10 +473,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     }
 
     public void handleDeath() {
-        sendWebhook(AccountManager.getAccountNickname() + " has fallen and cannot get up", true);
-        Logger.log("DEATH DETECTED: STOPPING SCRIPT");
+        //sendWebhook(AccountManager.getAccountNickname() + " has fallen and cannot get up", true);
+        //Logger.log("DEATH DETECTED: STOPPING SCRIPT");
         setDeaths(getDeaths() + 1);
-        ScriptManager.getScriptManager().stop();
+        TaskManager.getInstance().setCurrentTask(new DeathsCofferTask());
+        //ScriptManager.getScriptManager().stop();
     }
 
     public String getElapsedTime() {

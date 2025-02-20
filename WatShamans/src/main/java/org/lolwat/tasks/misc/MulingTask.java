@@ -6,7 +6,6 @@ import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
@@ -14,7 +13,6 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
-import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -39,6 +37,7 @@ public class MulingTask implements WatTask {
     HashMap<String, Integer> reverseRequest;
     private final WatTask postTask;
     double startedAt;
+    int targetWorld = 0;
 
     public MulingTask(String taskName, int currentWorld, WatTask post) {
         name = taskName;
@@ -163,7 +162,6 @@ public class MulingTask implements WatTask {
                 String response = new String(buffer, 0, bytesRead, StandardCharsets.UTF_8);
                 if (response.startsWith("OK")) {
                     active = true;
-                    int targetWorld = 0;
                     String[] sp = response.split("\\|");
                     if (sp.length > 0) {
                         target = sp[1];
@@ -205,6 +203,17 @@ public class MulingTask implements WatTask {
                         }
                     } else {
                         Logger.log("Mule was not detected nearby");
+                        if(Worlds.getCurrentWorld() != targetWorld) {
+                            if(targetWorld == 0) {
+                                Logger.error("Target world is 0, something went wrong");
+                                Logger.error("defaulting to 483, which is WatMule default");
+                                targetWorld = 483;
+                            }
+
+                            Logger.log("somehow we are not in the right world, hopping: " + targetWorld);
+                            TaskManager.getInstance().setCurrentTask(new HopperTask(targetWorld, this));
+                            return;
+                        }
                     }
                 }
 
@@ -239,29 +248,5 @@ public class MulingTask implements WatTask {
         return true;
     }
 
-    @Override
-    public int loopTime() {
-        return 400;
-    }
 
-    @Override
-    public void onExpGained(Skill skill, int amount, WatScript instance) {
-
-    }
-
-    @Override
-    public Skill trainsSkill() {
-        return Skill.HITPOINTS;
-    }
-
-
-    @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
-    }
 }

@@ -437,6 +437,14 @@ public class BankingTask implements WatTask {
                 }
             }
 
+            for(String i : buyingRequired.keySet()) {
+                if(i.contains("Shayzien") || i.contains("accumulator")) {
+                    Logger.log("going to grab deaths coffer");
+                    TaskManager.getInstance().setCurrentTask(new DeathsCofferTask());
+                    return;
+                }
+            }
+
             ItemUtils.setBankMode(BankMode.ITEM);
             HashMap<String, Integer> m = new HashMap<>();
 

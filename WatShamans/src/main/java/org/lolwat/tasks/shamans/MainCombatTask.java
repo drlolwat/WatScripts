@@ -41,7 +41,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ShamanCombatTask implements WatTask {
+public class MainCombatTask implements WatTask {
     private boolean reachedLocation = false;
     private NPC currentTarget = null;
     private boolean scheduled = false;
@@ -93,7 +93,7 @@ public class ShamanCombatTask implements WatTask {
             "Chilli potato",
             "Skills necklace(1)");
 
-    public ShamanCombatTask() {
+    public MainCombatTask() {
 
     }
 
@@ -170,13 +170,6 @@ public class ShamanCombatTask implements WatTask {
             reachedLocation = true;
         }
 
-        if(Combat.getCombatStyle() != CombatStyle.RANGED_RAPID) {
-            if(!Combat.setCombatStyle(CombatStyle.RANGED_RAPID)) {
-                Logger.log("failed to set combat style to rapid");
-                return;
-            }
-        }
-
         Item antidote = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Antidote++"));
         Item food = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Eat"));
         Item rangingPotion = Inventory.get(x -> x != null && !x.isNoted() && x.hasAction("Drink") && x.getName().contains("Ranging potion"));
@@ -199,13 +192,20 @@ public class ShamanCombatTask implements WatTask {
             return;
         }
 
-        if (!Combat.isAutoRetaliateOn()) {
-            if (!Combat.toggleAutoRetaliate(true)) {
-                Logger.log("failed to toggle auto retaliate on");
+        if (Inventory.contains(x -> x != null && x.getName().contains("Shayzien"))) {
+            Logger.log("shayzien was detected in the inventory, bad alch?");
+            if(!Inventory.interact(x -> x != null && x.getName().contains("Shayzien"), "Wear")) {
+                Logger.log("failed to wear shayzien armor");
                 return;
             }
+        }
 
-            Sleep.sleepUntil(Combat::isAutoRetaliateOn, 1000);
+        if(Inventory.contains(x -> x != null && x.getName().contains("Hunters'"))) {
+            Logger.log("hunters' crossbow detected in inventory, bad alch?");
+            if(!Inventory.interact(x -> x != null && x.getName().contains("Hunters'"), "Wield")) {
+                Logger.log("failed to equip hunters' crossbow");
+                return;
+            }
         }
 
         if (Combat.getHealthPercent() <= 75) {
@@ -214,6 +214,21 @@ public class ShamanCombatTask implements WatTask {
                 Logger.log("failed to eat food");
                 return;
             }
+        }
+
+        if(Combat.getCombatStyle() != CombatStyle.RANGED_RAPID) {
+            if(!Combat.setCombatStyle(CombatStyle.RANGED_RAPID)) {
+                Logger.log("failed to set combat style to rapid");
+            }
+        }
+
+        if (!Combat.isAutoRetaliateOn()) {
+            if (!Combat.toggleAutoRetaliate(true)) {
+                Logger.log("failed to toggle auto retaliate on");
+                return;
+            }
+
+            Sleep.sleepUntil(Combat::isAutoRetaliateOn, 1000);
         }
 
         for (Prayer p : Prayers.getActive()) {
@@ -509,6 +524,11 @@ public class ShamanCombatTask implements WatTask {
     }
 
     private void performAlching() {
+        if(Inventory.contains(x -> x != null && x.getName().contains("Shayzien")) || Inventory.contains(x -> x != null && x.getName().contains("Hunters'"))) {
+            Logger.log("shayzien/crossbow detected in inventory, skipping alchemy til equipped");
+            return;
+        }
+
         Item i = Inventory.get(x -> x != null && !x.getName().equals("Chilli potato") && alchemyItems.contains(x.getName()));
         if (i != null) {
             Logger.log("alching item: " + i.getName());
@@ -519,6 +539,11 @@ public class ShamanCombatTask implements WatTask {
 
             if (!Magic.castSpell(Normal.HIGH_LEVEL_ALCHEMY)) {
                 Logger.log("error casting HA");
+                return;
+            }
+
+            if(!Magic.isSpellSelected()) {
+                Logger.log("failed to select HA");
                 return;
             }
 
