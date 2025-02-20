@@ -7,7 +7,6 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
 
 import java.awt.*;
 import java.time.Instant;
@@ -28,7 +27,7 @@ public class TaskManager {
 
     public TaskManager() {
         tasks = Lists.newArrayList();
-        tasks.add(new ShamanCombatTask());
+        tasks.add(new BuyerTask());
 
         setCheckedHoursAt(0);
         setMinutesPlayed(0);
@@ -52,7 +51,7 @@ public class TaskManager {
             return;
         }
 
-        setCurrentTask(new ShamanCombatTask(), 0);
+        setCurrentTask(new BuyerTask(), 0);
     }
 
     public WatTask getCurrentTask() {

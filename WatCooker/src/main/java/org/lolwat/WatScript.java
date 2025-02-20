@@ -45,7 +45,6 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
-import org.lolwat.tasks.shamans.ShamanCombatTask;
 
 import java.awt.*;
 import java.io.*;
@@ -54,27 +53,19 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
-@ScriptManifest(name = "WatShamans", description = "Shaman killer", author = "lolwat", version = 1.0, category = Category.MISC)
+@ScriptManifest(name = "WatBuyer", description = "Private cooker", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
     public static WatScript getInstance() {
         return instance;
     }
 
-    List<String> logoutMessages = Arrays.asList(
-            "You've been playing for a while, consider taking a break from your screen.",
-            "You will be logged out in approximately 30 minutes. Make sure you move to a safe area or log out now.",
-            "You will be logged out in approximately 10 minutes. Make sure you move to a safe area or log out now.",
-            "You will be logged out in approximately 5 minutes. Make sure you move to a safe area or log out now.");
-
     private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
         put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
-        put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
 
     private final CustomPaint paint = new CustomPaint(new Paint(),
@@ -256,7 +247,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
+        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof BuyerTask) {
             Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(
                     (TaskManager.getInstance().getCurrentTask() != null) ?
@@ -328,21 +319,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             handleDeath();
         }
 
-        if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask) {
-            TaskManager.getInstance().setCurrentTask
-                    (
-                            new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
-                                    ? TaskManager.getInstance().getCurrentTask()
-                                    : null
-                            )
-                    );
-        }
-
         if(Client.getForumUser() == null)
             return;
 
         boolean enableGpt = (Client.getForumUser().getUsername().equals("user1") || Client.getForumUser().getUsername().equals("lolwat"));
-        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof ShamanCombatTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof BuyerTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
             if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1 && !GPT_WAITING_FOR_REPLY) {
                 setWaitingForReply(true);
                 new Thread(() -> {
