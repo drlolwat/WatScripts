@@ -22,15 +22,14 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.QuickWithdrawTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.tasks.quests.helpers.GetSilverlight;
 
 import java.util.Arrays;
@@ -90,7 +89,7 @@ public class DemonSlayerQuest implements QuestTask {
                 }
 
                 if (!Dialogues.inDialogue() && (aris == null || !start.contains(Players.getLocal()))) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(start, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(start, wrapper));
                     return;
                 }
 
@@ -110,7 +109,7 @@ public class DemonSlayerQuest implements QuestTask {
 
             case 1: {
                 if (!prysinArea.contains(Players.getLocal())) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(prysinArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(prysinArea, wrapper));
                     return;
                 }
 
@@ -203,7 +202,7 @@ public class DemonSlayerQuest implements QuestTask {
                     NPC delrith = NPCs.closest(x -> x != null && x.exists() && x.getName().equalsIgnoreCase("delrith"));
 
                     if (!Dialogues.inDialogue() && delrith == null && !circle.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(circle, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(circle, wrapper));
                         return;
                     }
 
@@ -252,8 +251,9 @@ public class DemonSlayerQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> clothesRequired() {
-        return MeleeUtils.getRequiredItems(false, getState() == 2 && PlayerSettings.getBitValue(2568) == 2);
+    public HashMap<EquipmentSlot, WatItem> clothesRequired() {
+        return null; //TODO
+        //return MeleeUtils.getRequiredItems(false, getState() == 2 && PlayerSettings.getBitValue(2568) == 2);
     }
 
     private List<String> getFullIncantation() {

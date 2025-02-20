@@ -13,7 +13,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.OutfitUtils;
 
@@ -37,11 +37,6 @@ public class BuyGracefulOutfitTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Buying Graceful Outfit";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -54,7 +49,7 @@ public class BuyGracefulOutfitTask implements WatTask {
         }
 
         if(!grace.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(grace, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(grace, this));
             return;
         }
 
@@ -128,7 +123,7 @@ public class BuyGracefulOutfitTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

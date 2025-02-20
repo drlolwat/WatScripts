@@ -16,7 +16,7 @@ import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class CooksAssistantQuest implements QuestTask {
                 if(Inventory.contains("Pot of flour", "Bucket of milk", "Egg")) {
                     NPC cook = NPCs.closest("Cook");
                     if (!Dialogues.inDialogue() && (cook == null || !cook.exists() || !cook.canReach()) && !cookLocation.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(cookLocation, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(cookLocation, wrapper));
                         return;
                     }
 

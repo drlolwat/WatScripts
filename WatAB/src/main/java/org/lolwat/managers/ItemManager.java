@@ -3,7 +3,7 @@ package org.lolwat.managers;
 import lombok.Getter;
 import lombok.Setter;
 import org.dreambot.api.utilities.Logger;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 
 import java.util.List;
 
@@ -12,20 +12,20 @@ public class ItemManager {
     @Getter @Setter
     private static ItemManager instance;
     @Getter
-    List<GearItem> gearItems;
+    List<WatItem> items;
 
     public ItemManager() {
         instance = this;
     }
 
-    public GearItem getGearItem(String name) {
-        for(GearItem item : gearItems) {
+    public WatItem getItem(String name) {
+        for(WatItem item : items) {
             if(item.getName().equalsIgnoreCase(name)) {
                 return item;
             } else {
                 Logger.log("ItemManager: adding new GearItem " + name + " on the fly");
-                gearItems.add(new GearItem(name, name));
-                return getGearItem(name);
+                items.add(new WatItem(name, name));
+                return getItem(name);
             }
         }
 

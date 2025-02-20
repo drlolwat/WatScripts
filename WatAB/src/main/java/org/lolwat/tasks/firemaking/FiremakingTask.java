@@ -2,7 +2,6 @@ package org.lolwat.tasks.firemaking;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -16,14 +15,14 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.firemaking.FiremakingUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,12 +66,12 @@ public class FiremakingTask implements WatTask {
         }
 
         if(!selectedLocation.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(selectedLocation, this));
             return;
         }
 
         if(getFireOnPlayer()) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation.getRandomTile().getArea(3), this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(selectedLocation.getRandomTile().getArea(3), this));
             return;
         }
 
@@ -99,11 +98,6 @@ public class FiremakingTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Firemaking logs: " + logType.toString().toLowerCase();
-    }
-
-    @Override
     public boolean canPerformTask() {
         return Skills.getRealLevel(Skill.FIREMAKING) >= minLevel && Skills.getRealLevel(Skill.FIREMAKING) <= avoidAtLevel;
     }
@@ -124,7 +118,7 @@ public class FiremakingTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<WatItem, Integer> loadout() {
         return GenericUtils.getSkillingGear();
     }
 }

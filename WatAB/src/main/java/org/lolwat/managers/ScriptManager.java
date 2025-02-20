@@ -120,7 +120,7 @@ public class ScriptManager {
 
         if (ConfigManager.getInstance().getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
             if (!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
-                    !(TaskManager.getInstance().getCurrentTask() instanceof TraversalTask) &&
+                    !(TaskManager.getInstance().getCurrentTask() instanceof WalkingTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof BankingTask) &&
                     !(TaskManager.getInstance().getCurrentTask() instanceof WoodcuttingTask)) {
 

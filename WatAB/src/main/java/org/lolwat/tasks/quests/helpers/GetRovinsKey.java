@@ -13,7 +13,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 
@@ -22,11 +22,6 @@ public class GetRovinsKey implements WatTask {
 
     public GetRovinsKey(WatTask wrapper) {
         this.wrapper = wrapper;
-    }
-
-    @Override
-    public String getName() {
-        return "Collecting Captain Rovin's key";
     }
 
     @Override
@@ -48,7 +43,7 @@ public class GetRovinsKey implements WatTask {
                 new Tile(3202, 3500, 2));
 
         if (!Dialogues.inDialogue() && !rovinArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(rovinArea, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(rovinArea, this));
             return;
         }
 

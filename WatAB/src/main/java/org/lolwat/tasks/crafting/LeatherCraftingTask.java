@@ -15,10 +15,11 @@ import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class LeatherCraftingTask implements WatTask {
     int avoidAfterLevel = 0;
@@ -30,18 +31,10 @@ public class LeatherCraftingTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Leather crafting";
-    }
-
-    @Override
     public void execute() {
-        for(GearItem i  : inventory()) {
-            if(!ItemUtils.inventoryContains(i.getName(), i.getQuantity(), false)) {
-                Logger.log("Missing " + i.getName() + " x" + i.getQuantity());
-                TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
-                return;
-            }
+        if(!ItemUtils.hasInventory()) {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
+            return;
         }
 
         if(Bank.isOpen()) {
@@ -88,11 +81,11 @@ public class LeatherCraftingTask implements WatTask {
     }
 
     @Override
-    public List<GearItem> inventory() {
-        List<GearItem> reqs = new ArrayList<>();
-        reqs.add(ItemManager.getInstance().getGearItem("Leather", 25));
-        reqs.add(ItemManager.getInstance().getGearItem("Needle", 1));
-        reqs.add(ItemManager.getInstance().getGearItem("Thread", 6));
+    public HashMap<WatItem, Integer> inventory() {
+        HashMap<WatItem, Integer> reqs = new HashMap<>();
+        reqs.put(ItemManager.getInstance().getItem("Leather"), 25);
+        reqs.put(ItemManager.getInstance().getItem("Needle"), 1);
+        reqs.put(ItemManager.getInstance().getItem("Thread"), 6);
         return reqs;
     }
 }

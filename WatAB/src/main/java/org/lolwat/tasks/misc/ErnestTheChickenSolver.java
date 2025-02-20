@@ -69,16 +69,11 @@ public class ErnestTheChickenSolver implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Ernest The Chicken Solver";
-    }
-
-    @Override
     public void execute() {
         Area startZone = new Area(3097, 3363, 3103, 3354);
         if (!hasStarted) {
             if (!startZone.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(startZone, this));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(startZone, this));
                 return;
             }
 

@@ -9,7 +9,7 @@ import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 
@@ -19,10 +19,6 @@ public class HopperTask implements WatTask {
     private final WatTask postTask;
     private final int world;
 
-    @Override
-    public String getName() {
-        return "World Hopping";
-    }
 
     public HopperTask(int toWorld, WatTask post) {
         postTask = post;
@@ -93,7 +89,7 @@ public class HopperTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

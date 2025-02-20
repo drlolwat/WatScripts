@@ -24,7 +24,7 @@ import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.ErnestTheChickenSolver;
 import org.lolwat.tasks.misc.GatheringTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,7 +50,7 @@ public class ErnestTheChickenQuest implements QuestTask {
                 Area veronicaArea = new Area(3110, 3330, 3112, 3328);
 
                 if(!veronicaArea.contains(Players.getLocal()) && veronica == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(veronicaArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(veronicaArea, wrapper));
                     return;
                 }
 
@@ -76,7 +76,7 @@ public class ErnestTheChickenQuest implements QuestTask {
                 Area professorArea = new Area(3108, 3368, 3111, 3362, 2);
 
                 if(!professorArea.contains(Players.getLocal()) && professor == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(professorArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(professorArea, wrapper));
                     return;
                 }
 
@@ -147,7 +147,7 @@ public class ErnestTheChickenQuest implements QuestTask {
                             new Tile(3091, 3339, 0));
 
                     if(!fountain.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(fountain, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(fountain, wrapper));
                         return;
                     }
 
@@ -196,7 +196,7 @@ public class ErnestTheChickenQuest implements QuestTask {
                             new Tile(3088, 3366, 0));
 
                     if(!compost.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(compost, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(compost, wrapper));
                         return;
                     }
 
@@ -227,7 +227,7 @@ public class ErnestTheChickenQuest implements QuestTask {
                 Area professorArea = new Area(3108, 3368, 3111, 3362, 2);
 
                 if(!professorArea.contains(Players.getLocal()) && professor == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(professorArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(professorArea, wrapper));
                     return;
                 }
 

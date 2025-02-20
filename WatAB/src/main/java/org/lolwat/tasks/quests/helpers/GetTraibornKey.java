@@ -15,7 +15,7 @@ import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,11 +25,6 @@ public class GetTraibornKey implements WatTask {
 
     public GetTraibornKey(WatTask wrapper) {
         this.wrapper = wrapper;
-    }
-
-    @Override
-    public String getName() {
-        return "Collecting Traiborn's key";
     }
 
     @Override
@@ -48,7 +43,7 @@ public class GetTraibornKey implements WatTask {
                 new Tile(3111, 3165, 1));
 
         if (!Dialogues.inDialogue() && !traibornArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(traibornArea, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(traibornArea, this));
             return;
         }
 

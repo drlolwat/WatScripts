@@ -6,7 +6,7 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 
@@ -64,7 +64,7 @@ public class QuestWrapperTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         if(questTask() != null)
             return questTask().clothesRequired();
 

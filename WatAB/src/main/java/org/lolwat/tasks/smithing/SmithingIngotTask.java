@@ -2,7 +2,6 @@ package org.lolwat.tasks.smithing;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -17,13 +16,13 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,7 +73,7 @@ public class SmithingIngotTask implements WatTask {
                 return;
             }
 
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation.getArea(3),this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(selectedLocation.getArea(3),this));
             return;
         }
 
@@ -88,12 +87,6 @@ public class SmithingIngotTask implements WatTask {
                 }
             }
         }
-    }
-
-
-    @Override
-    public String getName() {
-        return "Smelting " + smithingType.toString().toLowerCase() + " bars";
     }
 
     @Override
@@ -122,7 +115,7 @@ public class SmithingIngotTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<WatItem, Integer> loadout() {
         return GenericUtils.getSkillingGear();
     }
 }

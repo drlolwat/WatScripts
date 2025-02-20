@@ -18,11 +18,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class AeglenModeTask implements WatTask {
-    @Override
-    public String getName() {
-        return "Aeglen (Noob)";
-    }
-
     List<String> examined;
     WatTask post;
     int secondsToRun;
@@ -84,7 +79,7 @@ public class AeglenModeTask implements WatTask {
 
             if(tile != null) {
                 TaskManager.getInstance().
-                        setCurrentTask(new TraversalTask(tile.getArea(1), this));
+                        setCurrentTask(new WalkingTask(tile.getArea(1), this));
             }
         }
     }

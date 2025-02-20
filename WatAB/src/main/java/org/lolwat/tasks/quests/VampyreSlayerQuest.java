@@ -17,13 +17,12 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.combat.melee.MeleeUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.*;
 
@@ -43,7 +42,7 @@ public class VampyreSlayerQuest implements QuestTask {
             case 0: {
                 NPC fred = NPCs.closest("Morgan");
                 if(!startLocation.contains(Players.getLocal()) && fred == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(startLocation, wrapper));
                     return;
                 }
 
@@ -92,7 +91,7 @@ public class VampyreSlayerQuest implements QuestTask {
 
                     Area inn = new Area(3218, 3402, 3227, 3394);
                     if (!inn.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(inn, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(inn, wrapper));
                         return;
                     }
 
@@ -143,7 +142,7 @@ public class VampyreSlayerQuest implements QuestTask {
 
                         Area vampireLair = new Area(3075, 9778, 3080, 9768);
                         if (!vampireLair.contains(Players.getLocal())) {
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(vampireLair, wrapper));
+                            TaskManager.getInstance().setCurrentTask(new WalkingTask(vampireLair, wrapper));
                             return;
                         }
 
@@ -195,7 +194,8 @@ public class VampyreSlayerQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> clothesRequired() {
-        return MeleeUtils.getRequiredItems(false, false);
+    public HashMap<EquipmentSlot, WatItem> clothesRequired() {
+        return null; //TODO
+        //return MeleeUtils.getRequiredItems(false, false);
     }
 }

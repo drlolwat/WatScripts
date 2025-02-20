@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
-public class GearItem {
+public class WatItem {
     private final String name;
     private final String searchFor;
     @Setter
@@ -21,7 +21,7 @@ public class GearItem {
     @Getter
     private final List<Quest> questRequirements;
 
-    public GearItem(String name, String searchFor) {
+    public WatItem(String name, String searchFor) {
         this.name = name;
         this.searchFor = searchFor;
         this.priceEach = NumUtils.getItemPrice(name);
@@ -29,7 +29,7 @@ public class GearItem {
         this.questRequirements = new ArrayList<>();
     }
 
-    public GearItem(String name) {
+    public WatItem(String name) {
         this.name = name;
         this.searchFor = name;
         this.priceEach = NumUtils.getItemPrice(name);
@@ -37,7 +37,7 @@ public class GearItem {
         this.questRequirements = new ArrayList<>();
     }
 
-    public GearItem(String name, String searchFor, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
+    public WatItem(String name, String searchFor, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
         this.name = name;
         this.searchFor = searchFor;
         this.priceEach = NumUtils.getItemPrice(name);
@@ -45,7 +45,7 @@ public class GearItem {
         this.questRequirements = questRequirements;
     }
 
-    public GearItem(String name, HashMap<Skill, Integer> levelRequirements) {
+    public WatItem(String name, HashMap<Skill, Integer> levelRequirements) {
         this.name = name;
         this.searchFor = name;
         this.priceEach = NumUtils.getItemPrice(name);
@@ -53,7 +53,7 @@ public class GearItem {
         this.questRequirements = new ArrayList<>();
     }
 
-    public GearItem(String name, List<Quest> questRequirements) {
+    public WatItem(String name, List<Quest> questRequirements) {
         this.name = name;
         this.searchFor = name;
         this.priceEach = NumUtils.getItemPrice(name);

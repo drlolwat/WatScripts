@@ -17,7 +17,7 @@ import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
@@ -36,11 +36,6 @@ public class GrandExchangeTask implements WatTask {
         itemList = items;
         postTask = post;
         isSelling = selling;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -320,7 +315,7 @@ public class GrandExchangeTask implements WatTask {
             TaskManager.getInstance().setCurrentTask(postTask);
         }
         else {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
         }
     }
 
@@ -350,7 +345,7 @@ public class GrandExchangeTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

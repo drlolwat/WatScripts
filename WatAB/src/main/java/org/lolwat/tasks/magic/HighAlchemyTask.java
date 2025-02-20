@@ -4,7 +4,6 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.magic.Magic;
@@ -16,11 +15,12 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.combat.magic.MagicUtils;
+import org.lolwat.misc.utils.combat.MagicUtils;
 import org.lolwat.tasks.misc.BankingTask;
 
 import java.util.ArrayList;
@@ -55,11 +55,6 @@ public class HighAlchemyTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "High level alchemy";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return Skills.getRealLevel(Skill.MAGIC) >= minLevel && Skills.getRealLevel(Skill.MAGIC) <= maxLevel;
     }
@@ -87,7 +82,7 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        for(GearItem g : loadout().values()) {
+        for(WatItem g : loadout().values()) {
             if(!Equipment.contains(g.getName())) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
                 return;
@@ -164,11 +159,11 @@ public class HighAlchemyTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<EquipmentSlot, GearItem>() {
+    public HashMap<WatItem, Integer> loadout() {
+        return new HashMap<WatItem, Integer>() {
             {
                 putAll(GenericUtils.getSkillingGear());
-                put(EquipmentSlot.WEAPON, new GearItem("Staff of fire", 1));
+                put(ItemManager.getInstance().getItem("Staff of fire"), 1);
             }
         };
     }

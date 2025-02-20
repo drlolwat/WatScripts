@@ -14,26 +14,15 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ItemUtils {
-    public static List<String> SINGULAR_ITEMS = Arrays.asList(
-            "Hammer",
-            "Amulet mould",
-            "Bracelet mould",
-            "Ring mould",
-            "Necklace mould",
-            "Camelot teleport",
-            "Varrock teleport",
-            "Games necklace",
-            "Ring of dueling"
-    );
-
     public static void setBankMode(BankMode mode) {
         if(Bank.getWithdrawMode().equals(mode)) {
             return;
@@ -82,14 +71,14 @@ public class ItemUtils {
 
             if (chest == null) {
                 Logger.log("Banking: No banker or chest found (15r), walking to nearest bank");
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), task));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(BankLocation.getNearest(Players.getLocal().getTile(), false).getArea(3), task));
                 return;
             } else {
                 Logger.log("Banking: Opening bank via " + chest.getName() + " (id: " + chest.getID() + ", distance: " + chest.distance() + ")");
                 if(!chest.isOnScreen()) {
                     if(!org.dreambot.api.methods.map.Map.isTileOnMap(chest.getTile()) || chest.distance() > 15.0) {
                         Logger.log("Banking: Walking closer to chest");
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(chest.getTile().getArea(2), task));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(chest.getTile().getArea(2), task));
                         return;
                     }
 
@@ -111,5 +100,31 @@ public class ItemUtils {
 
         Logger.log("Banking: Waiting for bank to be open..");
         Sleep.sleepUntil(Bank::isOpen, 15000);
+    }
+
+    public static boolean hasInventory() {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            for(Map.Entry<WatItem, Integer> map  : TaskManager.getInstance().getCurrentTask().inventory().entrySet()) {
+                if(!ItemUtils.inventoryContains(map.getKey().getName(), map.getValue(), false)) {
+                    Logger.log("[INVENTORY] " + TaskManager.getInstance().getCurrentTask().getName() + ": Missing " + map.getKey().getName() + " x" + map.getValue());
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean hasRequiredLoadout() {
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            for(Map.Entry<WatItem, Integer> map  : TaskManager.getInstance().getCurrentTask().loadout().entrySet()) {
+                if(!ItemUtils.inventoryContains(map.getKey().getName(), map.getValue(), false)) {
+                    Logger.log("[LOADOUT] " + TaskManager.getInstance().getCurrentTask().getName() + ": Missing " + map.getKey().getName() + " x" + map.getValue());
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

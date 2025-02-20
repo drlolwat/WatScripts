@@ -2,7 +2,6 @@ package org.lolwat.tasks.smithing;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -13,15 +12,15 @@ import org.dreambot.api.methods.widget.helpers.Smithing;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.smithing.SmithingType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
 
@@ -40,11 +39,6 @@ public class SmithingItemTask implements WatTask {
         selectedArea = area;
         maximumInventories = Calculations.random(3, maxInventories);
         byproducts = toSell;
-    }
-
-    @Override
-    public String getName() {
-        return "Hammerin' " + ingotType.toString().toLowerCase() + " bars";
     }
 
     @Override
@@ -67,7 +61,7 @@ public class SmithingItemTask implements WatTask {
         }
 
         if(!selectedArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedArea, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(selectedArea, this));
             return;
         }
 
@@ -106,7 +100,7 @@ public class SmithingItemTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<WatItem, Integer> loadout() {
         return GenericUtils.getSkillingGear();
     }
 

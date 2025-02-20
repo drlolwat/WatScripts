@@ -14,7 +14,7 @@ import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.NumUtils;
 
@@ -36,11 +36,6 @@ public class ScavengingTask implements WatTask {
     private final int originalWorld;
     private final List<Integer> acceptableWorlds;
 
-    @Override
-    public String getName() {
-        return "Scavenging";
-    }
-
     public ScavengingTask() {
         avoidItems = new ArrayList<String>() {
             {
@@ -58,7 +53,7 @@ public class ScavengingTask implements WatTask {
     @Override
     public void execute() {
         if(!scavengingZone.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(scavengingZone, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(scavengingZone, this));
             return;
         }
 
@@ -134,7 +129,7 @@ public class ScavengingTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

@@ -17,7 +17,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.io.InputStream;
@@ -61,11 +61,6 @@ public class MulingTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -94,7 +89,7 @@ public class MulingTask implements WatTask {
         }
 
         if(NPCs.closest("Grand Exchange Clerk") == null) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
             return;
         }
 
@@ -245,7 +240,7 @@ public class MulingTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

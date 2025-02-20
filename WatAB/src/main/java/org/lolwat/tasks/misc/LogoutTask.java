@@ -16,7 +16,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
@@ -30,10 +30,6 @@ public class LogoutTask implements WatTask {
         endingScript = endScript;
         postScript = post;
         muleWealth = muleOff;
-    }
-    @Override
-    public String getName() {
-        return "Logging out";
     }
 
     @Override
@@ -100,7 +96,7 @@ public class LogoutTask implements WatTask {
             }
 
         } else {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(loc, this));
         }
     }
 
@@ -132,7 +128,7 @@ public class LogoutTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

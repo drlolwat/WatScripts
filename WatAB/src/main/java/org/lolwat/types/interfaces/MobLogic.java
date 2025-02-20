@@ -1,24 +1,22 @@
 package org.lolwat.types.interfaces;
 
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.mobs.Mob;
 
 import java.util.HashMap;
-import java.util.List;
 
 public interface MobLogic {
     void execute(Mob mob, Skill skill);
 
-    default List<GearItem> inventoryLoadout() {
+    default HashMap<WatItem, Integer> inventoryLoadout() {
         return null;
     }
 
-    default HashMap<EquipmentSlot, GearItem> gearLoadout() {
+    default HashMap<WatItem, Integer> gearLoadout() {
         return null;
     }
 

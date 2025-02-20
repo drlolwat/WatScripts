@@ -18,7 +18,7 @@ import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class DoricsQuest implements QuestTask {
 
             NPC doric = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Doric") && x.canReach());
             if (!startLocation.contains(Players.getLocal()) && doric == null) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, wrapper));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(startLocation, wrapper));
                 return;
             }
 

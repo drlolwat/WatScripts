@@ -13,18 +13,13 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
 
 public class BondingTask implements WatTask {
     private final WatTask postTask;
-
-    @Override
-    public String getName() {
-        return "Bonding";
-    }
 
     public BondingTask(WatTask post) {
         postTask = post;
@@ -34,7 +29,7 @@ public class BondingTask implements WatTask {
     public void execute() {
         boolean requiresHop = false;
         if(!BankLocation.GRAND_EXCHANGE.getArea(5).contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(5), this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(BankLocation.GRAND_EXCHANGE.getArea(5), this));
             return;
         }
 
@@ -127,7 +122,7 @@ public class BondingTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

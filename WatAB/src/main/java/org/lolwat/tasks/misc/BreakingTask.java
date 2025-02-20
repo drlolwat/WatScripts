@@ -5,7 +5,7 @@ import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.time.Instant;
@@ -18,11 +18,6 @@ public class BreakingTask implements WatTask {
     public BreakingTask(double expireAt) {
         endsAt = expireAt;
         data = new HashMap<String, Object>() { { put("seconds_to_run", endsAt-Instant.now().getEpochSecond()); } };
-    }
-
-    @Override
-    public String getName() {
-        return "Breaking";
     }
 
     @Override
@@ -76,7 +71,7 @@ public class BreakingTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

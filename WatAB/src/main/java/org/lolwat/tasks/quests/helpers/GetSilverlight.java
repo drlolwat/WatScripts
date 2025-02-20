@@ -14,7 +14,7 @@ import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.QuickWithdrawTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 public class GetSilverlight implements WatTask {
     private final Area prysinArea = new Area(
@@ -31,11 +31,6 @@ public class GetSilverlight implements WatTask {
 
     public GetSilverlight(WatTask wrapper) {
         this.wrapper = wrapper;
-    }
-
-    @Override
-    public String getName() {
-        return "Grabbing silverlight";
     }
 
     @Override
@@ -69,7 +64,7 @@ public class GetSilverlight implements WatTask {
         Logger.log("Need to get Silverlight");
 
         if(!prysinArea.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(prysinArea, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(prysinArea, this));
             return;
         }
 

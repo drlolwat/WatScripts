@@ -18,7 +18,7 @@ import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class ImpCatcherQuest implements QuestTask {
 
                 NPC wizard = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Wizard Mizgog"));
                 if(!wizardLocation.contains(Players.getLocal()) && wizard == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(wizardLocation, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(wizardLocation, wrapper));
                     return;
                 }
 

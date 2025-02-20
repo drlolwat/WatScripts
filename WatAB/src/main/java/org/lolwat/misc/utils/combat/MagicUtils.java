@@ -1,4 +1,4 @@
-package org.lolwat.misc.utils.combat.magic;
+package org.lolwat.misc.utils.combat;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;

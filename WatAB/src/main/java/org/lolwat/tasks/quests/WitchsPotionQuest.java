@@ -24,7 +24,7 @@ import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -77,7 +77,7 @@ public class WitchsPotionQuest implements QuestTask {
                     GameObject range = GameObjects.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Range"));
 
                     if(!cookingArea.contains(Players.getLocal()) && range == null) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(cookingArea, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(cookingArea, wrapper));
                         return;
                     }
 
@@ -105,7 +105,7 @@ public class WitchsPotionQuest implements QuestTask {
                 if(Quests.isStarted(completes()) && !Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Rat's tail"))) {
                     NPC rat = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Rat") && x.canReach());
                     if(!ratLocation.contains(Players.getLocal()) && rat == null) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(ratLocation, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(ratLocation, wrapper));
                         return;
                     }
 
@@ -133,7 +133,7 @@ public class WitchsPotionQuest implements QuestTask {
 
                 NPC hetty = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Hetty") && x.canReach());
                 if(!startLocation.contains(Players.getLocal()) && hetty == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(startLocation, wrapper));
                     return;
                 }
 
@@ -156,7 +156,7 @@ public class WitchsPotionQuest implements QuestTask {
             case 2: {
                 GameObject cauldron = GameObjects.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Cauldron"));
                 if(!startLocation.contains(Players.getLocal()) && cauldron == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(startLocation, wrapper));
                     return;
                 }
 

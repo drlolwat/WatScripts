@@ -16,7 +16,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
@@ -239,7 +239,7 @@ public class BankingTask implements WatTask {
         Logger.log("Equipment: Beginning checks");
         if(postTask != null) {
             if (!postTask.loadout().isEmpty()) {
-                for (Map.Entry<EquipmentSlot, GearItem> entry : postTask.loadout().entrySet()) {
+                for (Map.Entry<EquipmentSlot, WatItem> entry : postTask.loadout().entrySet()) {
                     int amountRequired = entry.getValue().getQuantity() > 0
                             ? entry.getValue().getQuantity()
                             : -entry.getValue().getQuantity();
@@ -367,7 +367,7 @@ public class BankingTask implements WatTask {
             Sleep.sleep(500, 1000);
 
             if(!postTask.loadout().isEmpty()) {
-                for (Map.Entry<EquipmentSlot, GearItem> entry : postTask.loadout().entrySet()) {
+                for (Map.Entry<EquipmentSlot, WatItem> entry : postTask.loadout().entrySet()) {
                     if (!Equipment.contains(entry.getKey()) && Inventory.contains(entry.getKey())) {
                         if(Bank.isOpen()) {
                             Bank.close();
@@ -847,11 +847,6 @@ public class BankingTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Banking";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -877,7 +872,7 @@ public class BankingTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         if(postTask != null) {
             return postTask.loadout();
         }

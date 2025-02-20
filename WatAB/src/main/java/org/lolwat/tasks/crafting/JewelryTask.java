@@ -2,7 +2,6 @@ package org.lolwat.tasks.crafting;
 
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
@@ -20,8 +19,8 @@ import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
@@ -54,17 +53,13 @@ public class JewelryTask implements WatTask {
 
     @Override
     public void execute() {
-        for(GearItem i : CraftingUtils.getMaterialsForJewelry(craftingType, false, 1)) {
-            if(ItemUtils.inventoryContains(i.getName(), i.getQuantity(), false)) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(null,
-                        toSell, totalLoads, this));
-
-                return;
-            }
+        if(!ItemUtils.hasInventory()) {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(null, toSell, totalLoads, this));
+            return;
         }
 
         if (!selectedLocation.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(selectedLocation, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(selectedLocation, this));
             return;
         }
 
@@ -84,11 +79,6 @@ public class JewelryTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Making jewelry";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return Skills.getRealLevel(Skill.CRAFTING) >= minLevel && Skills.getRealLevel(Skill.CRAFTING) <= avoidAtLevel;
     }
@@ -104,12 +94,12 @@ public class JewelryTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<WatItem, Integer> loadout() {
         return GenericUtils.getSkillingGear();
     }
 
     @Override
-    public List<GearItem> inventory() {
+    public HashMap<WatItem, Integer> inventory() {
         return CraftingUtils.getMaterialsForJewelry(craftingType, true, 1);
     }
 

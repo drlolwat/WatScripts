@@ -30,11 +30,6 @@ public class CleanHerbTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Cleaning Herbs";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return Quests.isFinished(PaidQuest.DRUIDIC_RITUAL);
     }

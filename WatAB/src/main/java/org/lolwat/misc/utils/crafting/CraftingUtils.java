@@ -2,12 +2,11 @@ package org.lolwat.misc.utils.crafting;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.misc.types.crafting.CraftingType;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CraftingUtils {
@@ -39,7 +38,7 @@ public class CraftingUtils {
         return "Uncut " + name;
     }
 
-    public static List<GearItem> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
+    public static HashMap<WatItem, Integer> getMaterialsForJewelry(CraftingType type, boolean fullInventory, int inventoryLoads) {
         HashMap<String, Integer> ret = new HashMap<>();
 
         String mouldType;
@@ -90,10 +89,9 @@ public class CraftingUtils {
         String extra = mouldType + " mould";
         ret.put(extra, 1);
 
-        List<GearItem> trueRet = new ArrayList<>();
-
+        HashMap<WatItem, Integer> trueRet = new HashMap<>();
         for(Map.Entry<String, Integer> entry : ret.entrySet()) {
-            trueRet.add(new GearItem(entry.getKey(), entry.getValue()));
+            trueRet.put(ItemManager.getInstance().getItem(entry.getKey()), entry.getValue());
         }
 
         return trueRet;

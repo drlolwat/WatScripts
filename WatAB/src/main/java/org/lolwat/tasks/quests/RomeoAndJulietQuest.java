@@ -21,7 +21,7 @@ import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.GatheringTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,7 +67,7 @@ public class RomeoAndJulietQuest implements QuestTask {
             case 0: {
                 NPC romeo = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Romeo") && x.canReach());
                 if (!romeoArea.contains(romeo) && romeo == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(romeoArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(romeoArea, wrapper));
                     return;
                 }
 
@@ -100,7 +100,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                 if (!Inventory.contains(x -> x != null && x.getName().equals("Cadava berries"))
                         && !julietArea.contains(juliet) && juliet == null) {
 
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(julietArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(julietArea, wrapper));
                     return;
                 }
 
@@ -121,7 +121,7 @@ public class RomeoAndJulietQuest implements QuestTask {
             case 30: {
                 NPC lawrence = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Father Lawrence") && x.canReach());
                 if (!lawrenceArea.contains(lawrence) && lawrence == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(lawrenceArea, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(lawrenceArea, wrapper));
                     return;
                 }
 
@@ -158,7 +158,7 @@ public class RomeoAndJulietQuest implements QuestTask {
 
                 NPC apothecary = NPCs.closest(x -> x != null && x.exists() && x.getName().equals("Apothecary") && x.canReach());
                 if(!potionArea.contains(Players.getLocal()) && apothecary == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(new Area(3190, 3400, 3195, 3396), wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(new Area(3190, 3400, 3195, 3396), wrapper));
                     return;
                 }
 

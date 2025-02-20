@@ -33,7 +33,7 @@ import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
 import org.lolwat.tasks.misc.BreakingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.awt.event.KeyEvent;
 import java.time.Instant;
@@ -44,11 +44,6 @@ import java.util.List;
 
 public class TutorialIslandTask implements WatTask {
     public TutorialIslandTask() {
-    }
-
-    @Override
-    public String getName() {
-        return "Tutorial Island V2";
     }
 
     @Override
@@ -177,7 +172,7 @@ public class TutorialIslandTask implements WatTask {
                             new Tile(3103, 3103, 0));
 
                     if (!area.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
                         return;
                     }
 
@@ -248,7 +243,7 @@ public class TutorialIslandTask implements WatTask {
                                 new Tile(3105, 3094, 0),
                                 new Tile(3105, 3099, 0));
 
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(safeZone, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(safeZone, this));
                         return;
                     }
 
@@ -286,7 +281,7 @@ public class TutorialIslandTask implements WatTask {
                 case 130: {
                     Area area = new Area(3073, 3086, 3078, 3083);
                     if (!area.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
                         return;
                     }
 
@@ -304,7 +299,7 @@ public class TutorialIslandTask implements WatTask {
                             if(chef.canReach()) {
                                 DialogueUtils.talkTo("Master Chef");
                             } else {
-                                TaskManager.getInstance().setCurrentTask(new TraversalTask(chef.getTile().getArea(1), this));
+                                TaskManager.getInstance().setCurrentTask(new WalkingTask(chef.getTile().getArea(1), this));
                                 return;
                             }
                         }
@@ -338,7 +333,7 @@ public class TutorialIslandTask implements WatTask {
                                 Sleep.sleepUntil(() -> !Inventory.contains("Bread dough"), 10000);
                             }
                         } else {
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(range.getTile().getArea(1), this));
+                            TaskManager.getInstance().setCurrentTask(new WalkingTask(range.getTile().getArea(1), this));
                             return;
                         }
                     }
@@ -349,7 +344,7 @@ public class TutorialIslandTask implements WatTask {
                 case 170: {
                     Area area = new Area(3083, 3125, 3089, 3119);
                     if (!area.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
                         return;
                     }
 
@@ -383,7 +378,7 @@ public class TutorialIslandTask implements WatTask {
 
                     Area area = new Tile(3081, 9506).getArea(6);
                     if((instructor == null || !instructor.exists()) || !area.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
                         return;
                     }
 
@@ -472,7 +467,7 @@ public class TutorialIslandTask implements WatTask {
                                 Sleep.sleepUntil(() -> !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 10000);
                             }
                         } else {
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(gate.getTile().getArea(1), this));
+                            TaskManager.getInstance().setCurrentTask(new WalkingTask(gate.getTile().getArea(1), this));
                             return;
                         }
                     } else {
@@ -608,7 +603,7 @@ public class TutorialIslandTask implements WatTask {
                             if (instructor.canReach()) {
                                 DialogueUtils.talkTo("Combat Instructor");
                             } else {
-                                TaskManager.getInstance().setCurrentTask(new TraversalTask(instructor.getTile().getArea(2), this));
+                                TaskManager.getInstance().setCurrentTask(new WalkingTask(instructor.getTile().getArea(2), this));
                                 return;
                             }
                         }
@@ -677,7 +672,7 @@ public class TutorialIslandTask implements WatTask {
                             GameObject obj = GameObjects.getTopObjectOnTile(HintArrow.getTile());
                             if (obj != null) {
                                 if(obj.distance() > 5) {
-                                    TaskManager.getInstance().setCurrentTask(new TraversalTask(obj.getTile().getArea(2), this));
+                                    TaskManager.getInstance().setCurrentTask(new WalkingTask(obj.getTile().getArea(2), this));
                                     return;
                                 }
 
@@ -760,7 +755,7 @@ public class TutorialIslandTask implements WatTask {
                                 DialogueUtils.continueWhilePossible();
                             }
                         } else {
-                            TaskManager.getInstance().setCurrentTask(new TraversalTask(accountGuide.getTile().getArea(1), this));
+                            TaskManager.getInstance().setCurrentTask(new WalkingTask(accountGuide.getTile().getArea(1), this));
                             return;
                         }
                     }
@@ -783,7 +778,7 @@ public class TutorialIslandTask implements WatTask {
                 case 540: {
                     Area a = new Tile(3124, 3107).getArea(3);
                     if (!a.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(a, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(a, this));
                         return;
                     }
 
@@ -821,7 +816,7 @@ public class TutorialIslandTask implements WatTask {
                 case 610: {
                     Area area = new Tile(3141, 3087).getArea(1);
                     if (!area.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
                         return;
                     }
 
@@ -872,7 +867,7 @@ public class TutorialIslandTask implements WatTask {
                             new Tile(3141, 3088, 0));
 
                     if (!location.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(location, this));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(location, this));
                         return;
                     }
 

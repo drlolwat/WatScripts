@@ -19,14 +19,14 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class WoodcuttingTask implements WatTask {
             }
 
             if (!area.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
                 return;
             }
 
@@ -155,11 +155,6 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Chopping " + treeType.toString().toLowerCase() + "s";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return Skills.getRealLevel(Skill.WOODCUTTING) >= minimumLevel;
     }
@@ -186,8 +181,8 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<EquipmentSlot, GearItem>() {
+    public HashMap<WatItem, Integer> loadout() {
+        return new HashMap<WatItem, Integer>() {
             {
                 if(!moneyMaking) {
                     putAll(GenericUtils.getSkillingGear());

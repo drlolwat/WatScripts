@@ -31,11 +31,6 @@ public class TalkToNPC implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Talking to NPC";
-    }
-
-    @Override
     public void execute() {
         if(!stopAfterItem.isEmpty() && Inventory.contains(x -> x != null && x.getName().equals(stopAfterItem))) {
             TaskManager.getInstance().setCurrentTask(post);
@@ -44,7 +39,7 @@ public class TalkToNPC implements WatTask {
 
         NPC npc = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals(name));
         if(!area.contains(Players.getLocal()) && npc == null) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(area, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(area, this));
             return;
         }
 

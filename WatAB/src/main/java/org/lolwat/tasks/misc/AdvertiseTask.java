@@ -21,10 +21,6 @@ public class AdvertiseTask implements WatTask {
             new Tile(3154, 3503, 0));
     private final List<String> phrases;
     private int count = 0;
-    @Override
-    public String getName() {
-        return "Scavenging";
-    }
 
     public AdvertiseTask() {
         phrases = new ArrayList<String>() {
@@ -45,7 +41,7 @@ public class AdvertiseTask implements WatTask {
     @Override
     public void execute() {
         if(!spamZone.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(spamZone, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(spamZone, this));
             return;
         }
 

@@ -14,7 +14,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
@@ -29,11 +29,6 @@ public class LiquidationTask implements WatTask {
     public LiquidationTask(WatTask post, int amount) {
         postScript = post;
         toLiquidate = amount;
-    }
-
-    @Override
-    public String getName() {
-        return "Liquidating";
     }
 
     @Override
@@ -102,7 +97,7 @@ public class LiquidationTask implements WatTask {
                 TaskManager.getInstance().setCurrentTask(postScript);
             }
         } else {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(loc, this));
         }
     }
 
@@ -134,7 +129,7 @@ public class LiquidationTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

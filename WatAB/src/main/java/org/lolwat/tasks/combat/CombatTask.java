@@ -1,6 +1,5 @@
 package org.lolwat.tasks.combat;
 
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -9,14 +8,12 @@ import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.MobManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.tasks.misc.TraversalTask;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.types.mobs.Mob;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class CombatTask implements WatTask {
     private final Skill skill;
@@ -27,15 +24,6 @@ public class CombatTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        if(target != null) {
-            return target.getName();
-        }
-
-        return "Selecting target";
-    }
-
-    @Override
     public void execute() {
         if(target == null) {
             target = MobManager.getInstance().getBestMob(skill);
@@ -43,39 +31,15 @@ public class CombatTask implements WatTask {
             return;
         }
 
-        List<GearItem> toObtain = new ArrayList<>();
-
-        //check for loadout and inventory
-        if(!loadout().isEmpty()) {
-            for(HashMap.Entry<EquipmentSlot, GearItem> entry : loadout().entrySet()) {
-                Logger.log("checking slot " + entry.getKey().name() + " for " + entry.getValue().getName() + " x" + entry.getValue().getQuantity());
-                if(!ItemUtils.equipmentSlotContains(entry.getValue().getName(), entry.getValue().getQuantity())) {
-                    Logger.log("missing gear: " + entry.getValue().getName() + " x" + entry.getValue().getQuantity());
-                    toObtain.add(entry.getValue());
-                }
-            }
-        }
-
-        if(!inventory().isEmpty()) {
-            for(GearItem entry : inventory()) {
-                Logger.log("checking inventory for " + entry.getName() + " x" + entry.getQuantity());
-                if(!ItemUtils.inventoryContains(entry.getName(), entry.getQuantity(), false)) {
-                    Logger.log("missing item: " + entry.getName() + " x" + entry.getQuantity());
-                    toObtain.add(entry);
-                }
-            }
-        }
-
-        //send to new banking task
-        if(!toObtain.isEmpty()) {
-            Logger.log("missing gear or inventory items, sending to bank TODO");
+        if(!ItemUtils.hasInventory() || !ItemUtils.hasInventory()) {
+            //bank
             return;
         }
 
         //go to best location for mob
         if(!target.getBestLocation().contains(Players.getLocal())) {
             Logger.log("running to best location for " + target.getName());
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(target.getBestLocation(), this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(target.getBestLocation(), this));
             return;
         }
 
@@ -87,22 +51,26 @@ public class CombatTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
-        HashMap<EquipmentSlot, GearItem> loadout = new HashMap<>(); //TODO combat gear based on skill + bank contents(gp+gear owned)
+    public HashMap<WatItem, Integer> loadout() {
+        HashMap<WatItem, Integer> loadout = new HashMap<>();
 
         if(target != null && target.getMobLogic().gearLoadout() != null) {
             loadout.putAll(target.getMobLogic().gearLoadout());
+        } else {
+            //TODO combat gear based on skill + bank contents(gp+gear owned)
         }
 
         return loadout;
     }
 
     @Override
-    public List<GearItem> inventory() {
-        List<GearItem> inventory = new ArrayList<>();//TODO combat gear based on skill + bank contents(gp+gear owned)
+    public HashMap<WatItem, Integer> inventory() {
+        HashMap<WatItem, Integer> inventory = new HashMap<>();
 
         if(target != null && target.getMobLogic().inventoryLoadout() != null) {
-            inventory.addAll(target.getMobLogic().inventoryLoadout());
+            inventory.putAll(target.getMobLogic().inventoryLoadout());
+        } else {
+            //TODO combat gear based on skill + bank contents(gp+gear owned)
         }
 
         return inventory;

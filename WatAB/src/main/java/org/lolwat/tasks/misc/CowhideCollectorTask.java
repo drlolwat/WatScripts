@@ -14,7 +14,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
@@ -122,11 +122,6 @@ public class CowhideCollectorTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Cowhide Collector";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -158,7 +153,7 @@ public class CowhideCollectorTask implements WatTask {
     
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         return new HashMap<>();
     }
 

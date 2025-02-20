@@ -3,7 +3,6 @@ package org.lolwat.tasks.agility;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
@@ -16,11 +15,12 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.lolwat.WatAIO;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
@@ -53,11 +53,6 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return courseName + " Agility";
-    }
-
-    @Override
     public boolean canPerformTask() {
         return Skills.getRealLevel(Skill.AGILITY) >= minimumLevel && Skills.getRealLevel(Skill.AGILITY) < maximumLevel;
     }
@@ -82,7 +77,7 @@ public class AgilityCourseTask implements WatTask {
                     && x.getName().equalsIgnoreCase(first.getName()) && x.hasAction(first.getAction()));
 
             if(ob == null || !ob.exists() || !ob.canReach()) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(startingArea, this));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(startingArea, this));
                 return;
             }
         }
@@ -163,14 +158,14 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<EquipmentSlot, GearItem>() { {
-            put(EquipmentSlot.HAT, new GearItem("Graceful hood", 1));
-            put(EquipmentSlot.CHEST, new GearItem("Graceful top", 1));
-            put(EquipmentSlot.LEGS, new GearItem("Graceful legs", 1));
-            put(EquipmentSlot.HANDS, new GearItem("Graceful gloves", 1));
-            put(EquipmentSlot.FEET, new GearItem("Graceful boots", 1));
-            put(EquipmentSlot.CAPE, new GearItem("Graceful cape", 1));
+    public HashMap<WatItem, Integer> loadout() {
+        return new HashMap<WatItem, Integer>() { {
+            put(ItemManager.getInstance().getItem("Graceful hood"), 1);
+            put(ItemManager.getInstance().getItem("Graceful top"), 1);
+            put(ItemManager.getInstance().getItem("Graceful legs"), 1);
+            put(ItemManager.getInstance().getItem("Graceful gloves"), 1);
+            put(ItemManager.getInstance().getItem("Graceful boots"), 1);
+            put(ItemManager.getInstance().getItem("Graceful cape"), 1);
         } };
     }
 

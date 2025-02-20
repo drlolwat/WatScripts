@@ -20,11 +20,6 @@ public class QuickWithdrawTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Banking";
-    }
-
-    @Override
     public void execute() {
         if(!Bank.isOpen()) {
             ItemUtils.bank(this);

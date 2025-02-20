@@ -31,14 +31,14 @@ import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.TutorialUtils;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.types.teleports.Teleport;
 
 import java.time.Instant;
 import java.util.*;
 
-public class TraversalTask implements WatTask {
+public class WalkingTask implements WatTask {
     WatTask postTask;
     boolean mustBeOnTile;
     Tile target;
@@ -81,16 +81,7 @@ public class TraversalTask implements WatTask {
 
     List<String> npcsTriggerPost = Arrays.asList("Delrith");
 
-    @Override
-    public String getName() {
-        if (postTask != null) {
-            return "W-" + postTask.getName();
-        }
-
-        return "Walking";
-    }
-
-    public TraversalTask(Area using, WatTask post) {
+    public WalkingTask(Area using, WatTask post) {
         area = using;
         postTask = post;
         usingArea = true;
@@ -358,17 +349,17 @@ public class TraversalTask implements WatTask {
 
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
+    public HashMap<EquipmentSlot, WatItem> loadout() {
         if (postTask != null) {
             return postTask.loadout();
         }
 
-        HashMap<EquipmentSlot, GearItem> ret = new HashMap<>();
+        HashMap<EquipmentSlot, WatItem> ret = new HashMap<>();
         for (Item i : Equipment.all()) {
             if (i == null)
                 continue;
 
-            ret.put(EquipmentSlot.forSlotId(i.getSlot()), new GearItem(i.getName(), 1));
+            ret.put(EquipmentSlot.forSlotId(i.getSlot()), new WatItem(i.getName(), 1));
         }
 
         return ret;

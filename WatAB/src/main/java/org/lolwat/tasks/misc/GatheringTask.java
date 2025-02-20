@@ -31,11 +31,6 @@ public class GatheringTask implements WatTask {
     }
 
     @Override
-    public String getName() {
-        return "Gathering";
-    }
-
-    @Override
     public void execute() {
         if(Inventory.count(inventoryName) >= amount) {
             Logger.log("Have enough of item: " + inventoryName + " (" + amount + "), moving on");
@@ -44,7 +39,7 @@ public class GatheringTask implements WatTask {
         }
 
         if(!location.contains(Players.getLocal())) {
-            TaskManager.getInstance().setCurrentTask(new TraversalTask(location, this));
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(location, this));
             return;
         }
 

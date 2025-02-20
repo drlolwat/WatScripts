@@ -19,7 +19,7 @@ import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TalkToNPC;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +51,7 @@ public class RuneMysteriesQuest implements QuestTask {
                 NPC horatioNPC = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Duke Horacio"));
 
                 if(!horatio.contains(Players.getLocal()) && horatioNPC == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(horatio, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(horatio, wrapper));
                     return;
                 }
 
@@ -96,7 +96,7 @@ public class RuneMysteriesQuest implements QuestTask {
                 NPC sedridorNPC = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Archmage Sedridor"));
 
                 if(!sedridor.contains(Players.getLocal()) && sedridorNPC == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(sedridor, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(sedridor, wrapper));
                     return;
                 }
 
@@ -130,7 +130,7 @@ public class RuneMysteriesQuest implements QuestTask {
                 NPC auburyNPC = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Aubury"));
 
                 if(!aubury.contains(Players.getLocal()) && auburyNPC == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(aubury, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(aubury, wrapper));
                     return;
                 }
 

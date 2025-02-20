@@ -14,7 +14,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.HashMap;
 
@@ -23,11 +23,6 @@ public class GetPrysinKey implements WatTask {
 
     public GetPrysinKey(WatTask wrapper) {
         this.wrapper = wrapper;
-    }
-
-    @Override
-    public String getName() {
-        return "Collecting Sir Prysin's key";
     }
 
     @Override
@@ -51,7 +46,7 @@ public class GetPrysinKey implements WatTask {
 
             Area drainArea = new Area(3225, 3497, 3227, 3491);
             if (!drainArea.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(drainArea, this));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(drainArea, this));
                 return;
             }
 
@@ -75,7 +70,7 @@ public class GetPrysinKey implements WatTask {
                     new Tile(3226, 9900, 0));
 
             if (!skeletons.contains(Players.getLocal())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(skeletons, this));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(skeletons, this));
                 return;
             }
 

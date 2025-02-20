@@ -4,7 +4,6 @@ import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
@@ -16,13 +15,14 @@ import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.GearItem;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.runecrafting.RunecraftingUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.HashMap;
 
@@ -65,7 +65,7 @@ public class RunecraftingTask implements WatTask {
                 Logger.log("Failed to craft rune");
                 if(altar.distance() >= 10) {
                     Logger.log("Moving closer to altar..");
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(altar.getTile().getArea(3), this));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(altar.getTile().getArea(3), this));
                     return;
                 }
             } else {
@@ -94,7 +94,7 @@ public class RunecraftingTask implements WatTask {
             GameObject ruins = GameObjects.closest(x -> x != null && x.canReach() && x.getName().contains("Mysterious ruins"));
 
             if ((altar == null || !altar.canReach()) && !entrance.contains(Players.getLocal()) && !entrance.contains(Walking.getDestination())) {
-                TaskManager.getInstance().setCurrentTask(new TraversalTask(entrance, this));
+                TaskManager.getInstance().setCurrentTask(new WalkingTask(entrance, this));
                 return;
             }
 
@@ -107,11 +107,6 @@ public class RunecraftingTask implements WatTask {
                 }
             }
         }
-    }
-
-    @Override
-    public String getName() {
-        return "Crafting " + runeType + " runes";
     }
 
     @Override
@@ -130,9 +125,9 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, GearItem> loadout() {
-        return new HashMap<EquipmentSlot, GearItem>() {{
-            put(EquipmentSlot.HAT, new GearItem(GenericUtils.uppercaseFirst(runeType) + " tiara", 1));
+    public HashMap<WatItem, Integer> loadout() {
+        return new HashMap<WatItem, Integer>() {{
+            put(ItemManager.getInstance().getItem(GenericUtils.uppercaseFirst(runeType) + " tiara"), 1);
             putAll(GenericUtils.getSkillingGear());
         }};
     }

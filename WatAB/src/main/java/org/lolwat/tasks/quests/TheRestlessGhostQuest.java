@@ -21,7 +21,7 @@ import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TalkToNPC;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +48,7 @@ public class TheRestlessGhostQuest implements QuestTask {
             case 0: {
                 NPC aereck = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Father Aereck"));
                 if(!lumbridgeChurch.contains(Players.getLocal()) && aereck == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(lumbridgeChurch, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(lumbridgeChurch, wrapper));
                     return;
                 }
 
@@ -73,7 +73,7 @@ public class TheRestlessGhostQuest implements QuestTask {
                 NPC urhney = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Father Urhney"));
 
                 if(!zone.contains(Players.getLocal()) && urhney == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(zone, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(zone, wrapper));
                     return;
                 }
 
@@ -118,7 +118,7 @@ public class TheRestlessGhostQuest implements QuestTask {
                 NPC ghost = NPCs.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Restless ghost"));
 
                 if(!graveyard.contains(Players.getLocal()) && ghost == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(graveyard, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(graveyard, wrapper));
                     return;
                 }
 
@@ -175,7 +175,7 @@ public class TheRestlessGhostQuest implements QuestTask {
                     GameObject altar = GameObjects.closest(x -> x != null && x.exists() && x.canReach() && x.getName().equals("Altar"));
 
                     if (!skullZone.contains(Players.getLocal())) {
-                        TaskManager.getInstance().setCurrentTask(new TraversalTask(skullZone, wrapper));
+                        TaskManager.getInstance().setCurrentTask(new WalkingTask(skullZone, wrapper));
                         return;
                     }
 

@@ -17,7 +17,7 @@ import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.TraversalTask;
+import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public class SheepShearerQuest implements QuestTask {
 
                 NPC fred = NPCs.closest("Fred the Farmer");
                 if(!startLocation.contains(Players.getLocal()) && fred == null) {
-                    TaskManager.getInstance().setCurrentTask(new TraversalTask(startLocation, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new WalkingTask(startLocation, wrapper));
                     return;
                 }
 
