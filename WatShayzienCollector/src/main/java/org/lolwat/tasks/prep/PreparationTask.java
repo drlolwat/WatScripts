@@ -1,5 +1,7 @@
 package org.lolwat.tasks.prep;
 
+import org.dreambot.api.ClientSettings;
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.dialogues.Dialogues;
@@ -11,11 +13,14 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -51,6 +56,54 @@ public class PreparationTask implements WatTask {
     @Override
     public void execute() {
         if(currentStep == 0) {
+            if(!Tabs.isOpen(Tab.OPTIONS)) {
+                Tabs.open(Tab.OPTIONS);
+                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.OPTIONS), Calculations.random(3000, 6000));
+            }
+
+            if(!ClientSettings.isOpen()) {
+                Widget settings = Widgets.getWidget(116);
+                if(settings != null) {
+                    WidgetChild settingsButton = settings.getChild(32);
+                    if(settingsButton != null) {
+                        if(settingsButton.interact()) {
+                            Sleep.sleepUntil(ClientSettings::isOpen, Calculations.random(3000, 6000));
+                        } else {
+                            Logger.error("Failed to interact with settings button");
+                            return;
+                        }
+                    } else {
+                        Logger.error("Failed to find settings button");
+                        return;
+                    }
+                }
+            }
+
+            if(ClientSettings.getMinimumAlchWarningValue() < 1000000 && !ClientSettings.setMinimumAlchWarningValue(1000000)) {
+                Logger.log("Failed to set minimum alch warning value");
+                return;
+            }
+
+            if(ClientSettings.getMinimumDropWarningValue() < 1000000 && !ClientSettings.setMinimumDropWarningValue(1000000)) {
+                Logger.log("Failed to set minimum drop warning value");
+                return;
+            }
+
+            if(ClientSettings.isWorldHopConfirmationEnabled() && !ClientSettings.toggleWorldHopConfirmation(false)) {
+                Logger.log("Failed to toggle world hop confirmation");
+                return;
+            }
+
+            if(ClientSettings.isTradeDelayEnabled() && !ClientSettings.toggleTradeDelay(false)) {
+                Logger.log("Failed to toggle trade delay");
+                return;
+            }
+
+            if(!ClientSettings.closeSettingsInterface()) {
+                Logger.log("Failed to close settings interface");
+                return;
+            }
+
             for(Map.Entry<String, Integer> map : clothesRequired().entrySet()) {
                 if(!ItemUtils.equipmentContains(map.getKey(), map.getValue())) {
                     TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, this, null));
@@ -74,6 +127,11 @@ public class PreparationTask implements WatTask {
                 if (!shayzienArea.contains(Players.getLocal())) {
                     TaskManager.getInstance().setCurrentTask(new TraversalTask(shayzienArea, this));
                     return;
+                }
+
+                if(!Tabs.isOpen(Tab.INVENTORY)) {
+                    Tabs.open(Tab.INVENTORY);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 5000);
                 }
 
                 Item food = Inventory.get(x -> x != null && x.hasAction("Eat"));
@@ -172,7 +230,7 @@ public class PreparationTask implements WatTask {
                 if (target != null) {
                     if (Dialogues.inDialogue()) {
                         DialogueUtils.continueWhilePossible();
-                        DialogueUtils.solve(Arrays.asList("Okay, I reckon I can take you.", "I understand. Let's fight.", "Sure, let's fight."));
+                        DialogueUtils.solve(Arrays.asList("Okay, I reckon I can take you.", "I understand. Let's fight.", "Sure, let's fight.", "Let's fight again - I don't mind duplicates."));
                         return;
                     }
 
