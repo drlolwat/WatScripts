@@ -20,6 +20,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
@@ -79,9 +80,9 @@ public class DemonSlayerQuest implements QuestTask {
                         && x.canReach());
 
                 if (!Dialogues.inDialogue() && !Inventory.contains("Coins")) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                         {
-                            put("Coins", 1);
+                            put(ItemManager.getInstance().getItem("Coins"), 1);
                         }
                     }, null, 1, wrapper));
                     return;
@@ -158,9 +159,9 @@ public class DemonSlayerQuest implements QuestTask {
 
                     if (Inventory.isEmpty() || !Inventory.contains(x -> x != null && x.hasAction("Eat"))) {
                         Logger.error("MeleeCombatTask(Q) is missing food");
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                             {
-                                put("Lobster", 12);
+                                put(ItemManager.getInstance().getItem("Lobster"), 12);
                             }
                         }, null, 1, wrapper));
                         return;

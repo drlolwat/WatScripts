@@ -194,9 +194,9 @@ public class WalkingTask implements WatTask {
                             if (targetDistance > exchangeDistance
                                     && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
 
-                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                                     {
-                                        put(teleportItem, Calculations.random(2, 6));
+                                        put(ItemManager.getInstance().getItem(teleportItem), Calculations.random(2, 6));
                                     }
                                 }, new HashMap<>(), 1, this));
 

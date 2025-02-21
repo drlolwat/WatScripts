@@ -105,8 +105,8 @@ public class GoblinDiplomacyQuest implements QuestTask {
 
             case 5: {
                 if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Goblin mail"))) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Goblin mail", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Goblin mail"), 1);
                     }}, null, 1, wrapper));
                     return;
                 }

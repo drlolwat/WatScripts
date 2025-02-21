@@ -15,6 +15,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.smithing.SmithingType;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.StringUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.misc.BankingTask;
@@ -50,8 +51,8 @@ public class SmithingItemTask implements WatTask {
     public void execute() {
         SmithingType itemType = SmithingUtils.getBestSmithingChoice(ingotType);
         // check to see if we have enough bars
-        for(java.util.Map.Entry<String, Integer> m : SmithingUtils.materialsForSmithing(itemType, ingotType,false, 1).entrySet()) {
-            if(!Inventory.contains(m.getKey()) || Inventory.count(m.getKey()) < m.getValue()) {
+        for(java.util.Map.Entry<WatItem, Integer> m : SmithingUtils.materialsForSmithing(itemType, ingotType,false, 1).entrySet()) {
+            if(ItemUtils.inventoryCount(m.getKey().getName()) < m.getValue()) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(
                         SmithingUtils.materialsForSmithing(itemType, ingotType, true, 1),
                         byproducts, maximumInventories, this));

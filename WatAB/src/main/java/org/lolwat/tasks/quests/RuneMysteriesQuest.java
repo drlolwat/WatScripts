@@ -13,13 +13,15 @@ import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TalkToNPC;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,16 +77,16 @@ public class RuneMysteriesQuest implements QuestTask {
             case 2:
             case 1: {
                 if(getState() == 1 && !Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Air talisman"))) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Air talisman", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Air talisman"), 1);
                     }}, null, 1, wrapper));
                     return;
                 }
 
                 if(!Dialogues.inDialogue() && (getState() == 5 || getState() == 4)
                         && !Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Research notes"))) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Research notes", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Research notes"), 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {{
                         put("Research notes", new TalkToNPC(aubury,
                                 "Aubury", wrapper, new ArrayList<>(),"Research notes"));
@@ -118,8 +120,8 @@ public class RuneMysteriesQuest implements QuestTask {
 
             case 3: {
                 if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Research package"))) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Research package", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Research package"), 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {{
                         put("Research package", new TalkToNPC(new Area(3104, 9570, 3106, 9568, 0),
                                 "Archmage Sedridor", wrapper, new ArrayList<>(),"Research package"));

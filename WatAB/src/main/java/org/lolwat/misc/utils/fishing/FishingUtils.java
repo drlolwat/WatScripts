@@ -1,6 +1,8 @@
 package org.lolwat.misc.utils.fishing;
 
+import org.lolwat.managers.ItemManager;
 import org.lolwat.misc.types.mixed.FishType;
+import org.lolwat.types.gear.WatItem;
 
 import java.util.HashMap;
 
@@ -37,17 +39,17 @@ public class FishingUtils {
         }
     }
 
-    public static HashMap<String, Integer> getExtraFishingItems(FishType type) {
-        HashMap<String, Integer> map = new HashMap<>();
+    public static HashMap<WatItem, Integer> getExtraFishingItems(FishType type) {
+        HashMap<WatItem, Integer> map = new HashMap<>();
 
         switch(type) {
             default: break;
-            case LOBSTER: map.put("Coins", 25); break;
+            case LOBSTER: map.put(ItemManager.getInstance().getItem("Coins"), 25); break;
             case HERRING:
             case SARDINE:
-            case PIKE: map.put("Fishing bait", -1000); break;
+            case PIKE: map.put(ItemManager.getInstance().getItem("Fishing bait"), -1000); break;
             case TROUT:
-            case SALMON: map.put("Feather", -1000); break;
+            case SALMON: map.put(ItemManager.getInstance().getItem("Feather"), -1000); break;
         }
 
         return map;

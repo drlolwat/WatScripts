@@ -2,17 +2,20 @@ package org.lolwat.misc.utils.smithing;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.types.smithing.SmithingType;
 import org.lolwat.misc.utils.StringUtils;
+import org.lolwat.types.gear.WatItem;
 
 import java.util.HashMap;
 
 public class SmithingUtils {
-    public static HashMap<String, Integer> getMaterialsForBar(IngotType type, boolean fullInventory, int inventoryLoads) {
+    public static HashMap<WatItem, Integer> getMaterialsForBar(IngotType type, boolean fullInventory, int inventoryLoads) {
         HashMap<String, Integer> ret = new HashMap<>();
+        HashMap<WatItem, Integer> trueRet = new HashMap<>();
         switch(type) {
-            default: return ret;
+            default: return trueRet;
             case BRONZE: {
                 ret.put("Copper ore", fullInventory ? 14 * inventoryLoads : 1);
                 ret.put("Tin ore", fullInventory ? 14 * inventoryLoads : 1);
@@ -51,10 +54,15 @@ public class SmithingUtils {
                 break;
             }
         }
-        return ret;
+
+        for(java.util.Map.Entry<String, Integer> m : ret.entrySet()) {
+            trueRet.put(ItemManager.getInstance().getItem(m.getKey()), m.getValue());
+        }
+
+        return trueRet;
     }
 
-    public static HashMap<String, Integer> materialsForSmithing(SmithingType type, IngotType barType, boolean fullInventory, int inventoryLoads) {
+    public static HashMap<WatItem, Integer> materialsForSmithing(SmithingType type, IngotType barType, boolean fullInventory, int inventoryLoads) {
         String barName = StringUtils.capitalize(barType.toString().toLowerCase()) + " bar";
         HashMap<String, Integer> ret = new HashMap<>();
         ret.put("Hammer", 1);
@@ -79,7 +87,12 @@ public class SmithingUtils {
             }
         }
 
-        return ret;
+        HashMap<WatItem, Integer> trueRet = new HashMap<>();
+        for(java.util.Map.Entry<String, Integer> m : ret.entrySet()) {
+            trueRet.put(ItemManager.getInstance().getItem(m.getKey()), m.getValue());
+        }
+
+        return trueRet;
     }
 
     public static SmithingType getBestSmithingChoice(IngotType type) {

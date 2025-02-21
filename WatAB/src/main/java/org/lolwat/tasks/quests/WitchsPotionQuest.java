@@ -19,12 +19,14 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,9 +58,9 @@ public class WitchsPotionQuest implements QuestTask {
 
                 if (!Inventory.contains(x -> x != null && !x.isNoted()
                         && (x.getName().equals("Eye of newt") || x.getName().equals("Onion")))) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Onion", 1);
-                        put("Eye of newt", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Onion"), 1);
+                        put(ItemManager.getInstance().getItem("Eye of newt"), 1);
                     }}, null, 1, wrapper));
                     return;
                 }
@@ -67,8 +69,8 @@ public class WitchsPotionQuest implements QuestTask {
                     if(!Inventory.contains(x -> x != null
                             && (x.getName().equals("Raw beef") || x.getName().equals("Cooked meat")))) {
 
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                            put("Raw beef", 1);
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                            put(ItemManager.getInstance().getItem("Raw beef"), 1);
                         }}, null, 1, wrapper));
                         return;
                     }

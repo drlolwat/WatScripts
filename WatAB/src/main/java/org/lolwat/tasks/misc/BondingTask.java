@@ -10,7 +10,9 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
@@ -31,9 +33,9 @@ public class BondingTask implements WatTask {
         }
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                 {
-                    put("Old school bond (untradeable)", 1);
+                    put(ItemManager.getInstance().getItem("Old school bond (untradeable)"), 1);
                 }
             }, new HashMap<>(), 1, this));
             return;

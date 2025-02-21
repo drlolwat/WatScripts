@@ -15,13 +15,15 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.GatheringTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,8 +143,8 @@ public class RomeoAndJulietQuest implements QuestTask {
 
             case 40: {
                 if(!Inventory.contains(x -> x != null && x.getName().equals("Cadava berries") && !x.isNoted())) {
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Cadava potion", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Cadava potion"), 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {
                         {
                             put("Cadava potion", new GatheringTask("Cadava bush", "Cadava berries", 1, new Area(

@@ -15,13 +15,15 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.TalkToNPC;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -98,8 +100,8 @@ public class TheRestlessGhostQuest implements QuestTask {
                 if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Ghostspeak amulet"))
                     && !Equipment.contains(x -> x != null && !x.isNoted() && x.getName().equals("Ghostspeak amulet"))) {
 
-                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {{
-                        put("Ghostspeak amulet", 1);
+                    TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {{
+                        put(ItemManager.getInstance().getItem("Ghostspeak amulet"), 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {{
                         put("Ghostspeak amulet", new TalkToNPC(new Area(3144, 3177, 3151, 3173), "Father Urhney", wrapper,
                                 Collections.singletonList("I've lost the Amulet of Ghostspeak."), "Ghostspeak amulet"));

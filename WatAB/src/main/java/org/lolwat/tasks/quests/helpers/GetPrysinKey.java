@@ -10,11 +10,13 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
 
@@ -36,9 +38,9 @@ public class GetPrysinKey implements WatTask {
         int drainStatus = PlayerSettings.getBitValue(2568); // 0=not touched, 1=key in sewer, 2=key taken
         if (drainStatus == 0) {
             if (!Inventory.contains("Bucket of water")) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                     {
-                        put("Bucket of water", 1);
+                        put(ItemManager.getInstance().getItem("Bucket of water"), 1);
                     }
                 }, null, 1, this));
                 return;

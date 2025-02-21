@@ -18,6 +18,7 @@ import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.smithing.IngotType;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.smithing.SmithingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
@@ -51,9 +52,9 @@ public class SmithingIngotTask implements WatTask {
 
     @Override
     public void execute() {
-        for(java.util.Map.Entry<String, Integer> m : SmithingUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
+        for(java.util.Map.Entry<WatItem, Integer> m : SmithingUtils.getMaterialsForBar(smithingType, false, 1).entrySet()) {
             // do we have enough to create at least 1 bar of this type?
-            if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
+            if(ItemUtils.inventoryCount(m.getKey().getName()) < m.getValue()) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(
                         SmithingUtils.getMaterialsForBar(smithingType, true, 1),
                         toSell, totalLoads, this));

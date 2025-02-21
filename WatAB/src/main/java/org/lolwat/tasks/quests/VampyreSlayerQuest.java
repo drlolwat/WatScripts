@@ -15,6 +15,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
@@ -70,9 +71,9 @@ public class VampyreSlayerQuest implements QuestTask {
                 if(!Inventory.contains("Stake")) {
                     if(!checkedBank) {
                         checkedBank = true;
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                             {
-                                put("Stake", 1);
+                                put(ItemManager.getInstance().getItem("Stake"), 1);
                             }
                         }, null, 1, wrapper, new HashMap<String, WatTask>() {
                             {
@@ -83,9 +84,9 @@ public class VampyreSlayerQuest implements QuestTask {
                     }
 
                     if (!Inventory.contains("Coins") && !Inventory.contains("Beer")) {
-                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                        TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                             {
-                                put("Coins", 2);
+                                put(ItemManager.getInstance().getItem("Coins"), 2);
                             }
                         }, null, 1, wrapper));
                         return;
@@ -132,11 +133,11 @@ public class VampyreSlayerQuest implements QuestTask {
                         return;
                     } else {
                         if (!Inventory.contains("Hammer") || !Inventory.contains("Garlic")) {
-                            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                                 {
-                                    put("Hammer", 1);
-                                    put("Garlic", 1);
-                                    put("Stake", 1);
+                                    put(ItemManager.getInstance().getItem("Hammer"), 1);
+                                    put(ItemManager.getInstance().getItem("Garlic"), 1);
+                                    put(ItemManager.getInstance().getItem("Stake"), 1);
                                 }
                             }, null, 1, wrapper));
                             return;

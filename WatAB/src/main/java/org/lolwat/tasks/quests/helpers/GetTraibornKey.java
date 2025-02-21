@@ -10,12 +10,14 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -58,9 +60,9 @@ public class GetTraibornKey implements WatTask {
 
         if (!Dialogues.inDialogue()) {
             if (!Inventory.contains(x -> x.getName().equalsIgnoreCase("bones") && !x.isNoted()) || Inventory.count("Bones") < 25) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
                     {
-                        put("Bones", 25);
+                        put(ItemManager.getInstance().getItem("Bones"), 25);
                     }
                 }, null, 1, this));
                 return;

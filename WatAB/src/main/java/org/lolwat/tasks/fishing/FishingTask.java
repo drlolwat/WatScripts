@@ -13,9 +13,11 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.mixed.FishType;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.fishing.FishingUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
@@ -50,15 +52,19 @@ public class FishingTask implements WatTask {
     @Override
     public void execute() {
         String tool = FishingUtils.getToolByFishType(fishType);
-        HashMap<String, Integer> requiredItems = new HashMap<String, Integer>() {{ put(tool, 1); }};
+        HashMap<WatItem, Integer> requiredItems = new HashMap<WatItem, Integer>() {
+            {
+                put(ItemManager.getInstance().getItem(tool), 1);
+            }
+        };
 
         if(!FishingUtils.getExtraFishingItems(fishType).isEmpty()) {
             requiredItems.putAll(FishingUtils.getExtraFishingItems(fishType));
         }
 
         boolean hasItems = true;
-        for(String name : requiredItems.keySet()) {
-            if(!Inventory.contains(name)) {
+        for(WatItem wi : requiredItems.keySet()) {
+            if(ItemUtils.inventoryCount(wi.getName()) < requiredItems.get(wi)) {
                 hasItems = false;
                 break;
             }
@@ -80,15 +86,19 @@ public class FishingTask implements WatTask {
                 } else {
                     for(Item it : Inventory.all()) {
                         if (it == null) continue;
-                        if (!requiredItems.containsKey(it.getName())) {
-                            int count = Inventory.size();
-                            if (!Inventory.drop(it.getName())) {
-                                Logger.log("Failed to drop fish");
-                                continue;
-                            }
 
-                            Sleep.sleepUntil(() -> Inventory.size() < count, 2000);
+                        WatItem wi = ItemManager.getInstance().getItem(it.getName());
+                        if (wi != null && requiredItems.containsKey(wi)) {
+                            continue;
                         }
+
+                        int count = Inventory.size();
+                        if (!Inventory.drop(it.getName())) {
+                            Logger.log("Failed to drop fish");
+                            continue;
+                        }
+
+                        Sleep.sleepUntil(() -> Inventory.size() < count, 2000);
                     }
                 }
             }
@@ -124,16 +134,12 @@ public class FishingTask implements WatTask {
     }
 
     private boolean hasRequiredItems() {
-        for(String it : FishingUtils.getExtraFishingItems(fishType).keySet()) {
-            if(!Inventory.contains(it)) {
+        for(WatItem it : FishingUtils.getExtraFishingItems(fishType).keySet()) {
+            if(ItemUtils.inventoryCount(it.getName()) < 1) {
                 return false;
             }
         }
-        return true;
-    }
 
-    @Override
-    public boolean requiresLogin() {
         return true;
     }
 

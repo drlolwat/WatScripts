@@ -17,6 +17,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.mixed.TreeType;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.firemaking.FiremakingUtils;
 import org.lolwat.misc.utils.woodcutting.WoodcuttingUtils;
 import org.lolwat.tasks.misc.BankingTask;
@@ -56,13 +57,11 @@ public class FiremakingTask implements WatTask {
             Tabs.open(Tab.INVENTORY);
         }
 
-        for(java.util.Map.Entry<String, Integer> m : FiremakingUtils.getMaterialsForFiremaking(logType, false, 1).entrySet()) {
-            if(!Inventory.contains(m.getKey()) || Inventory.get(m.getKey()).isNoted() || Inventory.get(m.getKey()).getAmount() < m.getValue()) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(
-                        FiremakingUtils.getMaterialsForFiremaking(logType, true, 1),
-                        toSell, inventoryLoads, this));
-                return;
-            }
+        if(!ItemUtils.hasInventory()) {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(
+                    FiremakingUtils.getMaterialsForFiremaking(logType, true, 1),
+                    toSell, inventoryLoads, this));
+            return;
         }
 
         if(!selectedLocation.contains(Players.getLocal())) {
@@ -100,11 +99,6 @@ public class FiremakingTask implements WatTask {
     @Override
     public boolean canPerformTask() {
         return Skills.getRealLevel(Skill.FIREMAKING) >= minLevel && Skills.getRealLevel(Skill.FIREMAKING) <= avoidAtLevel;
-    }
-
-    @Override
-    public boolean requiresLogin() {
-        return true;
     }
 
     @Override
