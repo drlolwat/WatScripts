@@ -54,7 +54,6 @@ public class TaskManager {
     @Getter
     private WatTask currentTask;
     private int tasksUntilBreak;
-
     @Getter
     private double taskSelectedAt;
     @Getter
