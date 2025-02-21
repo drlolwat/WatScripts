@@ -1,5 +1,6 @@
 package org.lolwat.types.interfaces;
 
+import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
@@ -22,7 +23,7 @@ public interface MobLogic {
 
     default void runPriority() {
         Item i = Inventory.get(x -> x != null && x.hasAction("Eat"));
-        if(i != null) {
+        if(i != null && Combat.getHealthPercent() <= 50) {
             if(!i.interact("Eat")) {
                 Logger.log("Issue eating food during combat task [default interface method]");
             }
