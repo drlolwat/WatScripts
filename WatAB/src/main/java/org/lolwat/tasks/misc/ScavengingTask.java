@@ -1,7 +1,6 @@
 package org.lolwat.tasks.misc;
 
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.item.GroundItems;
@@ -12,11 +11,9 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.WatItem;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.NumUtils;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,18 +96,8 @@ public class ScavengingTask implements WatTask {
     }
 
     @Override
-    public boolean requiresLogin() {
-        return true;
-    }
-
-    @Override
     public int loopTime() {
         return 500;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
     }
 
     @Override
@@ -126,16 +113,6 @@ public class ScavengingTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
-    }
-
-    @Override
-    public HashMap<EquipmentSlot, WatItem> loadout() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<>();
     }
 
     @Override

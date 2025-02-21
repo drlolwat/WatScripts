@@ -12,7 +12,9 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.herblore.HerbUtils;
@@ -90,10 +92,10 @@ public class CleanHerbTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<String, Integer>() {
+    public HashMap<WatItem, Integer> inventory() {
+        return new HashMap<WatItem, Integer>() {
             {
-                put(HerbUtils.bestHerbToClean(), -HerbUtils.herbsRequiredToLevel());
+                put(ItemManager.getInstance().getItem(HerbUtils.bestHerbToClean()), -HerbUtils.herbsRequiredToLevel());
             }
         };
     }

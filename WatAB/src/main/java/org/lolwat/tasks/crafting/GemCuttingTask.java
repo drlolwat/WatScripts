@@ -13,6 +13,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.crafting.CraftingUtils;
@@ -31,12 +32,9 @@ public class GemCuttingTask implements WatTask {
 
     @Override
     public void execute() {
-        for(WatItem i : inventory()) {
-            if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals(i.getName()))) {
-                Logger.log("Missing " + i.getName());
-                TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
-                return;
-            }
+        if(!ItemUtils.hasInventory()) {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, totalInventories, this, null));
+            return;
         }
 
         if(Bank.isOpen()) {

@@ -3,7 +3,6 @@ package org.lolwat.tasks.quests;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -22,15 +21,15 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.WatItem;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.QuickWithdrawTask;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.tasks.quests.helpers.GetSilverlight;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -251,7 +250,7 @@ public class DemonSlayerQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, WatItem> clothesRequired() {
+    public HashMap<WatItem, Integer> clothesRequired() {
         return null; //TODO
         //return MeleeUtils.getRequiredItems(false, getState() == 2 && PlayerSettings.getBitValue(2568) == 2);
     }

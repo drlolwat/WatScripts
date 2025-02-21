@@ -64,7 +64,7 @@ public class QuestWrapperTask implements WatTask {
     }
 
     @Override
-    public HashMap<EquipmentSlot, WatItem> loadout() {
+    public HashMap<WatItem, Integer> loadout() {
         if(questTask() != null)
             return questTask().clothesRequired();
 
@@ -72,7 +72,7 @@ public class QuestWrapperTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
+    public HashMap<WatItem, Integer> inventory() {
         if(questTask() != null)
             return questTask().inventoryRequired();
 

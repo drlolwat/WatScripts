@@ -12,7 +12,9 @@ import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -190,11 +192,11 @@ public class GoblinDiplomacyQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() { {
-            put("Goblin mail", 3);
-            put("Orange dye", 1);
-            put("Blue dye", 1);
+    public HashMap<WatItem, Integer> inventoryRequired() {
+        return new HashMap<WatItem, Integer>() { {
+            put(ItemManager.getInstance().getItem("Goblin mail"), 3);
+            put(ItemManager.getInstance().getItem("Orange dye"), 1);
+            put(ItemManager.getInstance().getItem("Blue dye"), 1);
         }};
     }
 }

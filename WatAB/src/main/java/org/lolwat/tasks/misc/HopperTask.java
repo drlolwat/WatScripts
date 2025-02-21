@@ -1,19 +1,14 @@
 package org.lolwat.tasks.misc;
 
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.WatItem;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
-
-import java.util.HashMap;
+import org.lolwat.types.interfaces.WatTask;
 
 public class HopperTask implements WatTask {
     private final WatTask postTask;
@@ -57,18 +52,8 @@ public class HopperTask implements WatTask {
     }
 
     @Override
-    public boolean requiresLogin() {
-        return true;
-    }
-
-    @Override
     public int loopTime() {
         return 500;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
     }
 
     @Override
@@ -84,17 +69,5 @@ public class HopperTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
-    }
-
-    
-
-    @Override
-    public HashMap<EquipmentSlot, WatItem> loadout() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<>();
     }
 }

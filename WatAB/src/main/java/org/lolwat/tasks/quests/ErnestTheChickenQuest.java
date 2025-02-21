@@ -18,6 +18,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.QuestTask;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -262,7 +263,7 @@ public class ErnestTheChickenQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
+    public HashMap<WatItem, Integer> inventoryRequired() {
         return QuestTask.super.inventoryRequired();
     }
 

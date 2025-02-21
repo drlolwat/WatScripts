@@ -12,12 +12,14 @@ import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -82,9 +84,9 @@ public class SheepShearerQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() {{
-            put("Ball of wool", 20);
+    public HashMap<WatItem, Integer> inventoryRequired() {
+        return new HashMap<WatItem, Integer>() {{
+            put(ItemManager.getInstance().getItem("Ball of wool"), 20);
         }};
     }
 }

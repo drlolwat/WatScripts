@@ -133,9 +133,9 @@ public class RunecraftingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<String, Integer>() {{
-            put("Pure essence", 28);
+    public HashMap<WatItem, Integer> inventory() {
+        return new HashMap<WatItem, Integer>() {{
+            put(ItemManager.getInstance().getItem("Pure essence"), 28);
         }};
     }
 }

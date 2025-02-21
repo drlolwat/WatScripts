@@ -18,6 +18,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
@@ -192,10 +193,10 @@ public class WoodcuttingTask implements WatTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<String, Integer>() {
+    public HashMap<WatItem, Integer> inventory() {
+        return new HashMap<WatItem, Integer>() {
             {
-                put(WoodcuttingUtils.getBestHatchetForLevel(), 1);
+                put(ItemManager.getInstance().getItem(WoodcuttingUtils.getBestHatchetForLevel()), 1);
             }
         };
     }

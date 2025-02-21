@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -30,6 +31,14 @@ public class ItemUtils {
 
         Bank.setWithdrawMode(mode);
         Sleep.sleep(100, 200);
+    }
+
+    public static int equipmentCount(String name) {
+        return Equipment.count(x -> x != null && x.getName().contains(name));
+    }
+
+    public static int inventoryCount(String name) {
+        return Inventory.count(x -> x != null && x.getName().contains(name));
     }
 
     public static boolean inventoryContains(int itemId, int itemQty, boolean allowNoted) {

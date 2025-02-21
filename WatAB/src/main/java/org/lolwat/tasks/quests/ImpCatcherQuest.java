@@ -13,12 +13,14 @@ import org.dreambot.api.methods.settings.PlayerSettings;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -94,11 +96,11 @@ public class ImpCatcherQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() {{
-            put("Black bead", 1);
-            put("Yellow bead", 1);
-            put("Red bead", 1);
-            put("White bead", 1); }};
+    public HashMap<WatItem, Integer> inventoryRequired() {
+        return new HashMap<WatItem, Integer>() {{
+            put(ItemManager.getInstance().getItem("Black bead"), 1);
+            put(ItemManager.getInstance().getItem("Yellow bead"), 1);
+            put(ItemManager.getInstance().getItem("Red bead"), 1);
+            put(ItemManager.getInstance().getItem("White bead"), 1); }};
     }
 }

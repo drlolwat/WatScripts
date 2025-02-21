@@ -2,7 +2,6 @@ package org.lolwat.tasks.quests;
 
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
@@ -17,14 +16,17 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.WatItem;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class VampyreSlayerQuest implements QuestTask {
     private final Area startLocation = new Area(3096, 3270, 3102, 3266);
@@ -187,14 +189,14 @@ public class VampyreSlayerQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() {{
+    public HashMap<WatItem, Integer> inventoryRequired() {
+        return new HashMap<WatItem, Integer>() {{
 
         }};
     }
 
     @Override
-    public HashMap<EquipmentSlot, WatItem> clothesRequired() {
+    public HashMap<WatItem, Integer> clothesRequired() {
         return null; //TODO
         //return MeleeUtils.getRequiredItems(false, false);
     }

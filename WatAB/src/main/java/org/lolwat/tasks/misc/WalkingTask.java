@@ -5,7 +5,6 @@ import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -26,6 +25,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.DialogueUtils;
@@ -349,17 +349,17 @@ public class WalkingTask implements WatTask {
 
 
     @Override
-    public HashMap<EquipmentSlot, WatItem> loadout() {
+    public HashMap<WatItem, Integer> loadout() {
         if (postTask != null) {
             return postTask.loadout();
         }
 
-        HashMap<EquipmentSlot, WatItem> ret = new HashMap<>();
+        HashMap<WatItem, Integer> ret = new HashMap<>();
         for (Item i : Equipment.all()) {
             if (i == null)
                 continue;
 
-            ret.put(EquipmentSlot.forSlotId(i.getSlot()), new WatItem(i.getName(), 1));
+            ret.put(ItemManager.getInstance().getItem(i.getName()), 1);
         }
 
         return ret;

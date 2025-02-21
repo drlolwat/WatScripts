@@ -3,7 +3,6 @@ package org.lolwat.tasks.magic;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.magic.Magic;
@@ -17,11 +16,12 @@ import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatAIO;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.WatItem;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.combat.MagicUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,11 +82,9 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        for(WatItem g : loadout().values()) {
-            if(!Equipment.contains(g.getName())) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(requiredItems, null, 1, this));
-                return;
-            }
+        if(!ItemUtils.hasRequiredLoadout()) {
+            TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, this, null));
+            return;
         }
 
         if(Bank.isOpen()) {

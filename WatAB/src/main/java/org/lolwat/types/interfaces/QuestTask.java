@@ -1,6 +1,5 @@
 package org.lolwat.types.interfaces;
 
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.lolwat.types.gear.WatItem;
 
@@ -14,10 +13,8 @@ public interface QuestTask {
     boolean canPerformTask();
     int getState();
     default boolean requiresMembers() { return false; }
-    default HashMap<EquipmentSlot, WatItem> clothesRequired() { return new HashMap<>(); }
-
-    default HashMap<String, Integer> inventoryRequired() { return new HashMap<>(); }
-
+    default HashMap<WatItem, Integer> clothesRequired() { return new HashMap<>(); }
+    default HashMap<WatItem, Integer> inventoryRequired() { return new HashMap<>(); }
     default List<String> inventoryTolerated() {
         return new ArrayList<>();
     }

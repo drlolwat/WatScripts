@@ -3,7 +3,6 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
-import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
@@ -14,10 +13,8 @@ import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
-import org.lolwat.WatAIO;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.io.InputStream;
@@ -213,21 +210,6 @@ public class MulingTask implements WatTask {
     }
 
     @Override
-    public boolean requiresLogin() {
-        return true;
-    }
-
-    @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
@@ -235,17 +217,5 @@ public class MulingTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
-    }
-
-    
-
-    @Override
-    public HashMap<EquipmentSlot, WatItem> loadout() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventory() {
-        return new HashMap<>();
     }
 }

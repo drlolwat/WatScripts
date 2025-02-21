@@ -13,12 +13,14 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.interfaces.QuestTask;
+import org.lolwat.types.interfaces.WatTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,10 +40,10 @@ public class DoricsQuest implements QuestTask {
     public void execute(WatTask wrapper) {
         List<Integer> validStates = Arrays.asList(0, 1);
         if (validStates.contains(getState())) {
-            for(Map.Entry<String, Integer> entry : inventoryRequired().entrySet()) {
-                List<Item> i = Inventory.all(x -> x != null && x.getName().equalsIgnoreCase(entry.getKey()) && !x.isNoted());
+            for(Map.Entry<WatItem, Integer> entry : inventoryRequired().entrySet()) {
+                List<Item> i = Inventory.all(x -> x != null && x.getName().equalsIgnoreCase(entry.getKey().getName()) && !x.isNoted());
                 if(i.isEmpty() ||
-                        Inventory.count(x -> x != null && x.getName().equalsIgnoreCase(entry.getKey()) && !x.isNoted()) < entry.getValue()) {
+                        Inventory.count(x -> x != null && x.getName().equalsIgnoreCase(entry.getKey().getName()) && !x.isNoted()) < entry.getValue()) {
 
                     TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, wrapper));
                     return;
@@ -82,11 +84,11 @@ public class DoricsQuest implements QuestTask {
     }
 
     @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<String, Integer>() {{
-            put("Clay", 6);
-            put("Copper ore", 4);
-            put("Iron ore", 2);
+    public HashMap<WatItem, Integer> inventoryRequired() {
+        return new HashMap<WatItem, Integer>() {{
+            put(ItemManager.getInstance().getItem("Clay"), 6);
+            put(ItemManager.getInstance().getItem("Copper ore"), 4);
+            put(ItemManager.getInstance().getItem("Iron ore"), 2);
         }};
     }
 }
