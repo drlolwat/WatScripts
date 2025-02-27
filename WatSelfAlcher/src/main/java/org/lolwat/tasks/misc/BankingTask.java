@@ -102,13 +102,39 @@ public class BankingTask implements WatTask {
             return;
         }
 
-        if(ItemUtils.bankContains("Yew longbow", ConfigManager.getInstance().getConfigInt("min_bow_count")) && !(postTask instanceof HighAlchemyTask)) {
+        int invMoney = 0;
+        int bankMoney = 0;
+
+        if (Inventory.contains("Coins")) {
+            invMoney = Inventory.count("Coins");
+        }
+
+        if (Bank.contains("Coins")) {
+            bankMoney = Bank.count("Coins");
+        }
+
+        if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
+            int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("keep_gp");
+            if (toWithdraw > 0) {
+                Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
+                if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
+                    Bank.depositAllExcept("Coins");
+                }
+                Sleep.sleep(100, 200);
+                Bank.withdraw("Coins", toWithdraw);
+                Sleep.sleep(200, 400);
+                TaskManager.getInstance().setCurrentTask(new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask));
+                return;
+            }
+        }
+
+        if (ItemUtils.bankContains("Yew longbow", ConfigManager.getInstance().getConfigInt("min_bow_count")) && !(postTask instanceof HighAlchemyTask)) {
             Logger.log("Satisfied yew longbow count, alching");
             TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
             return;
         }
 
-        if(ItemUtils.bankContains("Yew longbow (u)", ConfigManager.getInstance().getConfigInt("min_bow_count"))
+        if (ItemUtils.bankContains("Yew longbow (u)", ConfigManager.getInstance().getConfigInt("min_bow_count"))
                 && !(postTask instanceof StringingTask)
                 && !(postTask instanceof HighAlchemyTask)) {
             Logger.log("Satisfied yew longbow (u) count, stringing");
@@ -345,7 +371,7 @@ public class BankingTask implements WatTask {
 
                     toWithdraw -= reduceBy;
 
-                    if(postTask != null && postTask instanceof HighAlchemyTask && !entry.getKey().contains("rune") && !entry.getKey().contains("coin")) {
+                    if (postTask != null && postTask instanceof HighAlchemyTask && !entry.getKey().contains("rune") && !entry.getKey().contains("coin")) {
                         ItemUtils.setBankMode(BankMode.NOTE);
                     }
 
@@ -417,7 +443,7 @@ public class BankingTask implements WatTask {
                     itemFinal = "Old school bond";
                 }
 
-                if(itemFinal.equals("Yew longbow") || itemFinal.equals("Yew longbow (u)")) {
+                if (itemFinal.equals("Yew longbow") || itemFinal.equals("Yew longbow (u)")) {
                     Logger.log("We need to create more yew longbows");
                     TaskManager.getInstance().setCurrentTask(new FletchingTask(false));
                     return;
@@ -449,55 +475,28 @@ public class BankingTask implements WatTask {
                     Sleep.sleep(100, 200);
                 }
 
-                if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
-                    if (Bank.contains("Coins")) {
-                        finalPrice -= Bank.count("Coins");
-                    }
 
-                    if (Inventory.contains("Coins")) {
-                        finalPrice -= Inventory.count("Coins");
-                    }
-
-                    Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
-                    int totalPrice = finalPrice;
-                    TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                        {
-                            put("Coins", totalPrice);
-                        }
-                    }, this));
-                    return;
+                if (Bank.contains("Coins")) {
+                    finalPrice -= Bank.count("Coins");
                 }
+
+                if (Inventory.contains("Coins")) {
+                    finalPrice -= Inventory.count("Coins");
+                }
+
+                Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
+                int totalPrice = finalPrice;
+                TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                    {
+                        put("Coins", totalPrice);
+                    }
+                }, this));
+                return;
+
             }
         }
 
         Logger.log("Exchanger: Finished checks");
-
-        if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
-            int invMoney = 0;
-            int bankMoney = 0;
-
-            if (Inventory.contains("Coins")) {
-                invMoney = Inventory.count("Coins");
-            }
-
-            if (Bank.contains("Coins")) {
-                bankMoney = Bank.count("Coins");
-            }
-
-            if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
-                int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("keep_gp");
-                if (toWithdraw > 0) {
-                    Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                    if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
-                        Bank.depositAllExcept("Coins");
-                    }
-                    Sleep.sleep(100, 200);
-                    Bank.withdraw("Coins", toWithdraw);
-                    Sleep.sleep(200, 400);
-                    postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
-                }
-            }
-        }
 
         if (postTask != null && !(postTask instanceof MulingTask)) {
             depositNonRequired();

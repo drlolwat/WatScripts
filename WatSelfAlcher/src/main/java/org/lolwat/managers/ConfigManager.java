@@ -21,8 +21,6 @@ public class ConfigManager {
     private boolean hasLoaded;
     @Getter @Setter
     private boolean firstStart;
-    @Setter
-    private boolean muleConnectionFailed;
 
     private final HashMap<Object, Object> config;
     private final HashMap<String, Integer> itemThresholds;
@@ -32,7 +30,6 @@ public class ConfigManager {
         hasLoaded = false;
         HashMap<String, Integer> levelUps = new HashMap<>();
         firstStart = true;
-        muleConnectionFailed = false;
         itemThresholds = new HashMap<>();
     }
 
@@ -114,9 +111,4 @@ public class ConfigManager {
     public double getConfigDouble(String key) {
         return Double.parseDouble(config.get(key).toString());
     }
-
-    public boolean hasMuleConnectionFailed() {
-        return muleConnectionFailed;
-    }
-
 }

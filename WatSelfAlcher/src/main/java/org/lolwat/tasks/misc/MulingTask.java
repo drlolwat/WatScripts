@@ -11,6 +11,8 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.trade.Trade;
 import org.dreambot.api.methods.world.Worlds;
+import org.dreambot.api.script.ScriptManager;
+import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.Player;
@@ -116,25 +118,10 @@ public class MulingTask implements WatTask {
         }
 
         if (!active) {
-            if (retries > 5) {
-                ConfigManager.getInstance().setMuleConnectionFailed(true);
-                // put GP back
-                if (!Bank.isOpen()) {
-                    Bank.open();
-                    Sleep.sleepUntil(Bank::isOpen, 10000);
-
-                    if (Inventory.contains("Coins")) {
-                        Bank.depositAll("Coins");
-                    }
-
-                    Sleep.sleepUntil(() -> !Inventory.contains("Coins"), 5000);
-                    Bank.close();
-                }
-
-                if (!Inventory.contains("Coins")) {
-                    TaskManager.getInstance().getNewTask();
-                }
-
+            if (retries > 15) {
+                Logger.error("failed to connect to mule 15 times");
+                WatScript.getInstance().sendWebhook(AccountManager.getAccountUsername() + " failed to connect to the mule", true);
+                ScriptManager.getScriptManager().stop();
                 return;
             }
 
