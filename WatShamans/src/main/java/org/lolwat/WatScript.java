@@ -77,6 +77,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user5", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
 
     private final CustomPaint paint = new CustomPaint(new Paint(),
@@ -346,8 +347,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if(Client.getForumUser() == null)
             return;
 
-        boolean enableGpt = (Client.getForumUser().getUsername().equals("user1") || Client.getForumUser().getUsername().equals("lolwat"));
-        if (enableGpt && TaskManager.getInstance().getCurrentTask() instanceof MainCombatTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
+        if (TaskManager.getInstance().getCurrentTask() instanceof MainCombatTask && !m.getUsername().isEmpty() && !m.getUsername().equals(Players.getLocal().getName())) {
             if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1 && !GPT_WAITING_FOR_REPLY) {
                 setWaitingForReply(true);
                 new Thread(() -> {
