@@ -8,7 +8,7 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.fletching.FletchingTask;
+import org.lolwat.tasks.alching.HighAlchemyTask;
 
 public class TaskManager {
     @Getter @Setter
@@ -31,7 +31,7 @@ public class TaskManager {
             return;
         }
 
-        setCurrentTask(new FletchingTask(true), 0);
+        setCurrentTask(new HighAlchemyTask(), 0);
     }
 
     public void setCurrentTask(WatTask task) {

@@ -43,7 +43,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-@ScriptManifest(name = "WatAlcher", description = "WatAlcher", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatMarketAlcher", description = "WatAlcher", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     @Getter
     private static WatScript instance;
