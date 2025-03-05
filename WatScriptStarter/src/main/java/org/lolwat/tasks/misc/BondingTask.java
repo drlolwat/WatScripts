@@ -55,7 +55,7 @@ public class BondingTask implements WatTask {
                 {
                     put("Old school bond (untradeable)", 1);
                 }
-            }, null, 1, this, null));
+            }, this));
             return;
         }
 

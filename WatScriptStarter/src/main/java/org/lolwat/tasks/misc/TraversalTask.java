@@ -197,7 +197,7 @@ public class TraversalTask implements WatTask {
                                     {
                                         put(teleportItem, 1);
                                     }
-                                }, null, 1, this, null));
+                                }, this));
 
                                 Logger.log("Traversal: missing teleport item " + teleportItem);
                                 return;

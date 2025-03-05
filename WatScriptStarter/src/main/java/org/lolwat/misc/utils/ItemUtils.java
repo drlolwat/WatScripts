@@ -19,23 +19,11 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemUtils {
-    public static List<String> SINGULAR_ITEMS = Arrays.asList(
-            "Hammer",
-            "Amulet mould",
-            "Bracelet mould",
-            "Ring mould",
-            "Necklace mould",
-            "Camelot teleport",
-            "Varrock teleport",
-            "Games necklace",
-            "Ring of dueling"
-    );
-
-    public static final List<BankLocation> allowedLocations = Arrays.asList(BankLocation.GRAND_EXCHANGE, BankLocation.LUMBRIDGE, BankLocation.VARROCK_WEST);
+    public static final List<BankLocation> allowedLocations = Collections.singletonList(BankLocation.GRAND_EXCHANGE);
 
     public static BankLocation getClosestAllowedBank() {
         BankLocation closestBank = null;
