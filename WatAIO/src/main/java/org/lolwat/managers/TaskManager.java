@@ -297,8 +297,9 @@ public class TaskManager {
                                         continue;
                                     }
 
+                                    Sleep.sleep(500, 1000);
                                     Sleep.sleepUntil(Dialogues::inDialogue, 3000);
-                                    if(Dialogues.inDialogue()) {
+                                    while(Dialogues.inDialogue()) {
                                         DialogueUtils.solve(Arrays.asList("Yes and don't ask me again",
                                                 "Yes", "Yes.", "Yes and don't ask me again."));
                                     }
