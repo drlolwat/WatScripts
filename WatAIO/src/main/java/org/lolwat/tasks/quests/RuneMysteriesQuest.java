@@ -87,7 +87,7 @@ public class RuneMysteriesQuest implements QuestTask {
                         put("Research notes", 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {{
                         put("Research notes", new TalkToNPC(aubury,
-                                "Aubury", wrapper, new ArrayList<>(),"Research notes"));
+                                "Aubury", wrapper, new ArrayList<>(), "Research notes")); //TODO issue is here
                     }}));
                     return;
                 }

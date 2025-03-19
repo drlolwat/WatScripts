@@ -49,7 +49,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one F2P Account Building script for Old School RuneScape", author = "lolwat", version = 1.29, category = Category.MISC)
+@ScriptManifest(name = "WatAIO", description = "All in one F2P Account Building script for Old School RuneScape", author = "lolwat", version = 1.30, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     private static BufferedImage image;
     private static WatAIO instance;

@@ -42,7 +42,7 @@ public class QuestManager {
         questTasks.put(FreeQuest.SHEEP_SHEARER, new SheepShearerQuest());
         questTasks.put(FreeQuest.WITCHS_POTION, new WitchsPotionQuest());
         questTasks.put(FreeQuest.THE_RESTLESS_GHOST, new TheRestlessGhostQuest());
-        questTasks.put(FreeQuest.RUNE_MYSTERIES, new RuneMysteriesQuest());
+        //questTasks.put(FreeQuest.RUNE_MYSTERIES, new RuneMysteriesQuest());
         questTasks.put(FreeQuest.ERNEST_THE_CHICKEN, new ErnestTheChickenQuest());
         //questTasks.put(FreeQuest.VAMPIRE_SLAYER, new VampyreSlayerQuest());
         //questTasks.put(FreeQuest.DEMON_SLAYER, new DemonSlayerQuest());
