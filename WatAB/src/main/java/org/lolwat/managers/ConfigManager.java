@@ -5,18 +5,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
-import org.dreambot.api.Client;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.script.ScriptManager;
-import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
-import org.lolwat.WatAIO;
 
-import java.awt.*;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -212,53 +208,6 @@ public class ConfigManager {
 
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
-        }
-    }
-
-    public void getWsProfile(int breaking) {
-        try {
-            String urlString = "https://api.botbuddy.net/ws_profile.php?fu=" + Client.getForumUser().getUsername() + "&_hash=" + AccountManager.getAccountHash();
-
-            if(getConfigBoolean("ignore_trade_restriction")) {
-                urlString += "&_unl";
-            }
-
-            if(breaking > 0) {
-                urlString += "&breakTime=" + breaking;
-            }
-
-            URL url = new URL(urlString);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                StringBuilder response = new StringBuilder();
-
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
-                }
-
-                reader.close();
-                connection.disconnect();
-
-                Gson gson = new Gson();
-                JsonObject jsonObject = gson.fromJson(response.toString(), JsonObject.class);
-
-                for (String key : jsonObject.keySet()) {
-                    config.put("profile_" + key, jsonObject.get(key));
-                }
-
-                WatAIO.getInstance().enableLoginManager();
-                Logger.log(Color.green, (breaking > 0) ? "Updated account hivetime due to break" :"Loaded unique account profile from BotBuddy Hive");
-
-            } else {
-                Logger.error("HTTP request failed with response code: " + responseCode);
-            }
-            connection.disconnect();
-        } catch (IOException ignored) {
-            ScriptManager.getScriptManager().stop();
         }
     }
 
