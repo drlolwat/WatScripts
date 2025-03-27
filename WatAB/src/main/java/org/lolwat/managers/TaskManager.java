@@ -97,10 +97,15 @@ public class TaskManager {
             Logger.log("TaskManager: Selecting skill task");
             Collections.shuffle(skillsAvailable);
             for (Skill skill : skillsAvailable) {
+                if(ConfigManager.getInstance().getSkillTarget(skill) <= 1) {
+                    continue;
+                }
+
                 List<WatTask> skillTasks = tasksBySkill.get(skill);
                 if(isCombatSkill(skill) && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
                     Logger.log("TaskManager: Selecting combat for skill: " + skill);
                     setCurrentTask(new CombatTask(skill), 0);
+                    return;
                 } else {
                     if (skillTasks != null && !skillTasks.isEmpty() && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
                         Collections.shuffle(skillTasks);
@@ -116,7 +121,6 @@ public class TaskManager {
                         }
                     } else {
                         Logger.log("TaskManager: No tasks available for skill: " + skill.getName());
-                        skillsAvailable.remove(skill);
                     }
                 }
             }

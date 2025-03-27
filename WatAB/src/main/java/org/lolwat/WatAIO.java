@@ -31,7 +31,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO", description = "All in one account building script for OSRS", author = "lolwat", version = 2.00, category = Category.MISC)
+@ScriptManifest(name = "WatAIO P2P BETA", description = "All in one account building script for OSRS", author = "lolwat", version = 2.00, category = Category.MISC)
 public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     @Getter
     private static WatAIO instance;

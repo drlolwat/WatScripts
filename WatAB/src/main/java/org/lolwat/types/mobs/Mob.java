@@ -1,6 +1,7 @@
 package org.lolwat.types.mobs;
 
 import lombok.Getter;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
@@ -31,6 +32,17 @@ public class Mob {
     }
 
     public Area getBestLocation() {
-        return locations.get("bullshit");
+        Area bestLocation = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (Area location : locations.values()) {
+            double distance = location.distance(Players.getLocal().getTile());
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                bestLocation = location;
+            }
+        }
+
+        return bestLocation;
     }
 }

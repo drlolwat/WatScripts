@@ -5,9 +5,9 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.managers.ConfigManager;
-import org.lolwat.managers.MobManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.WatUtils;
+import org.lolwat.misc.utils.CombatUtils;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
@@ -26,13 +26,18 @@ public class CombatTask implements WatTask {
     @Override
     public void execute() {
         if(target == null) {
-            target = MobManager.getInstance().getBestMob(skill);
-            Logger.log("combat selected " + target.getName());
+            target = CombatUtils.getBestMob(skill);
+            Logger.log("combat selected " + target.getName() + " for skill " + skill.getName());
             return;
         }
 
-        if(!WatUtils.hasInventory() || !WatUtils.hasInventory()) {
-            //bank
+        if(!WatUtils.hasInventory()) {
+            Logger.log("need to bank for inventory for " + target.getName());
+            return;
+        }
+
+        if(!WatUtils.hasRequiredLoadout()) {
+            Logger.log("need to bank for loadout for " + target.getName());
             return;
         }
 
