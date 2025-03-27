@@ -79,7 +79,8 @@ public class TraversalTask implements WatTask {
             "Report the player for phishing.",
             "Don't share your information and report the player.",
             "The birthday of a famous person or event.", "No, you should never allow anyone to level your account.", "Nothing, it's a fake.",
-            "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!");
+            "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!",
+            "No sorry, I haven't seen her.", "Yes, and don't ask again.");
 
     List<String> npcsTriggerPost = Arrays.asList("Delrith");
 
