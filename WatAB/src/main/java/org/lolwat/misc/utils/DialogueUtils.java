@@ -79,8 +79,8 @@ public class DialogueUtils {
     public static void talkTo(String npc, List<String> answers) {
         if (answers == null) answers = new ArrayList<>();
 
-        if (TutorialUtils.needsOpenTab()) {
-            TutorialUtils.handleTab();
+        if (TutUtils.needsOpenTab()) {
+            TutUtils.handleTab();
             return;
         }
 

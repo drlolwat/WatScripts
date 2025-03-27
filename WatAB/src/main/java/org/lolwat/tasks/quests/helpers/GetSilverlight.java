@@ -10,9 +10,9 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.QuickWithdrawTask;
 import org.lolwat.tasks.misc.WalkingTask;
 
@@ -35,27 +35,27 @@ public class GetSilverlight implements WatTask {
 
     @Override
     public void execute() {
-        if(ItemUtils.equipmentContains(2402, 1) || ItemUtils.inventoryContains(2402, 1, false)) {
+        if(WatUtils.equipmentContains(2402, 1) || WatUtils.inventoryContains(2402, 1, false)) {
             TaskManager.getInstance().setCurrentTask(wrapper);
             return;
         }
 
         // wizard traiborns key
-        if(!ItemUtils.inventoryContains(2399, 1, false)) {
+        if(!WatUtils.inventoryContains(2399, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2399, 1,
                     new GetTraibornKey(wrapper), this));
             return;
         }
 
         // sir prysins key
-        if (!ItemUtils.inventoryContains(2401, 1, false)) {
+        if (!WatUtils.inventoryContains(2401, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2401, 1,
                     new GetPrysinKey(wrapper), this));
             return;
         }
 
         // captain rovins key
-        if (!ItemUtils.inventoryContains(2400, 1, false)) {
+        if (!WatUtils.inventoryContains(2400, 1, false)) {
             TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2400, 1,
                     new GetRovinsKey(wrapper), this));
             return;

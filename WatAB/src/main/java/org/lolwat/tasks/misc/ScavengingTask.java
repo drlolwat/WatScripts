@@ -12,7 +12,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.NumUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class ScavengingTask implements WatTask {
         }
 
         for(GroundItem item : GroundItems.all(x -> !avoidItems.contains(x.getName().toLowerCase()) && scavengingZone.contains(x))) {
-            if(item == null || !item.exists() || NumUtils.getItemPrice(item.getName()) < 100) {
+            if(item == null || !item.exists() || WatUtils.getItemPrice(item.getName()) < 100) {
                 continue;
             }
 

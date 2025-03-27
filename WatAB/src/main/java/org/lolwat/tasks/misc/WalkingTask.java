@@ -29,8 +29,8 @@ import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.TutorialUtils;
+import org.lolwat.misc.utils.TutUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.types.teleports.Teleport;
@@ -95,8 +95,8 @@ public class WalkingTask implements WatTask {
 
     @Override
     public void execute() {
-        if (TutorialUtils.needsOpenTab()) {
-            TutorialUtils.handleTab();
+        if (TutUtils.needsOpenTab()) {
+            TutUtils.handleTab();
         }
 
         if(!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
@@ -142,7 +142,7 @@ public class WalkingTask implements WatTask {
             }
 
             if (sinceStartedTask >= 90) {
-                GenericUtils.castHomeTeleport();
+                WatUtils.castHomeTeleport();
 
                 Logger.log("Traversal: havent moved for 90 seconds, home teleporting and moving on");
                 if (postTask != null) {
@@ -156,7 +156,7 @@ public class WalkingTask implements WatTask {
             }
         }
 
-        if (GenericUtils.isMember() && postTask != null) {
+        if (WatUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
             double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 

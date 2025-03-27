@@ -12,7 +12,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
@@ -29,7 +29,7 @@ public class GetPrysinKey implements WatTask {
 
     @Override
     public void execute() {
-        if(ItemUtils.inventoryContains(2401, 1, false)) {
+        if(WatUtils.inventoryContains(2401, 1, false)) {
             Logger.log("Prysins key in inventory");
             TaskManager.getInstance().setCurrentTask(wrapper);
             return;

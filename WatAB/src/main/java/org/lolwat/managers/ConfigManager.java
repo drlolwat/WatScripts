@@ -14,17 +14,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class ConfigManager {
     @Getter
-    private int toolFailures = 0;
-    @Getter
     @Setter
     private static ConfigManager instance;
     private final HashMap<Object, Object> config;
-    private boolean hasLoaded;
     @Getter
     @Setter
     private int netWorth;
@@ -46,7 +42,6 @@ public class ConfigManager {
 
     public ConfigManager() {
         config = new HashMap<>();
-        hasLoaded = false;
         levelUps = new HashMap<>();
         firstStart = true;
         waitingForResponse = false;
@@ -95,72 +90,13 @@ public class ConfigManager {
         defaultProfile.addProperty("max_sleep_time", 1500);
 
         JsonObject items = new JsonObject();
-        items.addProperty("Logs", -500);
-        items.addProperty("Oak logs", -500);
-        items.addProperty("Yew logs", -500);
-        items.addProperty("Raw shrimp", -100);
-        items.addProperty("Raw pike", -200);
-        items.addProperty("Raw trout", -200);
-        items.addProperty("Raw salmon", -200);
-        items.addProperty("Lobster", -100); // cook/eat
-        items.addProperty("Raw lobster", -1); // we dont fish this
-        items.addProperty("Raw tuna", -1); // we dont fish this either
-        items.addProperty("Tuna", -150); // only cook atm
-        items.addProperty("Iron full helm", 1);
-        items.addProperty("Iron platebody", 1);
-        items.addProperty("Iron platelegs", 1);
-        items.addProperty("Iron kiteshield", 1);
-        items.addProperty("Iron scimitar", 1);
-        items.addProperty("Mithril full helm", 1);
-        items.addProperty("Mithril platebody", 1);
-        items.addProperty("Mithril platelegs", 1);
-        items.addProperty("Mithril kiteshield", 1);
-        items.addProperty("Mithril scimitar", 1);
-        items.addProperty("Adamant full helm", 1);
-        items.addProperty("Adamant platebody", 1);
-        items.addProperty("Adamant platelegs", 1);
-        items.addProperty("Adamant kiteshield", 1);
-        items.addProperty("Adamant scimitar", 1);
-        items.addProperty("Rune full helm", 1);
-        items.addProperty("Rune platebody", 1);
-        items.addProperty("Rune platelegs", 1);
-        items.addProperty("Rune kiteshield", 1);
-        items.addProperty("Rune scimitar", 1);
-        items.addProperty("Amulet of strength", 1);
-        items.addProperty("Amulet of power", 1);
-        items.addProperty("Amulet of magic", 1);
-        items.addProperty("Iron ore", -150);
-        items.addProperty("Coal", -150);
-        items.addProperty("Tin ore", -150);
-        items.addProperty("Copper ore", -150);
-        items.addProperty("Bones", -150);
-        items.addProperty("Emerald necklace", -100);
-        items.addProperty("Gold ring", -100);
-        items.addProperty("Ruby necklace", -100);
-        items.addProperty("Sapphire ring", -100);
-        items.addProperty("Zamorak monk bottom", 1);
-        items.addProperty("Bronze bar", -1);
-        items.addProperty("Iron bar", -1);
-        items.addProperty("Steel bar", -1);
-        items.addProperty("Gold bar", -1);
-        items.addProperty("Leather gloves", -300);
-        items.addProperty("Opal", -100);
-        items.addProperty("Sapphire", -150);
-        items.addProperty("Emerald", -150);
-        items.addProperty("Ruby", -150);
-        items.addProperty("Diamond", -150);
+        items.addProperty("Trousers", 1);
         defaultProfile.add("item_thresholds", items);
         return defaultProfile;
     }
 
     public int getItemThreshold(String item) {
         return itemThresholds.getOrDefault(item, 0);
-    }
-
-    public void printConfigContents() {
-        for (Map.Entry<Object, Object> entry : config.entrySet()) {
-            Logger.log("Key: " + entry.getKey() + ", Value: " + entry.getValue());
-        }
     }
 
     public void loadFromProfile(String p) {
@@ -171,7 +107,9 @@ public class ConfigManager {
 
             File file = new File(filePath);
             if (!file.exists()) {
-                file.getParentFile().mkdirs();
+                if(!file.getParentFile().mkdirs()) {
+                    Logger.error("problem creating config directory");
+                }
 
                 JsonObject defaultProfile = getDefaultProfile();
                 FileWriter fileWriter = new FileWriter(file);
@@ -204,8 +142,6 @@ public class ConfigManager {
             }
 
             config.put("hitpoints", 100);
-            hasLoaded = true;
-
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
         }
@@ -224,6 +160,7 @@ public class ConfigManager {
     public int getConfigInt(String key) {
         return Integer.parseInt(config.get(key).toString());
     }
+
     public double getConfigDouble(String key) {
         return Double.parseDouble(config.get(key).toString());
     }
@@ -240,24 +177,5 @@ public class ConfigManager {
     public boolean isTradeUnlocked() {
         return getConfigBoolean("ignore_trade_restriction") ||
                 (TaskManager.getInstance().getMinutesPlayed() >= 1200 && Quests.getQuestPoints() >= 10);
-    }
-
-    public boolean hasLoadedProfile() {
-        return hasLoaded;
-    }
-
-    public void setHasLoadedProfile(boolean hasLoaded) {
-        this.hasLoaded = hasLoaded;
-    }
-
-    public boolean hasMuleConnectionFailed() {
-        return muleConnectionFailed;
-    }
-
-    public void incrementToolFailures() {
-        toolFailures++;
-    }
-    public void resetToolFailures() {
-        toolFailures = 0;
     }
 }

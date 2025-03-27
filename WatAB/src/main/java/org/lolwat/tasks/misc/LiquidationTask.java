@@ -12,8 +12,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.misc.utils.NumUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
@@ -60,7 +59,7 @@ public class LiquidationTask implements WatTask {
                 }
 
                 int q = i.getAmount();
-                int a = NumUtils.getItemPrice(i.getName()) * q;
+                int a = WatUtils.getItemPrice(i.getName()) * q;
 
                 if(a >= 5000) {
                     toWithdraw.put(i.getName(), q);
@@ -77,7 +76,7 @@ public class LiquidationTask implements WatTask {
                         }
                     }
 
-                    ItemUtils.setBankMode(BankMode.NOTE);
+                    WatUtils.setBankMode(BankMode.NOTE);
                     if (!Bank.withdraw(m.getKey(), m.getValue())) {
                         Logger.error("Failed to withdraw " + m.getKey() + " x" + m.getValue());
                         continue;

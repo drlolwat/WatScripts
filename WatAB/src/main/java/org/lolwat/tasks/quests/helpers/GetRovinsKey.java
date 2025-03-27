@@ -10,9 +10,9 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class GetRovinsKey implements WatTask {
 
     @Override
     public void execute() {
-        if(ItemUtils.inventoryContains(2400, 1, false)) {
+        if(WatUtils.inventoryContains(2400, 1, false)) {
             Logger.log("Rovins key in inventory");
             TaskManager.getInstance().setCurrentTask(wrapper);
             return;

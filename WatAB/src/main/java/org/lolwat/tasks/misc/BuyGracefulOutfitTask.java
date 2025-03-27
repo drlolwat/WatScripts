@@ -11,7 +11,6 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.OutfitUtils;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.ArrayList;
@@ -104,7 +103,6 @@ public class BuyGracefulOutfitTask implements WatTask {
     @Override
     public List<String> inventoryTolerated() {
         return new ArrayList<String>() { {
-            addAll(OutfitUtils.gracefulItems.keySet());
             add("Monkfish");
             add("Mark of grace");
         } };

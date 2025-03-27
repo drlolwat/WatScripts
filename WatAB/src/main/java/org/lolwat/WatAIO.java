@@ -19,8 +19,7 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ScriptManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.NumUtils;
-import org.lolwat.misc.utils.WebUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.BreakingTask;
 
 import javax.imageio.ImageIO;
@@ -131,7 +130,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
         // main
         g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
-        g2d.drawString(NumUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
+        g2d.drawString(WatUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
         g2d.drawString(taskTime, 77, 40);
 
         // row 1
@@ -188,7 +187,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
                 if (Players.all(x -> !x.equals(Players.getLocal())).size() == 1) {
                     ConfigManager.getInstance().setWaitingForResponse(true);
                     new Thread(() -> {
-                        String response = WebUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
+                        String response = WatUtils.getRealResponse(m.getUsername(), m.getMessage(), TaskManager.getInstance().getCurrentTask().getName());
                         if (!response.isEmpty()) {
                             Keyboard.type(response, true);
                         }

@@ -7,7 +7,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 
 public class HopperTask implements WatTask {
@@ -37,7 +37,7 @@ public class HopperTask implements WatTask {
         }
 
         if(world == 0) {
-            if(!GenericUtils.isMember()) {
+            if(!WatUtils.isMember()) {
                 WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && !w.isMembers() && w.isNormal() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));
             } else {
                 WorldHopper.hopWorld(Worlds.getRandomWorld((w) -> !w.isPVP() && w.isNormal() && w.isMembers() && !w.isDeadmanMode() && !w.isHighRisk() && w.getMinimumLevel() <= 100));

@@ -18,8 +18,8 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.mouse.HumanMouse;
-import org.lolwat.tasks.misc.*;
-import org.lolwat.tasks.woodcutting.WoodcuttingTask;
+import org.lolwat.tasks.misc.BreakingTask;
+import org.lolwat.tasks.misc.HopperTask;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -116,17 +116,6 @@ public class ScriptManager {
 
         if (ConfigManager.getInstance().isFirstStart()) {
             ConfigManager.getInstance().setFirstStart(false);
-        }
-
-        if (ConfigManager.getInstance().getToolFailures() >= 3 && TaskManager.getInstance().getCurrentTask() != null) {
-            if (!(TaskManager.getInstance().getCurrentTask() instanceof GrandExchangeTask) &&
-                    !(TaskManager.getInstance().getCurrentTask() instanceof WalkingTask) &&
-                    !(TaskManager.getInstance().getCurrentTask() instanceof BankingTask) &&
-                    !(TaskManager.getInstance().getCurrentTask() instanceof WoodcuttingTask)) {
-
-                Logger.log(TaskManager.getInstance().getCurrentTask().getName() + ": Resetting tool failures, no longer on task");
-                ConfigManager.getInstance().resetToolFailures();
-            }
         }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {

@@ -7,7 +7,7 @@ import org.dreambot.api.utilities.Logger;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.MobManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
@@ -31,7 +31,7 @@ public class CombatTask implements WatTask {
             return;
         }
 
-        if(!ItemUtils.hasInventory() || !ItemUtils.hasInventory()) {
+        if(!WatUtils.hasInventory() || !WatUtils.hasInventory()) {
             //bank
             return;
         }

@@ -7,7 +7,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 
-public class TutorialUtils {
+public class TutUtils {
     private static final Tab[] tabs = new Tab[]{Tab.COMBAT, Tab.SKILLS, Tab.QUEST, Tab.INVENTORY, Tab.EQUIPMENT,
             Tab.PRAYER, Tab.MAGIC, Tab.CLAN, Tab.ACCOUNT_MANAGEMENT, Tab.FRIENDS, Tab.LOGOUT, Tab.OPTIONS, Tab.EMOTES, Tab.MUSIC};
 

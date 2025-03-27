@@ -46,8 +46,7 @@ public class LogoutTask implements WatTask {
                     this.muleWealth = false;
                     TaskManager.getInstance().setCurrentTask(
                             new LiquidationTask(
-                                    (!ConfigManager.getInstance().hasMuleConnectionFailed()
-                                            && !ConfigManager.getInstance().getConfigBoolean("disable_mule")) ?
+                                    !ConfigManager.getInstance().getConfigBoolean("disable_mule") ?
                                             new MulingTask("Muling wealth", Worlds.getCurrentWorld(), this) :
                                             new LogoutTask(true, false, this), 0
                             )

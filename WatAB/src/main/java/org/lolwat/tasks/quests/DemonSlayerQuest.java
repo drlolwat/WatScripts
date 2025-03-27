@@ -23,7 +23,7 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.QuickWithdrawTask;
 import org.lolwat.tasks.misc.WalkingTask;
@@ -140,7 +140,7 @@ public class DemonSlayerQuest implements QuestTask {
             }
 
             case 2: {
-                if (!ItemUtils.inventoryContains(2402, 1, false) && !ItemUtils.equipmentContains(2402, 1)) {
+                if (!WatUtils.inventoryContains(2402, 1, false) && !WatUtils.equipmentContains(2402, 1)) {
                     TaskManager.getInstance().setCurrentTask(new QuickWithdrawTask(2402, 1,
                             new GetSilverlight(wrapper), wrapper));
                     return;

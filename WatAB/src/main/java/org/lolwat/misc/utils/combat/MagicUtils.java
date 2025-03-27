@@ -8,7 +8,7 @@ import org.dreambot.api.methods.magic.Spell;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.managers.ConfigManager;
-import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.misc.utils.WatUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class MagicUtils {
     public static HashMap<EquipmentSlot, String> bestGearForLevel() {
         HashMap<EquipmentSlot, String> ret = new HashMap<>();
 
-        if(GenericUtils.isMember() && Skills.getRealLevel(Skill.DEFENCE) >= 40) {
+        if(WatUtils.isMember() && Skills.getRealLevel(Skill.DEFENCE) >= 40) {
             ret.put(EquipmentSlot.HAT, "Mystic hat");
             ret.put(EquipmentSlot.CHEST, "Mystic robe top");
             ret.put(EquipmentSlot.LEGS, "Mystic robe bottom");

@@ -5,8 +5,8 @@ import lombok.Setter;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.quest.book.Quest;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.QuestTask;
-import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.quests.*;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class QuestManager {
     }
 
     public Quest getIncompleteQuest() {
-        GenericUtils.shuffleHashMap(questTasks);
+        WatUtils.shuffleHashMap(questTasks);
         for (Map.Entry<Quest, QuestTask> qt : questTasks.entrySet()) {
             if (!Quests.isFinished(qt.getKey()) && qt.getValue().canPerformTask()) {
                 return qt.getKey();

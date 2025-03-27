@@ -28,10 +28,10 @@ import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.TutorialUtils;
+import org.lolwat.misc.utils.TutUtils;
 import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.WalkingTask;
 
@@ -48,12 +48,12 @@ public class TutorialIslandTask implements WatTask {
 
     @Override
     public boolean canPerformTask() {
-        return TutorialUtils.isOnTutorial();
+        return TutUtils.isOnTutorial();
     }
 
     @Override
     public void execute() {
-        int step = TutorialUtils.getTutorialStep();
+        int step = TutUtils.getTutorialStep();
         if(step < 1000) {
             switch(step) {
                 default: {
@@ -61,16 +61,16 @@ public class TutorialIslandTask implements WatTask {
                 }
 
                 case 1: {
-                    if(Widgets.getWidget(TutorialUtils.NAME_WIDGET) != null && Widgets.getWidget(TutorialUtils.NAME_WIDGET).isVisible()) {
+                    if(Widgets.getWidget(TutUtils.NAME_WIDGET) != null && Widgets.getWidget(TutUtils.NAME_WIDGET).isVisible()) {
                         Logger.log("Tutorial: selecting username");
-                        WidgetChild nameText = Widgets.getWidget(TutorialUtils.NAME_WIDGET).getChild(TutorialUtils.NAME_TEXT_CHILDID);
-                        WidgetChild lookupButton = Widgets.getWidget(TutorialUtils.NAME_WIDGET).getChild(TutorialUtils.NAME_LOOKUP_CHILDID);
+                        WidgetChild nameText = Widgets.getWidget(TutUtils.NAME_WIDGET).getChild(TutUtils.NAME_TEXT_CHILDID);
+                        WidgetChild lookupButton = Widgets.getWidget(TutUtils.NAME_WIDGET).getChild(TutUtils.NAME_LOOKUP_CHILDID);
 
                         if(nameText != null && nameText.isVisible()) {
                             if(nameText.getText().equals("*")) {
                                 nameText.interact();
                                 Sleep.sleep(100, 200);
-                                String name = GenericUtils.generateUsername();
+                                String name = WatUtils.generateUsername();
                                 Logger.log("Selected name:" + name);
                                 Keyboard.type(name, false);
                                 Sleep.sleep(100, 200);
@@ -88,14 +88,14 @@ public class TutorialIslandTask implements WatTask {
                             }
                         }
 
-                        WidgetChild confirmName = Widgets.getWidget(TutorialUtils.NAME_WIDGET).getChild(TutorialUtils.NAME_SETNAME_CHILDID);
+                        WidgetChild confirmName = Widgets.getWidget(TutUtils.NAME_WIDGET).getChild(TutUtils.NAME_SETNAME_CHILDID);
                         if(confirmName != null && confirmName.isVisible() && confirmName.hasAction("Set name")) {
                             if(confirmName.interact("Set name")) {
                                 Sleep.sleepUntil(() -> !confirmName.isVisible(), 10000);
                             }
                         }
                     } else {
-                        final Widget par = Widgets.getWidget(TutorialUtils.APPEAR_PAR);
+                        final Widget par = Widgets.getWidget(TutUtils.APPEAR_PAR);
                         if (par != null && par.isVisible()) {
                             List<String> avoid = Arrays.asList("He/him", "She/her", "They/them", "A", "B");
                             List<WidgetChild> widgets = Widgets.getAll(x -> x.hasAction("Select") && !avoid.contains(x.getText()));
@@ -116,7 +116,7 @@ public class TutorialIslandTask implements WatTask {
                                 }
                             }
 
-                            WidgetChild acc = Widgets.getWidget(TutorialUtils.APPEAR_PAR).getChild(TutorialUtils.ACCEPT);
+                            WidgetChild acc = Widgets.getWidget(TutUtils.APPEAR_PAR).getChild(TutUtils.ACCEPT);
                             if(acc != null && acc.isVisible() && acc.hasAction("Confirm")) {
                                 if(acc.interact()) {
                                     Sleep.sleepUntil(() -> step != 1, 6750);
@@ -143,8 +143,8 @@ public class TutorialIslandTask implements WatTask {
                 case 3: // Gielinor Guide
                 case 50: // Survival Instructor
                 case 30: { // Survival Instructor
-                    if (TutorialUtils.needsOpenTab()) {
-                        TutorialUtils.handleTab();
+                    if (TutUtils.needsOpenTab()) {
+                        TutUtils.handleTab();
                     }
 
                     if(Dialogues.canContinue()) {
@@ -487,8 +487,8 @@ public class TutorialIslandTask implements WatTask {
                 }
 
                 case 390: {
-                    if(TutorialUtils.needsOpenTab()) {
-                        TutorialUtils.handleTab();
+                    if(TutUtils.needsOpenTab()) {
+                        TutUtils.handleTab();
                     }
 
                     if(Dialogues.canContinue()) {
@@ -561,8 +561,8 @@ public class TutorialIslandTask implements WatTask {
                 }
 
                 case 430: {
-                    if(TutorialUtils.needsOpenTab()) {
-                        TutorialUtils.handleTab();
+                    if(TutUtils.needsOpenTab()) {
+                        TutUtils.handleTab();
                     }
 
                     break;
@@ -737,8 +737,8 @@ public class TutorialIslandTask implements WatTask {
 
                 case 532:
                 case 530: {
-                    if(TutorialUtils.needsOpenTab()) {
-                        TutorialUtils.handleTab();
+                    if(TutUtils.needsOpenTab()) {
+                        TutUtils.handleTab();
                     }
 
                     if(Dialogues.canContinue()) {
@@ -764,8 +764,8 @@ public class TutorialIslandTask implements WatTask {
                 }
 
                 case 531: {
-                    if(TutorialUtils.needsOpenTab()) {
-                        TutorialUtils.handleTab();
+                    if(TutUtils.needsOpenTab()) {
+                        TutUtils.handleTab();
                     }
 
                     if(Dialogues.canContinue()) {
@@ -803,8 +803,8 @@ public class TutorialIslandTask implements WatTask {
                 case 630:
                 case 580:
                 case 560: {
-                    if(TutorialUtils.needsOpenTab()) {
-                        TutorialUtils.handleTab();
+                    if(TutUtils.needsOpenTab()) {
+                        TutUtils.handleTab();
                     }
 
                     if(Dialogues.canContinue()) {

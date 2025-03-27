@@ -23,8 +23,8 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatAIO;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.misc.utils.TutorialUtils;
+import org.lolwat.misc.utils.TutUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.combat.CombatTask;
@@ -161,7 +161,7 @@ public class TaskManager {
 
             Collections.shuffle(pool);
             for(WatTask t : pool) {
-                if(t.canPerformTask() && (t.requiresMembers() && GenericUtils.isMember() || !t.requiresMembers() && !GenericUtils.isMember())) {
+                if(t.canPerformTask() && (t.requiresMembers() && WatUtils.isMember() || !t.requiresMembers() && !WatUtils.isMember())) {
                     if(gpToGenerate > 0) {
                         t.data().put("gp_to_generate", gpToGenerate);
                     }
@@ -177,14 +177,14 @@ public class TaskManager {
             }
         }
         else {
-            GenericUtils.shuffleHashMap(tasksBySkill);
+            WatUtils.shuffleHashMap(tasksBySkill);
             for(WatTask t : tasksBySkill.get(sk)) {
                 if(Skills.getRealLevel(t.trainsSkill()) > t.avoidAfterLevel())
                     continue;
 
                 if(t.avoidAfterLevel() > Skills.getRealLevel(t.trainsSkill())
                         && ConfigManager.getInstance().getSkillTarget(t.trainsSkill()) > Skills.getRealLevel(t.trainsSkill())
-                        && t.canPerformTask() && (t.requiresMembers() && GenericUtils.isMember() || !t.requiresMembers() && !GenericUtils.isMember())) {
+                        && t.canPerformTask() && (t.requiresMembers() && WatUtils.isMember() || !t.requiresMembers() && !WatUtils.isMember())) {
 
                     Logger.log(Color.green, "TaskManager: Selected task for skill: " + sk.getName() + " - " + t.getName());
                     setCurrentTask(t, 0);
@@ -224,8 +224,6 @@ public class TaskManager {
         if(ConfigManager.getInstance().getConfigBoolean("breaks_enabled") && tasksUntilBreak < 0) {
             resetBreaks();
             setCurrentTask(new BreakingTask((Instant.now().getEpochSecond() + taskRunTime)), Calculations.random(28800, 43200));
-            ConfigManager.getInstance().getWsProfile(taskRunTime);
-
             Logger.log("TaskManager: Going on break");
             return true;
         }
@@ -331,20 +329,14 @@ public class TaskManager {
     }
 
     private boolean preTaskSelection() {
-        if(!ConfigManager.getInstance().hasLoadedProfile() ||
-                (getInstance().getCheckedHoursAt() == 0 ||
-                        (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
+        if((getInstance().getCheckedHoursAt() == 0 ||
+                (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
 
-            if(minutesPlayed > 0 && !TutorialUtils.isOnTutorial()) {
+            if(minutesPlayed > 0 && !TutUtils.isOnTutorial()) {
                 checkPlayTime();
             }
 
-            ConfigManager.getInstance().getWsProfile(0);
-            ConfigManager.getInstance().setHasLoadedProfile(true);
             setCheckedHoursAt(Instant.now().getEpochSecond());
-
-            boolean p2pEnabled = ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed");
-            Logger.log(p2pEnabled ? Color.green : Color.red, "P2P tasks are " + (p2pEnabled ? "enabled" : "disabled"));
             WatAIO.getInstance().enableLoginManager();
         }
 
@@ -363,7 +355,7 @@ public class TaskManager {
             checkPlayTime();
         }
 
-        if (!GenericUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
+        if (!WatUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
                 && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("bond_min_ttl"))
                 && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
 
@@ -372,7 +364,7 @@ public class TaskManager {
             return true;
         }
 
-        if(GenericUtils.isMember() && !Worlds.getCurrent().isMembers() && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
+        if(WatUtils.isMember() && !Worlds.getCurrent().isMembers() && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
             setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
             Logger.log("We are hopping into a P2P world");
             return true;

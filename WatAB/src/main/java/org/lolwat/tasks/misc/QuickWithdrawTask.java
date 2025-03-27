@@ -3,8 +3,8 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
-import org.lolwat.misc.utils.ItemUtils;
 
 public class QuickWithdrawTask implements WatTask {
     private final int itemId;
@@ -22,19 +22,19 @@ public class QuickWithdrawTask implements WatTask {
     @Override
     public void execute() {
         if(!Bank.isOpen()) {
-            ItemUtils.bank(this);
+            WatUtils.bank(this);
             return;
         }
 
-        if(ItemUtils.inventoryContains(itemId, itemQty, false)) {
+        if(WatUtils.inventoryContains(itemId, itemQty, false)) {
             TaskManager.getInstance().setCurrentTask(postTask);
         } else {
-            if(ItemUtils.bankContains(itemId, itemQty, false)) {
+            if(WatUtils.bankContains(itemId, itemQty, false)) {
                 if(!Bank.withdraw(itemId, itemQty)) {
                     return;
                 }
 
-                if(ItemUtils.inventoryContains(itemId, itemQty, false)) {
+                if(WatUtils.inventoryContains(itemId, itemQty, false)) {
                     TaskManager.getInstance().setCurrentTask(postTask);
                 }
             } else {

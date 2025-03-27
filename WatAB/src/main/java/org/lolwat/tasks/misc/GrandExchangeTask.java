@@ -15,7 +15,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.utils.NumUtils;
+import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
@@ -222,7 +222,7 @@ public class GrandExchangeTask implements WatTask {
                         // Add the item.
                         if (GrandExchange.addBuyItem(itemFinal)) {
                             Sleep.sleep(600, 1200);
-                            int itemCost = NumUtils.getItemPrice(itemFinal);
+                            int itemCost = WatUtils.getItemPrice(itemFinal);
 
                             int coins = Inventory.count("Coins");
                             if (itemCost > coins) {
@@ -271,9 +271,9 @@ public class GrandExchangeTask implements WatTask {
                                         Logger.error("Error collecting cancelled item from G.E");
                                     } else {
                                         Logger.log("Cancelled and raised purchase price of " + item.getKey() + "...");
-                                        NumUtils.raisePrice(item.getKey());
+                                        WatUtils.raisePrice(item.getKey());
 
-                                        if(NumUtils.getItemPrice(item.getKey()) > Inventory.count("Coins")) {
+                                        if(WatUtils.getItemPrice(item.getKey()) > Inventory.count("Coins")) {
                                             Logger.log("Item price is higher than coin stack, breaking");
                                             break;
                                         }
