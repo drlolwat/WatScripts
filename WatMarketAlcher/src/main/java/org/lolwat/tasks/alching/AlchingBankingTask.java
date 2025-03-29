@@ -1,4 +1,4 @@
-package org.lolwat.tasks.misc;
+package org.lolwat.tasks.alching;
 
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
@@ -11,7 +11,7 @@ import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.tasks.alching.HighAlchemyTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import java.util.HashMap;
 
@@ -84,18 +84,12 @@ public class AlchingBankingTask implements WatTask {
                 int finalBuyAmount = Math.min(canAfford, toBuy);
                 if(finalBuyAmount > 0) {
                     Logger.log("We can buy up to " + finalBuyAmount + " of: " + target);
-                    HashMap<String, Integer> buying = new HashMap<String, Integer>() {
-                        {
-                            put(target, finalBuyAmount);
-                        }
-                    };
-
                     if(Bank.contains("Coins") && !Bank.withdrawAll("Coins")) {
                         Logger.error("problem withdrawing coins");
                         return;
                     }
 
-                    TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Buying required items", false, buying, post));
+                    TaskManager.getInstance().setCurrentTask(new BuyAlchItemTask(finalBuyAmount, post));
                 } else {
                     if(ConfigManager.getInstance().getFailedAttempts() > 5) {
                         Logger.log("We cant afford to buy any alchs (5 attempts), reverse muling the minimum keep_gp");

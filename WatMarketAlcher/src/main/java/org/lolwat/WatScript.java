@@ -28,12 +28,13 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.paint.CustomPaint;
+import org.lolwat.misc.paint.Paint;
 import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
@@ -42,9 +43,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 
 @ScriptManifest(name = "WatMarketAlcher", description = "WatAlcher", author = "lolwat", version = 0.1, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
+    public static final Instant startTime = Instant.now();
+
     @Getter
     private static WatScript instance;
     @Override
@@ -55,6 +60,16 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             doStart("default");
         }
     }
+
+    private final CustomPaint paint = new CustomPaint(new Paint(),
+            CustomPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN,
+            new Color[]{Color.WHITE}, // Text color
+            "Verdana",
+            new Color[]{new Color(98, 86, 12)}, // Background color
+            new Color[]{Color.BLACK}, // Border color
+            1, false, 5, 3, 0);
+
+    private final RenderingHints aa = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     @Override
     public void onStart() {
@@ -89,11 +104,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        if (!Menu.isMenuManipulationActive()) {
+        /*if (!Menu.isMenuManipulationActive()) {
             Logger.log("Enabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(true);
             Walking.toggleNoClickWalk(true);
-        }
+        }*/
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
@@ -251,11 +266,26 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
     }
 
+    @Override
+    public void onPaint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHints(aa);
+        paint.paint(g2d);
+    }
+
     public void disableLoginManager() {
         getRandomManager().disableSolver(RandomEvent.LOGIN);
     }
 
     public void enableLoginManager() {
         getRandomManager().enableSolver(RandomEvent.LOGIN);
+    }
+
+    public String getElapsedTime() {
+        Duration duration = Duration.between(startTime, Instant.now());
+        long hours = duration.toHours();
+        long minutes = duration.toMinutes() % 60;
+        long seconds = duration.getSeconds() % 60;
+        return String.format("%dh %dm %ds", hours, minutes, seconds);
     }
 }

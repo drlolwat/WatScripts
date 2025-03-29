@@ -1,0 +1,171 @@
+package org.lolwat.tasks.alching;
+
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.grandexchange.GrandExchange;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
+import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
+
+import java.time.Instant;
+
+
+public class BuyAlchItemTask implements WatTask {
+    private final WatTask post;
+    private final int targetQty;
+
+    public BuyAlchItemTask(int targetQty, WatTask post) {
+        this.post = post;
+        this.targetQty = targetQty;
+    }
+
+    @Override
+    public String getName() {
+        return "Buying alchemy item";
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
+    }
+
+    @Override
+    public void execute() {
+        String target = ConfigManager.getInstance().getCurrentTarget();
+        int targetCost = ConfigManager.getInstance().itemCost(target);
+        int targetId = ConfigManager.getInstance().getItemIds().get(target);
+
+        if(Bank.isOpen() && !Bank.close()) {
+            Logger.error("error closing bank");
+            return;
+        }
+
+        Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+
+        if(!GrandExchange.isOpen()) {
+            if(!GrandExchange.open()) {
+                Logger.error("error opening G.E [baiTask]");
+                return;
+            }
+
+            Sleep.sleepUntil(GrandExchange::isOpen, 5000);
+        }
+
+        int slot = GrandExchange.getFirstOpenSlot();
+        if(slot > -1) {
+            if(!GrandExchange.isBuyOpen()) {
+                if(!GrandExchange.openBuyScreen(slot)) {
+                    Logger.error("failed to open slot " + slot);
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> GrandExchange.isBuyOpen() && GrandExchange.isSearchOpen(), 5000);
+            }
+
+            if(!GrandExchange.addBuyItem(target)) {
+                Logger.error("error adding buy item: " + target);
+            }
+
+            Sleep.sleepUntil(() -> GrandExchange.getCurrentChosenItemID() == targetId, 5000);
+
+            if(GrandExchange.getCurrentChosenItemID() != targetId) {
+                Logger.error("error with item id, needed " + targetId + " but got " + GrandExchange.getCurrentChosenItemID());
+                return;
+            }
+
+            if(GrandExchange.getCurrentPrice() >= targetCost) {
+                if(!GrandExchange.setPrice(targetCost)) {
+                    Logger.error("error setting price per item");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> GrandExchange.getCurrentPrice() == targetCost, 5000);
+            }
+
+            if(GrandExchange.getCurrentAmount() != targetQty) {
+                if(!GrandExchange.setQuantity(targetQty)) {
+                    Logger.error("error setting item qty");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> GrandExchange.getCurrentAmount() == targetQty, 5000);
+            }
+
+            if(!GrandExchange.confirm()) {
+                Logger.error("problem confirming offer..");
+            }
+
+            Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 3000);
+
+            long started = Instant.now().getEpochSecond();
+            while(!GrandExchange.isReadyToCollect(slot)) {
+                long now = Instant.now().getEpochSecond();
+                if((now - started) > 30) {
+                    Logger.log("waited 30s for offer to fulfill, cancelling");
+
+                    if(!GrandExchange.cancelOffer(slot)) {
+                        Logger.error("error cancelling offer");
+                    }
+
+                    Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
+                }
+            }
+
+            if(!GrandExchange.collect()) {
+                Logger.error("error collecting from exchange");
+                return;
+            }
+
+            while(GrandExchange.slotContainsItem(slot)) {
+                Sleep.sleepUntil(() -> GrandExchange.slotContainsItem(slot), 100);
+            }
+
+            int amountHave = Inventory.count(x -> x != null && x.getName().equals(target));
+            if (amountHave > 0) {
+                Logger.log("we fulfilled some of our alch buy, using those");
+                if (!GrandExchange.close()) {
+                    Logger.error("problem closing GE1");
+                }
+
+                ConfigManager.getInstance().setCurrentTargetAmount(amountHave);
+                ConfigManager.getInstance().addItemExpiry(target);
+
+                if(ConfigManager.getInstance().getPurchasedAmount().get(target) != null) {
+                    int toPut = amountHave + ConfigManager.getInstance().getPurchasedAmount().get(target);
+                    ConfigManager.getInstance().getPurchasedAmount().put(target, toPut);
+                } else {
+                    ConfigManager.getInstance().getPurchasedAmount().put(target, amountHave);
+                }
+
+                TaskManager.getInstance().setCurrentTask(post);
+            } else {
+                Logger.log("didnt get any items at all, finding new target");
+                ConfigManager.getInstance().getNoBuy().add(target);
+                ConfigManager.getInstance().addItemExpiry(target);
+                ConfigManager.getInstance().getNewAlchTarget();
+            }
+        }
+        else {
+            Logger.warn("cancelling all offers as we have no slots");
+        }
+    }
+
+    @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return Skill.HITPOINTS;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return 101;
+    }
+
+}

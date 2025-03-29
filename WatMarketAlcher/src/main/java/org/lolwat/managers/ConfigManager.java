@@ -3,6 +3,8 @@ package org.lolwat.managers;
 import com.google.gson.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
@@ -14,9 +16,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.List;
 
 public class ConfigManager {
     @Getter
@@ -34,42 +35,70 @@ public class ConfigManager {
     // svensson alch stuff
     @Getter
     @Setter
-    private Map<String, Integer> tradeLimits = new HashMap<>();
+    private HashMap<String, Integer> alchables;// name, buy price
+
     @Getter
     @Setter
-    private HashMap<String, Integer> alchables; // name, buy price
+    private HashMap<String, Integer> itemIds;
+
+    @Getter
+    @Setter
+    private HashMap<String, Integer> buyLimits;
+
+    @Getter
+    @Setter
+    private List<String> noBuy;
+
     @Getter
     @Setter
     private HashMap<String, Long> purchasedWhen; // name, timestamp
+
+    @Getter
+    @Setter
+    private HashMap<String, Integer> purchasedAmount;
+
     @Getter
     @Setter
     @Nullable
     private String currentTarget;
+
     @Getter
     @Setter
     private int currentTargetAmount;
+
     @Getter
     @Setter
     private HashMap<String, Integer> itemsAlched;
+
     @Getter
     @Setter
     private int failedAttempts = 0;
-
     private final HashMap<Object, Object> config;
-    private final HashMap<String, Integer> itemThresholds;
+    @Getter
+    private final HashMap<String, Integer> itemBlacklist;
+
+    @Getter @Setter
+    private int totalAlchs = 0;
+
+    @Getter @Setter
+    private int totalProfit = 0;
+
+    @Getter @Setter
+    private int naturePrice = 0;
 
     public ConfigManager() {
         config = new HashMap<>();
         hasLoaded = false;
-        HashMap<String, Integer> levelUps = new HashMap<>();
         firstStart = true;
         muleConnectionFailed = false;
-        itemThresholds = new HashMap<>();
+        itemBlacklist = new HashMap<>();
         purchasedWhen = new HashMap<>();
         alchables = new HashMap<>();
-
-        fetchItemLimits();
-        //fetchLatestPrices();
+        buyLimits = new HashMap<>();
+        noBuy = new ArrayList<>();
+        naturePrice = LivePrices.get("Nature rune");
+        itemIds = new HashMap<>();
+        purchasedAmount = new HashMap<>();
     }
 
     private JsonObject getDefaultProfile() {
@@ -78,6 +107,11 @@ public class ConfigManager {
         defaultProfile.addProperty("keep_gp", 150000);
         defaultProfile.addProperty("price_modifier", 100);
         defaultProfile.addProperty("max_item_buy_qty", 3000);
+        defaultProfile.addProperty("min_profit", 100);
+
+        JsonObject items = new JsonObject();
+        items.addProperty("Trousers", 1);
+        defaultProfile.add("item_blacklist", items);
         return defaultProfile;
     }
 
@@ -85,85 +119,95 @@ public class ConfigManager {
         return alchables.get(name);
     }
 
-    public boolean hasItemExpired(String name) {
-        if(purchasedWhen.containsKey(name)) {
-            int diff = 18000;
-            double timestamp = purchasedWhen.get(name);
-            double now = Instant.now().getEpochSecond();
-
-            if((now - timestamp) >= diff) {
-                purchasedWhen.remove(name);
-                return true;
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
     public void addItemExpiry(String name) {
         purchasedWhen.put(name, Instant.now().getEpochSecond());
     }
 
     public boolean allowedToBuy(String name) {
-        return !purchasedWhen.containsKey(name);
+        return !purchasedWhen.containsKey(name) && !noBuy.contains(name);
     }
 
-    public String getNewAlchTarget() {
+    public void getNewAlchTarget() {
         Logger.log("getting new HA target");
+        checkItemExpiries();
         fetchLatestPrices();
 
-        String bestTarget = "";
+        String bestTarget = null;
 
         if (alchables == null || alchables.isEmpty()) {
-            return bestTarget;
+            return;
         }
 
-        int bestValue = 0;
-        for (Map.Entry<String, Integer> entry : alchables.entrySet()) {
-            if (entry.getValue() > bestValue && allowedToBuy(entry.getKey())) {
-                if (failedAttempts > 0 && entry.getKey().equals(currentTarget)) {
-                    continue;
-                }
-
-                bestValue = entry.getValue();
-                bestTarget = entry.getKey();
+        for(String item : alchables.keySet()) {
+            if(Inventory.contains(item) || Bank.contains(item)) {
+                Logger.log("selecting already owned item");
+                bestTarget = item;
+                currentTargetAmount = Inventory.count(item) + Bank.count(item);
+                break;
             }
         }
 
-        Logger.log("selected target for HA: " + bestTarget + " for " + bestValue + " profit");
+        if(bestTarget == null) {
+            int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
+            int toBuy = 0;
 
+            List<Map.Entry<String, Integer>> sortedAlchables = new ArrayList<>(alchables.entrySet());
+            sortedAlchables.sort((entry1, entry2) -> {
+                int profit1 = calculateProfit(entry1.getKey(), entry1.getValue());
+                int profit2 = calculateProfit(entry2.getKey(), entry2.getValue());
+                return Integer.compare(profit2, profit1);
+            });
+
+            for (Map.Entry<String, Integer> entry : sortedAlchables) {
+                if (allowedToBuy(entry.getKey())) {
+                    bestTarget = entry.getKey();
+                    toBuy = totalCoins / entry.getValue();
+                    break;
+                }
+            }
+
+            int buyLimit = buyLimits.get(bestTarget);
+            currentTargetAmount = Math.min(buyLimit, toBuy);
+        }
+
+        Logger.log("selected target for HA: " + bestTarget);
         currentTarget = bestTarget;
-        int tradeLimit = getConfigInt("max_item_buy_qty");
-
-        setCurrentTargetAmount(Math.max(
-                tradeLimit,
-                tradeLimits.get(bestTarget)));
-
-        return bestTarget;
     }
 
-    public String getItemName(int itemId) {
-        Item i = new Item(itemId, 1);
-        return !i.getName().isEmpty() ? i.getName() : "";
+    private int calculateProfit(String name, int buyPrice) {
+        int highAlchValue = new Item(itemIds.get(name), 1).getHighAlchValue();
+        return highAlchValue - getNaturePrice() - buyPrice - getConfigInt("price_modifier");
     }
 
     public void checkItemExpiries() {
-        for(Map.Entry<String, Long> map : purchasedWhen.entrySet()) {
-            if(hasItemExpired(map.getKey())) {
-                Logger.log(map.getKey() + " has a high limit or was re added to the pool");
+        Iterator<Map.Entry<String, Long>> iterator = purchasedWhen.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Long> entry = iterator.next();
+            int diff = 14400;
+            long timestamp = entry.getValue();
+            double now = Instant.now().getEpochSecond();
+
+            if ((now - timestamp) >= diff) {
+                noBuy.remove(entry.getKey());
+                purchasedAmount.remove(entry.getKey());
+                iterator.remove();
+                Logger.log("timer expired for item: " + entry.getKey());
+            }
+
+            if (!noBuy.contains(entry.getKey()) && buyLimits.get(entry.getKey()) >= purchasedAmount.get(entry.getKey())) {
+                Logger.log("removing item from list: " + entry.getKey());
+                iterator.remove();
             }
         }
     }
 
-    private void fetchLatestPrices() {
+    public void fetchLatestPrices() {
         StringBuilder result = new StringBuilder();
-
         try {
             alchables = new HashMap<>();
 
-            URL url = new URL("https://prices.runescape.wiki/api/v1/osrs/latest");
+            // Fetch item mappings
+            URL url = new URL("https://gpt.lolwat.net/get_market.php?type=mapping&time=" + Instant.now().getEpochSecond());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "SmallAlcherTracker/0.1");
@@ -175,113 +219,90 @@ public class ConfigManager {
             }
 
             Gson gson = new Gson();
-            JsonObject jsonObject = gson.fromJson(result.toString(), JsonObject.class);
-            JsonObject data = jsonObject.getAsJsonObject("data");
+            JsonArray jsonArray = gson.fromJson(result.toString(), JsonArray.class);
 
-            int natPrice = LivePrices.getHigh("Nature rune");
-            if (natPrice <= 0) {
+            // Fetch high prices
+            result.setLength(0); // Clear the result buffer
+            url = new URL("https://gpt.lolwat.net/get_market.php?type=5m&time=" + Instant.now().getEpochSecond());
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("User-Agent", "SmallAlcherTracker/0.1");
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JsonObject highPricesJson = gson.fromJson(result.toString(), JsonObject.class).getAsJsonObject("data");
+
+            if (getNaturePrice() <= 0) {
                 Logger.error("problem");
                 ScriptManager.getScriptManager().stop();
                 return;
             }
 
-            for (Map.Entry<String, JsonElement> entry : data.entrySet()) {
-                String key = entry.getKey();
+            for (JsonElement element : jsonArray) {
+                try {
+                    JsonObject jsonObject = element.getAsJsonObject();
+                    int id = jsonObject.get("id").getAsInt();
+                    int alchValueApi = jsonObject.get("highalch").getAsInt();
 
-                Item i = new Item(Integer.parseInt(key), 1);
+                    int itemLimit = jsonObject.has("limit") ? jsonObject.get("limit").getAsInt() : 0;
 
-                if (i.getName() == null || i.getHighAlchValue() <= 0) {
-                    continue;
-                }
+                    if (alchValueApi == 0 || alchValueApi == 1)
+                        continue;
 
-                int alchValue = i.getHighAlchValue();
+                    boolean alchable = alchValueApi > 1;
 
-                if(alchValue <= 0) {
-                   Logger.error("problem3");
-                   continue;
-                }
+                    if (id == 0 || !alchable)
+                        continue;
 
-                JsonObject itemData = entry.getValue().getAsJsonObject();
-                if (!itemData.has("high") || itemData.get("high").isJsonNull()) {
-                    continue;
-                }
+                    Item i = new Item(id, 1);
+                    int highAlchValue = i.getHighAlchValue();
 
-                int highValue = itemData.get("high").getAsInt();
+                    JsonObject itemPriceData = highPricesJson.getAsJsonObject(String.valueOf(id));
+                    int itemHighPrice = itemPriceData != null && itemPriceData.has("avgHighPrice") ? itemPriceData.get("avgHighPrice").getAsInt() : 0;
+                    int itemLowPrice = itemPriceData != null && itemPriceData.has("avgLowPrice") ? itemPriceData.get("avgLowPrice").getAsInt() : 0;
+                    int highVolume = itemPriceData != null && itemPriceData.has("highPriceVolume") ? itemPriceData.get("highPriceVolume").getAsInt() : 0;
+                    int lowVolume = itemPriceData != null && itemPriceData.has("lowPriceVolume") ? itemPriceData.get("lowPriceVolume").getAsInt() : 0;
+                    String name = i.getName();
 
-                if (alchValue > highValue) {
-                    int profitPer = alchValue - natPrice - highValue - getConfigInt("price_modifier");
-                    if (profitPer > highValue && !alchables.containsKey(i.getName())) {
-                        Logger.log(Color.CYAN, i.getName() + ": buy for max of " + highValue + " + nat(" + natPrice + ") + modifier " + getConfigInt("price_modifier") + " alch for " + alchValue);
-                        Logger.log(Color.CYAN, "adding " + i.getName() + " to alchables with " + profitPer + " ppi");
+                    if (name == null || highAlchValue == 0 || itemHighPrice == 0 || lowVolume == 0 || highVolume == 0) {
+                        //Logger.warn("skipping item with values: " + name + " " + highAlchValue + " " + itemHighPrice + " " + lowVolume);
+                        continue;
+                    }
 
-                        if(tradeLimits.containsKey(i.getName())) {
-                            Logger.log("ATTN: " + i.getName() + " has a limit of " + tradeLimits.get(i.getName()));
-                            alchables.put(i.getName(), highValue);
-                        } else {
-                            Logger.error("skipping suspicious item: " + i.getName());
+                    int profitPer = highAlchValue - getNaturePrice() - itemHighPrice - getConfigInt("price_modifier");
+                    if (((highVolume + lowVolume) / 2) > 30 && profitPer > getConfigInt("min_profit")) {
+                        if (!alchables.containsKey(name) && allowedToBuy(name)) {
+                            Logger.log(Color.CYAN, "adding " + name + " to alchables with " + profitPer + " ppi");
+
+                            if (!itemBlacklist.containsKey(name)) {
+                                alchables.put(name, itemHighPrice);
+                                buyLimits.put(name, itemLimit);
+                                itemIds.put(name, id);
+                            } else {
+                                Logger.error("skipping suspicious/blacklisted item: " + name);
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    //Logger.error(e);
                 }
             }
 
             rd.close();
         } catch (Exception e) {
-            Logger.error(e);
-        }
-
-        checkItemExpiries();
-    }
-
-    public int getTradeLimit(String name) {
-        return tradeLimits.get(name);
-    }
-
-    private void fetchItemLimits() {
-        StringBuilder response = new StringBuilder();
-        tradeLimits = new HashMap<>();
-
-        try {
-            URL url = new URL("https://prices.runescape.wiki/api/v1/osrs/mapping");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("User-Agent", "SmallAlcherTracker/0.1");
-
-            BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-            }
-            rd.close();
-
-            Gson gson = new Gson();
-            JsonArray arr = gson.fromJson(response.toString(), JsonArray.class);
-
-            for (JsonElement e : arr) {
-                JsonObject obj = e.getAsJsonObject();
-                if (!obj.has("id") || obj.get("id").isJsonNull()
-                        || !obj.has("limit") || obj.get("limit").isJsonNull()) {
-                    Logger.error("skipped item " + obj);
-                    continue;
-                }
-
-                int itemId = obj.get("id").getAsInt();
-                int limit = obj.get("limit").getAsInt();
-                String itemName = getItemName(itemId);
-                Logger.log("added " + itemName + " (" + itemId + ") with limit of " + limit);
-                tradeLimits.put(itemName, limit);
-            }
-
-        } catch (Exception e) {
-            Logger.error("2: " + e);
+            //Logger.error(e.getStackTrace());
         }
     }
 
-    public int getItemThreshold(String item) {
-        return itemThresholds.getOrDefault(item, 0);
+    public boolean isItemBlacklisted(String item) {
+        return itemBlacklist.containsKey(item);
     }
 
     public void loadFromProfile(String p) {
-        String filePath = System.getProperty("user.dir") + "/WatAlcher/" + p + ".json";
+        String filePath = System.getProperty("user.dir") + "/WatMarketAlcher/" + p + ".json";
 
         try {
             Gson gson = new Gson();
@@ -310,10 +331,10 @@ public class ConfigManager {
             fileWriter.close();
 
             for (String key : jsonObject.keySet()) {
-                if (key.equals("item_thresholds")) {
+                if (key.equals("item_blacklist")) {
                     JsonObject items = jsonObject.getAsJsonObject(key);
                     for (String itemKey : items.keySet()) {
-                        itemThresholds.put(itemKey, items.get(itemKey).getAsInt());
+                        itemBlacklist.put(itemKey, items.get(itemKey).getAsInt());
                     }
                 } else {
                     config.put(key, jsonObject.get(key));
