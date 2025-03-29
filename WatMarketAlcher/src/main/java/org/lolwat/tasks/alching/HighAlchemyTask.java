@@ -27,7 +27,7 @@ public class HighAlchemyTask implements WatTask {
     private String item;
     @Override
     public String getName() {
-        return "High level alchemy";
+        return "Market Level Alchemy";
     }
 
     @Override
@@ -51,7 +51,11 @@ public class HighAlchemyTask implements WatTask {
 
         if (!WatUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
             Logger.log("We need to grab runes...");
-            TaskManager.getInstance().setCurrentTask(new BankingTask(null, this));
+            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                {
+                    put("Nature rune", ConfigManager.getInstance().getConfigInt("buy_nature_qty"));
+                }
+            }, this));
             return;
         }
 
@@ -96,7 +100,7 @@ public class HighAlchemyTask implements WatTask {
                 ConfigManager.getInstance().getNaturePrice()) -
                 ConfigManager.getInstance().getConfigInt("price_modifier");
 
-        Logger.log("profit will be changed by +" + profitChange);
+        //Logger.log("profit will be changed by +" + profitChange);
 
         if(Inventory.getItemInSlot(11) == null || (Inventory.getItemInSlot(11) != null &&
                 !Inventory.getItemInSlot(11).getName().equals(ConfigManager.getInstance().getCurrentTarget()))) {
@@ -200,7 +204,7 @@ public class HighAlchemyTask implements WatTask {
         return new HashMap<String, Integer>() {
             {
                 put(ConfigManager.getInstance().getCurrentTarget(), ConfigManager.getInstance().getCurrentTargetAmount());
-                put("Nature rune", ConfigManager.getInstance().getCurrentTargetAmount());
+                put("Nature rune", ConfigManager.getInstance().getConfigInt("buy_nature_qty"));
             }
         };
     }

@@ -15,16 +15,14 @@ import java.time.Instant;
 
 public class BuyAlchItemTask implements WatTask {
     private final WatTask post;
-    private final int targetQty;
 
-    public BuyAlchItemTask(int targetQty, WatTask post) {
+    public BuyAlchItemTask(WatTask post) {
         this.post = post;
-        this.targetQty = targetQty;
     }
 
     @Override
     public String getName() {
-        return "Buying alchemy item";
+        return "Exchanging (Alching)";
     }
 
     @Override
@@ -35,7 +33,8 @@ public class BuyAlchItemTask implements WatTask {
     @Override
     public void execute() {
         String target = ConfigManager.getInstance().getCurrentTarget();
-        int targetCost = ConfigManager.getInstance().itemCost(target);
+        int targetQty = ConfigManager.getInstance().getCurrentTargetAmount();
+        int targetCost = ConfigManager.getInstance().itemCost(target) + ConfigManager.getInstance().getConfigInt("price_modifier");
         int targetId = ConfigManager.getInstance().getItemIds().get(target);
 
         if(Bank.isOpen() && !Bank.close()) {
@@ -102,9 +101,13 @@ public class BuyAlchItemTask implements WatTask {
 
             long started = Instant.now().getEpochSecond();
             while(!GrandExchange.isReadyToCollect(slot)) {
+                if(!GrandExchange.isOpen() || !GrandExchange.slotContainsItem(slot)) {
+                    break;
+                }
+
                 long now = Instant.now().getEpochSecond();
-                if((now - started) > 30) {
-                    Logger.log("waited 30s for offer to fulfill, cancelling");
+                if((now - started) > 15) {
+                    Logger.log("waited 15s for offer to fulfill, cancelling");
 
                     if(!GrandExchange.cancelOffer(slot)) {
                         Logger.error("error cancelling offer");
@@ -120,7 +123,7 @@ public class BuyAlchItemTask implements WatTask {
             }
 
             while(GrandExchange.slotContainsItem(slot)) {
-                Sleep.sleepUntil(() -> GrandExchange.slotContainsItem(slot), 100);
+                Sleep.sleepUntil(() -> !GrandExchange.slotContainsItem(slot), 100);
             }
 
             int amountHave = Inventory.count(x -> x != null && x.getName().equals(target));
@@ -139,6 +142,11 @@ public class BuyAlchItemTask implements WatTask {
                 } else {
                     ConfigManager.getInstance().getPurchasedAmount().put(target, amountHave);
                 }
+
+                /*if((ConfigManager.getInstance().getBuyLimits().get(target) / 3) > amountHave) {
+                    Logger.log("but got less than a third of the buy limit, so wont get again");
+                    ConfigManager.getInstance().getNoBuy().add(target);
+                }*/
 
                 TaskManager.getInstance().setCurrentTask(post);
             } else {

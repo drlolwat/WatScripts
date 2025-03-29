@@ -103,11 +103,13 @@ public class ConfigManager {
 
     private JsonObject getDefaultProfile() {
         JsonObject defaultProfile = new JsonObject();
-        defaultProfile.addProperty("mule_at_gp", 100000000);
-        defaultProfile.addProperty("keep_gp", 150000);
-        defaultProfile.addProperty("price_modifier", 100);
-        defaultProfile.addProperty("max_item_buy_qty", 3000);
+        defaultProfile.addProperty("mule_at_gp", 3000000);
+        defaultProfile.addProperty("keep_gp", 1000000);
+        defaultProfile.addProperty("price_modifier", 0);
         defaultProfile.addProperty("min_profit", 100);
+        defaultProfile.addProperty("buy_nature_qty", 2000);
+        defaultProfile.addProperty("mule_ip", "127.0.0.1");
+        defaultProfile.addProperty("mule_port", 8081);
 
         JsonObject items = new JsonObject();
         items.addProperty("Trousers", 1);
@@ -124,7 +126,8 @@ public class ConfigManager {
     }
 
     public boolean allowedToBuy(String name) {
-        return !purchasedWhen.containsKey(name) && !noBuy.contains(name);
+        return !purchasedWhen.containsKey(name) && !noBuy.contains(name) &&
+                (!purchasedWhen.containsKey(name) || purchasedAmount.get(name) < buyLimits.get(name));
     }
 
     public void getNewAlchTarget() {
@@ -147,7 +150,7 @@ public class ConfigManager {
             }
         }
 
-        if(bestTarget == null) {
+        if (bestTarget == null) {
             int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
             int toBuy = 0;
 
@@ -166,11 +169,13 @@ public class ConfigManager {
                 }
             }
 
-            int buyLimit = buyLimits.get(bestTarget);
-            currentTargetAmount = Math.min(buyLimit, toBuy);
+            if (bestTarget != null) {
+                int buyLimit = buyLimits.get(bestTarget);
+                currentTargetAmount = Math.min(buyLimit, toBuy);
+            }
         }
 
-        Logger.log("selected target for HA: " + bestTarget);
+        Logger.log("selected target for HA: " + bestTarget + " x" + currentTargetAmount);
         currentTarget = bestTarget;
     }
 
@@ -184,6 +189,7 @@ public class ConfigManager {
         while (iterator.hasNext()) {
             Map.Entry<String, Long> entry = iterator.next();
             int diff = 14400;
+            int noBuyDiff = 1800;
             long timestamp = entry.getValue();
             double now = Instant.now().getEpochSecond();
 
@@ -194,7 +200,17 @@ public class ConfigManager {
                 Logger.log("timer expired for item: " + entry.getKey());
             }
 
-            if (!noBuy.contains(entry.getKey()) && buyLimits.get(entry.getKey()) >= purchasedAmount.get(entry.getKey())) {
+            if(noBuy.contains(entry.getKey()) && (now - timestamp) >= noBuyDiff) {
+                noBuy.remove(entry.getKey());
+                purchasedAmount.remove(entry.getKey());
+                iterator.remove();
+                Logger.log("removed nobuy restrict for: " + entry.getKey());
+            }
+
+            if (!noBuy.contains(entry.getKey())
+                    && purchasedWhen.containsKey(entry.getKey())
+                    && buyLimits.get(entry.getKey()) >= purchasedAmount.get(entry.getKey())) {
+
                 Logger.log("removing item from list: " + entry.getKey());
                 iterator.remove();
             }
