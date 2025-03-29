@@ -1,8 +1,10 @@
 package org.lolwat.misc.paint;
 
+import org.dreambot.api.Client;
 import org.dreambot.api.methods.world.Worlds;
 import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.NumUtils;
 
 import java.util.concurrent.Executors;
@@ -25,7 +27,7 @@ public class Paint implements PaintInfo {
 
     @Override
     public String[] getPaintInfo() {
-        if(WatScript.getInstance().getElapsedTime() != null) {
+        if(WatScript.getInstance().getElapsedTime() != null && Client.isLoggedIn()) {
             String elapsedTimeStr = WatScript.getInstance().getElapsedTime();
             long elapsedTimeMillis = parseElapsedTime(elapsedTimeStr);
             double elapsedTimeHours = elapsedTimeMillis / 3600000.0; // Convert milliseconds to hours
@@ -35,6 +37,7 @@ public class Paint implements PaintInfo {
 
             return new String[]{
                     "WatMarketAlcher",
+                    TaskManager.getInstance().getCurrentTask() != null ? "Task: " + TaskManager.getInstance().getCurrentTask().getName() : "",
                     "Time running: " + WatScript.getInstance().getElapsedTime(),
                     "Alchs: " + ConfigManager.getInstance().getTotalAlchs() + " (" + NumUtils.simplifyNumber(alchsPerHour) + "/h)",
                     "Profit: " + NumUtils.simplifyNumber(ConfigManager.getInstance().getTotalProfit()) + " (" + NumUtils.simplifyNumber(profitPerHour) + "/h)",

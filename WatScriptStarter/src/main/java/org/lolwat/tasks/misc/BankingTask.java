@@ -195,6 +195,12 @@ public class BankingTask implements WatTask {
                             - Bank.count(x -> x != null && x.getName().equals(entry.getKey()))
                             - Inventory.count(x -> x != null && x.getName().equals(entry.getKey()));
 
+                    if(entry.getKey().equals("Nature rune")) {
+                        amountToBuy = ConfigManager.getInstance().getConfigInt("buy_nature_qty")
+                                - Inventory.count("Nature rune")
+                                - Bank.count("Nature rune");
+                    }
+
                     if(amountToBuy > 0) {
                         buyingRequired.put(entry.getKey(), amountToBuy);
                         Logger.log("Inventory: We need to buy " + amountToBuy + " of: " + entry.getKey());

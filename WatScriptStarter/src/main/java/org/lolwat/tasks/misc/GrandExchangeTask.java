@@ -38,7 +38,7 @@ public class GrandExchangeTask implements WatTask {
 
     @Override
     public String getName() {
-        return name;
+        return "Exchanging (old)";
     }
 
     @Override
@@ -260,7 +260,8 @@ public class GrandExchangeTask implements WatTask {
                             if (item.getValue() != 1) {
                                 int q = item.getValue() >= 1 ? item.getValue() : -item.getValue();
 
-                                if (q > ConfigManager.getInstance().getCurrentTargetAmount()) {
+                                if (q > ConfigManager.getInstance().getCurrentTargetAmount()
+                                        && item.getKey().equals(ConfigManager.getInstance().getCurrentTarget())) {
                                     q = ConfigManager.getInstance().getCurrentTargetAmount();
                                 }
 
@@ -377,9 +378,7 @@ public class GrandExchangeTask implements WatTask {
 
             Logger.log("==== Grand Exchange Operations: Complete ====");
             GrandExchange.close();
-            Sleep.sleepUntil(Bank::isOpen, 7500);
-
-            Sleep.sleep(300, 800);
+            Sleep.sleepUntil(() -> !GrandExchange.isOpen(), 5000);
             TaskManager.getInstance().setCurrentTask(postTask);
         } else {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(BankLocation.GRAND_EXCHANGE.getArea(3), this));
