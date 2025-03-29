@@ -241,8 +241,7 @@ public class GrandExchangeTask implements WatTask {
                                 itemCost = livePrice
                                         + ConfigManager.getInstance().getConfigInt("price_modifier");
 
-                                Logger.log("price of alchable is " + livePrice + ", safely ignore the above log");
-                                Logger.log("modified price from " + livePrice + " + to " + itemCost);
+                                Logger.log("modified price from " + livePrice + " + " + ConfigManager.getInstance().getConfigInt("price_modifier") + " to " + itemCost);
                             }
 
                             int coins = Inventory.count("Coins") + (Bank.isCached() ? Bank.count("Coins") : 0);
@@ -269,8 +268,9 @@ public class GrandExchangeTask implements WatTask {
                                 Sleep.sleep(100, 300);
                             }
 
-                            GrandExchange.confirm();
-                            Sleep.sleep(100, 300);
+                            if(!GrandExchange.confirm()) {
+                                Logger.error("error confirming in GE");
+                            }
 
                             Widget w = Widgets.getWidget(289);
                             if (w != null) {
@@ -282,7 +282,7 @@ public class GrandExchangeTask implements WatTask {
                                 }
                             }
 
-                            Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 15000);
+                            Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 30000);
 
                             if (GrandExchange.isReadyToCollect(slot) || GrandExchange.isReadyToCollect()) {
                                 if (!GrandExchange.collect()) {
@@ -340,9 +340,12 @@ public class GrandExchangeTask implements WatTask {
             }
 
             Sleep.sleep(3000);
+
             if (GrandExchange.isReadyToCollect()) {
                 GrandExchange.collect();
             }
+
+            String name = ConfigManager.getInstance().getCurrentTarget();
 
             int amountHave = Inventory.count(x -> x != null
                     && x.getName().equals(ConfigManager.getInstance().getCurrentTarget()))
@@ -356,20 +359,24 @@ public class GrandExchangeTask implements WatTask {
                 if (!GrandExchange.close()) {
                     Logger.error("problem closing GE1");
                 }
+
                 ConfigManager.getInstance().setCurrentTargetAmount(amountHave);
                 ConfigManager.getInstance().addItemExpiry(ConfigManager.getInstance().getCurrentTarget());
+                if(ConfigManager.getInstance().getPurchasedAmount().get(name) != null) {
+                    int toPut = amountHave + ConfigManager.getInstance().getPurchasedAmount().get(name);
+                    ConfigManager.getInstance().getPurchasedAmount().put(ConfigManager.getInstance().getCurrentTarget(), toPut);
+                } else {
+                    ConfigManager.getInstance().getPurchasedAmount().put(ConfigManager.getInstance().getCurrentTarget(), amountHave);
+                }
+
             } else {
+                ConfigManager.getInstance().getNoBuy().add(ConfigManager.getInstance().getCurrentTarget());
                 ConfigManager.getInstance().addItemExpiry(ConfigManager.getInstance().getCurrentTarget());
                 ConfigManager.getInstance().getNewAlchTarget();
             }
 
             Logger.log("==== Grand Exchange Operations: Complete ====");
             GrandExchange.close();
-
-            if (!Bank.open()) {
-                Bank.open();
-            }
-
             Sleep.sleepUntil(Bank::isOpen, 7500);
 
             Sleep.sleep(300, 800);

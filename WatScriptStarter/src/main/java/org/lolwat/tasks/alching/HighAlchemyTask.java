@@ -12,11 +12,12 @@ import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.misc.AlchingBankingTask;
 import org.lolwat.tasks.misc.BankingTask;
 
 import java.util.HashMap;
@@ -24,14 +25,6 @@ import java.util.HashMap;
 
 public class HighAlchemyTask implements WatTask {
     private String item;
-    public HighAlchemyTask() {
-        item = ConfigManager.getInstance().getCurrentTarget();
-
-        if(item == null || item.isEmpty()) {
-            item = ConfigManager.getInstance().getNewAlchTarget();
-        }
-    }
-
     @Override
     public String getName() {
         return "High level alchemy";
@@ -44,7 +37,18 @@ public class HighAlchemyTask implements WatTask {
 
     @Override
     public void execute() {
+        if(!Bank.isCached()) {
+            Logger.warn("first run, caching bank data");
+            ItemUtils.bank(this);
+            return;
+        }
+
         item = ConfigManager.getInstance().getCurrentTarget();
+        if(item == null || item.isEmpty()) {
+            ConfigManager.getInstance().getNewAlchTarget();
+            return;
+        }
+
         if (!WatUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
             Logger.log("We need to grab runes...");
             TaskManager.getInstance().setCurrentTask(new BankingTask(null, this));
@@ -82,20 +86,32 @@ public class HighAlchemyTask implements WatTask {
             Dialogues.continueDialogue();
         }
 
-        if(Inventory.getItemInSlot(15) == null || (Inventory.getItemInSlot(15) != null &&
-                !Inventory.getItemInSlot(15).getName().equals(ConfigManager.getInstance().getCurrentTarget()))) {
+        Item i = Inventory.get(item);
+        if(i == null)
+            return;
+
+        int profitChange = (
+                i.getHighAlchValue() -
+                ConfigManager.getInstance().getAlchables().get(item) -
+                ConfigManager.getInstance().getNaturePrice()) -
+                ConfigManager.getInstance().getConfigInt("price_modifier");
+
+        Logger.log("profit will be changed by +" + profitChange);
+
+        if(Inventory.getItemInSlot(11) == null || (Inventory.getItemInSlot(11) != null &&
+                !Inventory.getItemInSlot(11).getName().equals(ConfigManager.getInstance().getCurrentTarget()))) {
 
             if (!Tabs.isOpen(Tab.INVENTORY)) {
                 Tabs.open(Tab.INVENTORY);
                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 5000);
             }
 
-            if(!Inventory.drag(item, 15)) {
+            if(!Inventory.drag(item, 11)) {
                 Logger.error("error dragging HA target to slot");
                 return;
             }
 
-            Sleep.sleepUntil(() -> Inventory.getItemInSlot(15) != null, 5000);
+            Sleep.sleepUntil(() -> Inventory.getItemInSlot(11) != null, 5000);
         }
 
         if (!Tabs.isOpen(Tab.MAGIC)) {
@@ -144,7 +160,15 @@ public class HighAlchemyTask implements WatTask {
                 ConfigManager.getInstance().getCurrentTargetAmount() - 1
         );
 
-        Sleep.sleepTicks(5);
+        ConfigManager.getInstance().setTotalAlchs(
+                ConfigManager.getInstance().getTotalAlchs() + 1
+        );
+
+        ConfigManager.getInstance().setTotalProfit(
+                ConfigManager.getInstance().getTotalProfit() + profitChange
+        );
+
+        Sleep.sleepTicks(4);
     }
 
     @Override
