@@ -7,15 +7,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="remove all 1.0 code">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/combat/CombatUtils.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="dev">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/CombatUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/CombatUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/Mob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/Mob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/DefaultLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/DefaultLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -570,7 +567,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="676" />
+    <option name="localTasksCounter" value="677" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -617,7 +614,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="TraversalTask: continue to post if specific npc is spotted" />
     <MESSAGE value="VampyreSlayerQuest: melee utils new method usage" />
     <MESSAGE value="QuestManager: add Demon Slayer to quest pool" />
     <MESSAGE value="TaskManager: more tasks between breaks" />
@@ -642,7 +638,8 @@
     <MESSAGE value="more WIP" />
     <MESSAGE value="MobLogic: default eating logic updated" />
     <MESSAGE value="remove all 1.0 code" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove all 1.0 code" />
+    <MESSAGE value="dev" />
+    <option name="LAST_COMMIT_MESSAGE" value="dev" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

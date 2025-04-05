@@ -10,12 +10,15 @@ import org.lolwat.types.mobs.Mob;
 import java.util.Map;
 
 public class CombatUtils {
-    private static boolean meetsRequirements(Mob mob, Skill skill) {
-        for (Map.Entry<Skill, Integer> entry : mob.getLevelRequirements().entrySet()) {
-            if (Skills.getRealLevel(entry.getKey()) < entry.getValue()) {
-                return false;
+    private static boolean meetsRequirements(Mob mob) {
+        if(mob.getQuestRequirements() != null) {
+            for (Map.Entry<Skill, Integer> entry : mob.getLevelRequirements().entrySet()) {
+                if (Skills.getRealLevel(entry.getKey()) < entry.getValue()) {
+                    return false;
+                }
             }
         }
+
         if (mob.getQuestRequirements() != null) {
             for (Quest quest : mob.getQuestRequirements()) {
                 if (!Quests.isFinished(quest)) {
@@ -23,6 +26,7 @@ public class CombatUtils {
                 }
             }
         }
+
         return true;
     }
 
@@ -31,7 +35,7 @@ public class CombatUtils {
         int highestLevel = 0;
 
         for (Mob mob : MobManager.getInstance().getMobs()) {
-            if (meetsRequirements(mob, skill)) {
+            if (meetsRequirements(mob)) {
                 int mobLevel = mob.getLevelRequirements().getOrDefault(skill, 0);
                 if (mobLevel > highestLevel) {
                     highestLevel = mobLevel;

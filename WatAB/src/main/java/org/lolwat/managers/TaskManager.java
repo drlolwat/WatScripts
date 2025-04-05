@@ -337,7 +337,7 @@ public class TaskManager {
                 (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
 
             if(minutesPlayed > 0 && !TutUtils.isOnTutorial()) {
-                checkPlayTime();
+                //checkPlayTime();
             }
 
             setCheckedHoursAt(Instant.now().getEpochSecond());
@@ -356,7 +356,7 @@ public class TaskManager {
         }
 
         if(minutesPlayed == 0) {
-            checkPlayTime();
+            //checkPlayTime();
         }
 
         if (!WatUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0

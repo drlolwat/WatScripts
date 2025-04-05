@@ -49,7 +49,7 @@ public class CombatTask implements WatTask {
         }
 
         //handle food, etc
-        target.getMobLogic().runPriority();
+        target.getMobLogic().runPriority(target, skill);
 
         //run the targets logic
         target.getMobLogic().execute(target, skill);
