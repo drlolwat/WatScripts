@@ -33,12 +33,11 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.mouse.SmartMouseMultiDir;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
@@ -46,7 +45,7 @@ import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.DeathsCofferTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
-import org.lolwat.tasks.shamans.MainCombatTask;
+import org.lolwat.tasks.combat.MainCombatTask;
 
 import java.awt.*;
 import java.io.*;
@@ -59,7 +58,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@ScriptManifest(name = "WatShamans", description = "Shaman killer", author = "lolwat", version = 1.0, category = Category.MISC)
+@ScriptManifest(name = "WatShamans ", description = "Shaman killer", author = "lolwat", version = 1.02, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
     public static WatScript getInstance() {
@@ -78,6 +77,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user5", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user3", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
 
     private final CustomPaint paint = new CustomPaint(new Paint(),
@@ -109,10 +109,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         } else {
             doStart("default");
         }
-    }
-
-    private static String getScriptName() {
-        return "WatScript1";
     }
 
     @Override
@@ -165,8 +161,8 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(m);
+        //HumanMouse m = new HumanMouse();
+        Mouse.setMouseAlgorithm(new SmartMouseMultiDir());
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
@@ -174,11 +170,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        if (!Menu.isMenuManipulationActive()) {
+        /*if (!Menu.isMenuManipulationActive()) {
             Logger.log("Enabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(true);
             Walking.toggleNoClickWalk(true);
-        }
+        }*/
 
         getRandomManager().disableSolver(RandomEvent.DEATHS_DOOR);
 

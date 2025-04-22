@@ -7,7 +7,7 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.shamans.MainCombatTask;
+import org.lolwat.tasks.combat.MainCombatTask;
 
 import java.awt.*;
 import java.time.Instant;

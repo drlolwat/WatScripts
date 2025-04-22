@@ -5,7 +5,7 @@ import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.misc.types.combat.DefensiveItemType;
+import org.lolwat.misc.combat.DefensiveItemType;
 
 import java.util.HashMap;
 

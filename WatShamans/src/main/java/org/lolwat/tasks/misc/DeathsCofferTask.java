@@ -20,7 +20,7 @@ import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.tasks.shamans.MainCombatTask;
+import org.lolwat.tasks.combat.MainCombatTask;
 
 import java.util.Arrays;
 import java.util.List;

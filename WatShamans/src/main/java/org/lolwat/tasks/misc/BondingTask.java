@@ -12,7 +12,6 @@ import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
@@ -46,11 +45,6 @@ public class BondingTask implements WatTask {
         }
 
         if(!usedBond) {
-            if (Menu.isMenuManipulationActive()) {
-                Logger.log("Disabling menu manipulation for bonding");
-                Menu.toggleMenuManipulation(false);
-            }
-
             if (!Inventory.contains("Old school bond (untradeable)")) {
                 TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
                     {
@@ -106,11 +100,6 @@ public class BondingTask implements WatTask {
         }
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            if (!Menu.isMenuManipulationActive()) {
-                Logger.log("Enabling menu manipulation, bonding complete");
-                Menu.toggleMenuManipulation(true);
-            }
-
             if(Client.isLoggedIn()) {
                 /*
                 if(GenericUtils.getMemberDays() == 0) {

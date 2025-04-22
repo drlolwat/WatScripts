@@ -7,15 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="WatScript: handle 6hr logout message">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DialogueUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/DeathsCofferTask.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="WatScript: small update">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseMultiDir.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/mousedata.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/ShamanCombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/shamans/MainCombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,8 +64,8 @@
 }</component>
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts/wat-shamans.git&quot;,
-    &quot;second&quot;: &quot;fcdb1a08-108d-4202-8587-86031de7c5f7&quot;
+    &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts-private/watscript1.git&quot;,
+    &quot;second&quot;: &quot;65dfe5d7-4534-488d-88ba-2e60a0939bdf&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -84,40 +82,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAIO [test].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatScript1 [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatShamans [package].executor&quot;: &quot;Run&quot;,
-    &quot;Notification.DisplayName-DoNotAsk-VCS Hosting Integrations&quot;: &quot;VCS hosting integrations&quot;,
-    &quot;Notification.DoNotAsk-VCS Hosting Integrations&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/chchp/IdeaProjects/wat-shamans/src/main/java/org/lolwat/misc&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.WatAIO [package].executor": "Run",
+    "Maven.WatAIO [test].executor": "Run",
+    "Maven.WatAIO [verify].executor": "Run",
+    "Maven.WatScript1 [package].executor": "Run",
+    "Maven.WatShamans [package].executor": "Run",
+    "Notification.DisplayName-DoNotAsk-VCS Hosting Integrations": "VCS hosting integrations",
+    "Notification.DoNotAsk-VCS Hosting Integrations": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/lolwat/IdeaProjects/watscript1/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="$PROJECT_DIR$/resources" />
       <recent name="C:\Users\chchp\IdeaProjects\wat-shamans\src\main\java\org\lolwat\misc" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -136,6 +136,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <option name="filePath" />
       <method v="2">
@@ -146,8 +151,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -241,6 +246,15 @@
       <workItem from="1738001641746" duration="26000" />
       <workItem from="1738009367387" duration="20381000" />
       <workItem from="1739572840368" duration="1737000" />
+      <workItem from="1740334418560" duration="6568000" />
+      <workItem from="1741562718984" duration="4221000" />
+      <workItem from="1742138147149" duration="5000" />
+      <workItem from="1743119478037" duration="117000" />
+      <workItem from="1743715211147" duration="11928000" />
+      <workItem from="1743976707664" duration="646000" />
+      <workItem from="1744148023989" duration="610000" />
+      <workItem from="1744323947176" duration="631000" />
+      <workItem from="1745205742262" duration="3924000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -585,7 +599,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="707" />
+    <option name="localTasksCounter" value="708" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -632,7 +646,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updates" />
     <MESSAGE value="will start logging changes after this commit" />
     <MESSAGE value="BankingTask: add reverse muling" />
     <MESSAGE value="Combat: comment arrow doublecheck" />
@@ -657,7 +670,8 @@
     <MESSAGE value="CombatTask: set req members to false to enforce bonding" />
     <MESSAGE value="TaskManager: force combat task on null task" />
     <MESSAGE value="WatScript: handle 6hr logout message" />
-    <option name="LAST_COMMIT_MESSAGE" value="WatScript: handle 6hr logout message" />
+    <MESSAGE value="WatScript: small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="WatScript: small update" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
