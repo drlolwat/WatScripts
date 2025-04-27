@@ -25,7 +25,6 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.Teleport;
@@ -334,16 +333,6 @@ public class TraversalTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatScript instance) {
-
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -374,11 +363,6 @@ public class TraversalTask implements WatTask {
         }
 
         return ret;
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 
     @Override

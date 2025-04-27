@@ -199,6 +199,9 @@ public class BankingTask implements WatTask {
                         amountToBuy = ConfigManager.getInstance().getConfigInt("buy_nature_qty")
                                 - Inventory.count("Nature rune")
                                 - Bank.count("Nature rune");
+
+                        Logger.warn("we are using gp to buy nats, we will need to recalc");
+                        ConfigManager.getInstance().setCurrentTarget(null);
                     }
 
                     if(amountToBuy > 0) {
@@ -429,20 +432,22 @@ public class BankingTask implements WatTask {
                     }
                 }
 
-                List<String> toKeep = new ArrayList<>();
-                for (Item i : Inventory.all()) {
-                    if (i == null)
-                        continue;
+                if(inventoryRequired() != null && !inventoryRequired().isEmpty()) {
+                    List<String> toKeep = new ArrayList<>();
+                    for (Item i : Inventory.all()) {
+                        if (i == null)
+                            continue;
 
-                    for (String n : inventoryRequired().keySet()) {
-                        if (i.getName().contains(n)) {
-                            toKeep.add(i.getName());
+                        for (String n : inventoryRequired().keySet()) {
+                            if (i.getName().contains(n)) {
+                                toKeep.add(i.getName());
+                            }
                         }
                     }
-                }
 
-                Logger.log("Banking: Depositing all except: " + toKeep.toString());
-                Bank.depositAllExcept(toKeep.toArray(new String[0]));
+                    Logger.log("Banking: Depositing all except: " + toKeep.toString());
+                    Bank.depositAllExcept(toKeep.toArray(new String[0]));
+                }
             } else {
                 for (Item i : Inventory.all()) {
                     if (i == null) continue;

@@ -8,15 +8,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="dev">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseMultiDir.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/mousedata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/WatMiner_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/WatMiner_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/AlchingBankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/AlchingBankingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/BuyAlchItemTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/BuyAlchItemTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/HighAlchemyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/HighAlchemyTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/MulingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,43 +89,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAIO [test].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAlcher [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatAlcher [verify].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatMarketAlcher [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatScript1 [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.WatShamans [package].executor&quot;: &quot;Run&quot;,
-    &quot;Notification.DisplayName-DoNotAsk-VCS Hosting Integrations&quot;: &quot;VCS hosting integrations&quot;,
-    &quot;Notification.DoNotAsk-VCS Hosting Integrations&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/watmarketalcher/src/main/java/org/lolwat/misc&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Language Defaults&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.WatAIO [package].executor": "Run",
+    "Maven.WatAIO [test].executor": "Run",
+    "Maven.WatAIO [verify].executor": "Run",
+    "Maven.WatAlcher [package].executor": "Run",
+    "Maven.WatAlcher [verify].executor": "Run",
+    "Maven.WatMarketAlcher [package].executor": "Run",
+    "Maven.WatMarketAlcher [verify].executor": "Run",
+    "Maven.WatScript1 [package].executor": "Run",
+    "Maven.WatShamans [package].executor": "Run",
+    "Notification.DisplayName-DoNotAsk-VCS Hosting Integrations": "VCS hosting integrations",
+    "Notification.DoNotAsk-VCS Hosting Integrations": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/lolwat/IdeaProjects/watmarketalcher/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Language Defaults",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/misc" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -135,6 +141,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.misc.mouse" />
       <recent name="org.lolwat.tasks.misc" />
       <recent name="org.lolwat.tasks.alching" />
     </key>
@@ -153,8 +160,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -238,7 +245,16 @@
       <workItem from="1740438500628" duration="28941000" />
       <workItem from="1741531236773" duration="865000" />
       <workItem from="1741562304818" duration="18596000" />
-      <workItem from="1742345050714" duration="44895000" />
+      <workItem from="1742345050714" duration="58665000" />
+      <workItem from="1743726054728" duration="10761000" />
+      <workItem from="1743976713320" duration="21745000" />
+      <workItem from="1744323944988" duration="3601000" />
+      <workItem from="1745205740595" duration="773000" />
+      <workItem from="1745358858564" duration="599000" />
+      <workItem from="1745363290231" duration="705000" />
+      <workItem from="1745445950653" duration="599000" />
+      <workItem from="1745680329176" duration="599000" />
+      <workItem from="1745788113451" duration="2446000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -583,7 +599,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="687" />
+    <option name="localTasksCounter" value="688" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
