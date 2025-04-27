@@ -130,6 +130,12 @@ public class ConfigManager {
         return !purchasedWhen.containsKey(name) && !noBuy.contains(name);
     }
 
+    public void removeCooldown(String name) {
+        purchasedAmount.remove(name);
+        purchasedWhen.remove(name);
+        noBuy.remove(name);
+    }
+
     public void getNewAlchTarget() {
         Logger.log("getting new HA target");
         checkItemExpiries();
