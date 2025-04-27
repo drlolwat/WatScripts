@@ -35,8 +35,8 @@ public class ConfigManager {
 
     private JsonObject getDefaultProfile() {
         JsonObject defaultProfile = new JsonObject();
-        defaultProfile.addProperty("mule_at_gp", 100000000);
-        defaultProfile.addProperty("keep_gp", 150000);
+        defaultProfile.addProperty("mule_at_gp", 3000000);
+        defaultProfile.addProperty("keep_gp", 1000000);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
         defaultProfile.addProperty("min_bow_count", 2000);
         return defaultProfile;

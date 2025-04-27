@@ -43,7 +43,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-@ScriptManifest(name = "WatAlcher", description = "WatAlcher", author = "lolwat", version = 0.2, category = Category.MISC)
+@ScriptManifest(name = "WatAlcher",
+        description = "Trains fletching to 70 and creates bows for High Level Alchemy",
+        author = "lolwat",
+        version = 1.01,
+        category = Category.MAGIC,
+        image = "https://api.botbuddy.net/WatScripts.png")
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     @Getter
     private static WatScript instance;

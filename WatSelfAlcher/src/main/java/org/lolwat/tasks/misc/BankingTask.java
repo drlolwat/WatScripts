@@ -102,32 +102,6 @@ public class BankingTask implements WatTask {
             return;
         }
 
-        int invMoney = 0;
-        int bankMoney = 0;
-
-        if (Inventory.contains("Coins")) {
-            invMoney = Inventory.count("Coins");
-        }
-
-        if (Bank.contains("Coins")) {
-            bankMoney = Bank.count("Coins");
-        }
-
-        if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
-            int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("keep_gp");
-            if (toWithdraw > 0) {
-                Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
-                    Bank.depositAllExcept("Coins");
-                }
-                Sleep.sleep(100, 200);
-                Bank.withdraw("Coins", toWithdraw);
-                Sleep.sleep(200, 400);
-                TaskManager.getInstance().setCurrentTask(new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask));
-                return;
-            }
-        }
-
         if (ItemUtils.bankContains("Yew longbow", ConfigManager.getInstance().getConfigInt("min_bow_count")) && !(postTask instanceof HighAlchemyTask)) {
             Logger.log("Satisfied yew longbow count, alching");
             TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
@@ -312,8 +286,6 @@ public class BankingTask implements WatTask {
                     Sleep.sleepUntil(Bank::isOpen, Calculations.random(5000, 10000));
                 }
             }
-
-            //handleEquipmentDeposit();
         }
 
         Logger.log("Equipment: Finished checking");

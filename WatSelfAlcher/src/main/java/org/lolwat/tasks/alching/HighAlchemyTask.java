@@ -12,14 +12,18 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import java.util.HashMap;
 
@@ -44,9 +48,47 @@ public class HighAlchemyTask implements WatTask {
 
     @Override
     public void execute() {
+        if(!Bank.isCached()) {
+            Logger.warn("task first run, caching bank data");
+            ItemUtils.bank(this);
+            return;
+        }
+
         int casts = Calculations.random(75, 150);
         if (Skills.getRealLevel(Skill.MAGIC) >= 75) {
             casts *= 2;
+        }
+
+        int coinsOnHand = Bank.count("Coins") + Inventory.count("Coins");
+        int totalToMule = ConfigManager.getInstance().getConfigInt("mule_at_gp")
+                - ConfigManager.getInstance().getConfigInt("keep_gp");
+        int inventoryCoins = Inventory.count("Coins");
+
+        if (coinsOnHand >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
+            if (inventoryCoins != totalToMule) {
+                if(!Bank.isOpen()) {
+                    ItemUtils.bank(this);
+                    return;
+                }
+
+                int difference = totalToMule - inventoryCoins;
+                if (difference > 0) {
+                    if (!Bank.withdraw("Coins", difference)) {
+                        Logger.error("error withdrawing coins before muling");
+                        return;
+                    }
+                } else {
+                    if (!Bank.deposit("Coins", -difference)) {
+                        Logger.error("error depositing coins before muling");
+                        return;
+                    }
+                }
+            }
+
+            Logger.warn("handing off " + NumUtils.simplifyNumber(totalToMule) + " to the mule");
+            Sleep.sleepUntil(() -> Inventory.count("Coins") == totalToMule, 5000);
+            TaskManager.getInstance().setCurrentTask(new MulingTask("Muling Gold", Worlds.getCurrentWorld(), this));
+            return;
         }
 
         HashMap<String, Integer> requiredItems = new HashMap<>();
