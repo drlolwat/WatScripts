@@ -1,5 +1,6 @@
 package org.lolwat.tasks.alching;
 
+import org.dreambot.api.Client;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
@@ -37,6 +38,12 @@ public class BuyAlchItemTask implements WatTask {
         int targetCost = ConfigManager.getInstance().itemCost(target) + ConfigManager.getInstance().getConfigInt("price_modifier");
         int targetId = ConfigManager.getInstance().getItemIds().get(target);
 
+        if(targetQty == 0) {
+            ConfigManager.getInstance().getNewAlchTarget();
+            Logger.error("had a qty of 0 for some reason");
+            return;
+        }
+
         if(Bank.isOpen() && !Bank.close()) {
             Logger.error("error closing bank");
             return;
@@ -53,6 +60,20 @@ public class BuyAlchItemTask implements WatTask {
             Sleep.sleepUntil(GrandExchange::isOpen, 5000);
         }
 
+        if(GrandExchange.isReadyToCollect()) {
+            while(GrandExchange.isReadyToCollect()) {
+                if(!GrandExchange.collect()) {
+                    Logger.error("prelim: failed to collect at G.E");
+                }
+
+                Sleep.sleepUntil(() -> !GrandExchange.isReadyToCollect(), 500);
+            }
+
+            Logger.warn("failsafe: getting new target, there were items in the G.E");
+            ConfigManager.getInstance().getNewAlchTarget();
+            return;
+        }
+
         int slot = GrandExchange.getFirstOpenSlot();
         if(slot > -1) {
             if(!GrandExchange.isBuyOpen()) {
@@ -65,13 +86,23 @@ public class BuyAlchItemTask implements WatTask {
             }
 
             if(!GrandExchange.addBuyItem(target)) {
-                Logger.error("error adding buy item: " + target);
+                if(GrandExchange.isOpen() && !GrandExchange.close()) {
+                    Logger.error("error adding buy item: " + target);
+                }
+
+                return;
             }
 
             Sleep.sleepUntil(() -> GrandExchange.getCurrentChosenItemID() == targetId, 5000);
 
             if(GrandExchange.getCurrentChosenItemID() != targetId) {
                 Logger.error("error with item id, needed " + targetId + " but got " + GrandExchange.getCurrentChosenItemID());
+                while(GrandExchange.isOpen()) {
+                    if (!GrandExchange.close()) {
+                        Logger.error("problem closing the G.E");
+                    }
+                }
+
                 return;
             }
 
@@ -101,12 +132,16 @@ public class BuyAlchItemTask implements WatTask {
 
             long started = Instant.now().getEpochSecond();
             while(!GrandExchange.isReadyToCollect(slot)) {
-                if(!GrandExchange.isOpen() || !GrandExchange.slotContainsItem(slot)) {
+                if(!GrandExchange.isOpen() || !GrandExchange.slotContainsItem(slot) || !Client.isLoggedIn()) {
                     break;
                 }
 
                 long now = Instant.now().getEpochSecond();
-                if((now - started) > 15) {
+                if((now - started) > 45) {
+                    Logger.warn("got stuck in loop during purchase, breaking");
+                    break;
+                }
+                else if((now - started) > 15) {
                     Logger.log("waited 15s for offer to fulfill, cancelling");
 
                     if(!GrandExchange.cancelOffer(slot)) {
@@ -117,12 +152,18 @@ public class BuyAlchItemTask implements WatTask {
                 }
             }
 
-            if(!GrandExchange.collect()) {
+            if(GrandExchange.isReadyToCollect() && !GrandExchange.collect()) {
                 Logger.error("error collecting from exchange");
                 return;
             }
 
+            started = Instant.now().getEpochSecond();
             while(GrandExchange.slotContainsItem(slot)) {
+                long now = Instant.now().getEpochSecond();
+                if(GrandExchange.isBuyOpen() || !GrandExchange.isOpen() || (now - started) > 15 || !Client.isLoggedIn()) {
+                    break;
+                }
+
                 Sleep.sleepUntil(() -> !GrandExchange.slotContainsItem(slot), 100);
             }
 
@@ -143,8 +184,13 @@ public class BuyAlchItemTask implements WatTask {
                     ConfigManager.getInstance().getPurchasedAmount().put(target, amountHave);
                 }
 
-                /*if((ConfigManager.getInstance().getBuyLimits().get(target) / 3) > amountHave) {
-                    Logger.log("but got less than a third of the buy limit, so wont get again");
+                if(ConfigManager.getInstance().getPurchasedAmount().get(target) >= ConfigManager.getInstance().getBuyLimits().get(target)) {
+                    Logger.warn("bought >= 4 hour limit for: " + target);
+                    ConfigManager.getInstance().addItemExpiry(target);
+                }
+
+                /*if((ConfigManager.getInstance().getBuyLimits().get(target) / 4) > amountHave) {
+                    Logger.log("but got less than a q of the buy limit, so wont get again");
                     ConfigManager.getInstance().getNoBuy().add(target);
                 }*/
 

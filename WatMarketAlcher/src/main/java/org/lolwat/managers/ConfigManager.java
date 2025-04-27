@@ -110,6 +110,7 @@ public class ConfigManager {
         defaultProfile.addProperty("buy_nature_qty", 2000);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
         defaultProfile.addProperty("mule_port", 8081);
+        defaultProfile.addProperty("item_inventory_slot", 11);
 
         JsonObject items = new JsonObject();
         items.addProperty("Trousers", 1);
@@ -126,8 +127,7 @@ public class ConfigManager {
     }
 
     public boolean allowedToBuy(String name) {
-        return !purchasedWhen.containsKey(name) && !noBuy.contains(name) &&
-                (!purchasedWhen.containsKey(name) || purchasedAmount.get(name) < buyLimits.get(name));
+        return !purchasedWhen.containsKey(name) && !noBuy.contains(name);
     }
 
     public void getNewAlchTarget() {
@@ -138,45 +138,53 @@ public class ConfigManager {
         String bestTarget = null;
 
         if (alchables == null || alchables.isEmpty()) {
+            Logger.error("ran out of alchables somehow - script stopped");
+            ScriptManager.getScriptManager().stop();
             return;
         }
 
         for(String item : alchables.keySet()) {
             if(Inventory.contains(item) || Bank.contains(item)) {
-                Logger.log("selecting already owned item");
-                bestTarget = item;
+                currentTarget = item;
                 currentTargetAmount = Inventory.count(item) + Bank.count(item);
+                Logger.log("selecting already owned item: " + item + " (x" + currentTargetAmount + ")");
+                return;
+            }
+        }
+
+        int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
+        int toBuy = 0;
+
+        List<Map.Entry<String, Integer>> sortedAlchables = new ArrayList<>(alchables.entrySet());
+        sortedAlchables.sort((entry1, entry2) -> {
+            int profit1 = calculateProfit(entry1.getKey(), entry1.getValue());
+            int profit2 = calculateProfit(entry2.getKey(), entry2.getValue());
+            return Integer.compare(profit2, profit1);
+        });
+
+        for (Map.Entry<String, Integer> entry : sortedAlchables) {
+            if (allowedToBuy(entry.getKey())) {
+                bestTarget = entry.getKey();
+                toBuy = totalCoins / alchables.get(entry.getKey());
                 break;
             }
         }
 
-        if (bestTarget == null) {
-            int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
-            int toBuy = 0;
-
-            List<Map.Entry<String, Integer>> sortedAlchables = new ArrayList<>(alchables.entrySet());
-            sortedAlchables.sort((entry1, entry2) -> {
-                int profit1 = calculateProfit(entry1.getKey(), entry1.getValue());
-                int profit2 = calculateProfit(entry2.getKey(), entry2.getValue());
-                return Integer.compare(profit2, profit1);
-            });
-
-            for (Map.Entry<String, Integer> entry : sortedAlchables) {
-                if (allowedToBuy(entry.getKey())) {
-                    bestTarget = entry.getKey();
-                    toBuy = totalCoins / entry.getValue();
-                    break;
-                }
+        if (bestTarget != null) {
+            int buyLimit = buyLimits.get(bestTarget);
+            if(purchasedAmount.containsKey(bestTarget)) {
+                buyLimit -= purchasedAmount.get(bestTarget);
             }
 
-            if (bestTarget != null) {
-                int buyLimit = buyLimits.get(bestTarget);
-                currentTargetAmount = Math.min(buyLimit, toBuy);
-            }
+            currentTargetAmount = Math.min(buyLimit, toBuy);
         }
 
-        Logger.log("selected target for HA: " + bestTarget + " x" + currentTargetAmount);
-        currentTarget = bestTarget;
+        if(currentTargetAmount > 0) {
+            Logger.log("selected target for HA: " + bestTarget + " x" + currentTargetAmount);
+            currentTarget = bestTarget;
+        } else {
+            addItemExpiry(bestTarget);
+        }
     }
 
     private int calculateProfit(String name, int buyPrice) {
@@ -205,14 +213,6 @@ public class ConfigManager {
                 purchasedAmount.remove(entry.getKey());
                 iterator.remove();
                 Logger.log("removed nobuy restrict for: " + entry.getKey());
-            }
-
-            if (!noBuy.contains(entry.getKey())
-                    && purchasedWhen.containsKey(entry.getKey())
-                    && buyLimits.get(entry.getKey()) >= purchasedAmount.get(entry.getKey())) {
-
-                Logger.log("removing item from list: " + entry.getKey());
-                iterator.remove();
             }
         }
     }
@@ -252,7 +252,7 @@ public class ConfigManager {
             JsonObject highPricesJson = gson.fromJson(result.toString(), JsonObject.class).getAsJsonObject("data");
 
             if (getNaturePrice() <= 0) {
-                Logger.error("problem");
+                Logger.error("problem - nature rune price is <= 0");
                 ScriptManager.getScriptManager().stop();
                 return;
             }

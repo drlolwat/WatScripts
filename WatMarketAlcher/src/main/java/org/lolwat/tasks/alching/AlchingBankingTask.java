@@ -11,7 +11,6 @@ import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.misc.MulingTask;
 
 import java.util.HashMap;
@@ -42,40 +41,22 @@ public class AlchingBankingTask implements WatTask {
         }
 
         if(Bank.contains("Nature rune")) {
-            if(!Bank.withdraw("Nature rune")) {
+            if(!Bank.withdrawAll("Nature rune")) {
                 Logger.error("error withdrawing excess runes");
                 return;
             }
         }
 
-        int coinsOnHand = Bank.count("Coins") + Inventory.count("Coins");
-        if(coinsOnHand >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
-            int totalToMule = ConfigManager.getInstance().getConfigInt("mule_at_gp")
-                    - ConfigManager.getInstance().getConfigInt("keep_gp");
-            int inventoryCoins = Inventory.count("Coins");
-
-            if(totalToMule > 0) {
-                if (inventoryCoins != totalToMule) {
-                    int difference = (inventoryCoins - totalToMule);
-                    if(inventoryCoins > totalToMule) {
-                        if(!Bank.deposit("Coins", difference)) {
-                            Logger.error("error depositing coins before muling");
-                            return;
-                        }
-                    } else {
-                        if(!Bank.withdraw("Coins", difference)) {
-                            Logger.error("error withdrawing coins before muling");
-                        }
-                    }
-                }
-
-                Logger.warn("handing off " + NumUtils.simplifyNumber(totalToMule) + " to the mule");
-                Sleep.sleepUntil(() -> Inventory.count("Coins") == ConfigManager.getInstance().getConfigInt("mule_at_gp"), 5000);
-                TaskManager.getInstance().setCurrentTask(new MulingTask("Muling Gold", Worlds.getCurrentWorld(), this));
+        if(Bank.contains("Coins")) {
+            if(!Bank.withdrawAll("Coins")) {
+                Logger.error("error withdrawing excess coins");
                 return;
             }
         }
 
+        Bank.resetCache();
+
+        int coinsOnHand = Bank.count("Coins") + Inventory.count("Coins");
         String target = ConfigManager.getInstance().getCurrentTarget();
         int targetsOnHand = Bank.count(x -> x != null && x.getName().equals(target))
                 + Inventory.count(x -> x != null && x.getName().equals(target));

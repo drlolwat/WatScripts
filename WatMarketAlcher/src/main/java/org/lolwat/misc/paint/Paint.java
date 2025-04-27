@@ -2,6 +2,7 @@ package org.lolwat.misc.paint;
 
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.world.Worlds;
+import org.dreambot.api.script.ScriptManager;
 import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
@@ -36,7 +37,7 @@ public class Paint implements PaintInfo {
             double profitPerHour = ConfigManager.getInstance().getTotalProfit() / elapsedTimeHours;
 
             return new String[]{
-                    "WatMarketAlcher",
+                    "WatMarketAlcher v" + ScriptManager.getScriptManager().getCurrentScript().getVersion(),
                     TaskManager.getInstance().getCurrentTask() != null ? "Task: " + TaskManager.getInstance().getCurrentTask().getName() : "",
                     "Time running: " + WatScript.getInstance().getElapsedTime(),
                     "Alchs: " + ConfigManager.getInstance().getTotalAlchs() + " (" + NumUtils.simplifyNumber(alchsPerHour) + "/h)",

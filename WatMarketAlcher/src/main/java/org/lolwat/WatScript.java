@@ -13,6 +13,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -32,10 +33,13 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.mouse.SmartMouseMultiDir;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
+import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -45,10 +49,26 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
 
-@ScriptManifest(name = "WatMarketAlcher", description = "WatAlcher", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatMarketAlcher",
+        description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
+        author = "lolwat",
+        version = 1.03,
+        category = Category.MAGIC,
+        image = "https://api.botbuddy.net/WatScripts.png")
+
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     public static final Instant startTime = Instant.now();
+
+    private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
+        put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user3", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user6", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+    }};
 
     @Getter
     private static WatScript instance;
@@ -77,6 +97,26 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     }
 
     private void doStart(String profile) {
+        if(Client.getForumUser() == null) {
+            Logger.error("lolwat");
+            ScriptManager.getScriptManager().stop();
+            return;
+        }
+
+        boolean auth = false;
+        for(String u : webhookUrls.keySet()) {
+            if(Client.getForumUser().getUsername().toLowerCase().equals(u)) {
+                auth = true;
+                break;
+            }
+        }
+
+        if(!auth) {
+            Logger.error("lulwut");
+            ScriptManager.getScriptManager().stop();
+            return;
+        }
+
         if (instance == null) {
             Logger.log(Color.green, "WatScript starting: assigning instance");
             instance = this;
@@ -95,8 +135,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(m);
+        Mouse.setMouseAlgorithm(new SmartMouseMultiDir());
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
@@ -157,6 +196,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     public int onLoop() {
         if (!Client.isLoggedIn()) {
             if (TaskManager.getInstance().getCurrentTask() == null) {
+                ConfigManager.getInstance().setCurrentTarget(null);
                 TaskManager.getInstance().setCurrentTask(null);
                 Logger.log("Enabling login manager");
                 enableLoginManager();
@@ -168,7 +208,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        /*
+
         if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
                 && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
                 && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
@@ -182,14 +222,14 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
         }
 
-        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof CombatTask) {
+        if(!GenericUtils.isMember()) {
             Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(
                     (TaskManager.getInstance().getCurrentTask() != null) ?
                             TaskManager.getInstance().getCurrentTask() : null
             ));
             return 300;
-        }*/
+        }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
             // things to do if the task is active

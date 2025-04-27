@@ -10,15 +10,19 @@ import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.wrappers.widgets.Menu;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import java.util.HashMap;
 
@@ -59,9 +63,47 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
+        int coinsOnHand = Bank.count("Coins") + Inventory.count("Coins");
+        int totalToMule = ConfigManager.getInstance().getConfigInt("mule_at_gp")
+                - ConfigManager.getInstance().getConfigInt("keep_gp");
+        int inventoryCoins = Inventory.count("Coins");
+
+        if (coinsOnHand >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
+            if (inventoryCoins != totalToMule) {
+                if(!Bank.isOpen()) {
+                    ItemUtils.bank(this);
+                    return;
+                }
+
+                int difference = totalToMule - inventoryCoins;
+                if (difference > 0) {
+                    if (!Bank.withdraw("Coins", difference)) {
+                        Logger.error("error withdrawing coins before muling");
+                        return;
+                    }
+                } else {
+                    if (!Bank.deposit("Coins", -difference)) {
+                        Logger.error("error depositing coins before muling");
+                        return;
+                    }
+                }
+            }
+
+            Logger.warn("handing off " + NumUtils.simplifyNumber(totalToMule) + " to the mule");
+            Sleep.sleepUntil(() -> Inventory.count("Coins") == totalToMule, 5000);
+            TaskManager.getInstance().setCurrentTask(new MulingTask("Muling Gold", Worlds.getCurrentWorld(), new AlchingBankingTask(this)));
+            return;
+        }
+
         if (!Inventory.contains(x -> x != null && x.getName().equals(item))) {
-            Logger.log("We need to grab HA target (" + item + ")");
-            TaskManager.getInstance().setCurrentTask(new AlchingBankingTask(this));
+            if(Bank.contains(x -> x != null && x.getName().equals(item))) {
+                Logger.log("We need to grab HA target (" + item + ")");
+                TaskManager.getInstance().setCurrentTask(new AlchingBankingTask(this));
+            } else {
+                Logger.log("onTask: fetching new target");
+                ConfigManager.getInstance().getNewAlchTarget();
+                TaskManager.getInstance().setCurrentTask(new BuyAlchItemTask(this));
+            }
             return;
         }
 
@@ -100,22 +142,24 @@ public class HighAlchemyTask implements WatTask {
                 ConfigManager.getInstance().getNaturePrice()) -
                 ConfigManager.getInstance().getConfigInt("price_modifier");
 
-        //Logger.log("profit will be changed by +" + profitChange);
+        if(!Menu.isMenuManipulationActive()) {
+            int slot = ConfigManager.getInstance().getConfigInt("item_inventory_slot");
 
-        if(Inventory.getItemInSlot(11) == null || (Inventory.getItemInSlot(11) != null &&
-                !Inventory.getItemInSlot(11).getName().equals(ConfigManager.getInstance().getCurrentTarget()))) {
+            if (Inventory.getItemInSlot(slot) == null || (Inventory.getItemInSlot(slot) != null &&
+                    !Inventory.getItemInSlot(slot).getName().equals(ConfigManager.getInstance().getCurrentTarget()))) {
 
-            if (!Tabs.isOpen(Tab.INVENTORY)) {
-                Tabs.open(Tab.INVENTORY);
-                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 5000);
+                if (!Tabs.isOpen(Tab.INVENTORY)) {
+                    Tabs.open(Tab.INVENTORY);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 5000);
+                }
+
+                if (!Inventory.drag(item, slot)) {
+                    Logger.error("error dragging HA target to slot");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> Inventory.getItemInSlot(slot) != null, 5000);
             }
-
-            if(!Inventory.drag(item, 11)) {
-                Logger.error("error dragging HA target to slot");
-                return;
-            }
-
-            Sleep.sleepUntil(() -> Inventory.getItemInSlot(11) != null, 5000);
         }
 
         if (!Tabs.isOpen(Tab.MAGIC)) {
@@ -156,7 +200,10 @@ public class HighAlchemyTask implements WatTask {
         }
 
         if(!Inventory.interact(item)) {
-            Logger.error("problem interacting with HA target");
+            if(!Magic.deselect()) {
+                Logger.error("error deselecting");
+            }
+
             return;
         }
 
