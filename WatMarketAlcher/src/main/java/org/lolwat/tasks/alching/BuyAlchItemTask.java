@@ -103,6 +103,7 @@ public class BuyAlchItemTask implements WatTask {
                     }
                 }
 
+                ConfigManager.getInstance().removeCooldown(target);
                 return;
             }
 
