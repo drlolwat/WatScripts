@@ -54,7 +54,7 @@ import java.util.HashMap;
 @ScriptManifest(name = "WatMarketAlcher",
         description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
         author = "lolwat",
-        version = 1.03,
+        version = 1.04,
         category = Category.MAGIC,
         image = "https://api.botbuddy.net/WatScripts.png")
 
