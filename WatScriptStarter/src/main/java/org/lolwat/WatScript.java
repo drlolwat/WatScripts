@@ -81,14 +81,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
     }
 
-    private final CustomPaint paint = new CustomPaint(new Paint(),
-            CustomPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN,
-            new Color[]{Color.WHITE}, // Text color
-            "Verdana",
-            new Color[]{new Color(98, 86, 12)}, // Background color
-            new Color[]{Color.BLACK}, // Border color
-            1, false, 5, 3, 0);
-
+    private CustomPaint paint;
     private final RenderingHints aa = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
     @Override
@@ -143,16 +136,19 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        /*if (!Menu.isMenuManipulationActive()) {
-            Logger.log("Enabling menu manipulation and noclick walk");
-            Menu.toggleMenuManipulation(true);
-            Walking.toggleNoClickWalk(true);
-        }*/
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
         WebFinder.getWebFinder().disableTeleport(MagicTeleport.LUMBRIDGE_HOME_TELEPORT);
+
+        paint = new CustomPaint(new Paint(),
+                CustomPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN,
+                new Color[]{Color.WHITE}, // Text color
+                "Verdana",
+                new Color[]{new Color(98, 86, 12)}, // Background color
+                new Color[]{Color.BLACK}, // Border color
+                1, false, 5, 3, 0);
     }
 
     public void sendWebhook(String message, boolean error) {

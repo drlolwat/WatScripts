@@ -144,8 +144,10 @@ public class ConfigManager {
         String bestTarget = null;
 
         if (alchables == null || alchables.isEmpty()) {
-            Logger.error("ran out of alchables somehow - script stopped");
-            ScriptManager.getScriptManager().stop();
+            Logger.error("ran out of alchables somehow - resetting all");
+            purchasedWhen.clear();
+            purchasedAmount.clear();
+            noBuy.clear();
             return;
         }
 
