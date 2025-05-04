@@ -6,22 +6,18 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
-import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.ItemUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,24 +112,6 @@ public class LiquidationTask implements WatTask {
                     Sleep.sleepUntil(Bank::isOpen, Calculations.random(3000, 6000));
                 }
 
-                if(!ItemUtils.bankContains("Ava's accumulator", 1) && !Inventory.contains("Ava's accumulator")) {
-                    Logger.error("Missing Ava's accumulator, stopping script");
-                    ScriptManager.getScriptManager().stop();
-                    return;
-                } else {
-                    if(!Bank.withdraw("Ava's accumulator", 1)) {
-                        Logger.error("Failed to withdraw Ava's accumulator");
-                        return;
-                    }
-
-                    Sleep.sleepUntil(() -> Inventory.contains("Ava's accumulator"), Calculations.random(3000, 6000));
-                }
-
-                if(!Inventory.contains("Ava's accumulator")) {
-                    Logger.error("Failed to withdraw Ava's accumulator");
-                    return;
-                }
-
                 if(Bank.isOpen()) {
                     Bank.close();
                     Sleep.sleepUntil(() -> !Bank.isOpen(), Calculations.random(3000, 6000));
@@ -144,25 +122,7 @@ public class LiquidationTask implements WatTask {
                     Sleep.sleepUntil(() -> !GrandExchange.isOpen(), Calculations.random(3000, 6000));
                 }
 
-                Item i = Inventory.get(x -> x != null && x.getName().equals("Ava's accumulator"));
-                if(i != null) {
-                    if(!i.interact("Commune")) {
-                        Logger.error("Failed to commune with Ava's accumulator");
-                        return;
-                    }
-
-                    Sleep.sleepUntil(Dialogues::inDialogue, Calculations.random(3000, 6000));
-                    while(Dialogues.inDialogue()) {
-                        DialogueUtils.solve(Collections.singletonList("Yes"));
-                    }
-
-                } else {
-                    Logger.error("Missing Ava's accumulator, stopping script");
-                    ScriptManager.getScriptManager().stop();
-                }
-
-                Logger.log("LIQUIDATION COMPLETE");
-                ScriptManager.getScriptManager().stop();
+                TaskManager.getInstance().setCurrentTask(new BankingTask(null, null, 1, null, null));
             }
         } else {
             TaskManager.getInstance().setCurrentTask(new TraversalTask(loc, this));

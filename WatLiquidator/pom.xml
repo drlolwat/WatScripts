@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lolwat</groupId>
-    <artifactId>WatScript1Preparer</artifactId>
+    <artifactId>WatLiquidator</artifactId>
     <version>1.0-RELEASE</version>
 
     <properties>

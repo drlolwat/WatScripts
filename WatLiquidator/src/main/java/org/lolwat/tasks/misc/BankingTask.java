@@ -446,30 +446,28 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Finished checks");
 
-        if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
-            int invMoney = 0;
-            int bankMoney = 0;
+        int invMoney = 0;
+        int bankMoney = 0;
 
-            if (Inventory.contains("Coins")) {
-                invMoney = Inventory.count("Coins");
-            }
+        if (Inventory.contains("Coins")) {
+            invMoney = Inventory.count("Coins");
+        }
 
-            if (Bank.contains("Coins")) {
-                bankMoney = Bank.count("Coins");
-            }
+        if (Bank.contains("Coins")) {
+            bankMoney = Bank.count("Coins");
+        }
 
-            if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
-                int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("keep_gp");
-                if (toWithdraw > 0) {
-                    Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                    if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
-                        Bank.depositAllExcept("Coins");
-                    }
-                    Sleep.sleep(100, 200);
-                    Bank.withdraw("Coins", toWithdraw);
-                    Sleep.sleep(200, 400);
-                    postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
+        if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
+            int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("keep_gp");
+            if (toWithdraw > 0) {
+                Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
+                if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
+                    Bank.depositAllExcept("Coins");
                 }
+                Sleep.sleep(100, 200);
+                Bank.withdraw("Coins", toWithdraw);
+                Sleep.sleep(200, 400);
+                postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), new EndScriptTask());
             }
         }
 

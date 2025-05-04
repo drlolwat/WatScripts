@@ -9,9 +9,8 @@ import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.prep.PreparationTask;
+import org.lolwat.tasks.misc.LiquidationTask;
 
 import java.awt.*;
 import java.time.Instant;
@@ -32,7 +31,7 @@ public class TaskManager {
 
     public TaskManager() {
         tasks = Lists.newArrayList();
-        tasks.add(new PreparationTask());
+        tasks.add(new LiquidationTask(null, 0));
 
         setCheckedHoursAt(0);
         setMinutesPlayed(0);
@@ -52,7 +51,7 @@ public class TaskManager {
     }
 
     public void getNewTask(boolean noQuest) {
-        setCurrentTask(new PreparationTask(), 0);
+        setCurrentTask(new LiquidationTask(null, 0), 0);
     }
 
     public WatTask getCurrentTask() {
@@ -88,12 +87,6 @@ public class TaskManager {
 
         if (!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
-            return true;
-        }
-
-        if (!GenericUtils.isMember()) {
-            setCurrentTask(new BondingTask(null), 0);
-            Logger.log("We are making our account a member");
             return true;
         }
 

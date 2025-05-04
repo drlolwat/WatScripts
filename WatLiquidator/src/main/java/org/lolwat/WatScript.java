@@ -24,7 +24,6 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
@@ -35,7 +34,7 @@ import org.lolwat.tasks.misc.HopperTask;
 
 import java.awt.*;
 
-@ScriptManifest(name = "WatScript1Preparer", description = "WatScript1Preparer", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatLiquidator", description = "WatLiquidator", author = "lolwat", version = 1.0, category = Category.MISC)
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
 
@@ -87,11 +86,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        if (!Menu.isMenuManipulationActive()) {
-            Logger.log("Enabling menu manipulation and noclick walk");
-            Menu.toggleMenuManipulation(true);
-            Walking.toggleNoClickWalk(true);
-        }
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
