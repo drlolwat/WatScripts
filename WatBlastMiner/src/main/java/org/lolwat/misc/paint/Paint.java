@@ -16,7 +16,7 @@ public class Paint implements PaintInfo {
         double oresPerHour = oresPicked / elapsedTimeHours;
 
         return new String[] {
-                "WatMiner2",
+                "WatBlaster",
                 "Time running: " + WatScript.getInstance().getElapsedTime(),
                 "Dynamite placed: " + dynamitePlaced + " (" + String.format("%.2f", dynamitePerHour) + "/h)",
                 "Ore picked up: " + oresPicked + " (" + String.format("%.2f", oresPerHour) + "/h)",

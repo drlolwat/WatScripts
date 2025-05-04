@@ -28,17 +28,17 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
-import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.mouse.SmartMouseRegular;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.blast.BlastMiningTask;
 import org.lolwat.tasks.misc.BondingTask;
+import org.lolwat.tasks.misc.DeathsCofferTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
 
@@ -53,7 +53,13 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
-@ScriptManifest(name = "WatScript2", description = "WatScript2", author = "lolwat", version = 0.1, category = Category.MISC)
+@ScriptManifest(name = "WatBlaster",
+        description = "Mines ore at the Blast Mine for 300-400k/gp per hour.",
+        author = "lolwat",
+        version = 1.00,
+        category = Category.MINING,
+        image = "https://api.botbuddy.net/WatScripts.png")
+
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private final CustomPaint paint = new CustomPaint(new Paint(),
             CustomPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN,
@@ -119,8 +125,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(m);
+        Mouse.setMouseAlgorithm(new SmartMouseRegular());
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
@@ -128,12 +133,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         getRandomManager().disableSolver(RandomEvent.DISMISS);
-        if (!Menu.isMenuManipulationActive()) {
-            Logger.log("Enabling menu manipulation and noclick walk");
-            Menu.toggleMenuManipulation(true);
-            Walking.toggleNoClickWalk(true);
-        }
-
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();
         WebFinder.getWebFinder().disableInventoryTeleports();
@@ -189,6 +188,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         if (ConfigManager.getInstance().isFirstStart()) {
+            Camera.setZoom(300);
             ConfigManager.getInstance().setFirstStart(false);
         }
 
@@ -254,8 +254,12 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
+        if(!m.getUsername().isEmpty()) {
+            return;
+        }
+
         if (m.getMessage().equals("Oh dear, you are dead!")) {
-            sendWebhook(AccountManager.getAccountNickname() + " has blown themselves up", true);
+            handleDeath();
         }
 
         if (logoutMessages.contains(m.getMessage()) && TaskManager.getInstance().getCurrentTask() instanceof BlastMiningTask) {
@@ -267,6 +271,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                             )
                     );
         }
+    }
+
+    private void handleDeath() {
+        TaskManager.getInstance().setCurrentTask(new DeathsCofferTask());
     }
 
     @Override

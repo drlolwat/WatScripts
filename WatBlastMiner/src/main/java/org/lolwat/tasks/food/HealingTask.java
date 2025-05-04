@@ -2,6 +2,7 @@ package org.lolwat.tasks.food;
 
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -26,9 +27,18 @@ public class HealingTask implements WatTask {
 
     @Override
     public void execute() {
-        if(Combat.getHealthPercent() == 100) {
+        if(Combat.getHealthPercent() >= 100) {
             TaskManager.getInstance().setCurrentTask(post);
             return;
+        }
+
+        if(Bank.isOpen()) {
+            if(!Bank.close()) {
+                Logger.error("problem closing bank during healing");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
         }
 
         if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Jug of wine"))) {
@@ -76,7 +86,7 @@ public class HealingTask implements WatTask {
     @Override
     public HashMap<String, Integer> inventoryRequired() {
         HashMap<String, Integer> ret = new HashMap<>();
-        ret.put("Jug of wine", -28);
+        ret.put("Jug of wine", 28);
         return ret;
     }
 }

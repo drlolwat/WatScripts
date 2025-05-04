@@ -197,7 +197,7 @@ public class BankingTask implements WatTask {
                         }
 
                         if (Bank.withdraw(x -> x != null && x.getName().contains(entry.getKey()), amountRequired)) {
-                            Sleep.sleepUntil(() -> Inventory.contains(entry.getKey()), Calculations.random(5000, 10000));
+                            Sleep.sleepUntil(() -> Inventory.contains(x -> x != null && x.getName().contains(entry.getKey())), Calculations.random(5000, 10000));
                             if (Inventory.contains(entry.getKey())) {
                                 Logger.log("Equipment: Successfully withdrew: " + entry.getKey());
                             }

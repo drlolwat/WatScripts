@@ -8,10 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="updates">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/food/HealingTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseRegular.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DialogueUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/DeathsCofferTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/regular.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/blast/BlastMiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/blast/BlastMiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/food/HealingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/food/HealingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +70,7 @@
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts-private/WatScript2.git&quot;,
-    &quot;second&quot;: &quot;fcdb1a08-108d-4202-8587-86031de7c5f7&quot;
+    &quot;second&quot;: &quot;65dfe5d7-4534-488d-88ba-2e60a0939bdf&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -94,13 +100,14 @@
     &quot;Notification.DoNotAsk-VCS Hosting Integrations&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/chchp/IdeaProjects/WatScript2/src/main/java/org/lolwat/misc&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatScript2/src/main/resources&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -116,6 +123,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="C:\Users\chchp\IdeaProjects\WatScript2\src\main\java\org\lolwat\misc" />
     </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
@@ -128,12 +136,28 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.misc.utils" />
+      <recent name="org.lolwat.tasks.misc" />
+      <recent name="org.lolwat.misc.mouse" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -230,6 +254,8 @@
       <workItem from="1734397821531" duration="1122000" />
       <workItem from="1734800084035" duration="552000" />
       <workItem from="1736140933467" duration="51000" />
+      <workItem from="1746374614651" duration="4218000" />
+      <workItem from="1746388187546" duration="909000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>

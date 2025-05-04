@@ -188,8 +188,13 @@ public class BlastMiningTask implements WatTask {
                 runObject(c);
             } else {
                 Logger.log("running object, need to move");
-                Walking.walk(c.getAdjacentTile());
-                Sleep.sleepUntil(() -> Players.getLocal().getTile().equals(c.getAdjacentTile()) && !Players.getLocal().isAnimating(), 2000);
+                if(Walking.shouldWalk(4)) {
+                    Walking.walkOnScreen(c.getAdjacentTile());
+                }
+
+                Sleep.sleepUntil(() -> Players.getLocal().getTile().equals(c.getAdjacentTile())
+                        && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 3000);
+
                 runObject(c);
             }
 
@@ -325,7 +330,7 @@ public class BlastMiningTask implements WatTask {
                                 break;
 
                             if (ore != null) {
-                                if (!ore.interact("Take")) {
+                                if (!ore.interact("Take", true, false)) {
                                     Logger.log("failed to take ore " + ore.getName());
                                     continue;
                                 }
@@ -340,12 +345,16 @@ public class BlastMiningTask implements WatTask {
                 }
                 else {
                     if(!Players.getLocal().getTile().equals(c.getAdjacentTile())) {
-                        Walking.walk(c.getAdjacentTile());
-                        Sleep.sleepUntil(() -> Players.getLocal().getTile().equals(c.getAdjacentTile()) && !Players.getLocal().isAnimating(), 2000);
+                        if(Walking.shouldWalk(4)) {
+                            Walking.walkOnScreen(c.getAdjacentTile());
+                        }
+
+                        Sleep.sleepUntil(() -> Players.getLocal().getTile().equals(c.getAdjacentTile())
+                                && !Players.getLocal().isAnimating() && !Players.getLocal().isMoving(), 3000);
                     }
 
                     if (cavity.hasAction(c.getAction())) {
-                        if (!cavity.interact(c.getAction())) {
+                        if (!cavity.interact(c.getAction(), true, false)) {
                             Logger.log("failed to interact with cavity: " + cavity.getName() + " with action: " + c.getAction());
                         } else {
                             Logger.log("interacted with cavity");
