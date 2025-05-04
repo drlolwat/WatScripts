@@ -64,32 +64,32 @@ public class HighAlchemyTask implements WatTask {
         }
 
         int coinsOnHand = Bank.count("Coins") + Inventory.count("Coins");
-        int totalToMule = ConfigManager.getInstance().getConfigInt("mule_at_gp")
-                - ConfigManager.getInstance().getConfigInt("keep_gp");
+        int totalToMule = coinsOnHand - ConfigManager.getInstance().getConfigInt("keep_gp");
         int inventoryCoins = Inventory.count("Coins");
 
         if (coinsOnHand >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
             if (inventoryCoins != totalToMule) {
-                if(!Bank.isOpen()) {
+                if (!Bank.isOpen()) {
                     ItemUtils.bank(this);
                     return;
                 }
 
-                int difference = totalToMule - inventoryCoins;
-                if (difference > 0) {
-                    if (!Bank.withdraw("Coins", difference)) {
-                        Logger.error("error withdrawing coins before muling");
+                if (inventoryCoins < totalToMule) {
+                    int amountToWithdraw = totalToMule - inventoryCoins;
+                    if (!Bank.withdraw("Coins", amountToWithdraw)) {
+                        Logger.error("Error withdrawing coins before muling");
                         return;
                     }
                 } else {
-                    if (!Bank.deposit("Coins", -difference)) {
-                        Logger.error("error depositing coins before muling");
+                    int amountToDeposit = inventoryCoins - totalToMule;
+                    if (!Bank.deposit("Coins", amountToDeposit)) {
+                        Logger.error("Error depositing coins before muling");
                         return;
                     }
                 }
             }
 
-            Logger.warn("handing off " + NumUtils.simplifyNumber(totalToMule) + " to the mule");
+            Logger.warn("Handing off " + NumUtils.simplifyNumber(totalToMule) + " to the mule");
             Sleep.sleepUntil(() -> Inventory.count("Coins") == totalToMule, 5000);
             TaskManager.getInstance().setCurrentTask(new MulingTask("Muling Gold", Worlds.getCurrentWorld(), new AlchingBankingTask(this)));
             return;

@@ -36,6 +36,7 @@ import org.lolwat.misc.mouse.SmartMouseMultiDir;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.alching.HighAlchemyTask;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.MulingTask;
@@ -211,27 +212,25 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             ConfigManager.getInstance().setFirstStart(false);
         }
 
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
+                    && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
+                    && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
+                if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+                    TaskManager.getInstance().setCurrentTask(new HopperTask(0,
+                            (TaskManager.getInstance().getCurrentTask() != null) ?
+                                    TaskManager.getInstance().getCurrentTask() : null), 0);
 
-        if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
-                && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
-                && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
-            if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
-                TaskManager.getInstance().setCurrentTask(new HopperTask(0,
-                        (TaskManager.getInstance().getCurrentTask() != null) ?
-                                TaskManager.getInstance().getCurrentTask() : null), 0);
-
-                Logger.log("We are hopping into a P2P world");
-                return 300;
+                    Logger.log("We are hopping into a P2P world");
+                    return 300;
+                } else {
+                    if (!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof HighAlchemyTask) {
+                        Logger.log("need to bond");
+                        TaskManager.getInstance().setCurrentTask(new BondingTask(new HighAlchemyTask()));
+                        return 300;
+                    }
+                }
             }
-        }
-
-        if(!GenericUtils.isMember()) {
-            Logger.log("need to bond");
-            TaskManager.getInstance().setCurrentTask(new BondingTask(
-                    (TaskManager.getInstance().getCurrentTask() != null) ?
-                            TaskManager.getInstance().getCurrentTask() : null
-            ));
-            return 300;
         }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
@@ -280,6 +279,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
+        if (!m.getUsername().isEmpty()) {
+            return;
+        }
+
         if (logoutMessages.contains(m.getMessage())) {
             TaskManager.getInstance().setCurrentTask
                     (
