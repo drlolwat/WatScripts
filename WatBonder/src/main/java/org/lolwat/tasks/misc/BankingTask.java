@@ -436,7 +436,7 @@ public class BankingTask implements WatTask {
                     int totalPrice = finalPrice;
                     TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
                         {
-                            put("Coins", totalPrice);
+                            put("Coins", totalPrice + 10000000);
                         }
                     }, this));
                     return;
