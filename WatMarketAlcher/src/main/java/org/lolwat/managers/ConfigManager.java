@@ -9,6 +9,8 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.tasks.alching.AlchingBankingTask;
+import org.lolwat.tasks.alching.HighAlchemyTask;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -144,10 +146,10 @@ public class ConfigManager {
         String bestTarget = null;
 
         if (alchables == null || alchables.isEmpty()) {
-            Logger.error("ran out of alchables somehow - resetting all");
             purchasedWhen.clear();
             purchasedAmount.clear();
             noBuy.clear();
+            getNewAlchTarget();
             return;
         }
 
@@ -156,6 +158,7 @@ public class ConfigManager {
                 currentTarget = item;
                 currentTargetAmount = Inventory.count(item) + Bank.count(item);
                 Logger.log("selecting already owned item: " + item + " (x" + currentTargetAmount + ")");
+                TaskManager.getInstance().setFutureTask(new AlchingBankingTask(new HighAlchemyTask()));
                 return;
             }
         }

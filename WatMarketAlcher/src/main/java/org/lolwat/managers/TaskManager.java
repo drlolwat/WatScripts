@@ -17,6 +17,9 @@ public class TaskManager {
     private WatTask currentTask;
     @Getter
     private int taskRunTime;
+    @Getter
+    @Setter
+    private WatTask futureTask;
 
     public TaskManager() {
 

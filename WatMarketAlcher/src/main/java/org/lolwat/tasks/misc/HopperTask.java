@@ -3,24 +3,15 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.Client;
 import org.dreambot.api.data.GameState;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.methods.interactive.Players;
-import org.dreambot.api.methods.map.Area;
-import org.dreambot.api.methods.prayer.Prayer;
-import org.dreambot.api.methods.prayer.Prayers;
+import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.methods.worldhopper.WorldHopper;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.interactive.GameObject;
-import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.GenericUtils;
-
-import java.util.HashMap;
 
 public class HopperTask implements WatTask {
     private final WatTask postTask;
@@ -39,42 +30,33 @@ public class HopperTask implements WatTask {
         world = toWorld;
     }
 
-    Area monsterArea = new Area(1289, 10100, 1296, 10093);
-
     @Override
     public void execute() {
-        if (postTask instanceof BondingTask || postTask instanceof MulingTask) {
-            if (Bank.isOpen()) {
-                Bank.close();
-                Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
-            }
-
-            if (startWorld == world || Worlds.getCurrentWorld() == world) {
-                TaskManager.getInstance().setCurrentTask(postTask);
+        if (Bank.isOpen()) {
+            if (!Bank.close()) {
+                Logger.error("problem closing bank during hop");
                 return;
             }
+
+            Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
         }
 
-        GameObject gate = GameObjects.closest(34642);
-        if (Worlds.getCurrentWorld() == startWorld) {
-            if (monsterArea.contains(Players.getLocal())) {
-                if (gate != null) {
-                    if (!gate.interact()) {
-                        Logger.log("failed to interact w exit gate onHop");
-                        return;
-                    }
-
-                    Sleep.sleepUntil(() -> !monsterArea.contains(Players.getLocal()) && !Players.getLocal().isInCombat(), 20000);
-                    return;
-                }
-
+        if (GrandExchange.isOpen()) {
+            if (!GrandExchange.close()) {
+                Logger.error("problem closing GE during hop");
                 return;
             }
 
-            if (!Prayers.toggle(false, Prayer.PROTECT_FROM_MISSILES)) {
-                Logger.log("failed to toggle protect from missiles");
-            }
+            Sleep.sleepUntil(() -> !GrandExchange.isOpen(), 5000);
+        }
 
+        if (startWorld == world || Worlds.getCurrentWorld() == world) {
+            Logger.log("no need to hop, already here");
+            TaskManager.getInstance().setCurrentTask(postTask);
+            return;
+        }
+
+        if (Worlds.getCurrentWorld() == startWorld) {
             if (!Tab.LOGOUT.isOpen()) {
                 Tab.LOGOUT.open();
                 Sleep.sleep(500, 1000);
@@ -100,22 +82,6 @@ public class HopperTask implements WatTask {
             Sleep.sleepUntil(() -> Worlds.getCurrentWorld() != startWorld && Client.getGameState().equals(GameState.LOGGED_IN), 10000);
         } else {
             if (Client.getGameState().equals(GameState.LOGGED_IN)) {
-                if (GenericUtils.tooManyPlayers(monsterArea, 1, true)) {
-                    TaskManager.getInstance().setCurrentTask(new HopperTask(0, postTask));
-                    return;
-                }
-
-                if (!monsterArea.contains(Players.getLocal())) {
-                    if (gate != null) {
-                        if (!gate.interact()) {
-                            Logger.log("failed to interact w entry gate onHopSuccess");
-                            return;
-                        }
-
-                        Sleep.sleepUntil(() -> monsterArea.contains(Players.getLocal()), 20000);
-                    }
-                }
-
                 TaskManager.getInstance().setCurrentTask(postTask);
             } else {
                 if (Client.getGameState().equals(GameState.LOADING)) {
@@ -136,11 +102,6 @@ public class HopperTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatScript instance) {
-
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
     }
@@ -153,16 +114,5 @@ public class HopperTask implements WatTask {
     @Override
     public Integer avoidAfterLevel() {
         return 101;
-    }
-
-
-    @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
     }
 }

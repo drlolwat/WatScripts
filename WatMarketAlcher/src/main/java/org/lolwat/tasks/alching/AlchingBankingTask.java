@@ -3,6 +3,7 @@ package org.lolwat.tasks.alching;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.bank.BankMode;
+import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
@@ -33,6 +34,15 @@ public class AlchingBankingTask implements WatTask {
             Logger.error("HAB: post task was null for some reason, going to HA");
             TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
             return;
+        }
+
+        if(GrandExchange.isOpen()) {
+            if(!GrandExchange.close()) {
+                Logger.error("HAB: problem closing GE");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> !GrandExchange.isOpen(), 5000);
         }
 
         if (!Bank.isOpen()) {
