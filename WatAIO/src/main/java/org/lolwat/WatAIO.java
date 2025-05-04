@@ -33,7 +33,7 @@ import org.lolwat.managers.QuestManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.WatConfig;
-import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.mouse.SmartMouseMultiDir;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WebUtils;
 import org.lolwat.tasks.mining.MiningTask;
@@ -98,8 +98,7 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(m);
+        Mouse.setMouseAlgorithm(new SmartMouseMultiDir());
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
