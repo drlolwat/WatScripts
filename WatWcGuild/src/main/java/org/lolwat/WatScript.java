@@ -72,6 +72,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
         put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user2", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
 
     private final CustomPaint paint = new CustomPaint(new Paint(),
