@@ -363,6 +363,7 @@ public class BankingTask implements WatTask {
                     if (buyingRequired.isEmpty()) {
                         if (!Bank.withdraw(x -> x != null && x.getName().contains(itemName), toWithdraw)) {
                             Logger.error("Inventory: Issue withdrawing " + itemName);
+                            return;
                         } else {
                             Logger.log("Inventory: Withdrew " + toWithdraw + " of: " + itemName);
                         }

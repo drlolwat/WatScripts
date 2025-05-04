@@ -3,7 +3,6 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -13,7 +12,6 @@ import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
-import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
@@ -25,7 +23,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatScript;
+import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
 import org.lolwat.managers.types.Teleport;
@@ -127,8 +125,6 @@ public class TraversalTask implements WatTask {
 
         if (GenericUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
-            double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
-
             if (targetDistance >= 1000 && !hasTeleported) {
                 Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
                 if (teleport != null) {
@@ -160,18 +156,22 @@ public class TraversalTask implements WatTask {
                             hasTeleported = true;
                             return;
                         } else {
-                            if (targetDistance > exchangeDistance
-                                    && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
+                            Logger.log("no teleport item available");
+                            List<Area> homeTeleAreas = Arrays.asList(
+                                    new Area(1288, 10101, 1337, 10051) // lizardman temple
+                            );
 
-                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
-                                    {
-                                        put(teleportItem, 1);
-                                    }
-                                }, null, 1, this, null));
-
-                                Logger.log("Traversal: missing teleport item " + teleportItem);
-                                return;
+                            for(Area a : homeTeleAreas) {
+                                if(a.contains(Players.getLocal())) {
+                                    Logger.log("home teleporting");
+                                    hasTeleported = true;
+                                    GenericUtils.castHomeTeleport();
+                                    return;
+                                }
                             }
+
+                            Logger.log("walking");
+                            hasTeleported = true;
                         }
                     } else {
                         if (Bank.isOpen()) {
@@ -302,28 +302,21 @@ public class TraversalTask implements WatTask {
     }
 
     @Override
+    public void onMessage(Message m) {
+        if(m.getMessage().startsWith("You need to wait")) {
+            Logger.log("home teleport is on cooldown");
+            TaskManager.getInstance().setCurrentTask(new LogoutTask(this, 1800));
+        }
+    }
+
+    @Override
     public boolean requiresLogin() {
         return true;
     }
 
     @Override
-    public int loopTime() {
-        return 400;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatScript instance) {
-
-    }
-
-    @Override
     public boolean canPerformTask() {
         return true;
-    }
-
-    @Override
-    public Skill trainsSkill() {
-        return Skill.HITPOINTS;
     }
 
 

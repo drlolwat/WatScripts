@@ -3,6 +3,7 @@ package org.lolwat.tasks.combat;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.grandexchange.LivePrices;
@@ -26,6 +27,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.wrappers.widgets.Menu;
 import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
@@ -126,6 +128,15 @@ public class MainCombatTask implements WatTask {
                     return;
                 }
             }
+
+            if (!Bank.isOpen() && Combat.isAutoRetaliateOn()) {
+                if (!Combat.toggleAutoRetaliate(false)) {
+                    Logger.log("failed to toggle auto retaliate off");
+                    return;
+                }
+
+                Sleep.sleepUntil(Combat::isAutoRetaliateOn, 1000);
+            }
         }
 
         if (!westArea.contains(Players.getLocal())) {
@@ -154,6 +165,14 @@ public class MainCombatTask implements WatTask {
 
             GameObject gate = GameObjects.closest(34642);
             if (gate != null) {
+                if(gate.distance(Players.getLocal()) > 10) {
+                    Area a = new Area(1292, 10089, 1293, 10082);
+                    while(!a.contains(Players.getLocal())) {
+                        Walking.walk(a);
+                        Sleep.sleepUntil(Walking::shouldWalk, 5000);
+                    }
+                }
+
                 if (!gate.interact()) {
                     Logger.log("failed to interact w gate");
                     return;
@@ -466,7 +485,7 @@ public class MainCombatTask implements WatTask {
                         Logger.log("couldnt run from anim, we dumb");
                     }
                     scheduled = false;
-                }, 600, TimeUnit.MILLISECONDS);
+                }, Menu.isMenuManipulationActive() ? 600 : 300, TimeUnit.MILLISECONDS);
             } else {
                 Logger.log("wheres the empty quadrant to run from the anim!");
             }
@@ -515,7 +534,7 @@ public class MainCombatTask implements WatTask {
                         Walking.walk(finalFurthestTile);
                         performAlching();
                         scheduled = false;
-                    }, 3350, TimeUnit.MILLISECONDS);
+                    }, Menu.isMenuManipulationActive() ? 3350 : 2650, TimeUnit.MILLISECONDS);
                 }
             } else {
                 Logger.log("no empty quadrant during spawns");
@@ -537,10 +556,14 @@ public class MainCombatTask implements WatTask {
                 Tabs.open(Tab.MAGIC);
             }
 
+            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.MAGIC), 5000);
+
             if (!Magic.castSpell(Normal.HIGH_LEVEL_ALCHEMY)) {
                 Logger.log("error casting HA");
                 return;
             }
+
+            Sleep.sleepUntil(Magic::isSpellSelected, 5000);
 
             if(!Magic.isSpellSelected()) {
                 Logger.log("failed to select HA");

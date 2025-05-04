@@ -7,6 +7,7 @@ import org.dreambot.api.methods.interactive.GameObjects;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.script.ScriptManager;
@@ -107,6 +108,14 @@ public class DeathsCofferTask implements WatTask {
 
             if(domain != null) {
                 if(!domain.interact("Enter")) {
+                    if(domain.distance(Players.getLocal()) > 10) {
+                        Area a = new Area(3238, 3198, 3244, 3196);
+                        while(!a.contains(Players.getLocal())) {
+                            Walking.walk(a);
+                            Sleep.sleepUntil(Walking::shouldWalk, 5000);
+                        }
+                    }
+
                     Logger.error("problem entering deaths domain");
                     return;
                 }

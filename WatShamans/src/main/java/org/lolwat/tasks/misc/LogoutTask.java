@@ -10,11 +10,17 @@ import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 
+import java.time.Instant;
+
 public class LogoutTask implements WatTask {
     private final WatTask post;
+    private final int secondsToWait;
+    private long startedWaitingAt;
 
-    public LogoutTask(WatTask post) {
+    public LogoutTask(WatTask post, int secondsToWait) {
         this.post = post;
+        this.secondsToWait = secondsToWait;
+        this.startedWaitingAt = Instant.now().getEpochSecond();
     }
 
     @Override
@@ -35,6 +41,17 @@ public class LogoutTask implements WatTask {
             Sleep.sleep(100, 200);
             Tabs.logout();
             Sleep.sleepUntil(() -> !Client.isLoggedIn(), 10000);
+
+            if(secondsToWait > 0) {
+                Logger.log("we will be waiting " + ((secondsToWait > 60) ? (secondsToWait / 60) + " minutes" : secondsToWait + " seconds") + " before logging in");
+            }
+        }
+        else {
+            if (secondsToWait > 0 && Instant.now().getEpochSecond() < (startedWaitingAt + secondsToWait)) {
+                return;
+            }
+
+            WatScript.getInstance().enableLoginManager();
             Logger.log("LogoutTask: sending to post task");
             TaskManager.getInstance().setCurrentTask(post);
         }

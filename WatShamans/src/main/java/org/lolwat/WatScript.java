@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Keyboard;
 import org.dreambot.api.input.Mouse;
+import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
@@ -37,7 +38,8 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.mouse.SmartMouseMultiDir;
+import org.lolwat.misc.mouse.SmartMouseCombat;
+import org.lolwat.misc.mouse.SmartMouseRegular;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
 import org.lolwat.misc.utils.GenericUtils;
@@ -58,7 +60,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@ScriptManifest(name = "WatShamans ", description = "Shaman killer", author = "lolwat", version = 1.02, category = Category.MISC)
+@ScriptManifest(name = "WatShamans ", description = "A moneymaking script that kills Lizardmen Shaman for 1m/h OSGP", author = "lolwat", version = 1.05, category = Category.MISC, image = "https://api.botbuddy.net/WatScripts.png")
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     private static WatScript instance;
     public static WatScript getInstance() {
@@ -101,6 +103,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     private long GPT_LAST_CALL = 0;
     private boolean GPT_WAITING_FOR_REPLY;
+
+    private MouseAlgorithm mouseToUse;
+
+    private final MouseAlgorithm regularAlgo = new SmartMouseRegular();
+    private final MouseAlgorithm combatAlgo = new SmartMouseCombat();
 
     @Override
     public void onStart(String... params) {
@@ -162,7 +169,8 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
         //HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(new SmartMouseMultiDir());
+
+        Mouse.setMouseAlgorithm(regularAlgo);
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
@@ -285,9 +293,19 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if (!Client.isLoggedIn() && TaskManager.getInstance().getCurrentTask().requiresLogin()) {
-                enableLoginManager();
-                Logger.log("Waiting for login...");
                 return 1000;
+            }
+
+            if(TaskManager.getInstance().getCurrentTask() instanceof MainCombatTask) {
+                if(!Mouse.getMouseAlgorithm().equals(combatAlgo)) {
+                    Logger.log("enabling combat mouse");
+                    Mouse.setMouseAlgorithm(combatAlgo);
+                }
+            } else {
+                if(Mouse.getMouseAlgorithm().equals(combatAlgo)) {
+                    Logger.log("disabling combat mouse");
+                    Mouse.setMouseAlgorithm(regularAlgo);
+                }
             }
 
             TaskManager.getInstance().getCurrentTask().execute();

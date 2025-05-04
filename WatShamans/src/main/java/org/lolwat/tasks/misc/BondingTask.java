@@ -114,7 +114,7 @@ public class BondingTask implements WatTask {
                     return;
                 }*/
 
-                TaskManager.getInstance().setCurrentTask(new LogoutTask(post));
+                TaskManager.getInstance().setCurrentTask(new LogoutTask(post, 1));
             }
         }
 
