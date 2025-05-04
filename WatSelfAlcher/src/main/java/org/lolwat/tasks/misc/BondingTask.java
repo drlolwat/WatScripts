@@ -27,7 +27,7 @@ public class BondingTask implements WatTask {
     public String getName() {
         return "Bonding";
     }
-    private WatTask post;
+    private final WatTask post;
 
     public BondingTask(WatTask post) {
         this.post = post;
@@ -41,7 +41,7 @@ public class BondingTask implements WatTask {
         }
 
         if(GenericUtils.getMemberDays() >= 2) {
-            TaskManager.getInstance().setCurrentTask(post != null ? post : null);
+            TaskManager.getInstance().setCurrentTask(post);
             return;
         }
 

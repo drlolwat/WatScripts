@@ -13,6 +13,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -33,8 +34,13 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
-import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.mouse.SmartMouseRegular;
+import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.alching.HighAlchemyTask;
+import org.lolwat.tasks.fletching.FletchingTask;
+import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -46,7 +52,7 @@ import java.nio.charset.StandardCharsets;
 @ScriptManifest(name = "WatAlcher",
         description = "Trains fletching to 70 and creates bows for High Level Alchemy",
         author = "lolwat",
-        version = 1.01,
+        version = 1.02,
         category = Category.MAGIC,
         image = "https://api.botbuddy.net/WatScripts.png")
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
@@ -85,8 +91,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
-        HumanMouse m = new HumanMouse();
-        Mouse.setMouseAlgorithm(m);
+        Mouse.setMouseAlgorithm(new SmartMouseRegular());
 
         if (TaskManager.getInstance() == null) {
             Logger.log("Constructing TaskManager singleton.");
@@ -158,28 +163,27 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        /*
-        if(!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
-                && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
-                && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
-            if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
-                TaskManager.getInstance().setCurrentTask(new HopperTask(0,
-                        (TaskManager.getInstance().getCurrentTask() != null) ?
-                                TaskManager.getInstance().getCurrentTask() : null), 0);
 
-                Logger.log("We are hopping into a P2P world");
-                return 300;
+        if(TaskManager.getInstance().getCurrentTask() != null) {
+            if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
+                    && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
+                    && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
+                if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
+                    TaskManager.getInstance().setCurrentTask(new HopperTask(0,
+                            (TaskManager.getInstance().getCurrentTask() != null) ?
+                                    TaskManager.getInstance().getCurrentTask() : null), 0);
+
+                    Logger.log("We are hopping into a P2P world");
+                    return 300;
+                } else {
+                    if (!GenericUtils.isMember() && (TaskManager.getInstance().getCurrentTask() instanceof FletchingTask || TaskManager.getInstance().getCurrentTask() instanceof HighAlchemyTask)) {
+                        Logger.log("need to bond");
+                        TaskManager.getInstance().setCurrentTask(new BondingTask(new FletchingTask(true)));
+                        return 300;
+                    }
+                }
             }
         }
-
-        if(!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof CombatTask) {
-            Logger.log("need to bond");
-            TaskManager.getInstance().setCurrentTask(new BondingTask(
-                    (TaskManager.getInstance().getCurrentTask() != null) ?
-                            TaskManager.getInstance().getCurrentTask() : null
-            ));
-            return 300;
-        }*/
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
             // things to do if the task is active
