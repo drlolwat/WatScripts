@@ -9,8 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="updates">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LiquidationTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LiquidationTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/prep/PreparationTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/prep/PreparationTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +59,8 @@
 }</component>
   <component name="GitLabMergeRequestsSettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts/wat-shamans.git&quot;,
-    &quot;second&quot;: &quot;fcdb1a08-108d-4202-8587-86031de7c5f7&quot;
+    &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts-private/wat-script-1-preparer.git&quot;,
+    &quot;second&quot;: &quot;65dfe5d7-4534-488d-88ba-2e60a0939bdf&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -124,22 +122,11 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
       </set>
     </attachedChunks>
   </component>
@@ -223,6 +210,10 @@
       <workItem from="1729043024911" duration="5762000" />
       <workItem from="1737408907127" duration="11221000" />
       <workItem from="1738001644552" duration="22000" />
+      <workItem from="1741126812751" duration="618000" />
+      <workItem from="1742138150971" duration="2536000" />
+      <workItem from="1743726156563" duration="1201000" />
+      <workItem from="1743976707655" duration="599000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
