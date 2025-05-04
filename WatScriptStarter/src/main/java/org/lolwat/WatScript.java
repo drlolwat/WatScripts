@@ -24,7 +24,6 @@ import org.dreambot.api.script.listener.AnimationListener;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
 import org.dreambot.api.script.listener.SpawnListener;
-import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
@@ -49,12 +48,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 @ScriptManifest(name = "WatMarketAlcher",
         description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
         author = "lolwat",
-        version = 1.04,
+        version = 1.05,
         category = Category.MAGIC,
         image = "https://api.botbuddy.net/WatScripts.png")
 
@@ -69,6 +70,12 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
         put("user6", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
+
+    List<String> logoutMessages = Arrays.asList(
+            "You've been playing for a while, consider taking a break from your screen.",
+            "You will be logged out in approximately 30 minutes. Make sure you move to a safe area or log out now.",
+            "You will be logged out in approximately 10 minutes. Make sure you move to a safe area or log out now.",
+            "You will be logged out in approximately 5 minutes. Make sure you move to a safe area or log out now.");
 
     @Getter
     private static WatScript instance;
@@ -228,7 +235,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
-            // things to do if the task is active
             if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {
                 Tabs.open(Tab.INVENTORY);
             }
@@ -249,6 +255,13 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                 return 1000;
             }
 
+            if(TaskManager.getInstance().getFutureTask() != null) {
+                Logger.log("futureTask detected, sending to: " + TaskManager.getInstance().getFutureTask().getClass().getSimpleName());
+                TaskManager.getInstance().setCurrentTask(TaskManager.getInstance().getFutureTask());
+                TaskManager.getInstance().setFutureTask(null);
+                return 5;
+            }
+
             TaskManager.getInstance().getCurrentTask().execute();
 
             return TaskManager.getInstance().getCurrentTask() != null ? (TaskManager.getInstance().getCurrentTask().loopTime() > 0 ?
@@ -267,10 +280,14 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
-        if (m.getMessage().equals("Oh dear, you are dead!")) {
-            sendWebhook(AccountManager.getAccountNickname() + " has alched themselves", true);
-            Logger.log("DEATH DETECTED: STOPPING SCRIPT");
-            ScriptManager.getScriptManager().stop();
+        if (logoutMessages.contains(m.getMessage())) {
+            TaskManager.getInstance().setCurrentTask
+                    (
+                            new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
+                                    ? TaskManager.getInstance().getCurrentTask()
+                                    : null
+                            )
+                    );
         }
     }
 
