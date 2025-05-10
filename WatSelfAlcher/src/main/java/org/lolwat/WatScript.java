@@ -49,8 +49,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-@ScriptManifest(name = "WatAlcher",
-        description = "Trains fletching to 70 and creates bows for High Level Alchemy",
+@ScriptManifest(name = "WatSelfAlcher",
+        description = "Trains fletching to 70 and creates its own profit (bows) for High Level Alchemy",
         author = "lolwat",
         version = 1.02,
         category = Category.MAGIC,
@@ -58,6 +58,7 @@ import java.nio.charset.StandardCharsets;
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
     @Getter
     private static WatScript instance;
+
     @Override
     public void onStart(String... params) {
         if (params.length > 0) {
