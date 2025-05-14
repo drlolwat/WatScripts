@@ -208,7 +208,7 @@ public class ConfigManager {
         while (iterator.hasNext()) {
             Map.Entry<String, Long> entry = iterator.next();
             int diff = 14400;
-            int noBuyDiff = 1800;
+            int noBuyDiff = 3600;//1800;
             long timestamp = entry.getValue();
             double now = Instant.now().getEpochSecond();
 

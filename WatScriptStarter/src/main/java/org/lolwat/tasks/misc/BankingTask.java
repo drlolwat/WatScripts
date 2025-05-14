@@ -200,8 +200,15 @@ public class BankingTask implements WatTask {
                                 - Inventory.count("Nature rune")
                                 - Bank.count("Nature rune");
 
-                        Logger.warn("we are using gp to buy nats, we will need to recalc");
-                        ConfigManager.getInstance().setCurrentTarget(null);
+                        String alchTarget = ConfigManager.getInstance().getCurrentTarget();
+                        if(alchTarget != null) {
+                            if (!Inventory.contains(x -> x != null && x.getName().equals(alchTarget))
+                                    && !Bank.contains(x -> x != null && x.getName().equals(alchTarget))) {
+
+                                Logger.warn("we are using gp to buy nats, we will need to recalc");
+                                ConfigManager.getInstance().setCurrentTarget(null);
+                            }
+                        }
                     }
 
                     if(amountToBuy > 0) {
@@ -497,26 +504,30 @@ public class BankingTask implements WatTask {
     }
 
     @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
-    @Override
     public HashMap<String, Integer> clothesRequired() {
+        HashMap<String, Integer> required = new HashMap<>();
+
         if (postTask != null) {
-            return postTask.clothesRequired();
+            required.putAll(postTask.clothesRequired());
         }
 
-        return new HashMap<>();
+        return required;
     }
 
     @Override
     public HashMap<String, Integer> inventoryRequired() {
+        HashMap<String, Integer> inventoryRequired = new HashMap<>();
+
         if (postTask != null) {
-            return postTask.inventoryRequired();
+            inventoryRequired.putAll(postTask.inventoryRequired());
         }
 
-        return new HashMap<>();
+        String target = ConfigManager.getInstance().getCurrentTarget();
+        if(target != null && !inventoryRequired.containsKey(target)) {
+            inventoryRequired.put(target, ConfigManager.getInstance().getCurrentTargetAmount());
+        }
+
+        return inventoryRequired;
     }
 
     @Override
