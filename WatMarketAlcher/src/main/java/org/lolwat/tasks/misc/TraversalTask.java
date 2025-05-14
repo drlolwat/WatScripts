@@ -8,7 +8,6 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.interactive.GameObjects;
-import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
@@ -32,7 +31,10 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class TraversalTask implements WatTask {
     WatTask postTask;
@@ -44,38 +46,6 @@ public class TraversalTask implements WatTask {
     boolean hasTeleported = false;
     double taskStartedAt;
     Tile startedOnTile;
-    boolean hadNoobChance;
-    List<String> possibleDialogues = Arrays.asList(
-            "Nobody.",
-            "Don't tell them anything and ignore them.",
-            "Talk to any banker in RuneScape.",
-            "Nothing.",
-            "Memorable.", "Use the Account Recovery System.",
-            "Politely tell them no and then use the 'Report Abuse' button.",
-            "Virus scan my device then change my password.",
-            "Don't tell them anything and inform Jagex through the game website.",
-            "No, it might steal my password.",
-            "Don't give them my password.",
-            "To recover my account if i don't remember my password.",
-            "Nowhere.", "Don't give out your password to anyone. Not even close friends.",
-            "No.", "Me.",
-            "Through account settings on oldschool.runescape.com.",
-            "To help me recover my password if I forget it or if it is stolen.", "Delete it - it's a fake!",
-            "Read the text and follow the advice given.",
-            "Secure my device and reset my password.",
-            "Recovering your account if you forget your password.",
-            "Decline the offer and report that player.",
-            "Game Inbox on the RuneScape website.",
-            "Set up 2 step authentication with my email provider.", "No, you should never buy an account.",
-            "Do not visit the website and report the player who messaged you.",
-            "Only on the Old School RuneScape website.", "Report the incident and do not click any links.",
-            "Authenticator and two-step login on my registered email.",
-            "Report the player for phishing.",
-            "Don't share your information and report the player.",
-            "The birthday of a famous person or event.", "No, you should never allow anyone to level your account.", "Nothing, it's a fake.",
-            "Report the stream as a scam. Real Jagex streams have a 'verified' mark.", "No way! You'll just take my gold for your own! Reported!");
-
-    List<String> npcsTriggerPost = Arrays.asList("Delrith");
 
     @Override
     public String getName() {
@@ -93,18 +63,11 @@ public class TraversalTask implements WatTask {
         lastWalk = 0;
         taskStartedAt = Instant.now().getEpochSecond();
         startedOnTile = Players.getLocal().getTile();
-        hadNoobChance = false;
-
         Logger.log("Walking to area for task " + post.getName());
     }
 
     @Override
     public void execute() {
-        if (!NPCs.all(x -> x != null && x.exists() && x.canReach() && npcsTriggerPost.contains(x.getName())).isEmpty()) {
-            TaskManager.getInstance().setCurrentTask(postTask);
-            return;
-        }
-
         Widget w = Widgets.getWidget(579);
         if (w != null && w.isVisible()) {
             WidgetChild c = w.getChild(17);
@@ -118,41 +81,6 @@ public class TraversalTask implements WatTask {
                 return;
             }
         }
-
-        /*
-        int sinceStartedTask = (int) (Instant.now().getEpochSecond() - taskStartedAt);
-        if (sinceStartedTask >= 15 && Players.getLocal().getTile().equals(startedOnTile)) {
-            Logger.log("Traversal: havent moved for 15 seconds, checking for portals etc");
-            GameObject portal = GameObjects.closest(x -> x != null && x.canReach() & x.getName().toLowerCase().contains("portal"));
-            if (portal != null) {
-                if (!portal.isOnScreen()) {
-                    Camera.rotateToEntity(portal);
-                    Sleep.sleepUntil(portal::isOnScreen, 5000);
-                }
-
-                if (portal.interact()) {
-                    Logger.log("Traversal: interacted with portal");
-                    Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(startedOnTile) && Players.getLocal().isStandingStill()
-                            && !Players.getLocal().isMoving() && !Players.getLocal().isAnimating(), 5000);
-                }
-
-                return;
-            }
-
-            if (sinceStartedTask >= 90) {
-                GenericUtils.castHomeTeleport();
-
-                Logger.log("Traversal: havent moved for 90 seconds, home teleporting and moving on");
-                if (postTask != null) {
-                    TaskManager.getInstance().setCurrentTask(postTask);
-                } else {
-                    TaskManager.getInstance().setCurrentTask(null);
-                }
-
-                Tile current = Players.getLocal().getTile();
-                Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(current), 15000);
-            }
-        }*/
 
         if (GenericUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
@@ -341,12 +269,6 @@ public class TraversalTask implements WatTask {
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
-
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
 
     @Override
     public HashMap<String, Integer> clothesRequired() {

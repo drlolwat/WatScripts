@@ -29,6 +29,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.widgets.message.Message;
+import org.dreambot.api.wrappers.widgets.message.MessageType;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
@@ -56,7 +57,7 @@ import java.util.List;
 @ScriptManifest(name = "WatMarketAlcher",
         description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
         author = "lolwat",
-        version = 1.05,
+        version = 1.10,
         category = Category.MAGIC,
         image = "https://api.botbuddy.net/WatScripts.png")
 
@@ -224,12 +225,18 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                     Logger.log("We are hopping into a P2P world");
                     return 300;
                 } else {
-                    if (!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof HighAlchemyTask) {
+                    /*if (!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof HighAlchemyTask) {
                         Logger.log("need to bond");
                         TaskManager.getInstance().setCurrentTask(new BondingTask(new HighAlchemyTask()));
                         return 300;
-                    }
+                    }*/
                 }
+            }
+
+            if(TaskManager.getInstance().getCurrentTask() instanceof BondingTask && GenericUtils.isMember()) {
+                Logger.log("bonding while a member, going back to alchemy");
+                TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
+                return 300;
             }
         }
 
@@ -255,7 +262,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
 
             if(TaskManager.getInstance().getFutureTask() != null) {
-                Logger.log("futureTask detected, sending to: " + TaskManager.getInstance().getFutureTask().getClass().getSimpleName());
+                Logger.log("futureTask detected: " + TaskManager.getInstance().getFutureTask().getName());
                 TaskManager.getInstance().setCurrentTask(TaskManager.getInstance().getFutureTask());
                 TaskManager.getInstance().setFutureTask(null);
                 return 5;
@@ -279,18 +286,28 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onMessage(Message m) {
-        if (!m.getUsername().isEmpty()) {
+        if (!m.getType().equals(MessageType.GAME)) {
             return;
         }
 
-        if (logoutMessages.contains(m.getMessage())) {
-            TaskManager.getInstance().setCurrentTask
-                    (
-                            new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
-                                    ? TaskManager.getInstance().getCurrentTask()
-                                    : null
-                            )
-                    );
+        for(String s : logoutMessages) {
+            if(m.toString().toLowerCase().contains(s.toLowerCase())) {
+                TaskManager.getInstance().setFutureTask
+                        (
+                                new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
+                                        ? TaskManager.getInstance().getCurrentTask()
+                                        : null
+                                )
+                        );
+
+                return;
+            }
+        }
+
+        if(m.getMessage().contains("You haven't got enough")) {
+            ConfigManager.getInstance().setCurrentTarget(null);
+            ConfigManager.getInstance().setCurrentTargetAmount(0);
+            TaskManager.getInstance().setFutureTask(new HighAlchemyTask());
         }
     }
 

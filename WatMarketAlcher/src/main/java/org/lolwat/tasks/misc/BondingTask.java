@@ -102,11 +102,6 @@ public class BondingTask implements WatTask {
         Sleep.sleepUntil(Dialogues::canContinue, 25000);
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
-            if (!Menu.isMenuManipulationActive()) {
-                Logger.log("Enabling menu manipulation, bonding complete");
-                Menu.toggleMenuManipulation(true);
-            }
-
             if(Client.isLoggedIn()) {
                 if(GenericUtils.getMemberDays() == 0) {
                     if (!Tabs.isOpen(Tab.LOGOUT)) {
@@ -123,7 +118,7 @@ public class BondingTask implements WatTask {
         }
 
         if(post != null) {
-            TaskManager.getInstance().setCurrentTask(post);
+            TaskManager.getInstance().setCurrentTask(new HopperTask(0, post));
         }
     }
 
@@ -145,11 +140,6 @@ public class BondingTask implements WatTask {
     @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
-    }
-
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
     }
 
     @Override

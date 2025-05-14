@@ -13,7 +13,6 @@ import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.TeleportManager;
@@ -391,33 +390,8 @@ public class GrandExchangeTask implements WatTask {
     }
 
     @Override
-    public int loopTime() {
-        return 5;
-    }
-
-    @Override
-    public void onExpGained(Skill skill, int amount, WatScript instance) {
-
-    }
-
-    @Override
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
 
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
-
-    @Override
-    public HashMap<String, Integer> clothesRequired() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public HashMap<String, Integer> inventoryRequired() {
-        return new HashMap<>();
-    }
 }

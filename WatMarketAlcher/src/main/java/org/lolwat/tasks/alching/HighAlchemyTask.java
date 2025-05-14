@@ -233,11 +233,6 @@ public class HighAlchemyTask implements WatTask {
     }
 
     @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
-
-    @Override
     public HashMap<String, Integer> clothesRequired() {
         return new HashMap<String, Integer>() {
             {

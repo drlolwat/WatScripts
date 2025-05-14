@@ -85,9 +85,4 @@ public class GatheringTask implements WatTask {
     public Skill trainsSkill() {
         return Skill.HITPOINTS;
     }
-
-    @Override
-    public Integer avoidAfterLevel() {
-        return 101;
-    }
 }
