@@ -1,5 +1,6 @@
 package org.lolwat.tasks.alching;
 
+import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.skills.Skill;
@@ -33,6 +34,12 @@ public class BuyAlchItemTask implements WatTask {
         int targetQty = ConfigManager.getInstance().getCurrentTargetAmount();
         int targetCost = ConfigManager.getInstance().itemCost(target) + ConfigManager.getInstance().getConfigInt("price_modifier");
         int targetId = ConfigManager.getInstance().getItemIds().get(target);
+
+        int myCoins = Inventory.count("Coins");
+        if((double) (targetCost * targetQty) > myCoins) {
+            targetQty = (int) Math.floor((double) myCoins / targetCost);
+            ConfigManager.getInstance().setCurrentTargetAmount(targetQty);
+        }
 
         if (targetQty == 0) {
             ConfigManager.getInstance().getNewAlchTarget();
