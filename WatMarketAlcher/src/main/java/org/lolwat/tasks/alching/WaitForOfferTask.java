@@ -98,6 +98,16 @@ public class WaitForOfferTask implements WatTask {
                 Logger.error("problem cancelling all offers..");
                 return;
             }
+
+            if(GrandExchange.getUsedSlots() > 0) {
+                Logger.log("still got items, returning");
+                return;
+            }
+
+            if(GrandExchange.isReadyToCollect() && !GrandExchange.collect()) {
+                Logger.error("problem collecting");
+                return;
+            }
         }
 
         int amountHave = Inventory.count(x -> x != null && x.getName().equals(target));
@@ -128,7 +138,7 @@ public class WaitForOfferTask implements WatTask {
             ConfigManager.getInstance().getNoBuy().add(target);
             ConfigManager.getInstance().addItemExpiry(target);
             ConfigManager.getInstance().getNewAlchTarget();
-            TaskManager.getInstance().setFutureTask(new BuyAlchItemTask(new HighAlchemyTask()));
+            TaskManager.getInstance().setFutureTask(new HighAlchemyTask());
         }
     }
 
