@@ -34,14 +34,17 @@ public class WaitForOfferTask implements WatTask {
     public void execute() {
         if(!GrandExchange.isOpen()) {
             if(!GrandExchange.open()) {
-                Logger.error("problem opening grand exchange");
-                TaskManager.getInstance().setCurrentTask(post);
+                Logger.error("onWait: problem opening grand exchange");
                 return;
             }
+
+            Sleep.sleepUntil(GrandExchange::isOpen, 5000);
+            return;
         }
 
         if (!GrandExchange.isReadyToCollect(slot)) {
-            if (!GrandExchange.isOpen() || !GrandExchange.slotContainsItem(slot) || !Client.isLoggedIn()) {
+            if (!GrandExchange.slotContainsItem(slot)) {
+                Logger.log("slot did not contain item");
                 TaskManager.getInstance().setCurrentTask(post);
                 return;
             }
@@ -59,7 +62,7 @@ public class WaitForOfferTask implements WatTask {
                         return;
                     }
 
-                    Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 5000);
+                    Sleep.sleepUntil(() -> GrandExchange.isReadyToCollect(slot), 1000);
 
                     if(!GrandExchange.isReadyToCollect(slot)) {
                         return;

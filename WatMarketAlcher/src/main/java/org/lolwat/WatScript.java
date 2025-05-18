@@ -57,7 +57,7 @@ import java.util.List;
 @ScriptManifest(name = "WatMarketAlcher",
         description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
         author = "lolwat",
-        version = 1.10,
+        version = 1.12,
         category = Category.MAGIC,
         image = "https://api.botbuddy.net/WatScripts.png")
 
@@ -225,11 +225,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                     Logger.log("We are hopping into a P2P world");
                     return 300;
                 } else {
-                    /*if (!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof HighAlchemyTask) {
+                    if (!GenericUtils.isMember() && TaskManager.getInstance().getCurrentTask() instanceof HighAlchemyTask) {
                         Logger.log("need to bond");
                         TaskManager.getInstance().setCurrentTask(new BondingTask(new HighAlchemyTask()));
                         return 300;
-                    }*/
+                    }
                 }
             }
 
