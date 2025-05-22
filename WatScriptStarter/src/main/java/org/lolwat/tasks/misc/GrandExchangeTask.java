@@ -72,7 +72,6 @@ public class GrandExchangeTask implements WatTask {
             }
         }
 
-
         if (NPCs.closest("Grand Exchange Clerk") != null) {
             Logger.log("Opening Grand Exchange");
 
