@@ -115,7 +115,7 @@ public class WatUtils {
         connection.setDoOutput(true);
 
         JsonObject embed = new JsonObject();
-        embed.addProperty("title", "WatAIO Notification");
+        embed.addProperty("title", "WatAB Notification");
         embed.addProperty("description", message);
         embed.addProperty("color", error ? 16711680 : 3447003);
 

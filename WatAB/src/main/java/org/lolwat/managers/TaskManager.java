@@ -21,7 +21,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutUtils;
 import org.lolwat.misc.utils.WatUtils;
@@ -341,7 +341,7 @@ public class TaskManager {
             }
 
             setCheckedHoursAt(Instant.now().getEpochSecond());
-            WatAIO.getInstance().enableLoginManager();
+            WatScript.getInstance().enableLoginManager();
         }
 
         if(!Client.isLoggedIn()) {

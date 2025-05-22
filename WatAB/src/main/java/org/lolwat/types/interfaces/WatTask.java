@@ -2,7 +2,7 @@ package org.lolwat.types.interfaces;
 
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.wrappers.widgets.message.Message;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.types.gear.WatItem;
 
 import java.util.ArrayList;
@@ -29,6 +29,6 @@ public interface WatTask {
         return false;
     }
     default boolean requiresLogin() { return true; }
-    default void onExpGained(Skill skill, int amount, WatAIO instance) { }
+    default void onExpGained(Skill skill, int amount, WatScript instance) { }
     default String getName() { return this.getClass().getSimpleName(); }
 }

@@ -12,7 +12,7 @@ import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.types.interfaces.WatTask;
@@ -67,16 +67,16 @@ public class LogoutTask implements WatTask {
                 }
 
                 Logger.log("WAIO: logging out for break");
-                WatAIO.getInstance().disableLoginManager();
+                WatScript.getInstance().disableLoginManager();
                 Sleep.sleep(100, 200);
                 Tabs.logout();
             }
 
             if (postScript != null) {
                 if (!(postScript instanceof BreakingTask)) {
-                    WatAIO.getInstance().enableLoginManager();
+                    WatScript.getInstance().enableLoginManager();
                 } else {
-                    WatAIO.getInstance().disableLoginManager();
+                    WatScript.getInstance().disableLoginManager();
                 }
 
                 Sleep.sleep(100, 200);

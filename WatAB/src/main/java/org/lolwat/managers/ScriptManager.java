@@ -16,7 +16,7 @@ import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.misc.mouse.HumanMouse;
 import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.HopperTask;
@@ -109,7 +109,7 @@ public class ScriptManager {
             if (TaskManager.getInstance().getCurrentTask() == null || !(TaskManager.getInstance().getCurrentTask() instanceof BreakingTask)) {
                 TaskManager.getInstance().setCurrentTask(null);
                 Logger.log("Enabling login manager");
-                WatAIO.getInstance().enableLoginManager();
+                WatScript.getInstance().enableLoginManager();
                 return 3000;
             }
         }

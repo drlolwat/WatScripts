@@ -14,7 +14,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.GroundItem;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.agility.types.Obstacle;
@@ -143,7 +143,7 @@ public class AgilityCourseTask implements WatTask {
     }
 
     @Override
-    public void onExpGained(Skill skill, int amount, WatAIO instance) {
+    public void onExpGained(Skill skill, int amount, WatScript instance) {
         nextObstacle = true;
     }
 

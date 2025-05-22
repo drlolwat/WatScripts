@@ -14,7 +14,6 @@ import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
-import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ScriptManager;
@@ -31,10 +30,10 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAIO P2P BETA", description = "All in one account building script for OSRS", author = "lolwat", version = 2.00, category = Category.MISC)
-public class WatAIO extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
+@ScriptManifest(name = "WatAB", description = "All in one P2P account building script for OSRS", author = "lolwat", version = 1.00, category = Category.MISC)
+public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     @Getter
-    private static WatAIO instance;
+    private static WatScript instance;
     private static BufferedImage image;
 
     @Override
@@ -54,7 +53,6 @@ public class WatAIO extends AbstractScript implements ExperienceListener, ChatLi
 
     private void doStart(String profile) {
         if(instance == null) {
-            Logger.log(Color.green, "WatAIO starting: assigning instance");
             instance = this;
         }
 

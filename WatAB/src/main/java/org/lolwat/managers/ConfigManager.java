@@ -82,7 +82,7 @@ public class ConfigManager {
         defaultProfile.addProperty("rest_after_tut", 0);
         defaultProfile.addProperty("logout_after_ttl", 0);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
-        defaultProfile.addProperty("use_menu_manip", true);
+        defaultProfile.addProperty("use_menu_manip", false);
         defaultProfile.addProperty("min_task_time", 10);
         defaultProfile.addProperty("max_task_time", 30);
         defaultProfile.addProperty("keep_min_gold", 100000);
@@ -100,7 +100,7 @@ public class ConfigManager {
     }
 
     public void loadFromProfile(String p) {
-        String filePath = System.getProperty("user.dir") + "/WatAIO/" + p + ".json";
+        String filePath = System.getProperty("user.dir") + "/WatAB/" + p + ".json";
 
         try {
             Gson gson = new Gson();

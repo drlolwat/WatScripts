@@ -2,7 +2,7 @@ package org.lolwat.tasks.misc;
 
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.skills.Skill;
-import org.lolwat.WatAIO;
+import org.lolwat.WatScript;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.types.interfaces.WatTask;
 
@@ -32,7 +32,7 @@ public class BreakingTask implements WatTask {
 
         if(Instant.now().getEpochSecond() >= endsAt) {
             if(!Client.isLoggedIn()) {
-                WatAIO.getInstance().enableLoginManager();
+                WatScript.getInstance().enableLoginManager();
                 TaskManager.getInstance().getNewTask();
             }
         }
