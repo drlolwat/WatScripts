@@ -121,7 +121,7 @@ public class ConfigManager {
     }
 
     public int itemCost(String name) {
-        return alchables.get(name);
+        return alchables.getOrDefault(name, -10000);
     }
 
     public void addItemExpiry(String name) {
@@ -176,7 +176,7 @@ public class ConfigManager {
         for (Map.Entry<String, Integer> entry : sortedAlchables) {
             if (allowedToBuy(entry.getKey())) {
                 bestTarget = entry.getKey();
-                toBuy = totalCoins / alchables.get(entry.getKey());
+                toBuy = totalCoins / (alchables.get(entry.getKey()) + getConfigInt("price_modifier")) - 1;
                 break;
             }
         }
