@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
-import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 
@@ -172,10 +171,5 @@ public class ConfigManager {
         } else {
             return 0;
         }
-    }
-
-    public boolean isTradeUnlocked() {
-        return getConfigBoolean("ignore_trade_restriction") ||
-                (TaskManager.getInstance().getMinutesPlayed() >= 1200 && Quests.getQuestPoints() >= 10);
     }
 }

@@ -17,6 +17,10 @@ public class WatItem {
     private final HashMap<Skill, Integer> levelRequirements;
     @Getter
     private final List<Quest> questRequirements;
+    @Getter
+    private final boolean wearable = false;
+    @Getter
+    private final boolean weapon = false;
 
     public WatItem(String name, String searchFor) {
         this.name = name;
@@ -50,6 +54,13 @@ public class WatItem {
         this.name = name;
         this.searchFor = name;
         this.levelRequirements = new HashMap<>();
+        this.questRequirements = questRequirements;
+    }
+
+    public WatItem(String name, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
+        this.name = name;
+        this.searchFor = name;
+        this.levelRequirements = levelRequirements;
         this.questRequirements = questRequirements;
     }
 

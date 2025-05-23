@@ -3,6 +3,7 @@ package org.lolwat.managers;
 import lombok.Getter;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
+import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.input.Camera;
 import org.dreambot.api.methods.input.CameraMode;
@@ -17,7 +18,8 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
 import org.lolwat.WatScript;
-import org.lolwat.misc.mouse.HumanMouse;
+import org.lolwat.misc.mouse.SmartMouseCombat;
+import org.lolwat.misc.mouse.SmartMouseRegular;
 import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.HopperTask;
 
@@ -27,25 +29,27 @@ import java.util.HashMap;
 @Getter
 public class ScriptManager {
     private static int uniqueSleep;
+    private static final MouseAlgorithm reg = new SmartMouseRegular();
+    private static final MouseAlgorithm combat = new SmartMouseCombat();
 
     public static void start(String profileName) {
-        Logger.log("ScriptManager starting: "
-                + org.dreambot.api.script.ScriptManager.getScriptManager().getCurrentScript().getManifest().name() +
-                ", profile: " + profileName);
+        Logger.log("WatScripts.com");
+        Logger.log(
+                org.dreambot.api.script.ScriptManager.getScriptManager().getCurrentScript().getManifest().name() +
+                ", profile: " + profileName
+        );
 
         if(MobManager.getInstance() == null) {
-            Logger.log("Constructing MobManager singleton.");
             MobManager.setInstance(new MobManager());
             MobManager.getInstance().createMobs();
         }
 
         if(ItemManager.getInstance() == null) {
-            Logger.log("Constructing ItemManager singleton.");
             ItemManager.setInstance(new ItemManager());
+            ItemManager.getInstance().addDefaults();
         }
 
         if (ConfigManager.getInstance() == null) {
-            Logger.log("Constructing ConfigManager singleton.");
             ConfigManager.setInstance(new ConfigManager());
             ConfigManager.getInstance().setLevelUps(new HashMap<>());
             ConfigManager.getInstance().setNetWorth(0);
@@ -54,34 +58,27 @@ public class ScriptManager {
         }
 
         if(TeleportManager.getInstance() == null) {
-            Logger.log("Constructing TeleportManager singleton.");
             TeleportManager.setInstance(new TeleportManager());
         }
 
         if(QuestManager.getInstance() == null) {
-            Logger.log("Constructing QuestManager singleton.");
             QuestManager.setInstance(new QuestManager());
         }
 
         try {
-            Logger.log("Setting HumanMouse algorithm.");
-            HumanMouse m = new HumanMouse();
-            Mouse.setMouseAlgorithm(m);
+            Mouse.setMouseAlgorithm(reg);
         } catch(Exception e) {
             Logger.log(e);
         }
 
         if (TaskManager.getInstance() == null) {
-            Logger.log("Constructing TaskManager singleton.");
             TaskManager.setInstance(new TaskManager());
         }
 
         if(ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && (!Menu.isMenuManipulationActive() || !Walking.isNoClickWalkEnabled())) {
-            Logger.log("Enabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(true);
             Walking.toggleNoClickWalk(true);
         } else if(!ConfigManager.getInstance().getConfigBoolean("use_menu_manip") && (Menu.isMenuManipulationActive() || Walking.isNoClickWalkEnabled())) {
-            Logger.log("Disabling menu manipulation and noclick walk");
             Menu.toggleMenuManipulation(false);
             Walking.toggleNoClickWalk(false);
         }
@@ -92,8 +89,6 @@ public class ScriptManager {
         if(uniqueSleep < 110) {
             uniqueSleep = 110;
         }
-
-        Logger.log("Unique sleep time: " + uniqueSleep + " give or take 100ms each loop");
 
         WebFinder.getWebFinder().disableEquipmentTeleports();
         WebFinder.getWebFinder().disableEquippingTeleports();

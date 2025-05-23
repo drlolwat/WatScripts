@@ -7,18 +7,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="dev">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="initial">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseCombat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseRegular.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWeapon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWearable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/combat.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/regular.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatAIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ScriptManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ScriptManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WatUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/WatUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/agility/AgilityCourseTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/agility/AgilityCourseTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BreakingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BreakingTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LogoutTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LogoutTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/WatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/WatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/HumanMouse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatItem.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +106,7 @@
     "git-widget-placeholder": "dev",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/lolwat/IdeaProjects/WatMiner",
+    "last_opened_file_path": "C:/Users/chchp/IdeaProjects/WatAB/src/main/java/org/lolwat/misc/mouse",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -117,6 +121,10 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chchp\IdeaProjects\WatAB\src\main\java\org\lolwat\misc\mouse" />
+      <recent name="C:\Users\chchp\IdeaProjects\WatAB\src\main\resources" />
+    </key>
     <key name="MoveMembersDialog.RECENTS_KEY">
       <recent name="org.lolwat.misc.utils.WatUtils" />
       <recent name="org.lolwat.misc.utils.ItemUtils" />
@@ -230,7 +238,7 @@
       <workItem from="1732812070405" duration="533000" />
       <workItem from="1733444005117" duration="104000" />
       <workItem from="1733672536828" duration="2228000" />
-      <workItem from="1747955681791" duration="664000" />
+      <workItem from="1747955681791" duration="6734000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -575,7 +583,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="677" />
+    <option name="localTasksCounter" value="678" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -622,7 +630,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="VampyreSlayerQuest: melee utils new method usage" />
     <MESSAGE value="QuestManager: add Demon Slayer to quest pool" />
     <MESSAGE value="TaskManager: more tasks between breaks" />
     <MESSAGE value="ErnestTheChickenQuest: bank if inventory is full" />
@@ -647,7 +654,8 @@
     <MESSAGE value="MobLogic: default eating logic updated" />
     <MESSAGE value="remove all 1.0 code" />
     <MESSAGE value="dev" />
-    <option name="LAST_COMMIT_MESSAGE" value="dev" />
+    <MESSAGE value="initial" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

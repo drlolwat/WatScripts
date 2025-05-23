@@ -100,7 +100,7 @@ public class BankingTask implements WatTask {
 
     @Override
     public void execute() {
-        if(!Bank.isOpen()) {
+        if (!Bank.isOpen()) {
             WatUtils.bank(this);
             return;
         }
@@ -108,35 +108,27 @@ public class BankingTask implements WatTask {
         depositNonRequired();
 
         Logger.log("Sell Checker: starting");
-
-        boolean allowedToSell = ConfigManager.getInstance().isTradeUnlocked()
-                || (postTask != null && postTask.data().containsKey("gp_to_generate"))
-                || WatUtils.isMember();
-
-        Logger.log("Trade unrestricted: " + allowedToSell + ", sell enabled for task: " +
-                (postTask != null && postTask.data().containsKey("gp_to_generate")));
-
         // new threshold stuff
         Logger.log("Checking bank for items to sell based on thresholds");
-        for(Item i : Bank.all()) {
-            if(i == null) continue;
-            if(postTask != null) { // we dont want to sell items that are required for the next task
-                if(postTask.inventory().containsKey(i.getName())) {
+        for (Item i : Bank.all()) {
+            if (i == null) continue;
+            if (postTask != null) { // we dont want to sell items that are required for the next task
+                if (postTask.inventory().containsKey(i.getName())) {
                     continue;
                 }
 
-                if(postTask.loadout().containsKey(i.getName())) {
+                if (postTask.loadout().containsKey(i.getName())) {
                     continue;
                 }
             }
 
             int threshold = ConfigManager.getInstance().getItemThreshold(i.getName());
-            if(threshold != 0) {
-                int toCheck = (threshold > 0 ? threshold+1 : -threshold);
-                if(Bank.count(i.getName()) >= toCheck) {
-                    if(!sellingItems.containsKey(i.getName())) {
+            if (threshold != 0) {
+                int toCheck = (threshold > 0 ? threshold + 1 : -threshold);
+                if (Bank.count(i.getName()) >= toCheck) {
+                    if (!sellingItems.containsKey(i.getName())) {
                         int toSell;
-                        if(threshold > 0) {
+                        if (threshold > 0) {
                             toSell = Bank.count(i.getName()) - threshold;
                         } else {
                             toSell = Bank.count(i.getName());
@@ -149,83 +141,64 @@ public class BankingTask implements WatTask {
         }
 
         List<String> toRemove = new ArrayList<>();
-        if(!allowedToSell) {
-            for(String s : sellingItems.keySet()) {
-                if(restrictedItems.contains(s.toLowerCase())) {
-                    toRemove.add(s);
-                } else {
-                    allowedToSell = true;
-                }
+        if (!sellingItems.isEmpty()) {
+            boolean performSelling = false;
+            if (Inventory.isFull()) {
+                Bank.depositAllItems();
+                Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
             }
 
-            for(String s : toRemove) {
-                sellingItems.remove(s);
-            }
+            for (Map.Entry<String, Integer> entry : sellingItems.entrySet()) {
+                int triggerAmount = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
+                boolean triggered = Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= triggerAmount;
+                int toWithdraw = entry.getValue();
 
-            toRemove.clear();
-        }
-
-        if(allowedToSell) {
-            if (sellingItems.size() > 0) {
-                boolean performSelling = false;
-                if (Inventory.isFull()) {
-                    Bank.depositAllItems();
-                    Sleep.sleepUntil(Inventory::isEmpty, Calculations.random(5000, 10000));
-                }
-
-                for (Map.Entry<String, Integer> entry : sellingItems.entrySet()) {
-                    int triggerAmount = entry.getValue() > 0 ? entry.getValue() : -entry.getValue();
-                    boolean triggered = Bank.contains(entry.getKey()) && Bank.count(entry.getKey()) >= triggerAmount;
-                    int toWithdraw = entry.getValue();
-
-                    if(!triggered && postTask != null && postTask.data().containsKey("gp_to_generate")) {
-                        if(Integer.parseInt(postTask.data().get("gp_to_generate").toString()) > 0) {
-                            int toGen = Integer.parseInt(postTask.data().get("gp_to_generate").toString());
-                            int weHave = WatUtils.getItemPrice(entry.getKey()) * Bank.count(entry.getKey());
-                            if(weHave >= toGen) {
-                                postTask.data().remove("gp_to_generate");
-                                Logger.log("BankingTask: Wealth generation goals met");
-                                triggered = true;
-                                toWithdraw = toGen / WatUtils.getItemPrice(entry.getKey());
-                            } else {
-                                Logger.log("BankingTask: Wealth generation goals not met");
-                            }
-                        }
-                    }
-
-                    if (triggered) {
-                        WatUtils.setBankMode(BankMode.NOTE);
-                        Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName());
-                        if(!Inventory.isFull()) {
-                            if (entry.getValue() > 0) {
-                                int reduceBy = 0;
-                                if (Inventory.contains(entry.getKey()))
-                                    reduceBy = Inventory.count(entry.getKey());
-
-                                Logger.log("Taking " + (toWithdraw - reduceBy) + " of " + entry.getKey());
-                                Bank.withdraw(entry.getKey(), (toWithdraw - reduceBy));
-                            } else {
-                                Logger.log("Taking " + entry.getKey());
-                                Bank.withdrawAll(entry.getKey());
-                            }
+                if (!triggered && postTask != null && postTask.data().containsKey("gp_to_generate")) {
+                    if (Integer.parseInt(postTask.data().get("gp_to_generate").toString()) > 0) {
+                        int toGen = Integer.parseInt(postTask.data().get("gp_to_generate").toString());
+                        int weHave = WatUtils.getItemPrice(entry.getKey()) * Bank.count(entry.getKey());
+                        if (weHave >= toGen) {
+                            postTask.data().remove("gp_to_generate");
+                            Logger.log("BankingTask: Wealth generation goals met");
+                            triggered = true;
+                            toWithdraw = toGen / WatUtils.getItemPrice(entry.getKey());
                         } else {
-                            Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName() + ", but inventory is full");
+                            Logger.log("BankingTask: Wealth generation goals not met");
                         }
-
-                        performSelling = true;
                     }
                 }
 
-                if (performSelling) {
-                    TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Selling at G.E", true, sellingItems, this));
-                    return;
+                if (triggered) {
+                    WatUtils.setBankMode(BankMode.NOTE);
+                    Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName());
+                    if (!Inventory.isFull()) {
+                        if (entry.getValue() > 0) {
+                            int reduceBy = 0;
+                            if (Inventory.contains(entry.getKey()))
+                                reduceBy = Inventory.count(entry.getKey());
+
+                            Logger.log("Taking " + (toWithdraw - reduceBy) + " of " + entry.getKey());
+                            Bank.withdraw(entry.getKey(), (toWithdraw - reduceBy));
+                        } else {
+                            Logger.log("Taking " + entry.getKey());
+                            Bank.withdrawAll(entry.getKey());
+                        }
+                    } else {
+                        Logger.log("Sell checker: found " + Bank.get(entry.getKey()).getName() + ", but inventory is full");
+                    }
+
+                    performSelling = true;
                 }
-            } else {
-                Logger.log("Nothing to sell");
+            }
+
+            if (performSelling) {
+                TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Selling at G.E", true, sellingItems, this));
+                return;
             }
         } else {
-            Logger.log("Not allowed to sell (account restricted, or restricted items only)");
+            Logger.log("Nothing to sell");
         }
+
 
         Logger.log("Sell checker: finished");
         WatUtils.setBankMode(BankMode.ITEM);
@@ -406,93 +379,57 @@ public class BankingTask implements WatTask {
                 TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Buying required items", false, buyingRequired, this));
                 return;
             } else {
-                if (ConfigManager.getInstance().isTradeUnlocked()) {
-                    WatUtils.setBankMode(BankMode.NOTE);
-                    Logger.log("Exchanger: Need to sell items");
-                    if (Inventory.isFull()) {
-                        Bank.depositAllExcept("Coins");
-                        Sleep.sleep(100, 200);
+                WatUtils.setBankMode(BankMode.NOTE);
+                Logger.log("Exchanger: Need to sell items");
+                if (Inventory.isFull()) {
+                    Bank.depositAllExcept("Coins");
+                    Sleep.sleep(100, 200);
+                }
+
+                if (!ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
+                    if (Bank.contains("Coins")) {
+                        finalPrice -= Bank.count("Coins");
                     }
 
-                    if (!ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
-                        if (Bank.contains("Coins")) {
-                            finalPrice -= Bank.count("Coins");
-                        }
-
-                        if (Inventory.contains("Coins")) {
-                            finalPrice -= Inventory.count("Coins");
-                        }
-
-                        int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
-                        if(totalCoins < ConfigManager.getInstance().getConfigInt("keep_min_gold")) {
-                            finalPrice += ConfigManager.getInstance().getConfigInt("keep_min_gold");
-                            Logger.log("Triggered minimum gold threshold, adding " + ConfigManager.getInstance().getConfigInt("keep_min_gold") + " gp");
-                        }
-
-                        Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
-
-                        int finalTotalPrice = finalPrice;
-                        TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                            {
-                                put("Coins", finalTotalPrice);
-                            }
-                        }, this));
-                        return;
-                    } else {
-                        Logger.log("We are out of GP, time to go and make some.");
-                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
-                        return;
+                    if (Inventory.contains("Coins")) {
+                        finalPrice -= Inventory.count("Coins");
                     }
+
+                    int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
+                    if (totalCoins < ConfigManager.getInstance().getConfigInt("keep_min_gold")) {
+                        finalPrice += ConfigManager.getInstance().getConfigInt("keep_min_gold");
+                        Logger.log("Triggered minimum gold threshold, adding " + ConfigManager.getInstance().getConfigInt("keep_min_gold") + " gp");
+                    }
+
+                    Logger.log("No items to sell, so reverse muling " + finalPrice + " gp");
+
+                    int finalTotalPrice = finalPrice;
+                    TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                        {
+                            put("Coins", finalTotalPrice);
+                        }
+                    }, this));
+                    return;
                 } else {
-                    if (!ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
-                        if(Bank.contains("Coins")) {
-                            finalPrice -= Bank.count("Coins");
-                        }
-
-                        if(Inventory.contains("Coins")) {
-                            finalPrice -= Inventory.count("Coins");
-                        }
-
-                        Bank.depositAllItems();
-                        Sleep.sleep(100, 200);
-
-                        int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
-                        if(totalCoins < ConfigManager.getInstance().getConfigInt("keep_min_gold")) {
-                            finalPrice += ConfigManager.getInstance().getConfigInt("keep_min_gold");
-                            Logger.log("Triggered minimum gold threshold, adding " + ConfigManager.getInstance().getConfigInt("keep_min_gold") + " gp");
-                        }
-
-                        int totalPrice = finalPrice;
-                        Logger.log("Trade locked, so reverse muling " + finalPrice + " gp");
-                        TaskManager.getInstance().setCurrentTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
-                            {
-                                put("Coins", totalPrice);
-                            }
-                        }, this));
-                        return;
-                    } else {
-                        // Restricted moneymaker time...
-                        Logger.log("We are out of GP, time to go and make some. (Restricted)");
-                        TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
-                        return;
-                    }
+                    Logger.log("We are out of GP, time to go and make some.");
+                    TaskManager.getInstance().getSpecificSkillTask(Skill.HITPOINTS, toWithdraw);
+                    return;
                 }
             }
         }
 
         Logger.log("Exchanger: Finished checks");
 
-        if(ConfigManager.getInstance().isTradeUnlocked()
-                && !ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
+        if(!ConfigManager.getInstance().getConfigBoolean("disable_mule")) {
             int invMoney = 0;
             int bankMoney = 0;
 
             if (Inventory.contains("Coins")) {
-                invMoney = Inventory.get("Coins").getAmount();
+                invMoney = Inventory.count("Coins");
             }
 
             if (Bank.contains("Coins")) {
-                bankMoney = Bank.get("Coins").getAmount();
+                bankMoney = Bank.count("Coins");
             }
 
             if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_trigger")) {

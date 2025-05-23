@@ -5,25 +5,16 @@ import lombok.Setter;
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.bank.BankLocation;
-import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.settings.PlayerSettings;
-import org.dreambot.api.methods.settings.Varcs;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.dreambot.api.methods.tabs.Tab;
-import org.dreambot.api.methods.tabs.Tabs;
-import org.dreambot.api.methods.widget.Widget;
-import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.widgets.WidgetChild;
-import org.lolwat.WatScript;
 import org.lolwat.misc.utils.DialogueUtils;
-import org.lolwat.misc.utils.TutUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
@@ -38,8 +29,8 @@ import org.lolwat.types.interfaces.WatTask;
 
 import java.awt.*;
 import java.time.Instant;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 
 public class TaskManager {
     @Getter
@@ -58,19 +49,11 @@ public class TaskManager {
     private double taskSelectedAt;
     @Getter
     private int taskRunTime;
-    @Setter @Getter
-    private double checkedHoursAt;
-    @Setter @Getter
-    private int minutesPlayed;
 
     public TaskManager() {
         setupAllTasks();
         resetBreaks();
-        setCheckedHoursAt(0);
-        setMinutesPlayed(0);
         skillsAvailable.addAll(Arrays.asList(Skill.values()));
-
-        Logger.log(Color.green, "TaskManager: Set up " + tasks.size() + " total tasks.");
     }
 
     public void getNewTask() {
@@ -156,15 +139,8 @@ public class TaskManager {
         }
 
         if(sk.equals(Skill.HITPOINTS)) {
-            List<WatTask> pool;
-            if(ConfigManager.getInstance().isTradeUnlocked()) {
-                pool = unrestrictedMoneyMakingTasks;
-            } else {
-                pool = restrictedMoneyMakingTasks;
-            }
-
-            Collections.shuffle(pool);
-            for(WatTask t : pool) {
+            Collections.shuffle(unrestrictedMoneyMakingTasks);
+            for(WatTask t : unrestrictedMoneyMakingTasks) {
                 if(t.canPerformTask() && (t.requiresMembers() && WatUtils.isMember() || !t.requiresMembers() && !WatUtils.isMember())) {
                     if(gpToGenerate > 0) {
                         t.data().put("gp_to_generate", gpToGenerate);
@@ -264,86 +240,7 @@ public class TaskManager {
         return false;
     }
 
-    private void checkPlayTime() {
-        if(!Tabs.isOpen(Tab.QUEST)) {
-            if(!Tabs.open(Tab.QUEST)) {
-                Logger.log("Failed to open quest tab");
-                return;
-            }
-
-            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.QUEST), 5000);
-        }
-
-        int currentPlaytime = 0;
-        while(currentPlaytime == 0) {
-            Widget page = Widgets.getWidget(629);
-            if (page != null && page.isVisible()) {
-                WidgetChild button = page.getChild(3);
-                if (button != null && button.isVisible()) {
-                    Widget characterInfo = Widgets.getWidget(712);
-                    if (characterInfo != null) {
-                        if (!characterInfo.isVisible()) {
-                            if (!button.interact()) {
-                                Logger.log("Failed to click playtime button");
-                                continue;
-                            }
-                        }
-
-                        WidgetChild panel = characterInfo.getChild(3);
-                        if (panel != null && panel.isVisible()) {
-                            WidgetChild time = panel.getChild(7);
-                            if (time != null && time.isVisible()) {
-                                if (time.hasAction("reveal")) {
-                                    if (!time.interact()) {
-                                        Logger.log("Failed to click reveal playtime");
-                                        continue;
-                                    }
-
-                                    Sleep.sleepUntil(Dialogues::inDialogue, 3000);
-                                    if(Dialogues.inDialogue()) {
-                                        DialogueUtils.solve(Arrays.asList("Yes and don't ask me again",
-                                                "Yes", "Yes.", "Yes and don't ask me again."));
-                                    }
-                                }
-
-                                Sleep.sleep(100, 200);
-                                currentPlaytime = Varcs.getInt(526);
-                                Logger.log("Current playtime: " + (double)(currentPlaytime/60) + " hour(s)");
-                            }
-                        }
-                    }
-                }
-
-                if(currentPlaytime > 0) {
-                    WidgetChild questButton = page.getChild(8);
-                    if(!questButton.interact()) {
-                        Logger.log("Failed to click quest button");
-                    }
-                }
-            }
-        }
-
-        if(!Tabs.isOpen(Tab.INVENTORY)) {
-            if(!Tabs.open(Tab.INVENTORY)) {
-                Logger.log("Failed to open inventory tab");
-            }
-        }
-
-        minutesPlayed = currentPlaytime;
-    }
-
     private boolean preTaskSelection() {
-        if((getInstance().getCheckedHoursAt() == 0 ||
-                (Instant.now().getEpochSecond() - getInstance().getCheckedHoursAt()) >= 3600)) {
-
-            if(minutesPlayed > 0 && !TutUtils.isOnTutorial()) {
-                //checkPlayTime();
-            }
-
-            setCheckedHoursAt(Instant.now().getEpochSecond());
-            WatScript.getInstance().enableLoginManager();
-        }
-
         if(!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
             return true;
@@ -353,10 +250,6 @@ public class TaskManager {
             setCurrentTask(new TutorialIslandTask(), 0);
             Logger.log("We are performing Tutorial Island");
             return true;
-        }
-
-        if(minutesPlayed == 0) {
-            //checkPlayTime();
         }
 
         if (!WatUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
@@ -377,14 +270,6 @@ public class TaskManager {
         Logger.log("Evaluating goals for stop conditions");
         if(evaluateGoals()) {
             Logger.log("Goals have been met..");
-            return true;
-        }
-
-        if(ConfigManager.getInstance().isTradeUnlocked()
-                && ConfigManager.getInstance().getConfigBoolean("logout_after_unrestricted")) {
-
-            setCurrentTask(new LogoutTask(true, !ConfigManager.getInstance().getConfigBoolean("disable_mule"),null), 0);
-            Logger.log("We are going to the bank to log out");
             return true;
         }
 
