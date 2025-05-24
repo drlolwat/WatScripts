@@ -8,7 +8,6 @@ import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.quest.Quests;
 import org.dreambot.api.methods.quest.book.FreeQuest;
-import org.dreambot.api.methods.quest.book.PaidQuest;
 import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
@@ -44,13 +43,8 @@ public class ItemManager {
         addSkilledWeapon("Mithril scimitar", 20, 1, 1, -1, -1, CombatType.MELEE);
         addSkilledWeapon("Adamant scimitar", 30, 1, 1, -1, -1, CombatType.MELEE);
         addSkilledWeapon("Rune scimitar", 40, 1, 1, -1, -1, CombatType.MELEE);
-
         addSkilledWeapon("Dragon sword", 60, 1, 1, -1, -1, CombatType.MELEE);
-
-        addQuestedWeapon("Dragon scimitar", 60, 1, 1, -1, -1, CombatType.MELEE,
-                Collections.singletonList(PaidQuest.MONKEY_MADNESS));
-
-        //addSkilledWeapon("Abyssal whip", 70, 1, 1, -1, -1, CombatType.MELEE);
+        addSkilledWeapon("Abyssal whip", 70, 99, 1, -1, -1, CombatType.MELEE);
 
         // ammo
         addWearable("Iron arrow", EquipmentSlot.ARROWS, CombatType.RANGED);
@@ -100,6 +94,7 @@ public class ItemManager {
         // other?
         addBasicItem("Coins");
         addBasicItem("Brass key");
+        addBasicItem("Knife");
 
         // food
         addBasicItem("Trout");

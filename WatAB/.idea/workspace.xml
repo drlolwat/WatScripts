@@ -7,18 +7,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="remove redundant methods, add new mouse">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/types/combat/CombatType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/gearing/CombatGearTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/WatMiner_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/WatMiner_jar.xml" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="New task: WithdrawSingleItemTask">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/MossGiantsLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/tutorial/TutorialIslandTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWeapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWeapon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWearable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWearable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/gearing/CombatGearTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/gearing/CombatGearTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/EdgevilleGiants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/EdgevilleGiantsLogic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,6 +129,9 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.tasks.exchange" />
+    </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -238,7 +238,7 @@
       <workItem from="1747955681791" duration="9756000" />
       <workItem from="1748029392632" duration="600000" />
       <workItem from="1748091521983" duration="78000" />
-      <workItem from="1748115250407" duration="5492000" />
+      <workItem from="1748115250407" duration="15264000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -583,7 +583,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="679" />
+    <option name="localTasksCounter" value="692" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -630,19 +630,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="TaskManager: more tasks between breaks" />
-    <MESSAGE value="ErnestTheChickenQuest: bank if inventory is full" />
-    <MESSAGE value="LogoutTask: address double-int cast error" />
-    <MESSAGE value="DoricsQuest: robustness" />
-    <MESSAGE value="ItemUtils: new methods: setBankMode, bank, bankContains, inventoryContains" />
-    <MESSAGE value="LiquidationTask: use ItemUtils" />
-    <MESSAGE value="BankingTask: use ItemUtils" />
-    <MESSAGE value="RuneMysteriesQuest: add dialogue to wizard dude" />
-    <MESSAGE value="WatAIO: version change" />
-    <MESSAGE value="new task: QuickWithdrawTask" />
-    <MESSAGE value="new task: GetPrysinKey" />
-    <MESSAGE value="new task: GetRovinsKey" />
-    <MESSAGE value="new task: GetTraibornKey" />
     <MESSAGE value="new task: GetSilverlight" />
     <MESSAGE value="DemonSlayerQuest: will collect items correctly, bank if needed" />
     <MESSAGE value="QuickWithdrawTask: named" />
@@ -655,7 +642,20 @@
     <MESSAGE value="dev" />
     <MESSAGE value="initial" />
     <MESSAGE value="remove redundant methods, add new mouse" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove redundant methods, add new mouse" />
+    <MESSAGE value="dynamic gearing system" />
+    <MESSAGE value="new Task: BuySingleItemTask" />
+    <MESSAGE value="new task: CombatGearTask" />
+    <MESSAGE value="CombatTask: gearing, inventory" />
+    <MESSAGE value="DefaultLogic: prod" />
+    <MESSAGE value="new Combat logic: EdgevilleGiants" />
+    <MESSAGE value="ItemManager: initial weapons, armor, food, keys" />
+    <MESSAGE value="MobLogic: add default target acq, gear, eating" />
+    <MESSAGE value="MobManager: add some default mobs up to ~80cb" />
+    <MESSAGE value="TeleportManager: disabled pending rework" />
+    <MESSAGE value="WaitForOfferTask: G.E overhaul helper Task" />
+    <MESSAGE value="WatItem: price logic" />
+    <MESSAGE value="New task: WithdrawSingleItemTask" />
+    <option name="LAST_COMMIT_MESSAGE" value="New task: WithdrawSingleItemTask" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

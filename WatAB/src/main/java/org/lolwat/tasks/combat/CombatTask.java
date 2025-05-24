@@ -22,9 +22,7 @@ import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.types.mobs.Mob;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CombatTask implements WatTask {
     private final Skill skill;
@@ -141,6 +139,18 @@ public class CombatTask implements WatTask {
             return;
         }
 
+        for (Item i : Inventory.all()) {
+            if (i == null) continue;
+            boolean needsDeposit = false;
+            WatItem wi = ItemManager.getInstance().getItem(i.getName());
+            if (wi == null) needsDeposit = true;
+            if (!target.getMobLogic().inventoryLoadout().containsKey(wi)) needsDeposit = true;
+            if (needsDeposit) {
+                TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, Collections.emptyList()));
+                return;
+            }
+        }
+
         if(!target.getMobLogic().inventoryLoadout().isEmpty()) {
             for(Map.Entry<WatItem, Integer> map : target.getMobLogic().inventoryLoadout().entrySet()) {
                 if(!Inventory.contains(x -> x != null && x.getName().equalsIgnoreCase(map.getKey().getName()) && !x.isNoted())) {
@@ -165,6 +175,10 @@ public class CombatTask implements WatTask {
         target.getMobLogic().execute(target, skill);
     }
 
+    @Override
+    public HashMap<WatItem, Integer> inventory() {
+        return target.getMobLogic().inventoryLoadout();
+    }
 
     @Override
     public boolean canPerformTask() {

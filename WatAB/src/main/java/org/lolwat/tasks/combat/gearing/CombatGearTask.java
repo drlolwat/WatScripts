@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.combat.CombatType;
@@ -33,6 +34,26 @@ public class CombatGearTask implements WatTask {
         if(!Bank.isOpen()) {
             WatUtils.bank(this);
             return;
+        }
+
+        for(Item i : Inventory.all()) {
+            if(i == null) continue;
+            WatItem wi = ItemManager.getInstance().getItem(i.getName());
+            if(wi == null) {
+                if(!Bank.depositAll(i)) {
+                    Logger.error("no wi-error depositing " + i.getName());
+                    return;
+                }
+                continue;
+            }
+
+            if(!parent.loadout().containsKey(wi) && !parent.inventory().containsKey(wi) && !parent.inventoryTolerated().contains(i.getName())) {
+                Logger.log("removing " + i.getName() + " from inventory");
+                if(!Bank.depositAll(i)) {
+                    Logger.error("error depositing " + i.getName());
+                    return;
+                }
+            }
         }
 
         for(EquipmentSlot s : slots) {

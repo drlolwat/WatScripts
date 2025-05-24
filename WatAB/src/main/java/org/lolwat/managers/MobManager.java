@@ -9,7 +9,8 @@ import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.types.interfaces.MobLogic;
 import org.lolwat.types.mobs.Mob;
 import org.lolwat.types.mobs.logic.DefaultLogic;
-import org.lolwat.types.mobs.logic.EdgevilleGiants;
+import org.lolwat.types.mobs.logic.EdgevilleGiantsLogic;
+import org.lolwat.types.mobs.logic.MossGiantsLogic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,8 +139,8 @@ public class MobManager {
                         put(Skill.ATTACK, 15);
                         put(Skill.DEFENCE, 15);
                         put(Skill.STRENGTH, 15);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
+                        put(Skill.RANGED, 20);
+                        put(Skill.MAGIC, 20);
                     }
                 });
 
@@ -163,8 +164,8 @@ public class MobManager {
                         put(Skill.ATTACK, 30);
                         put(Skill.DEFENCE, 30);
                         put(Skill.STRENGTH, 30);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
+                        put(Skill.RANGED, 40);
+                        put(Skill.MAGIC, 40);
                     }
                 });
 
@@ -192,8 +193,8 @@ public class MobManager {
                         put(Skill.ATTACK, 30);
                         put(Skill.DEFENCE, 30);
                         put(Skill.STRENGTH, 30);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
+                        put(Skill.RANGED, 30);
+                        put(Skill.MAGIC, 30);
                     }
                 });
 
@@ -215,8 +216,8 @@ public class MobManager {
                         put(Skill.ATTACK, 30);
                         put(Skill.DEFENCE, 30);
                         put(Skill.STRENGTH, 30);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
+                        put(Skill.RANGED, 30);
+                        put(Skill.MAGIC, 30);
                     }
                 });
 
@@ -249,10 +250,41 @@ public class MobManager {
                         put(Skill.ATTACK, 40);
                         put(Skill.DEFENCE, 40);
                         put(Skill.STRENGTH, 40);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
+                        put(Skill.RANGED, 60);
+                        put(Skill.MAGIC, 60);
                     }
-                }, new EdgevilleGiants());
+                }, new EdgevilleGiantsLogic());
+
+        addLogicMob("Moss Giant",
+                new HashMap<String, Area>() {
+                    {
+                        put("Edgeville", new Area(
+                                new Tile(3159, 9902, 0),
+                                new Tile(3159, 9898, 0),
+                                new Tile(3156, 9901, 0),
+                                new Tile(3155, 9902, 0),
+                                new Tile(3153, 9903, 0),
+                                new Tile(3153, 9907, 0),
+                                new Tile(3155, 9909, 0),
+                                new Tile(3158, 9908, 0),
+                                new Tile(3159, 9907, 0),
+                                new Tile(3160, 9906, 0),
+                                new Tile(3165, 9906, 0),
+                                new Tile(3165, 9904, 0),
+                                new Tile(3164, 9902, 0),
+                                new Tile(3162, 9901, 0),
+                                new Tile(3159, 9898, 0)));
+                    }},
+
+                new HashMap<Skill, Integer>() {
+                    {
+                        put(Skill.ATTACK, 50);
+                        put(Skill.DEFENCE, 50);
+                        put(Skill.STRENGTH, 50);
+                        put(Skill.RANGED, 60);
+                        put(Skill.MAGIC, 60);
+                    }
+                }, new MossGiantsLogic());
     }
 
     private void addBasicMob(String name, HashMap<String, Area> locations, HashMap<Skill, Integer> levelRequirements) {

@@ -6,7 +6,7 @@ import org.lolwat.types.interfaces.MobLogic;
 
 import java.util.HashMap;
 
-public class EdgevilleGiants implements MobLogic {
+public class EdgevilleGiantsLogic implements MobLogic {
     @Override
     public HashMap<WatItem, Integer> inventoryLoadout() {
         return new HashMap<WatItem, Integer>() {

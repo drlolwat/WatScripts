@@ -24,11 +24,10 @@ import java.util.List;
 
 public interface MobLogic {
     default void execute(Mob mob, Skill skill) {
-        if(!Players.getLocal().isInCombat() && !Players.getLocal().isHealthBarVisible()) {
+        if(!Players.getLocal().isInCombat() && Players.getLocal().getInteractingCharacter() == null) {
             NPC target = NPCs.closest(x -> x != null && x.exists() && !x.isInCombat() && !x.isHealthBarVisible() && x.getName().equals(mob.getName()));
             if (target != null) {
                 if(!target.interact("Attack")) {
-                    Logger.error("problem interacting with target: " + target.getName());
                     return;
                 }
 
