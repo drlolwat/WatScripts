@@ -57,7 +57,7 @@ public class TeleportManager {
     public void setupTeleports() {
         teleports = new ArrayList<>();
 
-        teleports.add(new Teleport("Castle Wars Arena",
+        /*teleports.add(new Teleport("Castle Wars Arena",
                 new Tile(2439,3089,0),
                 "Ring of dueling",
                 "Ring of dueling(6)",
@@ -121,6 +121,6 @@ public class TeleportManager {
                 new Tile(2894, 3465, 0),
                 "Taverley teleport",
                 "Taverley teleport",
-                "Taverley"));
+                "Taverley"));*/
     }
 }
