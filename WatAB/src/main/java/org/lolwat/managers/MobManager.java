@@ -255,7 +255,7 @@ public class MobManager {
                     }
                 }, new EdgevilleGiantsLogic());
 
-        addLogicMob("Moss Giant",
+        addLogicMob("Moss giant",
                 new HashMap<String, Area>() {
                     {
                         put("Edgeville", new Area(
