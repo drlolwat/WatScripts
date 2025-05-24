@@ -8,8 +8,10 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.ItemManager;
+import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.combat.CombatType;
 import org.lolwat.misc.utils.WatUtils;
+import org.lolwat.tasks.exchange.BuySingleItemTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
@@ -61,13 +63,10 @@ public class CombatGearTask implements WatTask {
                 }
 
                 Sleep.sleepUntil(() -> Equipment.contains(bestItem.getName()), 5000);
-                if(!Equipment.contains(bestItem.getName())) {
-                    Logger.error("error equipping " + bestItem.getName());
-                    return;
-                }
+                return;
             }
 
-            if(Bank.contains(bestItem.getName())) {
+            if(Bank.contains(bestItem.getName()) && !Equipment.contains(bestItem.getName())) {
                 Logger.log("bank contains " + bestItem.getName() + ", will equip");
                 if(!Bank.withdraw(bestItem.getName())) {
                     Logger.error("problem withdrawing " + bestItem.getName());
@@ -82,6 +81,7 @@ public class CombatGearTask implements WatTask {
                 }
 
                 if(!WatUtils.equipItem(bestItem.getName(), null)) {
+                    Logger.error("error equipping " + bestItem.getName());
                     return;
                 }
 
@@ -91,11 +91,16 @@ public class CombatGearTask implements WatTask {
                     Logger.error("error equipping " + bestItem.getName());
                     return;
                 }
-
             } else {
-                Logger.log("looks like we need to buy " + bestItem.getName());
+                if(!Equipment.contains(bestItem.getName()) && !Inventory.contains(bestItem.getName())) {
+                    Logger.log("looks like we need to buy " + bestItem.getName());
+                    TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(bestItem.getSearchFor(), 1, bestItem.getPrice(), parent));
+                    return;
+                }
             }
         }
+
+        TaskManager.getInstance().setCurrentTask(parent);
     }
 
     @Override
