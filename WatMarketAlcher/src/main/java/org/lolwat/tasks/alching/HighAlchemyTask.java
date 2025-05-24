@@ -21,7 +21,7 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.misc.BankingTask;
+import org.lolwat.tasks.misc.LegacyBankingTask;
 import org.lolwat.tasks.misc.MulingTask;
 
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class HighAlchemyTask implements WatTask {
 
         if (!WatUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
             Logger.log("We need to grab runes...");
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(new HashMap<String, Integer>() {
                 {
                     put("Nature rune", ConfigManager.getInstance().getConfigInt("buy_nature_qty"));
                 }
@@ -97,10 +97,10 @@ public class HighAlchemyTask implements WatTask {
 
         if (!Inventory.contains(x -> x != null && x.getName().equals(item))) {
             if(Bank.contains(x -> x != null && x.getName().equals(item))) {
-                Logger.log("We need to grab HA target (" + item + ")");
+                Logger.log("We need to grab HA target (" + item + ") from the bank");
                 TaskManager.getInstance().setCurrentTask(new AlchingBankingTask(this));
             } else {
-                Logger.log("onTask: fetching new target");
+                Logger.log("We need a new target, ran out or had none");
                 ConfigManager.getInstance().getNewAlchTarget();
                 TaskManager.getInstance().setCurrentTask(new BuyAlchItemTask(this));
             }
@@ -109,7 +109,7 @@ public class HighAlchemyTask implements WatTask {
 
         for(String s : clothesRequired().keySet()) {
             if(!Equipment.contains(s)) {
-                TaskManager.getInstance().setCurrentTask(new BankingTask(null, this));
+                TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(null, this));
                 return;
             }
         }

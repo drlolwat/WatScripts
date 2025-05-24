@@ -23,11 +23,11 @@ import org.lolwat.tasks.alching.HighAlchemyTask;
 
 import java.util.*;
 
-public class BankingTask implements WatTask {
+public class LegacyBankingTask implements WatTask {
     private HashMap<String, Integer> inventoryRequired; // Process inv second..
     private WatTask postTask;
 
-    public BankingTask(HashMap<String, Integer> invRequired, WatTask post) {
+    public LegacyBankingTask(HashMap<String, Integer> invRequired, WatTask post) {
         if (invRequired == null || invRequired.isEmpty())
             inventoryRequired = new HashMap<>();
         else
@@ -293,35 +293,14 @@ public class BankingTask implements WatTask {
 
         Logger.log("Exchanger: Finished checks");
 
-        if (!ConfigManager.getInstance().hasMuleConnectionFailed()) {
-            int invMoney = 0;
-            int bankMoney = 0;
-
-            if (Inventory.contains("Coins")) {
-                invMoney = Inventory.count("Coins");
-            }
-
-            if (Bank.contains("Coins")) {
-                bankMoney = Bank.count("Coins");
-            }
-
-            if ((invMoney + bankMoney) >= ConfigManager.getInstance().getConfigInt("mule_at_gp")) {
-                int toWithdraw = (bankMoney - invMoney) - ConfigManager.getInstance().getConfigInt("keep_gp");
-                if (toWithdraw > 0) {
-                    Logger.log("MULE TARGET MET, REDIRECTING TO MULE");
-                    if (Inventory.isFull() || Inventory.emptySlotCount() < 2) {
-                        Bank.depositAllExcept("Coins");
-                    }
-                    Sleep.sleep(100, 200);
-                    Bank.withdraw("Coins", toWithdraw);
-                    Sleep.sleep(200, 400);
-                    postTask = new MulingTask("Muling Gold", Worlds.getCurrentWorld(), postTask);
-                }
-            }
-        }
-
         if (postTask != null && !(postTask instanceof MulingTask)) {
             depositNonRequired();
+        }
+
+        if(Bank.contains("Coins")) {
+            if(!Bank.withdrawAll("Coins")) {
+                Logger.error("error withdrawing excess coins");
+            }
         }
 
         Logger.log("Banking: Complete");
@@ -480,7 +459,7 @@ public class BankingTask implements WatTask {
 
     @Override
     public String getName() {
-        return "Banking";
+        return "Banking (Legacy)";
     }
 
     @Override
