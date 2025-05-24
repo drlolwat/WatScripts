@@ -65,6 +65,6 @@ public class WatItem {
     }
 
     public int getPrice() {
-        return LivePrices.getHigh(this.name);
+        return (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 }
