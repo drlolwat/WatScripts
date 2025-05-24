@@ -5,11 +5,14 @@ import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.types.gear.WatItem;
@@ -20,14 +23,37 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface MobLogic {
-    void execute(Mob mob, Skill skill);
+    default void execute(Mob mob, Skill skill) {
+        if(!Players.getLocal().isInCombat() && !Players.getLocal().isHealthBarVisible()) {
+            NPC target = NPCs.closest(x -> x != null && x.exists() && !x.isInCombat() && !x.isHealthBarVisible() && x.getName().equals(mob.getName()));
+            if (target != null) {
+                if(!target.interact("Attack")) {
+                    Logger.error("problem interacting with target: " + target.getName());
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> target.isInteracting(Players.getLocal()), 5000);
+
+                if(!target.isInteracting(Players.getLocal())) {
+                    Logger.log("did not get targets attention or its attacking someone else: " + target.getName());
+                }
+
+            } else {
+                Logger.log("Target not found: " + mob.getName());
+            }
+        }
+    }
 
     default HashMap<WatItem, Integer> inventoryLoadout() {
         return null;
     }
 
     default List<EquipmentSlot> slotsRequired() {
-        return Arrays.asList(EquipmentSlot.WEAPON, EquipmentSlot.SHIELD);
+        return Arrays.asList(EquipmentSlot.WEAPON,
+                EquipmentSlot.SHIELD,
+                EquipmentSlot.HAT,
+                EquipmentSlot.CHEST,
+                EquipmentSlot.LEGS);
     }
 
     default void runPriority(Mob mob, Skill skill) {
