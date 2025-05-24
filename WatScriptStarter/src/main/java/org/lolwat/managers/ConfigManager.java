@@ -9,6 +9,7 @@ import org.dreambot.api.methods.grandexchange.LivePrices;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.alching.AlchingBankingTask;
 import org.lolwat.tasks.alching.HighAlchemyTask;
 
@@ -163,8 +164,12 @@ public class ConfigManager {
             }
         }
 
-        int totalCoins = Inventory.count("Coins") + Bank.count("Coins");
+        int totalCoins = Inventory.count("Coins");// + Bank.count("Coins");
         int toBuy = 0;
+
+        Logger.log("selecting new item to alch");
+        Logger.log("coins available " + totalCoins);
+        Logger.log("(" + NumUtils.simplifyNumber(totalCoins) + ")");
 
         List<Map.Entry<String, Integer>> sortedAlchables = new ArrayList<>(alchables.entrySet());
         sortedAlchables.sort((entry1, entry2) -> {
@@ -179,6 +184,17 @@ public class ConfigManager {
                 toBuy = totalCoins / (alchables.get(entry.getKey()) + getConfigInt("price_modifier")) - 1;
                 break;
             }
+        }
+
+        int cost = (alchables.get(bestTarget) + getConfigInt("price_modifier")) * toBuy;
+
+        Logger.log("going to buy " + toBuy + " " + bestTarget);
+        Logger.log("this will cost " + cost);
+        Logger.log("(" + NumUtils.simplifyNumber(cost) + ")");
+
+        if(cost > totalCoins) {
+            Logger.error("somehow the math didnt math");
+            currentTargetAmount = -1000;
         }
 
         if (bestTarget != null) {

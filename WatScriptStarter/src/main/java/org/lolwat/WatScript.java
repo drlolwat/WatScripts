@@ -57,7 +57,7 @@ import java.util.List;
 @ScriptManifest(name = "WatMarketAlcher",
         description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
         author = "lolwat",
-        version = 1.14,
+        version = 1.15,
         category = Category.MAGIC,
         image = "https://api.botbuddy.net/WatScripts.png")
 

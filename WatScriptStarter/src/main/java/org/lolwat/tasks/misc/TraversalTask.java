@@ -118,9 +118,9 @@ public class TraversalTask implements WatTask {
                             return;
                         } else {
                             if (targetDistance > exchangeDistance
-                                    && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
+                                    && (!(postTask instanceof LegacyBankingTask) && !(postTask instanceof GrandExchangeTask))) {
 
-                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+                                TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(new HashMap<String, Integer>() {
                                     {
                                         put(teleportItem, 1);
                                     }

@@ -94,6 +94,7 @@ public class WaitForOfferTask implements WatTask {
 
         if(GrandExchange.getUsedSlots() > 0) {
             Logger.log("we have offers in the window, ridding them");
+
             if(!GrandExchange.cancelAll()) {
                 Logger.error("problem cancelling all offers..");
                 return;
@@ -103,6 +104,8 @@ public class WaitForOfferTask implements WatTask {
                 Logger.log("still got items, returning");
                 return;
             }
+
+            Sleep.sleepUntil(GrandExchange::isReadyToCollect, 5000);
 
             if(GrandExchange.isReadyToCollect() && !GrandExchange.collect()) {
                 Logger.error("problem collecting");

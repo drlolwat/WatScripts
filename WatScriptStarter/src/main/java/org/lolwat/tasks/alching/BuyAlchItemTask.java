@@ -35,11 +35,12 @@ public class BuyAlchItemTask implements WatTask {
         int targetCost = ConfigManager.getInstance().itemCost(target) + ConfigManager.getInstance().getConfigInt("price_modifier");
         int targetId = ConfigManager.getInstance().getItemIds().get(target);
 
-        int myCoins = Inventory.count("Coins") + Bank.count("Coins");
+        int myCoins = Inventory.count("Coins");// + Bank.count("Coins");
         if((double) (targetCost * targetQty) > myCoins) {
             targetQty = (int) Math.floor((double) myCoins / targetCost) - 1;
             ConfigManager.getInstance().setCurrentTargetAmount(targetQty);
             Logger.log("changing targetQty to " + targetQty + " for affordability");
+            return;
         }
 
         if (targetQty <= 0) {

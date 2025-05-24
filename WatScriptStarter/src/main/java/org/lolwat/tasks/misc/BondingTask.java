@@ -51,7 +51,7 @@ public class BondingTask implements WatTask {
         }
 
         if (!Inventory.contains("Old school bond (untradeable)")) {
-            TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<String, Integer>() {
+            TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(new HashMap<String, Integer>() {
                 {
                     put("Old school bond (untradeable)", 1);
                 }
