@@ -3,6 +3,7 @@ package org.lolwat.types.interfaces;
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.combat.CombatStyle;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
@@ -14,7 +15,9 @@ import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.mobs.Mob;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public interface MobLogic {
     void execute(Mob mob, Skill skill);
@@ -23,8 +26,8 @@ public interface MobLogic {
         return null;
     }
 
-    default HashMap<WatItem, Integer> gearLoadout() {
-        return null;
+    default List<EquipmentSlot> slotsRequired() {
+        return Arrays.asList(EquipmentSlot.WEAPON, EquipmentSlot.SHIELD);
     }
 
     default void runPriority(Mob mob, Skill skill) {
