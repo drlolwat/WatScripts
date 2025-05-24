@@ -38,8 +38,8 @@ public class ItemManager {
         addWeapon("Bronze sword", CombatType.MELEE);
         addWeapon("Iron scimitar", CombatType.MELEE);
 
-        addSkilledWeapon("Shortbow", 1, 1, 1, -1, 1, CombatType.RANGED);
-        addSkilledWeapon("Staff of Air", 1, 1, 1, 1, -1, CombatType.MAGIC);
+        addWeapon("Shortbow", CombatType.RANGED);
+        addWeapon("Staff of air", CombatType.MAGIC);
 
         addSkilledWeapon("Mithril scimitar", 20, 1, 1, -1, -1, CombatType.MELEE);
         addSkilledWeapon("Adamant scimitar", 30, 1, 1, -1, -1, CombatType.MELEE);
@@ -50,7 +50,7 @@ public class ItemManager {
         addQuestedWeapon("Dragon scimitar", 60, 1, 1, -1, -1, CombatType.MELEE,
                 Collections.singletonList(PaidQuest.MONKEY_MADNESS));
 
-        addSkilledWeapon("Abyssal whip", 70, 1, 1, -1, -1, CombatType.MELEE);
+        //addSkilledWeapon("Abyssal whip", 70, 1, 1, -1, -1, CombatType.MELEE);
 
         // ammo
         addWearable("Iron arrow", EquipmentSlot.ARROWS, CombatType.RANGED);
@@ -98,6 +98,14 @@ public class ItemManager {
         addSkilledWearable("Dragon med helm", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.HAT);
 
         // other?
+        addBasicItem("Coins");
+        addBasicItem("Brass key");
+
+        // food
+        addBasicItem("Trout");
+        addBasicItem("Lobster");
+        addBasicItem("Tuna");
+        addBasicItem("Shark");
     }
 
     public WatItem getItem(String name) {
@@ -262,5 +270,12 @@ public class ItemManager {
     public boolean isValidWeapon(String name, CombatType type) {
         WatItem item = getItem(name);
         return item instanceof WatWeapon && ((WatWeapon) item).getCombatType().equals(type);
+    }
+
+    public boolean isValidWearable(String name, EquipmentSlot slot, CombatType type) {
+        WatItem item = getItem(name);
+        return item instanceof WatWearable
+                && ((WatWearable) item).getSlot() == slot
+                && ((WatWearable) item).getCombatType() == type;
     }
 }
