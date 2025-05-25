@@ -1,9 +1,6 @@
 package org.lolwat.tasks.misc;
 
-import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -14,8 +11,6 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.tabs.Tab;
-import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
@@ -27,13 +22,11 @@ import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
-import org.lolwat.types.teleports.Teleport;
 
 import java.time.Instant;
 import java.util.*;
@@ -156,7 +149,7 @@ public class WalkingTask implements WatTask {
             }
         }
 
-        if (WatUtils.isMember() && postTask != null) {
+        /*if (WatUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
             double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
@@ -250,7 +243,7 @@ public class WalkingTask implements WatTask {
                     Logger.log("Traversal: no teleport item found for destination, walking");
                 }
             }
-        }
+        }*/
 
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
 

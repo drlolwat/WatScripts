@@ -44,7 +44,7 @@ public interface MobLogic {
     }
 
     default HashMap<WatItem, Integer> inventoryLoadout() {
-        return null;
+        return new HashMap<>();
     }
 
     default List<EquipmentSlot> slotsRequired() {
@@ -54,7 +54,9 @@ public interface MobLogic {
                 EquipmentSlot.CHEST,
                 EquipmentSlot.LEGS,
                 EquipmentSlot.AMULET,
-                EquipmentSlot.CAPE);
+                EquipmentSlot.CAPE,
+                EquipmentSlot.HANDS,
+                EquipmentSlot.FEET);
     }
 
     default void runPriority(Mob mob, Skill skill) {

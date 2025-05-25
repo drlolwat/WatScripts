@@ -59,6 +59,22 @@ public class ItemManager {
         addWearable("Iron kiteshield", EquipmentSlot.SHIELD, CombatType.MELEE);
         addWearable("Iron full helm", EquipmentSlot.HAT, CombatType.MELEE);
 
+        // boots
+        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.MELEE);
+        addWearable("Iron boots", EquipmentSlot.FEET, CombatType.MELEE);
+
+        addSkilledWearable("Mithril boots", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
+        addSkilledWearable("Adamant boots", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
+        addSkilledWearable("Rune boots", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
+        addSkilledWearable("Dragon boots", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
+
+        addWearable("Leather gloves", EquipmentSlot.HANDS, CombatType.MELEE);
+        addWearable("Iron gloves", EquipmentSlot.HANDS, CombatType.MELEE);
+        addSkilledWearable("Mithril gloves", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
+        addSkilledWearable("Adamant gloves", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
+        addSkilledWearable("Rune gloves", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
+        addSkilledWearable("Barrows gloves", 1, 1, 70, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
+
         // amulets, 3 of each
         addWearable("Amulet of strength", EquipmentSlot.AMULET, CombatType.MELEE);
         addWearable("Amulet of accuracy", EquipmentSlot.AMULET, CombatType.RANGED);

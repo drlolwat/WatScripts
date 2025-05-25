@@ -7,15 +7,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="New task: WithdrawSingleItemTask">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/MossGiantsLogic.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Gear: add amulets, capes (infernal, fire, obs, other)">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/CrabLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/gearing/CombatGearTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/gearing/CombatGearTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TeleportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TeleportManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/WalkingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/WalkingTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/EdgevilleGiants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/EdgevilleGiantsLogic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +238,7 @@
       <workItem from="1747955681791" duration="9756000" />
       <workItem from="1748029392632" duration="600000" />
       <workItem from="1748091521983" duration="78000" />
-      <workItem from="1748115250407" duration="15264000" />
+      <workItem from="1748115250407" duration="23966000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -583,7 +583,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="692" />
+    <option name="localTasksCounter" value="695" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -630,9 +630,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new task: GetSilverlight" />
-    <MESSAGE value="DemonSlayerQuest: will collect items correctly, bank if needed" />
-    <MESSAGE value="QuickWithdrawTask: named" />
     <MESSAGE value="ItemUtils: new method: equipmentContains" />
     <MESSAGE value="GetSilverlight: inherit correct post task" />
     <MESSAGE value="remove ribo gpt code" />
@@ -655,7 +652,10 @@
     <MESSAGE value="WaitForOfferTask: G.E overhaul helper Task" />
     <MESSAGE value="WatItem: price logic" />
     <MESSAGE value="New task: WithdrawSingleItemTask" />
-    <option name="LAST_COMMIT_MESSAGE" value="New task: WithdrawSingleItemTask" />
+    <MESSAGE value="new logic: Moss giants" />
+    <MESSAGE value="logie updates" />
+    <MESSAGE value="Gear: add amulets, capes (infernal, fire, obs, other)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Gear: add amulets, capes (infernal, fire, obs, other)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

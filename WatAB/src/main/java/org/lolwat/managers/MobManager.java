@@ -8,6 +8,7 @@ import org.dreambot.api.methods.quest.book.Quest;
 import org.dreambot.api.methods.skills.Skill;
 import org.lolwat.types.interfaces.MobLogic;
 import org.lolwat.types.mobs.Mob;
+import org.lolwat.types.mobs.logic.CrabLogic;
 import org.lolwat.types.mobs.logic.DefaultLogic;
 import org.lolwat.types.mobs.logic.EdgevilleGiantsLogic;
 import org.lolwat.types.mobs.logic.MossGiantsLogic;
@@ -157,7 +158,8 @@ public class MobManager {
                                 new Tile(3218, 3476, 2),
                                 new Tile(3218, 3467, 2),
                                 new Tile(3209, 3467, 2)));
-                }},
+                    }
+                },
 
                 new HashMap<Skill, Integer>() {
                     {
@@ -168,6 +170,43 @@ public class MobManager {
                         put(Skill.MAGIC, 40);
                     }
                 });
+
+        addLogicMob("Rock crab",
+                new HashMap<String, Area>() {
+                    {
+                        put("Fremmy", new Area(
+                                new Tile(2707, 3721, 0),
+                                new Tile(2705, 3730, 0),
+                                new Tile(2703, 3730, 0),
+                                new Tile(2702, 3732, 0),
+                                new Tile(2700, 3732, 0),
+                                new Tile(2695, 3727, 0),
+                                new Tile(2692, 3726, 0),
+                                new Tile(2692, 3718, 0),
+                                new Tile(2694, 3713, 0),
+                                new Tile(2705, 3713, 0),
+                                new Tile(2715, 3713, 0),
+                                new Tile(2720, 3714, 0),
+                                new Tile(2720, 3729, 0),
+                                new Tile(2720, 3732, 0),
+                                new Tile(2718, 3734, 0),
+                                new Tile(2715, 3733, 0),
+                                new Tile(2714, 3734, 0),
+                                new Tile(2712, 3733, 0),
+                                new Tile(2708, 3729, 0),
+                                new Tile(2705, 3730, 0)));
+                    }
+                },
+
+                new HashMap<Skill, Integer>() {
+                    {
+                        put(Skill.ATTACK, 30);
+                        put(Skill.DEFENCE, 30);
+                        put(Skill.STRENGTH, 30);
+                        put(Skill.RANGED, 30);
+                        put(Skill.MAGIC, 30);
+                    }
+                }, new CrabLogic());
 
         addBasicMob("Minotaur",
                 new HashMap<String, Area>() {
@@ -186,15 +225,16 @@ public class MobManager {
                                 new Tile(1895, 5200, 0),
                                 new Tile(1892, 5200, 0),
                                 new Tile(1884, 5194, 0)));
-                    }},
+                    }
+                },
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 30);
-                        put(Skill.DEFENCE, 30);
-                        put(Skill.STRENGTH, 30);
-                        put(Skill.RANGED, 30);
-                        put(Skill.MAGIC, 30);
+                        put(Skill.ATTACK, 40);
+                        put(Skill.DEFENCE, 40);
+                        put(Skill.STRENGTH, 40);
+                        put(Skill.RANGED, 40);
+                        put(Skill.MAGIC, 40);
                     }
                 });
 
@@ -209,15 +249,16 @@ public class MobManager {
                                 new Tile(2134, 5275, 0),
                                 new Tile(2133, 5271, 0),
                                 new Tile(2128, 5265, 0)));
-                    }},
+                    }
+                },
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 30);
-                        put(Skill.DEFENCE, 30);
-                        put(Skill.STRENGTH, 30);
-                        put(Skill.RANGED, 30);
-                        put(Skill.MAGIC, 30);
+                        put(Skill.ATTACK, 45);
+                        put(Skill.DEFENCE, 45);
+                        put(Skill.STRENGTH, 45);
+                        put(Skill.RANGED, 45);
+                        put(Skill.MAGIC, 45);
                     }
                 });
 
@@ -243,13 +284,14 @@ public class MobManager {
                                 new Tile(3122, 9838, 0),
                                 new Tile(3121, 9832, 0),
                                 new Tile(3110, 9826, 0)));
-                    }},
+                    }
+                },
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 40);
-                        put(Skill.DEFENCE, 40);
-                        put(Skill.STRENGTH, 40);
+                        put(Skill.ATTACK, 45);
+                        put(Skill.DEFENCE, 45);
+                        put(Skill.STRENGTH, 45);
                         put(Skill.RANGED, 60);
                         put(Skill.MAGIC, 60);
                     }
@@ -258,7 +300,7 @@ public class MobManager {
         addLogicMob("Moss giant",
                 new HashMap<String, Area>() {
                     {
-                        put("Edgeville", new Area(
+                        put("Varrock Sewers", new Area(
                                 new Tile(3159, 9902, 0),
                                 new Tile(3159, 9898, 0),
                                 new Tile(3156, 9901, 0),
@@ -274,11 +316,12 @@ public class MobManager {
                                 new Tile(3164, 9902, 0),
                                 new Tile(3162, 9901, 0),
                                 new Tile(3159, 9898, 0)));
-                    }},
+                    }
+                },
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 50);
+                        put(Skill.ATTACK, 60);
                         put(Skill.DEFENCE, 50);
                         put(Skill.STRENGTH, 50);
                         put(Skill.RANGED, 60);

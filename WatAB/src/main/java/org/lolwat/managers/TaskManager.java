@@ -253,15 +253,14 @@ public class TaskManager {
         }
 
         if (!WatUtils.isMember() && (ConfigManager.getInstance().getConfigInt("bond_min_ttl") > 0
-                && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("bond_min_ttl"))
-                && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
+                && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("bond_min_ttl"))) {
 
             setCurrentTask(new BondingTask(null), 0);
             Logger.log("We are making our account a member");
             return true;
         }
 
-        if(WatUtils.isMember() && !Worlds.getCurrent().isMembers() && ConfigManager.getInstance().getConfigBoolean("profile_p2p_allowed")) {
+        if(WatUtils.isMember() && !Worlds.getCurrent().isMembers()) {
             setCurrentTask(new HopperTask(0, (currentTask != null) ? currentTask : null), 0);
             Logger.log("We are hopping into a P2P world");
             return true;

@@ -122,5 +122,23 @@ public class TeleportManager {
                 "Taverley teleport",
                 "Taverley teleport",
                 "Taverley"));*/
+
+        teleports.add(new Teleport("Varrock",
+                new Tile(3212, 3425, 0),
+                "Varrock teleport",
+                "Varrock teleport",
+                "Varrock"));
+
+        teleports.add(new Teleport("Falador",
+                new Tile(2966, 3378, 0),
+                "Falador teleport",
+                "Falador teleport",
+                "Falador"));
+
+        teleports.add(new Teleport("Camelot",
+                new Tile(2756, 3478, 0),
+                "Camelot teleport",
+                "Camelot teleport",
+                "Camelot"));
     }
 }
