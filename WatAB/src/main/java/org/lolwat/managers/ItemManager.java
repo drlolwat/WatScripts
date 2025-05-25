@@ -59,6 +59,32 @@ public class ItemManager {
         addWearable("Iron kiteshield", EquipmentSlot.SHIELD, CombatType.MELEE);
         addWearable("Iron full helm", EquipmentSlot.HAT, CombatType.MELEE);
 
+        // amulets, 3 of each
+        addWearable("Amulet of strength", EquipmentSlot.AMULET, CombatType.MELEE);
+        addWearable("Amulet of accuracy", EquipmentSlot.AMULET, CombatType.RANGED);
+        addWearable("Amulet of magic", EquipmentSlot.AMULET, CombatType.MAGIC);
+
+        addSkilledWearable("Amulet of fury", 60, 60, 60, 1, 1, CombatType.MELEE, EquipmentSlot.AMULET);
+        addSkilledWearable("Amulet of fury", 1, 1, 1, 60, 0, CombatType.RANGED, EquipmentSlot.AMULET);
+        addSkilledWearable("Amulet of fury", 1, 1, 1, 60, 60, CombatType.MAGIC, EquipmentSlot.AMULET);
+
+        // same thing with capes
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MELEE);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.RANGED);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MAGIC);
+
+        addSkilledWearable("Obsidian cape", 9, 9, 9, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 9, CombatType.RANGED, EquipmentSlot.CAPE);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 9, 1, CombatType.MAGIC, EquipmentSlot.CAPE);
+
+        addSkilledWearable("Fire cape", 10, 10, 10, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE);
+        addSkilledWearable("Fire cape", 1, 1, 1, 1, 10, CombatType.RANGED, EquipmentSlot.CAPE);
+        addSkilledWearable("Fire cape", 1, 1, 1, 10, 1, CombatType.MAGIC, EquipmentSlot.CAPE);
+
+        addSkilledWearable("Infernal cape", 11, 11, 11, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE);
+        addSkilledWearable("Infernal cape", 1, 1, 1, 1, 11, CombatType.RANGED, EquipmentSlot.CAPE);
+        addSkilledWearable("Infernal cape", 1, 1, 1, 11, 1, CombatType.MAGIC, EquipmentSlot.CAPE);
+
         addSkilledWearable("Steel platelegs", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS);
         addSkilledWearable("Steel platebody", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST);
         addSkilledWearable("Steel kiteshield", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD);
@@ -194,9 +220,14 @@ public class ItemManager {
         }
         candidates.sort((a, b) -> Integer.compare(scoreFunc.apply(b), scoreFunc.apply(a)));
         for (T item : candidates) {
-            if (ownedFunc.apply(item)) return item;
-            int price = priceFunc.apply(item);
-            if (price > 0 && availableMoney >= price) return item;
+            boolean owned = ownedFunc.apply(item);
+            boolean tradeable = item.isTradeable();
+            if (owned) return item;
+            if (tradeable) {
+                int price = priceFunc.apply(item);
+                if (price > 0 && availableMoney >= price) return item;
+            }
+            // If not tradeable and not owned, skip
         }
         return null;
     }

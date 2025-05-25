@@ -67,4 +67,8 @@ public class WatItem {
     public int getPrice() {
         return (int) (LivePrices.getHigh(this.name) * 1.2);
     }
+
+    public boolean isTradeable() {
+        return LivePrices.getHigh(this.name) > 0;
+    }
 }

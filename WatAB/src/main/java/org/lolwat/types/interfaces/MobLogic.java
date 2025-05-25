@@ -52,7 +52,9 @@ public interface MobLogic {
                 EquipmentSlot.SHIELD,
                 EquipmentSlot.HAT,
                 EquipmentSlot.CHEST,
-                EquipmentSlot.LEGS);
+                EquipmentSlot.LEGS,
+                EquipmentSlot.AMULET,
+                EquipmentSlot.CAPE);
     }
 
     default void runPriority(Mob mob, Skill skill) {
