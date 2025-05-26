@@ -1,5 +1,6 @@
 package org.lolwat.tasks.combat.gearing;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
@@ -36,25 +37,7 @@ public class CombatGearTask implements WatTask {
             return;
         }
 
-        for(Item i : Inventory.all()) {
-            if(i == null) continue;
-            WatItem wi = ItemManager.getInstance().getItem(i.getName());
-            if(wi == null) {
-                if(!Bank.depositAll(i)) {
-                    Logger.error("no wi-error depositing " + i.getName());
-                    return;
-                }
-                continue;
-            }
-
-            if(!parent.loadout().containsKey(wi) && !parent.inventory().containsKey(wi) && !parent.inventoryTolerated().contains(i.getName())) {
-                Logger.log("removing " + i.getName() + " from inventory");
-                if(!Bank.depositAll(i)) {
-                    Logger.error("error depositing " + i.getName());
-                    return;
-                }
-            }
-        }
+        removeOtherItems();
 
         for(EquipmentSlot s : slots) {
             WatItem bestItem;
@@ -89,9 +72,17 @@ public class CombatGearTask implements WatTask {
 
             if(Bank.contains(bestItem.getName()) && !Equipment.contains(bestItem.getName())) {
                 Logger.log("bank contains " + bestItem.getName() + ", will equip");
-                if(!Bank.withdraw(bestItem.getName())) {
-                    Logger.error("problem withdrawing " + bestItem.getName());
-                    return;
+                if(s.equals(EquipmentSlot.ARROWS)) {
+                    if(!Bank.withdrawAll(bestItem.getName())) {
+                        Logger.error("problem withdrawing " + bestItem.getName());
+                        return;
+                    }
+                }
+                else {
+                    if (!Bank.withdraw(bestItem.getName())) {
+                        Logger.error("problem withdrawing " + bestItem.getName());
+                        return;
+                    }
                 }
 
                 Sleep.sleepUntil(() -> Inventory.contains(bestItem.getName()), 5000);
@@ -114,14 +105,38 @@ public class CombatGearTask implements WatTask {
                 }
             } else {
                 if(!Equipment.contains(bestItem.getName()) && !Inventory.contains(bestItem.getName())) {
-                    Logger.log("looks like we need to buy " + bestItem.getName());
-                    TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(bestItem.getSearchFor(), 1, bestItem.getPrice(), parent));
+                    int quantity = s.equals(EquipmentSlot.ARROWS) ? Calculations.random(300, 600) : 1;
+                    Logger.log("looks like we need to buy " + bestItem.getName() + " x" + quantity);
+                    TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(bestItem.getSearchFor(), quantity, bestItem.getPrice(), parent));
                     return;
                 }
             }
         }
 
+        removeOtherItems();
         TaskManager.getInstance().setCurrentTask(parent);
+    }
+
+    private void removeOtherItems() {
+        for(Item i : Inventory.all()) {
+            if(i == null) continue;
+            WatItem wi = ItemManager.getInstance().getItem(i.getName());
+            if(wi == null) {
+                if(!Bank.depositAll(i)) {
+                    Logger.error("no wi-error depositing " + i.getName());
+                    return;
+                }
+                continue;
+            }
+
+            if(!parent.loadout().containsKey(wi) && !parent.inventory().containsKey(wi) && !parent.inventoryTolerated().contains(i.getName())) {
+                Logger.log("removing " + i.getName() + " from inventory");
+                if(!Bank.depositAll(i)) {
+                    Logger.error("error depositing " + i.getName());
+                    return;
+                }
+            }
+        }
     }
 
     @Override
