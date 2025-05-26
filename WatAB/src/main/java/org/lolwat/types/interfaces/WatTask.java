@@ -31,4 +31,5 @@ public interface WatTask {
     default boolean requiresLogin() { return true; }
     default void onExpGained(Skill skill, int amount, WatScript instance) { }
     default String getName() { return this.getClass().getSimpleName(); }
+    default String getLocation() { return "Some location"; }
 }
