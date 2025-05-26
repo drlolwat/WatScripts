@@ -35,6 +35,8 @@ public class WithdrawSingleItemTask implements WatTask {
             return;
         }
 
+        Bank.resetCache();
+
         int coins = Inventory.count("Coins") + Bank.count("Coins");
         WatItem i = ItemManager.getInstance().getItem(itemName);
         if(i == null) {
