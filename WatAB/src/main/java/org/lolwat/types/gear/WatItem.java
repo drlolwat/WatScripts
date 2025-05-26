@@ -21,12 +21,15 @@ public class WatItem {
     private final boolean wearable = false;
     @Getter
     private final boolean weapon = false;
+    @Getter
+    private int price = 0;
 
     public WatItem(String name, String searchFor) {
         this.name = name;
         this.searchFor = searchFor;
         this.levelRequirements = new HashMap<>();
         this.questRequirements = new ArrayList<>();
+        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
     public WatItem(String name) {
@@ -34,6 +37,7 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = new HashMap<>();
         this.questRequirements = new ArrayList<>();
+        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
     public WatItem(String name, String searchFor, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
@@ -41,6 +45,7 @@ public class WatItem {
         this.searchFor = searchFor;
         this.levelRequirements = levelRequirements;
         this.questRequirements = questRequirements;
+        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
     public WatItem(String name, HashMap<Skill, Integer> levelRequirements) {
@@ -48,6 +53,7 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = levelRequirements;
         this.questRequirements = new ArrayList<>();
+        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
     public WatItem(String name, List<Quest> questRequirements) {
@@ -55,6 +61,7 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = new HashMap<>();
         this.questRequirements = questRequirements;
+        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
     public WatItem(String name, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
@@ -62,13 +69,14 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = levelRequirements;
         this.questRequirements = questRequirements;
-    }
-
-    public int getPrice() {
-        return (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
     public boolean isTradeable() {
         return LivePrices.getHigh(this.name) > 0;
+    }
+
+    public void raisePrice() {
+        this.price = (int) (this.price * 1.1);
     }
 }
