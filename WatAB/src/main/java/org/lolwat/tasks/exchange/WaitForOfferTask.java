@@ -6,7 +6,9 @@ import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.time.Instant;
@@ -121,6 +123,11 @@ public class WaitForOfferTask implements WatTask {
             Logger.log("purchased " + amountHave + " of " + target);
         } else {
             Logger.log("we didnt buy shiiiit");
+            Logger.log("raisin price if supported item");
+            WatItem item = ItemManager.getInstance().getItem(target);
+            if (item != null) {
+                item.raisePrice();
+            }
         }
 
         TaskManager.getInstance().setCurrentTask(post);
