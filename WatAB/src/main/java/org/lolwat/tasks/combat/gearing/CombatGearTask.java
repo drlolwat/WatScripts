@@ -38,6 +38,7 @@ public class CombatGearTask implements WatTask {
         }
 
         removeOtherItems();
+        Bank.resetCache();
 
         for(EquipmentSlot s : slots) {
             WatItem bestItem;
@@ -114,6 +115,7 @@ public class CombatGearTask implements WatTask {
         }
 
         removeOtherItems();
+        Bank.resetCache();
         TaskManager.getInstance().setCurrentTask(parent);
     }
 
