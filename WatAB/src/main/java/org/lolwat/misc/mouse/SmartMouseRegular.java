@@ -1,7 +1,6 @@
 package org.lolwat.misc.mouse;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.dreambot.api.Client;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.input.event.impl.mouse.MouseButton;
@@ -433,17 +432,19 @@ public class SmartMouseRegular implements MouseAlgorithm {
      * }
      */
     private void loadMouseData() {
+        if(Client.getForumUser() == null || Client.getForumUser().getUsername() == null) {
+            Logger.log("Cannot load mouse data: Forum user or username is null.");
+            ScriptManager.getScriptManager().stop();
+            return;
+        }
+
         Gson gson = new Gson();
-        try (InputStream is = getClass().getResourceAsStream("/regular.json")) {
-            if (is == null) {
-                Logger.log("Error: mousedata");
-            } else {
-                Reader reader = new InputStreamReader(is);
-                mouseData = gson.fromJson(reader, new TypeToken<Map<String, Object>>() {}.getType());
-                Logger.log("Mouse data loaded successfully with keys: " + mouseData.keySet());
-            }
+        String urlString = "https://api.watscripts.com/assets/get_mouse.php?key=" + Client.getForumUser().getUsername() + "&type=r";
+        try (InputStream is = new java.net.URL(urlString).openStream()) {
+            Reader reader = new InputStreamReader(is);
+            mouseData = gson.fromJson(reader, new com.google.gson.reflect.TypeToken<Map<String, Object>>() {}.getType());
         } catch (Exception e) {
-            // Logger.log("Error loading mouse data: " + e.getMessage());
+            Logger.log("Error loading mouse data: " + e.getMessage());
         }
     }
 
