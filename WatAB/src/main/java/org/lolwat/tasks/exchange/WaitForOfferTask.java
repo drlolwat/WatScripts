@@ -123,9 +123,9 @@ public class WaitForOfferTask implements WatTask {
             Logger.log("purchased " + amountHave + " of " + target);
         } else {
             Logger.log("we didnt buy shiiiit");
-            Logger.log("raisin price if supported item");
             WatItem item = ItemManager.getInstance().getItem(target);
             if (item != null) {
+                Logger.log("raisin price");
                 item.raisePrice();
             }
         }
