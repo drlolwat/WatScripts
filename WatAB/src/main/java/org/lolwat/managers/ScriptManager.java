@@ -20,6 +20,7 @@ import org.dreambot.api.wrappers.widgets.Menu;
 import org.lolwat.WatScript;
 import org.lolwat.misc.mouse.SmartMouseCombat;
 import org.lolwat.misc.mouse.SmartMouseRegular;
+import org.lolwat.tasks.combat.CombatTask;
 import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.HopperTask;
 
@@ -170,6 +171,17 @@ public class ScriptManager {
             if (!Client.isLoggedIn() && TaskManager.getInstance().getCurrentTask().requiresLogin()) {
                 Logger.log("Waiting for login...");
                 return 1000;
+
+            }
+
+            if(TaskManager.getInstance().getCurrentTask() instanceof CombatTask) {
+                if(Mouse.getMouseAlgorithm().equals(reg)) {
+                    Mouse.setMouseAlgorithm(combat);
+                }
+            } else {
+                if(Mouse.getMouseAlgorithm().equals(combat)) {
+                    Mouse.setMouseAlgorithm(reg);
+                }
             }
 
             TaskManager.getInstance().getCurrentTask().execute();

@@ -154,6 +154,7 @@ public class CombatTask implements WatTask {
             if (Bank.isCached()) {
                 long now = System.currentTimeMillis();
                 if (now - lastUpgradeCheck > UPGRADE_CHECK_INTERVAL) {
+                    List<EquipmentSlot> toUpgrade = new ArrayList<>();
                     lastUpgradeCheck = now;
                     for (EquipmentSlot s : slotsRequired) {
                         WatItem bestItem;
@@ -169,11 +170,16 @@ public class CombatTask implements WatTask {
                                 break;
 
                             if (!i.getName().equalsIgnoreCase(bestItem.getName())) {
+                                toUpgrade.add(s);
                                 Logger.log("we need to upgrade our " + s.name() + " to " + bestItem.getName());
-                                TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, Collections.singletonList(s)));
-                                return;
                             }
                         }
+                    }
+
+                    if (!toUpgrade.isEmpty()) {
+                        Logger.log("we need to upgrade " + toUpgrade.size() + " items");
+                        TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, toUpgrade));
+                        return;
                     }
                 }
             }
