@@ -8,12 +8,10 @@ import lombok.Setter;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Objects;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.util.*;
 
 public class ConfigManager {
     @Getter
@@ -37,7 +35,9 @@ public class ConfigManager {
     private HashMap<String, Integer> levelUps;
     @Setter
     private boolean muleConnectionFailed;
+
     private final HashMap<String, Integer> itemThresholds;
+    private final HashMap<Skill, Integer> skillTargets;
 
     public ConfigManager() {
         config = new HashMap<>();
@@ -46,26 +46,37 @@ public class ConfigManager {
         waitingForResponse = false;
         muleConnectionFailed = false;
         itemThresholds = new HashMap<>();
+        skillTargets = new HashMap<>();
     }
 
     private JsonObject getDefaultProfile() {
         JsonObject defaultProfile = new JsonObject();
-        defaultProfile.addProperty("attack", 99);
-        defaultProfile.addProperty("defence", 99);
-        defaultProfile.addProperty("strength", 99);
-        defaultProfile.addProperty("ranged", 99);
-        defaultProfile.addProperty("prayer", 1);
-        defaultProfile.addProperty("magic", 99);
-        defaultProfile.addProperty("cooking", 99);
-        defaultProfile.addProperty("woodcutting", 99);
-        defaultProfile.addProperty("fishing", 99);
-        defaultProfile.addProperty("firemaking", 1);
-        defaultProfile.addProperty("crafting", 10);
-        defaultProfile.addProperty("smithing", 10);
-        defaultProfile.addProperty("mining", 99);
-        defaultProfile.addProperty("agility", 1);
-        defaultProfile.addProperty("herblore", 1);
-        defaultProfile.addProperty("runecrafting", 1);
+
+        JsonObject skillTargets = new JsonObject();
+        skillTargets.addProperty("attack", 99);
+        skillTargets.addProperty("strength", 99);
+        skillTargets.addProperty("defence", 99);
+        skillTargets.addProperty("prayer", 1);
+        skillTargets.addProperty("ranged", 1);
+        skillTargets.addProperty("magic", 1);
+        skillTargets.addProperty("slayer", 1);
+        skillTargets.addProperty("agility", 1);
+        skillTargets.addProperty("herblore", 1);
+        skillTargets.addProperty("thieving", 1);
+        skillTargets.addProperty("hunter", 1);
+        skillTargets.addProperty("mining", 1);
+        skillTargets.addProperty("smithing", 1);
+        skillTargets.addProperty("firemaking", 1);
+        skillTargets.addProperty("woodcutting", 1);
+        skillTargets.addProperty("fishing", 1);
+        skillTargets.addProperty("cooking", 1);
+        skillTargets.addProperty("fletching", 1);
+        skillTargets.addProperty("runecrafting", 1);
+        skillTargets.addProperty("crafting", 1);
+        skillTargets.addProperty("construction", 1);
+        skillTargets.addProperty("farming", 1);
+        defaultProfile.add("skill_targets", skillTargets);
+
         defaultProfile.addProperty("quests_enabled", true);
         defaultProfile.addProperty("breaks_enabled", true);
         defaultProfile.addProperty("ignore_trade_restriction", false);
@@ -100,31 +111,25 @@ public class ConfigManager {
 
     public void loadFromProfile(String p) {
         String filePath = System.getProperty("user.dir") + "/WatAB/" + p + ".json";
-
         try {
             Gson gson = new Gson();
-
             File file = new File(filePath);
             if (!file.exists()) {
                 if(!file.getParentFile().mkdirs()) {
                     Logger.error("problem creating config directory");
                 }
-
                 JsonObject defaultProfile = getDefaultProfile();
                 FileWriter fileWriter = new FileWriter(file);
                 gson.toJson(defaultProfile, fileWriter);
                 fileWriter.close();
             }
-
             JsonObject jsonObject = gson.fromJson(new FileReader(filePath), JsonObject.class);
             JsonObject defaultProfile = getDefaultProfile();
-
             for (String key : defaultProfile.keySet()) {
                 if (!jsonObject.has(key)) {
                     jsonObject.add(key, defaultProfile.get(key));
                 }
             }
-
             FileWriter fileWriter = new FileWriter(file);
             gson.toJson(jsonObject, fileWriter);
             fileWriter.close();
@@ -135,14 +140,42 @@ public class ConfigManager {
                     for (String itemKey : items.keySet()) {
                         itemThresholds.put(itemKey, items.get(itemKey).getAsInt());
                     }
+                } else if (key.equals("skill_targets")) {
+                    JsonObject skillTargets = jsonObject.getAsJsonObject(key);
+                    for (String skillKey : skillTargets.keySet()) {
+                        Skill skill = Skill.valueOf(skillKey.toUpperCase());
+                        this.skillTargets.put(skill, skillTargets.get(skillKey).getAsInt());
+                    }
                 } else {
                     config.put(key, jsonObject.get(key));
                 }
             }
-
             config.put("hitpoints", 100);
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
+        }
+    }
+
+    public void cacheAssets() {
+        List<String> urls = Collections.singletonList(
+                "https://api.watscripts.com/assets/WatAB_Paint_withLogo_2rows.png"
+        );
+
+        String assetsDirPath = System.getProperty("user.dir") + "/WatAB/assets";
+        File assetsDir = new File(assetsDirPath);
+        if (!assetsDir.exists() && !assetsDir.mkdirs()) {
+            Logger.error("Could not create assets directory");
+            return;
+        }
+
+        for (String urlString : urls) {
+            try (InputStream in = new URL(urlString).openStream()) {
+                String fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
+                File outFile = new File(assetsDir, fileName);
+                Files.copy(in, outFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                Logger.error("Failed to download asset: " + urlString);
+            }
         }
     }
 
@@ -160,16 +193,7 @@ public class ConfigManager {
         return Integer.parseInt(config.get(key).toString());
     }
 
-    public double getConfigDouble(String key) {
-        return Double.parseDouble(config.get(key).toString());
-    }
-
     public int getSkillTarget(Skill sk) {
-        String key = sk.getName().toLowerCase();
-        if (config.containsKey(key)) {
-            return Integer.parseInt(config.get(key).toString());
-        } else {
-            return 0;
-        }
+        return skillTargets.getOrDefault(sk, 1);
     }
 }
