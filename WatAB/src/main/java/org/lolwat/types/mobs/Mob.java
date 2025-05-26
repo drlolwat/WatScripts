@@ -45,4 +45,15 @@ public class Mob {
 
         return bestLocation;
     }
+
+    public String getLocationName() {
+        Area bestLocation = getBestLocation();
+        for (String key : locations.keySet()) {
+            if (locations.get(key).equals(bestLocation)) {
+                return key;
+            }
+        }
+
+        return "Unknown";
+    }
 }
