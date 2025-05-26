@@ -26,7 +26,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.net.URL;
+import java.io.File;
 import java.time.Instant;
 import java.util.HashMap;
 
@@ -59,7 +59,11 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         ScriptManager.start(profile);
 
         try {
-            image = ImageIO.read(new URL("https://api.botbuddy.net/paint.png")); //300x143
+            String assetsPath = System.getProperty("user.dir") + "/WatAB/assets/WatAB_Paint_withLogo_2rows.png";
+            File imageFile = new File(assetsPath);
+            if (imageFile.exists()) {
+                image = ImageIO.read(imageFile);
+            }
         } catch (Exception ignored) {
 
         }
@@ -91,7 +95,10 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
     @Override
     public void onPaint(Graphics g) {
-        if(TaskManager.getInstance() == null || ConfigManager.getInstance() == null) {
+        if(TaskManager.getInstance() == null
+                || ConfigManager.getInstance() == null
+                || image == null) {
+
             return;
         }
 
@@ -117,41 +124,59 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if(ConfigManager.getInstance().getLevelUps() == null)
             ConfigManager.getInstance().setLevelUps(new HashMap<>());
 
-        g.drawImage(image, 10, 10, null);
+        g.drawImage(image, 0, 304, null);
 
-        Font segoeUIBoldFont = new Font("Verdana", Font.BOLD, 10);
+        Font font = new Font("Tahoma", Font.BOLD, 10);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2d.setFont(segoeUIBoldFont);
-        g2d.setColor(Color.WHITE);
+        g2d.setFont(font);
+        g2d.setColor(Color.BLACK);
 
         // main
-        g2d.drawString(String.valueOf(Quests.getQuestPoints()), 193, 40);
-        g2d.drawString(String.valueOf(Skills.getTotalLevel()), 252, 40);
-        g2d.drawString(WatUtils.simplifyNumber(ConfigManager.getInstance().getNetWorth()), 135, 40);
-        g2d.drawString(taskTime, 77, 40);
+        g2d.drawString(String.valueOf(Quests.getQuestPoints()), 335, 361); // qp
+        g2d.drawString(String.valueOf(Skills.getTotalLevel()), 235, 361); // total level
+        g2d.drawString((TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 143, 361); // combat level
+        g2d.drawString(Players.getLocal().getName(), 35, 361);
 
-        // row 1
-        g2d.drawString((TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 38, 59);
-        drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 38, 77);
-        drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 38, 95);
-        drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 38, 113);
-        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 38, 131);
-        drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 38, 149);
-        drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 38, 167);
+        g2d.drawString(taskTime, 34, 382);
+        g2d.drawString(TaskManager.getInstance().getCurrentTask() != null ? TaskManager.getInstance().getCurrentTask().getName() : "Task selection", 233, 382);
+        g2d.drawString(TaskManager.getInstance().getCurrentTask() != null ? TaskManager.getInstance().getCurrentTask().getLocation() : "Unknown", 422, 382);
 
-        //row 2
-        drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 108, 59);
-        drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 108, 77);
-        drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 108, 95);
-        drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 108, 113);
-        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 108, 131);
-        drawSkill(g2d, Skill.RUNECRAFTING, String.valueOf(Skills.getRealLevel(Skill.RUNECRAFTING)), 108, 149);
-        drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 108, 167);
+        // column 1
+        drawSkill(g2d, Skill.ATTACK, String.valueOf(Skills.getRealLevel(Skill.ATTACK)), 34, 403);
+        drawSkill(g2d, Skill.STRENGTH, String.valueOf(Skills.getRealLevel(Skill.STRENGTH)), 34, 424);
+        drawSkill(g2d, Skill.DEFENCE, String.valueOf(Skills.getRealLevel(Skill.DEFENCE)), 34, 445);
+        drawSkill(g2d, Skill.PRAYER, String.valueOf(Skills.getRealLevel(Skill.PRAYER)), 34, 466);
 
-        //row 3
-        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 180, 77);
-        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 180, 59);
+        // column 2
+        drawSkill(g2d, Skill.HITPOINTS, String.valueOf(Skills.getRealLevel(Skill.HITPOINTS)), 119, 403);
+        drawSkill(g2d, Skill.RANGED, String.valueOf(Skills.getRealLevel(Skill.RANGED)), 119, 424);
+        drawSkill(g2d, Skill.MAGIC, String.valueOf(Skills.getRealLevel(Skill.MAGIC)), 119, 445);
+        drawSkill(g2d, Skill.SLAYER, String.valueOf(Skills.getRealLevel(Skill.SLAYER)), 119, 466);
+
+        // column 3
+        drawSkill(g2d, Skill.AGILITY, String.valueOf(Skills.getRealLevel(Skill.AGILITY)), 204, 403);
+        drawSkill(g2d, Skill.HERBLORE, String.valueOf(Skills.getRealLevel(Skill.HERBLORE)), 204, 424);
+        drawSkill(g2d, Skill.THIEVING, String.valueOf(Skills.getRealLevel(Skill.THIEVING)), 204, 445);
+        drawSkill(g2d, Skill.HUNTER, String.valueOf(Skills.getRealLevel(Skill.HUNTER)), 204, 466);
+
+        // column 4
+        drawSkill(g2d, Skill.MINING, String.valueOf(Skills.getRealLevel(Skill.MINING)), 288, 403);
+        drawSkill(g2d, Skill.SMITHING, String.valueOf(Skills.getRealLevel(Skill.SMITHING)), 288, 424);
+        drawSkill(g2d, Skill.FIREMAKING, String.valueOf(Skills.getRealLevel(Skill.FIREMAKING)), 288, 445);
+        drawSkill(g2d, Skill.WOODCUTTING, String.valueOf(Skills.getRealLevel(Skill.WOODCUTTING)), 288, 466);
+
+        // column 5
+        drawSkill(g2d, Skill.FISHING, String.valueOf(Skills.getRealLevel(Skill.FISHING)), 374, 403);
+        drawSkill(g2d, Skill.COOKING, String.valueOf(Skills.getRealLevel(Skill.COOKING)), 374, 424);
+        drawSkill(g2d, Skill.FLETCHING, String.valueOf(Skills.getRealLevel(Skill.FLETCHING)), 374, 445);
+        drawSkill(g2d, Skill.RUNECRAFTING, String.valueOf(Skills.getRealLevel(Skill.RUNECRAFTING)), 374, 466);
+
+        // column 6
+        drawSkill(g2d, Skill.CRAFTING, String.valueOf(Skills.getRealLevel(Skill.CRAFTING)), 456, 403);
+        drawSkill(g2d, Skill.CONSTRUCTION, String.valueOf(Skills.getRealLevel(Skill.CONSTRUCTION)), 456, 424);
+        drawSkill(g2d, Skill.FARMING, String.valueOf(Skills.getRealLevel(Skill.FARMING)), 456, 445);
 
         g2d.setColor(new Color(0, 200, 0));
     }
