@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class CombatUtils {
     private static boolean meetsRequirements(Mob mob) {
-        if(mob.getQuestRequirements() != null) {
+        if(mob.getLevelRequirements() != null) {
             for (Map.Entry<Skill, Integer> entry : mob.getLevelRequirements().entrySet()) {
                 if (Skills.getRealLevel(entry.getKey()) < entry.getValue()) {
                     return false;
