@@ -33,9 +33,9 @@ public class MobManager {
         addBasicMob("Chicken",
                 new HashMap<String, Area>() {
                     {
-                        put("Falador Chickens Outside", new Area(3026, 3289, 3036, 3284));
-                        put("Falador Chickens Inside", new Area(3014, 3298, 3019, 3282));
-                        put("Lumbridge East Chickens", new Area(
+                        put("Falador Outside", new Area(3026, 3289, 3036, 3284));
+                        put("Falador Inside", new Area(3014, 3298, 3019, 3282));
+                        put("Lumbridge East", new Area(
                                 new Tile(3233, 3295, 0),
                                 new Tile(3225, 3295, 0),
                                 new Tile(3225, 3300, 0),
@@ -65,7 +65,7 @@ public class MobManager {
         addBasicMob("Cow",
                 new HashMap<String, Area>() {
                     {
-                        put("Lumbridge North Cows", new Area(
+                        put("Lumbridge North", new Area(
                                 new Tile(3202, 3291, 0),
                                 new Tile(3202, 3283, 0),
                                 new Tile(3195, 3284, 0),
@@ -84,7 +84,7 @@ public class MobManager {
                                 new Tile(3206, 3284, 0),
                                 new Tile(3202, 3283, 0)));
 
-                        put("Falador Cows", new Area(
+                        put("Falador", new Area(
                                 new Tile(3043, 3306, 0),
                                 new Tile(3043, 3311, 0),
                                 new Tile(3041, 3313, 0),
@@ -95,7 +95,7 @@ public class MobManager {
                                 new Tile(3031, 3298, 0),
                                 new Tile(3038, 3298, 0)));
 
-                        put("Crafting Guild Cows", new Area(
+                        put("Crafting Guild", new Area(
                                 new Tile(2915, 3291, 0),
                                 new Tile(2916, 3287, 0),
                                 new Tile(2925, 3278, 0),
