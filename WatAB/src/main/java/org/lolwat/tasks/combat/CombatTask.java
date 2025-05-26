@@ -29,6 +29,16 @@ public class CombatTask implements WatTask {
     private Mob target;
     private CombatType type;
 
+    @Override
+    public String getName() {
+        return "Training " + skill.getName();
+    }
+
+    @Override
+    public String getLocation() {
+        return target != null ? target.getLocationName() : "Unknown";
+    }
+
     public CombatTask(Skill skill) {
         this.skill = skill;
 
@@ -73,12 +83,12 @@ public class CombatTask implements WatTask {
                 if(i != null) {
                     if(s.equals(EquipmentSlot.WEAPON)) {
                         if (!ItemManager.getInstance().isValidWeapon(i.getName(), type)) {
-                            Logger.log(i.getName() + " is not a valid weapon for this task");
+                            Logger.log(i.getName() + " is not a valid weapon for this task: " + type);
                             acceptable = false;
                         }
                     } else {
                         if (!ItemManager.getInstance().isValidWearable(i.getName(), s, type)) {
-                            Logger.log(i.getName() + " is not a valid item for this task");
+                            Logger.log(i.getName() + " is not a valid item for this task: " + type);
                             acceptable = false;
                         }
                     }
