@@ -308,7 +308,7 @@ public class ItemManager {
 
     public WatWeapon getBestWeapon(CombatType type) {
         int availableMoney = Inventory.count("Coins");
-        if (Bank.isOpen()) availableMoney += Bank.count("Coins");
+        if (Bank.isOpen() || Bank.isCached()) availableMoney += Bank.count("Coins");
 
         List<WatWeapon> weapons = new ArrayList<>();
         for (WatItem item : items) {
@@ -328,7 +328,7 @@ public class ItemManager {
 
     public WatWearable getBestWearable(EquipmentSlot slot, CombatType type) {
         int availableMoney = Inventory.count("Coins");
-        if (Bank.isOpen()) availableMoney += Bank.count("Coins");
+        if (Bank.isOpen() || Bank.isCached()) availableMoney += Bank.count("Coins");
 
         List<WatWearable> wearables = new ArrayList<>();
         for (WatItem item : items) {
