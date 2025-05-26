@@ -55,6 +55,7 @@ public class ScriptManager {
             ConfigManager.getInstance().setNetWorth(0);
             ConfigManager.getInstance().setNetWorthGeneratedAt(0);
             ConfigManager.getInstance().loadFromProfile(profileName);
+            ConfigManager.getInstance().cacheAssets();
         }
 
         if(TeleportManager.getInstance() == null) {
