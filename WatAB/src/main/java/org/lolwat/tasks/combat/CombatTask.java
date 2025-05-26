@@ -1,6 +1,7 @@
 package org.lolwat.tasks.combat;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
@@ -28,6 +29,8 @@ public class CombatTask implements WatTask {
     private final Skill skill;
     private Mob target;
     private CombatType type;
+    private long lastUpgradeCheck = 0;
+    private static final long UPGRADE_CHECK_INTERVAL = 60 * 15; //TODO add to config
 
     @Override
     public String getName() {
@@ -56,15 +59,6 @@ public class CombatTask implements WatTask {
             target = CombatUtils.getBestMob(skill);
             Logger.log("combat selected " + target.getName() + " for skill " + skill.getName());
             return;
-        }
-
-        if(!Players.getLocal().isInCombat()) {
-            Mob bestMob = CombatUtils.getBestMob(skill);
-            if (target == null || !target.equals(bestMob)) {
-                target = bestMob;
-                Logger.log("Switched to better mob: " + target.getName() + " for skill " + skill.getName());
-                return;
-            }
         }
 
         // check for required items. we will do this custom
@@ -147,6 +141,42 @@ public class CombatTask implements WatTask {
             Logger.log("we need to get equipment for " + slotsMissing.size() + " slots");
             TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, slotsMissing));
             return;
+        }
+
+        if(!Players.getLocal().isInCombat()) {
+            Mob bestMob = CombatUtils.getBestMob(skill);
+            if (target == null || !target.equals(bestMob)) {
+                target = bestMob;
+                Logger.log("Switched to better mob: " + target.getName() + " for skill " + skill.getName());
+                return;
+            }
+
+            if (Bank.isCached()) {
+                long now = System.currentTimeMillis();
+                if (now - lastUpgradeCheck > UPGRADE_CHECK_INTERVAL) {
+                    lastUpgradeCheck = now;
+                    for (EquipmentSlot s : slotsRequired) {
+                        WatItem bestItem;
+                        if (s.equals(EquipmentSlot.WEAPON)) {
+                            bestItem = ItemManager.getInstance().getBestWeapon(type);
+                        } else {
+                            bestItem = ItemManager.getInstance().getBestWearable(s, type);
+                        }
+
+                        if (bestItem != null) {
+                            Item i = Equipment.getItemInSlot(s);
+                            if (i == null)
+                                break;
+
+                            if (!i.getName().equalsIgnoreCase(bestItem.getName())) {
+                                Logger.log("we need to upgrade our " + s.name() + " to " + bestItem.getName());
+                                TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, Collections.singletonList(s)));
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         for (Item i : Inventory.all()) {
