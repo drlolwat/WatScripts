@@ -97,7 +97,6 @@ public class MulingTask implements WatTask {
 
         if(!active) {
             if(retries > 5) {
-                ConfigManager.getInstance().setMuleConnectionFailed(true);
                 // put GP back
                 if(!Bank.isOpen()) {
                     Bank.open();
