@@ -30,7 +30,12 @@ import java.io.File;
 import java.time.Instant;
 import java.util.HashMap;
 
-@ScriptManifest(name = "WatAB", description = "All in one P2P account building script for OSRS", author = "lolwat", version = 1.00, category = Category.MISC)
+@ScriptManifest(name = "WatAB",
+        description = "All in one P2P account building script for OSRS",
+        author = "lolwat",
+        version = 1.00,
+        category = Category.MISC,
+        image = "https://api.botbuddy.net/WatScripts.png")
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
     @Getter
     private static WatScript instance;

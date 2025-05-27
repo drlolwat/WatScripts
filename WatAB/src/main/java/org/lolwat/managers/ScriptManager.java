@@ -55,7 +55,7 @@ public class ScriptManager {
             ConfigManager.getInstance().setLevelUps(new HashMap<>());
             ConfigManager.getInstance().setNetWorth(0);
             ConfigManager.getInstance().setNetWorthGeneratedAt(0);
-            ConfigManager.getInstance().loadFromProfile(profileName);
+            ConfigManager.getInstance().loadFromProfile(profileName, true);
             ConfigManager.getInstance().cacheAssets();
         }
 
