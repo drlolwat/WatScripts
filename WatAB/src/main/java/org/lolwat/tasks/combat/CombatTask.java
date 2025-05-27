@@ -30,7 +30,7 @@ public class CombatTask implements WatTask {
     private Mob target;
     private CombatType type;
     private long lastUpgradeCheck = 0;
-    private static final long UPGRADE_CHECK_INTERVAL = 60 * 15; //TODO add to config
+    private static final long UPGRADE_CHECK_INTERVAL = 60 * 10; //TODO add to config
 
     @Override
     public String getName() {
