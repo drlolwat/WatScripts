@@ -34,14 +34,12 @@ public class ItemManager {
     public void addDefaults() {
         items = new ArrayList<>();
 
-        // weapons
         addWeapon("Bronze sword", CombatType.MELEE);
-        addWeapon("Iron scimitar", CombatType.MELEE);
-
+        addSkilledWeapon("Iron scimitar", 1, 1, 1, -1, -1, CombatType.MELEE);
+        addSkilledWeapon("Steel scimitar", 5, 1, 1, -1, -1, CombatType.MELEE);
         addWeapon("Shortbow", CombatType.RANGED);
         addWeapon("Staff of air", CombatType.MAGIC);
 
-        // bows
         addSkilledWeapon("Oak shortbow", 1, 1, 1, -1, 5, CombatType.RANGED);
         addSkilledWeapon("Willow shortbow", 1, 1, 1, -1, 20, CombatType.RANGED);
         addSkilledWeapon("Maple shortbow", 1, 1, 1, -1, 30, CombatType.RANGED);
@@ -93,6 +91,9 @@ public class ItemManager {
         addSkilledWeapon("Rune scimitar", 40, 1, 1, -1, -1, CombatType.MELEE);
         addSkilledWeapon("Dragon sword", 60, 1, 1, -1, -1, CombatType.MELEE);
         addSkilledWeapon("Abyssal whip", 70, 99, 1, -1, -1, CombatType.MELEE);
+
+        addQuestedWeapon("Dragon scimitar", 61, 1, 1, -1, -1, CombatType.MELEE,
+                Collections.singletonList(FreeQuest.DRAGON_SLAYER));
 
         addWearable("Iron arrow", EquipmentSlot.ARROWS, CombatType.RANGED);
         addSkilledWearable("Steel arrow", 1, 1, 1, -1, 5, CombatType.RANGED, EquipmentSlot.ARROWS);
@@ -195,6 +196,7 @@ public class ItemManager {
         addBasicItem("Coins");
         addBasicItem("Brass key");
         addBasicItem("Knife");
+        addBasicItem("Feather");
 
         // food
         addBasicItem("Trout");
