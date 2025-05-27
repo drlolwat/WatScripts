@@ -10,7 +10,7 @@ import org.dreambot.api.utilities.Logger;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
+import java.nio.file.*;
 import java.util.*;
 
 public class ConfigManager {
@@ -33,8 +33,9 @@ public class ConfigManager {
     @Getter
     @Setter
     private HashMap<String, Integer> levelUps;
-    @Setter
-    private boolean muleConnectionFailed;
+
+    private volatile long lastReloadTime = 0;
+    private static final long RELOAD_DEBOUNCE_MS = 1000;
 
     private final HashMap<String, Integer> itemThresholds;
     private final HashMap<Skill, Integer> skillTargets;
@@ -44,7 +45,6 @@ public class ConfigManager {
         levelUps = new HashMap<>();
         firstStart = true;
         waitingForResponse = false;
-        muleConnectionFailed = false;
         itemThresholds = new HashMap<>();
         skillTargets = new HashMap<>();
     }
@@ -105,11 +105,46 @@ public class ConfigManager {
         return defaultProfile;
     }
 
+    public void watchConfigFile(String profileName) {
+        Path configDir = Paths.get(System.getProperty("user.dir"), "WatAB");
+        Path configFile = configDir.resolve(profileName + ".json");
+
+        try {
+            WatchService watchService = FileSystems.getDefault().newWatchService();
+            configDir.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
+
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        WatchKey key = watchService.take();
+                        for (WatchEvent<?> event : key.pollEvents()) {
+                            Path changed = (Path) event.context();
+                            if (changed.endsWith(configFile.getFileName())) {
+                                long now = System.currentTimeMillis();
+                                if (now - lastReloadTime > RELOAD_DEBOUNCE_MS) {
+                                    lastReloadTime = now;
+                                    Logger.log("Config file changed, reloading...");
+                                    loadFromProfile(profileName, false);
+                                }
+                            }
+                        }
+                        key.reset();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }).start();
+        } catch (IOException e) {
+            Logger.error("Failed to watch config file: " + e.getMessage());
+        }
+    }
+
     public int getItemThreshold(String item) {
         return itemThresholds.getOrDefault(item, 0);
     }
 
-    public void loadFromProfile(String p) {
+    public void loadFromProfile(String p, boolean firstStart) {
         String filePath = System.getProperty("user.dir") + "/WatAB/" + p + ".json";
         try {
             Gson gson = new Gson();
@@ -150,7 +185,12 @@ public class ConfigManager {
                     config.put(key, jsonObject.get(key));
                 }
             }
-            config.put("hitpoints", 100);
+
+            this.skillTargets.put(Skill.HITPOINTS, 100);
+
+            if(firstStart) {
+                watchConfigFile(p);
+            }
         } catch (IOException | JsonSyntaxException ignored) {
             Logger.error("Encountered an error during setup");
         }
