@@ -7,15 +7,12 @@ import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.managers.MobManager;
 import org.lolwat.types.mobs.Mob;
 
-import java.util.Map;
-
 public class CombatUtils {
-    private static boolean meetsRequirements(Mob mob) {
-        if(mob.getLevelRequirements() != null) {
-            for (Map.Entry<Skill, Integer> entry : mob.getLevelRequirements().entrySet()) {
-                if (Skills.getRealLevel(entry.getKey()) < entry.getValue()) {
-                    return false;
-                }
+    private static boolean meetsRequirements(Mob mob, Skill skill) {
+        if (mob.getLevelRequirements() != null) {
+            Integer req = mob.getLevelRequirements().get(skill);
+            if (req != null && Skills.getRealLevel(skill) < req) {
+                return false;
             }
         }
 
@@ -35,7 +32,7 @@ public class CombatUtils {
         int highestLevel = 0;
 
         for (Mob mob : MobManager.getInstance().getMobs()) {
-            if (meetsRequirements(mob)) {
+            if (meetsRequirements(mob, skill)) {
                 int mobLevel = mob.getLevelRequirements().getOrDefault(skill, 0);
                 if (mobLevel > highestLevel) {
                     highestLevel = mobLevel;
