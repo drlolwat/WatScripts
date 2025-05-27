@@ -108,7 +108,7 @@ public class MobManager {
                 new HashMap<Skill, Integer>() {
                     {
                         put(Skill.ATTACK, 1);
-                        put(Skill.DEFENCE, 1);
+                        put(Skill.DEFENCE, 5);
                         put(Skill.STRENGTH, 1);
                         put(Skill.RANGED, 1);
                         put(Skill.MAGIC, 1);
@@ -145,7 +145,7 @@ public class MobManager {
                     }
                 });
 
-        addBasicMob("Guard",
+        /*addBasicMob("Guard",
                 new HashMap<String, Area>() {
                     {
                         put("Varrock 1", new Area(
@@ -169,7 +169,7 @@ public class MobManager {
                         put(Skill.RANGED, 40);
                         put(Skill.MAGIC, 40);
                     }
-                });
+                });*/
 
         addLogicMob("Rock crab",
                 new HashMap<String, Area>() {
