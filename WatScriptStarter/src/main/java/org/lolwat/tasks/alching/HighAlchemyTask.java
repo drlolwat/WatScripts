@@ -1,5 +1,7 @@
 package org.lolwat.tasks.alching;
 
+import org.dreambot.api.ClientSettings;
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
@@ -10,17 +12,22 @@ import org.dreambot.api.methods.magic.Normal;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.Menu;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
+import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.misc.utils.WatUtils;
+import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.LegacyBankingTask;
 import org.lolwat.tasks.misc.MulingTask;
 
@@ -29,6 +36,7 @@ import java.util.HashMap;
 
 public class HighAlchemyTask implements WatTask {
     private String item;
+
     @Override
     public String getName() {
         return "Market Level Alchemy";
@@ -41,14 +49,61 @@ public class HighAlchemyTask implements WatTask {
 
     @Override
     public void execute() {
-        if(!Bank.isCached()) {
+        if (!Bank.isCached()) {
             Logger.warn("first run, caching bank data");
             ItemUtils.bank(this);
             return;
         }
 
+        if (ClientSettings.getMinimumAlchWarningValue() < 10000000) {
+            if(Bank.isOpen() && !Bank.close()) {
+                Logger.log("Failed to close bank before setting alch warning value");
+                return;
+            }
+
+            if (!ClientSettings.isOpen()) {
+                Widget settings = Widgets.getWidget(116);
+                if (settings != null) {
+                    WidgetChild settingsButton = settings.getChild(32);
+                    if (settingsButton != null) {
+                        if (settingsButton.interact()) {
+                            Sleep.sleepUntil(ClientSettings::isOpen, Calculations.random(3000, 6000));
+                        } else {
+                            Logger.error("Failed to interact with settings button");
+                            return;
+                        }
+                    } else {
+                        Logger.error("Failed to find settings button");
+                        return;
+                    }
+                }
+
+                Sleep.sleepUntil(ClientSettings::isOpen, 5000);
+                if(!ClientSettings.isOpen()) {
+                    Logger.log("Failed to open settings interface");
+                    return;
+                }
+            }
+
+            if (!ClientSettings.setMinimumAlchWarningValue(10000000)) {
+                Logger.log("Failed to set minimum alch warning value");
+                return;
+            }
+
+            if (!ClientSettings.closeSettingsInterface()) {
+                Logger.log("Failed to close settings interface");
+                return;
+            }
+        }
+
+        if (!GenericUtils.isMember()) {
+            Logger.log("need to bond");
+            TaskManager.getInstance().setCurrentTask(new BondingTask(this));
+            return;
+        }
+
         item = ConfigManager.getInstance().getCurrentTarget();
-        if(item == null || item.isEmpty()) {
+        if (item == null || item.isEmpty()) {
             ConfigManager.getInstance().getNewAlchTarget();
             return;
         }
@@ -96,7 +151,7 @@ public class HighAlchemyTask implements WatTask {
         }
 
         if (!Inventory.contains(x -> x != null && x.getName().equals(item))) {
-            if(Bank.contains(x -> x != null && x.getName().equals(item))) {
+            if (Bank.contains(x -> x != null && x.getName().equals(item))) {
                 Logger.log("We need to grab HA target (" + item + ") from the bank");
                 TaskManager.getInstance().setCurrentTask(new AlchingBankingTask(this));
             } else {
@@ -107,20 +162,20 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        for(String s : clothesRequired().keySet()) {
-            if(!Equipment.contains(s)) {
+        for (String s : clothesRequired().keySet()) {
+            if (!Equipment.contains(s)) {
                 TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(null, this));
                 return;
             }
         }
 
-        if(Bank.isOpen()) {
+        if (Bank.isOpen()) {
             Bank.close();
             Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
         }
 
-        if(GrandExchange.isOpen()) {
-            if(!GrandExchange.close()) {
+        if (GrandExchange.isOpen()) {
+            if (!GrandExchange.close()) {
                 Logger.log("GE did not close");
                 return;
             }
@@ -133,16 +188,16 @@ public class HighAlchemyTask implements WatTask {
         }
 
         Item i = Inventory.get(item);
-        if(i == null)
+        if (i == null)
             return;
 
         int profitChange = (
                 i.getHighAlchValue() -
-                ConfigManager.getInstance().getAlchables().get(item) -
-                ConfigManager.getInstance().getNaturePrice()) -
+                        ConfigManager.getInstance().getAlchables().get(item) -
+                        ConfigManager.getInstance().getNaturePrice()) -
                 ConfigManager.getInstance().getConfigInt("price_modifier");
 
-        if(!Menu.isMenuManipulationActive()) {
+        if (!Menu.isMenuManipulationActive()) {
             int slot = ConfigManager.getInstance().getConfigInt("item_inventory_slot");
 
             if (Inventory.getItemInSlot(slot) == null || (Inventory.getItemInSlot(slot) != null &&
@@ -163,9 +218,9 @@ public class HighAlchemyTask implements WatTask {
         }
 
         if (!Tabs.isOpen(Tab.MAGIC)) {
-            if(!Tabs.open(Tab.MAGIC)) {
-                if(Magic.isSpellSelected()) {
-                    if(!Magic.deselect()) {
+            if (!Tabs.open(Tab.MAGIC)) {
+                if (Magic.isSpellSelected()) {
+                    if (!Magic.deselect()) {
                         Logger.error("error deselecting cast");
                         return;
                     }
@@ -188,8 +243,8 @@ public class HighAlchemyTask implements WatTask {
         Sleep.sleepUntil(() -> Magic.isSpellSelected() && Tabs.isOpen(Tab.INVENTORY), 5000);
 
         if (!Tabs.isOpen(Tab.INVENTORY)) {
-            if(Magic.isSpellSelected()) {
-                if(!Magic.deselect()) {
+            if (Magic.isSpellSelected()) {
+                if (!Magic.deselect()) {
                     Logger.error("error deselecting cast");
                     return;
                 }
@@ -199,8 +254,8 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        if(!Inventory.interact(item)) {
-            if(!Magic.deselect()) {
+        if (!Inventory.interact(item)) {
+            if (!Magic.deselect()) {
                 Logger.error("error deselecting");
             }
 
