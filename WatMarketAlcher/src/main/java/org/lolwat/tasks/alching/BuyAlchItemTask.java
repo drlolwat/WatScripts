@@ -39,7 +39,12 @@ public class BuyAlchItemTask implements WatTask {
         if((double) (targetCost * targetQty) > myCoins) {
             targetQty = (int) Math.floor((double) myCoins / targetCost) - 1;
             ConfigManager.getInstance().setCurrentTargetAmount(targetQty);
-            Logger.log("changing targetQty to " + targetQty + " for affordability");
+            if(targetQty > 0) {
+                Logger.log("onTask: changing targetQty to " + targetQty + " for affordability");
+            } else {
+                Logger.log("onTask: qty was subzero, getting new target");
+                ConfigManager.getInstance().getNewAlchTarget();
+            }
             return;
         }
 

@@ -6,12 +6,14 @@ import lombok.Setter;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.grandexchange.LivePrices;
+import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.script.ScriptManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.misc.utils.NumUtils;
 import org.lolwat.tasks.alching.AlchingBankingTask;
 import org.lolwat.tasks.alching.HighAlchemyTask;
+import org.lolwat.tasks.misc.MulingTask;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -184,6 +186,16 @@ public class ConfigManager {
                 toBuy = totalCoins / (alchables.get(entry.getKey()) + getConfigInt("price_modifier")) - 1;
                 break;
             }
+        }
+
+        if(toBuy <= 0) {
+            Logger.log("reverse muling - no money available apparently");
+            TaskManager.getInstance().setFutureTask(new MulingTask("Reverse muling", Worlds.getCurrentWorld(), new HashMap<String, Integer>() {
+                {
+                    put("Coins", ConfigManager.getInstance().getConfigInt("keep_gp"));
+                }
+            }, new HighAlchemyTask()));
+            return;
         }
 
         int cost = (alchables.get(bestTarget) + getConfigInt("price_modifier")) * toBuy;
