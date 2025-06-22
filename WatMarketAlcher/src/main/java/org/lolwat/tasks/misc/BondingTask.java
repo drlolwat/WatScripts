@@ -19,6 +19,7 @@ import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
+import org.lolwat.tasks.legacy.LegacyBankingTask;
 
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public class BondingTask implements WatTask {
     public String getName() {
         return "Bonding";
     }
-    private WatTask post;
+    private final WatTask post;
 
     public BondingTask(WatTask post) {
         this.post = post;
@@ -41,7 +42,7 @@ public class BondingTask implements WatTask {
         }
 
         if(GenericUtils.getMemberDays() >= 2) {
-            TaskManager.getInstance().setCurrentTask(post != null ? post : null);
+            TaskManager.getInstance().setCurrentTask(post);
             return;
         }
 
@@ -102,6 +103,11 @@ public class BondingTask implements WatTask {
         Sleep.sleepUntil(Dialogues::canContinue, 25000);
 
         if(!Inventory.contains("Old school bond (untradeable)")) {
+            if (!Menu.isMenuManipulationActive()) {
+                Logger.log("Enabling menu manipulation, bonding complete");
+                Menu.toggleMenuManipulation(true);
+            }
+
             if(Client.isLoggedIn()) {
                 if(GenericUtils.getMemberDays() == 0) {
                     if (!Tabs.isOpen(Tab.LOGOUT)) {
@@ -118,7 +124,7 @@ public class BondingTask implements WatTask {
         }
 
         if(post != null) {
-            TaskManager.getInstance().setCurrentTask(new HopperTask(0, post));
+            TaskManager.getInstance().setCurrentTask(post);
         }
     }
 

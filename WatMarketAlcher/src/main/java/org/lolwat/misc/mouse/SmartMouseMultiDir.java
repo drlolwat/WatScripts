@@ -433,7 +433,7 @@ public class SmartMouseMultiDir implements MouseAlgorithm {
      */
     private void loadMouseData() {
         Gson gson = new Gson();
-        try (InputStream is = getClass().getResourceAsStream("/mousedata.json")) {
+        try (InputStream is = getClass().getResourceAsStream("/regular.json")) {
             if (is == null) {
                 Logger.log("Error: mousedata");
             } else {

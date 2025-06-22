@@ -7,13 +7,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="1.15 watsson hates me">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="1.18">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/banking/WithdrawSingleItemTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/exchange/BuySingleItemTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ConfigManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/BuyAlchItemTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/BuyAlchItemTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseMultiDir.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseMultiDir.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/HighAlchemyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/HighAlchemyTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/WaitForOfferTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/alching/WaitForOfferTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BondingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GatheringTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/GrandExchangeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/legacy/LegacyExchangeTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LegacyBankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/legacy/LegacyBankingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LiquidationTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/LiquidationTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/TraversalTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mousedata.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/regular.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,6 +100,7 @@
     &quot;Maven.WatAlcher [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatAlcher [verify].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatMarketAlcher [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatMarketAlcher [test].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatMarketAlcher [verify].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatScript1 [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatShamans [package].executor&quot;: &quot;Run&quot;,
@@ -104,7 +115,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/watmarketalcher/src/main/resources&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/chchp/IdeaProjects/watmarketalcher/src/main/resources&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -120,6 +131,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\chchp\IdeaProjects\watmarketalcher\src\main\resources" />
+      <recent name="C:\Users\chchp\IdeaProjects\watmarketalcher\src\main\java\org\lolwat\tasks" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/misc" />
     </key>
@@ -134,6 +147,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.tasks.banking" />
       <recent name="org.lolwat.misc.mouse" />
       <recent name="org.lolwat.tasks.misc" />
       <recent name="org.lolwat.tasks.alching" />
@@ -262,7 +276,18 @@
       <workItem from="1748121883866" duration="1457000" />
       <workItem from="1748317553881" duration="6000" />
       <workItem from="1748784134505" duration="3195000" />
-      <workItem from="1748902814884" duration="692000" />
+      <workItem from="1748902814884" duration="3236000" />
+      <workItem from="1748987363079" duration="5784000" />
+      <workItem from="1749329779241" duration="9000" />
+      <workItem from="1749406771629" duration="2311000" />
+      <workItem from="1749514320776" duration="1827000" />
+      <workItem from="1749922662597" duration="8241000" />
+      <workItem from="1749997352440" duration="2242000" />
+      <workItem from="1750007329753" duration="1021000" />
+      <workItem from="1750042398665" duration="898000" />
+      <workItem from="1750288719834" duration="629000" />
+      <workItem from="1750383458798" duration="119000" />
+      <workItem from="1750522481455" duration="1018000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -607,13 +632,18 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="697" />
+    <option name="localTasksCounter" value="698" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="bb35909b-2d45-4802-8895-728d20965c79" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Paths">
@@ -650,11 +680,15 @@
             </State>
           </value>
         </entry>
+        <entry key="bb35909b-2d45-4802-8895-728d20965c79">
+          <value>
+            <State />
+          </value>
+        </entry>
       </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new task: QuickWithdrawTask" />
     <MESSAGE value="new task: GetPrysinKey" />
     <MESSAGE value="new task: GetRovinsKey" />
     <MESSAGE value="new task: GetTraibornKey" />
@@ -679,7 +713,8 @@
     <MESSAGE value="1.13 dev" />
     <MESSAGE value="1.14 dev" />
     <MESSAGE value="1.15 watsson hates me" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.15 watsson hates me" />
+    <MESSAGE value="1.18" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.18" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

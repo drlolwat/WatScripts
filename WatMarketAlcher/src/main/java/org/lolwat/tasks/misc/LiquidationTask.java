@@ -16,6 +16,7 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
+import org.lolwat.tasks.legacy.LegacyExchangeTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +98,7 @@ public class LiquidationTask implements WatTask {
                     currentlySelling.put(m.getKey(), m.getValue());
 
                     if (Inventory.isFull() || toWithdraw.equals(currentlySelling)) {
-                        TaskManager.getInstance().setCurrentTask(new GrandExchangeTask("Liquidating", true, currentlySelling, this));
+                        TaskManager.getInstance().setCurrentTask(new LegacyExchangeTask("Liquidating", true, currentlySelling, this));
                         return;
                     }
                 }
