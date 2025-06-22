@@ -26,9 +26,8 @@ import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.misc.utils.ItemUtils;
 import org.lolwat.misc.utils.NumUtils;
-import org.lolwat.misc.utils.WatUtils;
+import org.lolwat.tasks.banking.WithdrawSingleItemTask;
 import org.lolwat.tasks.misc.BondingTask;
-import org.lolwat.tasks.misc.LegacyBankingTask;
 import org.lolwat.tasks.misc.MulingTask;
 
 import java.util.HashMap;
@@ -59,6 +58,15 @@ public class HighAlchemyTask implements WatTask {
             if(Bank.isOpen() && !Bank.close()) {
                 Logger.log("Failed to close bank before setting alch warning value");
                 return;
+            }
+
+            if(!Tabs.isOpen(Tab.OPTIONS)) {
+                if (!Tabs.open(Tab.OPTIONS)) {
+                    Logger.error("Failed to open options tab");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.OPTIONS), 5000);
             }
 
             if (!ClientSettings.isOpen()) {
@@ -108,16 +116,6 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        if (!WatUtils.canAffordCast(Normal.HIGH_LEVEL_ALCHEMY)) {
-            Logger.log("We need to grab runes...");
-            TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(new HashMap<String, Integer>() {
-                {
-                    put("Nature rune", ConfigManager.getInstance().getConfigInt("buy_nature_qty"));
-                }
-            }, this));
-            return;
-        }
-
         int coinsOnHand = Bank.count("Coins") + Inventory.count("Coins");
         int totalToMule = coinsOnHand - ConfigManager.getInstance().getConfigInt("keep_gp");
         int inventoryCoins = Inventory.count("Coins");
@@ -162,13 +160,6 @@ public class HighAlchemyTask implements WatTask {
             return;
         }
 
-        for (String s : clothesRequired().keySet()) {
-            if (!Equipment.contains(s)) {
-                TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(null, this));
-                return;
-            }
-        }
-
         if (Bank.isOpen()) {
             Bank.close();
             Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
@@ -181,6 +172,26 @@ public class HighAlchemyTask implements WatTask {
             }
 
             Sleep.sleepUntil(() -> !GrandExchange.isOpen(), 5000);
+        }
+
+        if (!Inventory.contains("Nature rune")) {
+            Logger.log("We need to grab runes...");
+            TaskManager.getInstance().setCurrentTask(new WithdrawSingleItemTask("Nature rune", -1, this));
+            return;
+        }
+
+        if(!Equipment.contains("Staff of fire")) {
+            Logger.log("We need a staff of fire equipped to alch");
+            if(!Inventory.contains("Staff of fire")) {
+                TaskManager.getInstance().setCurrentTask(new WithdrawSingleItemTask("Staff of fire", 1, this));
+            } else {
+                if (!GenericUtils.equipItem("Staff of fire", null)) {
+                    Logger.error("Error equipping staff of fire");
+                }
+
+                Sleep.sleepUntil(() -> Equipment.contains("Staff of fire"), 5000);
+            }
+            return;
         }
 
         while (Dialogues.canContinue()) {

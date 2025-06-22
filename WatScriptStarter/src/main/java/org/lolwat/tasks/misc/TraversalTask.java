@@ -1,9 +1,6 @@
 package org.lolwat.tasks.misc;
 
-import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.bank.Bank;
-import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -13,8 +10,6 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
-import org.dreambot.api.methods.tabs.Tab;
-import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
@@ -25,10 +20,7 @@ import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.TeleportManager;
-import org.lolwat.managers.types.Teleport;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.misc.utils.GenericUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -79,117 +71,6 @@ public class TraversalTask implements WatTask {
                 Tile t = Players.getLocal().getTile();
                 Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(t), 5000);
                 return;
-            }
-        }
-
-        if (GenericUtils.isMember() && postTask != null) {
-            double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
-            double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
-
-            if (targetDistance >= 1000 && !hasTeleported) {
-                Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
-                if (teleport != null) {
-                    Logger.log("Traversal: selected teleport " + teleport.getName() + " for destination "
-                            + area.getRandomTile() + " for task " + postTask.getName());
-
-                    String teleportItem = teleport.getSearchFor();
-                    if (!Inventory.contains(x -> x.getName().contains(teleportItem))) {
-                        if (Equipment.contains(x -> x.getName().contains(teleportItem))) {
-                            if (Bank.isOpen()) {
-                                Bank.close();
-                                Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
-                            }
-
-                            if (!Tabs.isOpen(Tab.EQUIPMENT)) {
-                                Tabs.open(Tab.EQUIPMENT);
-                                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.EQUIPMENT), Calculations.random(200, 300));
-                            }
-
-                            if (!Equipment.interact(Equipment.getSlotForItem(f -> f.getName().contains(teleportItem)),
-                                    teleport.getOption())) {
-
-                                Logger.log("Traversal: failed to use equipped teleport item");
-                            }
-
-                            Tile currentTile = Players.getLocal().getTile();
-                            Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile
-                                    && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
-                            hasTeleported = true;
-                            return;
-                        } else {
-                            if (targetDistance > exchangeDistance
-                                    && (!(postTask instanceof LegacyBankingTask) && !(postTask instanceof GrandExchangeTask))) {
-
-                                TaskManager.getInstance().setCurrentTask(new LegacyBankingTask(new HashMap<String, Integer>() {
-                                    {
-                                        put(teleportItem, 1);
-                                    }
-                                }, this));
-
-                                Logger.log("Traversal: missing teleport item " + teleportItem);
-                                return;
-                            }
-                        }
-                    } else {
-                        if (Bank.isOpen()) {
-                            Bank.close();
-                            Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
-                        }
-
-                        if (!Tabs.isOpen(Tab.INVENTORY)) {
-                            Tabs.open(Tab.INVENTORY);
-                            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
-                        }
-
-                        if (teleportItem.contains("teleport")) {
-                            if (!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Break")) {
-                                Logger.log("Traversal: failed to use teleport tab: " + teleportItem);
-                                return;
-                            }
-                        } else {
-                            if (!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Rub")) {
-                                Logger.log("Traversal: failed to use teleport item: " + teleportItem);
-                                return;
-                            }
-
-                            Sleep.sleepUntil(Dialogues::inDialogue, 2000);
-
-                            if (!Dialogues.inDialogue()) {
-                                Widget scroll = Widgets.getWidget(187);
-                                if (scroll != null && scroll.isVisible()) {
-                                    WidgetChild c = scroll.getChild(3);
-                                    if (c != null && c.isVisible()) {
-                                        WidgetChild option = null;
-                                        for (WidgetChild child : c.getChildren()) {
-                                            if (child == null) continue;
-                                            if (child.getText().contains(teleport.getOption())) {
-                                                option = child;
-                                                break;
-                                            }
-                                        }
-
-                                        if (option != null) {
-                                            if (!option.interact("Continue")) {
-                                                Logger.log("Traversal: failed to use teleport item " + teleportItem);
-                                                return;
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                Dialogues.clickOption(teleport.getOption());
-                            }
-                        }
-
-                        Tile currentTile = Players.getLocal().getTile();
-                        Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
-                        hasTeleported = true;
-                        return;
-                    }
-                } else {
-                    hasTeleported = true;
-                    Logger.log("Traversal: no teleport item found for destination, walking");
-                }
             }
         }
 
