@@ -7,15 +7,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Gear: add amulets, capes (infernal, fire, obs, other)">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/CrabLogic.java" afterDir="false" />
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="Hot reload stuff">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/mobs/logic/SandCrabLogic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/ItemManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/MobManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TeleportManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/managers/TeleportManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/WalkingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/WalkingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/banking/WithdrawSingleItemTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/banking/WithdrawSingleItemTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/combat/CombatTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWeapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWeapon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWearable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/gear/WatWearable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/types/interfaces/MobLogic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/combat.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/regular.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +92,8 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Maven.WatAB [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatAB [verify].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatAIO [test].executor&quot;: &quot;Run&quot;,
     &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
@@ -130,6 +137,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.types.mobs.logic" />
       <recent name="org.lolwat.tasks.exchange" />
     </key>
   </component>
@@ -238,7 +246,15 @@
       <workItem from="1747955681791" duration="9756000" />
       <workItem from="1748029392632" duration="600000" />
       <workItem from="1748091521983" duration="78000" />
-      <workItem from="1748115250407" duration="23966000" />
+      <workItem from="1748115250407" duration="25645000" />
+      <workItem from="1748263750143" duration="24729000" />
+      <workItem from="1748385862262" duration="2350000" />
+      <workItem from="1748784121749" duration="1431000" />
+      <workItem from="1748902807947" duration="1327000" />
+      <workItem from="1748987360749" duration="3860000" />
+      <workItem from="1749928869331" duration="2013000" />
+      <workItem from="1749997353759" duration="623000" />
+      <workItem from="1751133480770" duration="536000" />
     </task>
     <task id="LOCAL-00035" summary="small QOL">
       <created>1685725940857</created>
@@ -583,7 +599,7 @@
       <option name="project" value="LOCAL" />
       <updated>1687664815842</updated>
     </task>
-    <option name="localTasksCounter" value="695" />
+    <option name="localTasksCounter" value="724" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -630,32 +646,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ItemUtils: new method: equipmentContains" />
-    <MESSAGE value="GetSilverlight: inherit correct post task" />
-    <MESSAGE value="remove ribo gpt code" />
-    <MESSAGE value="more WIP" />
-    <MESSAGE value="MobLogic: default eating logic updated" />
-    <MESSAGE value="remove all 1.0 code" />
-    <MESSAGE value="dev" />
-    <MESSAGE value="initial" />
-    <MESSAGE value="remove redundant methods, add new mouse" />
-    <MESSAGE value="dynamic gearing system" />
-    <MESSAGE value="new Task: BuySingleItemTask" />
-    <MESSAGE value="new task: CombatGearTask" />
-    <MESSAGE value="CombatTask: gearing, inventory" />
-    <MESSAGE value="DefaultLogic: prod" />
-    <MESSAGE value="new Combat logic: EdgevilleGiants" />
-    <MESSAGE value="ItemManager: initial weapons, armor, food, keys" />
-    <MESSAGE value="MobLogic: add default target acq, gear, eating" />
-    <MESSAGE value="MobManager: add some default mobs up to ~80cb" />
-    <MESSAGE value="TeleportManager: disabled pending rework" />
-    <MESSAGE value="WaitForOfferTask: G.E overhaul helper Task" />
-    <MESSAGE value="WatItem: price logic" />
-    <MESSAGE value="New task: WithdrawSingleItemTask" />
-    <MESSAGE value="new logic: Moss giants" />
-    <MESSAGE value="logie updates" />
-    <MESSAGE value="Gear: add amulets, capes (infernal, fire, obs, other)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Gear: add amulets, capes (infernal, fire, obs, other)" />
+    <MESSAGE value="ItemManager: add ranged eq, avas, other" />
+    <MESSAGE value="Mob: location names" />
+    <MESSAGE value="ScriptManager: cache paint/assets on startup" />
+    <MESSAGE value="WaitForOfferTask: raise price *1.1 if unbuyable" />
+    <MESSAGE value="WatItem: price tracking" />
+    <MESSAGE value="WatScript: paint from file not url" />
+    <MESSAGE value="WatTask: location tracking for all tasks" />
+    <MESSAGE value="WithdrawSingleItemTask: bank caching" />
+    <MESSAGE value="WaitForOfferTask: log in correct location" />
+    <MESSAGE value="mouse algos: fetch and cache from remote" />
+    <MESSAGE value="MobManager: update area names" />
+    <MESSAGE value="ItemManager: use cache if available" />
+    <MESSAGE value="CrabLogic: add food to crabs" />
+    <MESSAGE value="CombatUtils: fix lvl reqs thinking they were quests" />
+    <MESSAGE value="CombatTask: check for upgrades every so often if cache available" />
+    <MESSAGE value="CombatGearTask: cache stuff" />
+    <MESSAGE value="use combat mouse during combat lol" />
+    <MESSAGE value="change upgrade check time, todo dynamic" />
+    <MESSAGE value="CombatUtils: better checking for gear" />
+    <MESSAGE value="ConfigManager: watch config files for changes and update accordingly" />
+    <MESSAGE value="CrabLogic: add varrock, camelot teleport tabs to loadout" />
+    <MESSAGE value="ItemManager: more scimmys" />
+    <MESSAGE value="MobManager: cow stuff" />
+    <MESSAGE value="MulingTask: obsolete stuff" />
+    <MESSAGE value="Hot reload stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hot reload stuff" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

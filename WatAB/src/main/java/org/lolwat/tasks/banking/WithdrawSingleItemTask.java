@@ -66,7 +66,7 @@ public class WithdrawSingleItemTask implements WatTask {
         } else {
             Logger.log("not enough of item: " + itemName + " in bank");
             if(coins >= (i.getPrice() * amount)) {
-                TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(itemName, amount, i.getPrice(), this));
+                TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(i.getSearchFor(), amount, i.getPrice(), this));
             }
             else {
                 Logger.log("not enough coins to buy item: " + itemName);

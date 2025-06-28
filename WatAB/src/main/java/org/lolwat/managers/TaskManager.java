@@ -13,23 +13,22 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.utilities.Logger;
-import org.dreambot.api.utilities.Sleep;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.combat.CombatTask;
 import org.lolwat.tasks.misc.BondingTask;
-import org.lolwat.tasks.misc.BreakingTask;
 import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.misc.LogoutTask;
 import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
 import org.lolwat.tasks.tutorial.TutorialIslandTask;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.awt.*;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class TaskManager {
@@ -37,14 +36,12 @@ public class TaskManager {
     private List<WatTask> tasks;
     private HashMap<Skill, List<WatTask>> tasksBySkill;
     private List<Skill> skillsAvailable;
-    private List<WatTask> restrictedMoneyMakingTasks;
-    private List<WatTask> unrestrictedMoneyMakingTasks;
+    private List<WatTask> moneymakingTasks;
 
     @Getter @Setter
     private static TaskManager instance;
     @Getter
     private WatTask currentTask;
-    private int tasksUntilBreak;
     @Getter
     private double taskSelectedAt;
     @Getter
@@ -52,8 +49,6 @@ public class TaskManager {
 
     public TaskManager() {
         setupAllTasks();
-        resetBreaks();
-        skillsAvailable.addAll(Arrays.asList(Skill.values()));
     }
 
     public void getNewTask() {
@@ -114,7 +109,6 @@ public class TaskManager {
                 setCurrentTask(new QuestWrapperTask(QuestManager.getInstance().getIncompleteQuest()), Calculations.random(3600, 7200));
                 Logger.log("TaskManager: Selected quest: " + getCurrentTask().questTask().completes().toString());
             } else {
-                tasksUntilBreak++; // so we don't decrement it if we don't get a quest
                 Logger.log("TaskManager: All available quests completed, selecting a skill-based task..");
                 getNewTask(true);
             }
@@ -139,8 +133,8 @@ public class TaskManager {
         }
 
         if(sk.equals(Skill.HITPOINTS)) {
-            Collections.shuffle(unrestrictedMoneyMakingTasks);
-            for(WatTask t : unrestrictedMoneyMakingTasks) {
+            Collections.shuffle(moneymakingTasks);
+            for(WatTask t : moneymakingTasks) {
                 if(t.canPerformTask() && (t.requiresMembers() && WatUtils.isMember() || !t.requiresMembers() && !WatUtils.isMember())) {
                     if(gpToGenerate > 0) {
                         t.data().put("gp_to_generate", gpToGenerate);
@@ -196,50 +190,6 @@ public class TaskManager {
                 );
     }
 
-    public void resetBreaks() {
-        tasksUntilBreak = Calculations.random(12, 20);
-    }
-
-    private boolean evaluateBreak() {
-        if(ConfigManager.getInstance().getConfigBoolean("breaks_enabled") && tasksUntilBreak < 0) {
-            resetBreaks();
-            setCurrentTask(new BreakingTask((Instant.now().getEpochSecond() + taskRunTime)), Calculations.random(28800, 43200));
-            Logger.log("TaskManager: Going on break");
-            return true;
-        }
-        return false;
-    }
-
-    private boolean evaluateGoals() {
-        boolean goalsMet = true;
-        for(Skill sk : Skill.values()) {
-            if(sk.equals(Skill.HITPOINTS))
-                continue;
-
-            if(Skills.getRealLevel(sk) < ConfigManager.getInstance().getSkillTarget(sk)) {
-                goalsMet = false;
-            }
-        }
-
-        if(goalsMet) {
-            Logger.log("We are going to the bank to log out (skill goals met)");
-            setCurrentTask(new LogoutTask(true, true, null), 0);
-            Sleep.sleep(1000, 3000);
-            return true;
-        }
-
-        if(ConfigManager.getInstance().getConfigInt("logout_after_ttl") > 0) {
-            if (Client.isLoggedIn() && Skills.getTotalLevel() >= ConfigManager.getInstance().getConfigInt("logout_after_ttl")) {
-                Logger.log("We are going to the bank to log out (ttl goal met)");
-                setCurrentTask(new LogoutTask(true, true, null), 0);
-                Sleep.sleep(1000, 3000);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private boolean preTaskSelection() {
         if(!Client.isLoggedIn()) {
             Logger.log("Awaiting login...");
@@ -267,22 +217,6 @@ public class TaskManager {
         }
 
         Logger.log("Evaluating goals for stop conditions");
-        if(evaluateGoals()) {
-            Logger.log("Goals have been met..");
-            return true;
-        }
-
-        if(ConfigManager.getInstance().getConfigBoolean("breaks_enabled")) {
-            Logger.log("Evaluating for breaks");
-            if (evaluateBreak()) {
-                return true;
-            }
-            else {
-                Logger.log("Going on break after " + tasksUntilBreak + " more completed task(s)");
-            }
-        }
-
-        tasksUntilBreak--;
         Collections.shuffle(tasks);
         return false;
     }
@@ -290,11 +224,10 @@ public class TaskManager {
     private void setupAllTasks() {
         tasks = new ArrayList<>();
         tasksBySkill = new HashMap<>();
-        restrictedMoneyMakingTasks = new ArrayList<>();
-        unrestrictedMoneyMakingTasks = new ArrayList<>();
+        moneymakingTasks = new ArrayList<>();
         skillsAvailable = new ArrayList<>();
 
-        // add tasks here
+        tasks.addAll(createAgilityTasks());
 
         for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -304,7 +237,16 @@ public class TaskManager {
             } else {
                 tasksBySkill.put(task.trainsSkill(), new ArrayList<WatTask>() { { add(task); }});
             }
+
+            if(!skillsAvailable.contains(task.trainsSkill())) {
+                skillsAvailable.add(task.trainsSkill());
+            }
         }
+
+        skillsAvailable.add(Skill.ATTACK);
+        skillsAvailable.add(Skill.DEFENCE);
+        skillsAvailable.add(Skill.STRENGTH);
+        skillsAvailable.add(Skill.RANGED);
     }
 
     private List<WatTask> createAgilityTasks() {

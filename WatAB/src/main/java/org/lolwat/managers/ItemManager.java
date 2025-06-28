@@ -34,163 +34,163 @@ public class ItemManager {
     public void addDefaults() {
         items = new ArrayList<>();
 
-        addWeapon("Bronze sword", CombatType.MELEE);
-        addSkilledWeapon("Iron scimitar", 1, 1, 1, -1, -1, CombatType.MELEE);
-        addSkilledWeapon("Steel scimitar", 5, 1, 1, -1, -1, CombatType.MELEE);
-        addWeapon("Shortbow", CombatType.RANGED);
-        addWeapon("Staff of air", CombatType.MAGIC);
+        addWeapon("Bronze sword", CombatType.MELEE, 9);
+        addSkilledWeapon("Iron scimitar", 1, 1, 1, -1, -1, CombatType.MELEE, 10);
+        addSkilledWeapon("Steel scimitar", 5, 1, 1, -1, -1, CombatType.MELEE, 10);
+        addWeapon("Shortbow", CombatType.RANGED, 10);
+        addWeapon("Staff of air", CombatType.MAGIC, 10);
 
-        addSkilledWeapon("Oak shortbow", 1, 1, 1, -1, 5, CombatType.RANGED);
-        addSkilledWeapon("Willow shortbow", 1, 1, 1, -1, 20, CombatType.RANGED);
-        addSkilledWeapon("Maple shortbow", 1, 1, 1, -1, 30, CombatType.RANGED);
-        addSkilledWeapon("Yew shortbow", 1, 1, 1, -1, 40, CombatType.RANGED);
-        addSkilledWeapon("Magic shortbow", 1, 1, 1, -1, 50, CombatType.RANGED);
-        addSkilledWeapon("Dark bow", 1, 1, 1, -1, 60, CombatType.RANGED);
+        addSkilledWeapon("Oak shortbow", 1, 1, 1, -1, 5, CombatType.RANGED, 10);
+        addSkilledWeapon("Willow shortbow", 1, 1, 1, -1, 20, CombatType.RANGED, 10);
+        addSkilledWeapon("Maple shortbow", 1, 1, 1, -1, 30, CombatType.RANGED, 10);
+        addSkilledWeapon("Yew shortbow", 1, 1, 1, -1, 40, CombatType.RANGED, 10);
+        addSkilledWeapon("Magic shortbow", 1, 1, 1, -1, 50, CombatType.RANGED, 10);
+        addSkilledWeapon("Dark bow", 1, 1, 1, -1, 60, CombatType.RANGED, 10);
 
-        addWearable("Leather cowl", EquipmentSlot.HAT, CombatType.RANGED);
-        addWearable("Leather body", EquipmentSlot.CHEST, CombatType.RANGED);
-        addWearable("Leather chaps", EquipmentSlot.LEGS, CombatType.RANGED);
-        addWearable("Leather vambraces", EquipmentSlot.HANDS, CombatType.RANGED);
-        addWearable("Spiky vambraces", EquipmentSlot.HANDS, CombatType.RANGED);
+        addWearable("Leather cowl", EquipmentSlot.HAT, CombatType.RANGED, 10);
+        addWearable("Leather body", EquipmentSlot.CHEST, CombatType.RANGED, 10);
+        addWearable("Leather chaps", EquipmentSlot.LEGS, CombatType.RANGED, 10);
+        addWearable("Leather vambraces", EquipmentSlot.HANDS, CombatType.RANGED, 10);
+        addWearable("Spiky vambraces", EquipmentSlot.HANDS, CombatType.RANGED, 10);
 
-        addSkilledWearable("Hardleather body", 1, 1, 10, -1, 1, CombatType.RANGED, EquipmentSlot.CHEST);
-        addSkilledWearable("Coif", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.HAT);
-        addSkilledWearable("Studded body", 1, 1, 20, -1, 20, CombatType.RANGED, EquipmentSlot.CHEST);
-        addSkilledWearable("Studded chaps", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.LEGS);
+        addSkilledWearable("Hardleather body", 1, 1, 10, -1, 1, CombatType.RANGED, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Coif", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.HAT, 10);
+        addSkilledWearable("Studded body", 1, 1, 20, -1, 20, CombatType.RANGED, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Studded chaps", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.LEGS, 10);
 
-        addSkilledWearable("Snakeskin boots", 1, 1, 30, -1, 30, CombatType.RANGED, EquipmentSlot.FEET);
-        addSkilledWearable("Snakeskin bandana", 1, 1, 30, -1, 30, CombatType.RANGED, EquipmentSlot.HAT);
+        addSkilledWearable("Snakeskin boots", 1, 1, 30, -1, 30, CombatType.RANGED, EquipmentSlot.FEET, 10);
+        addSkilledWearable("Snakeskin bandana", 1, 1, 30, -1, 30, CombatType.RANGED, EquipmentSlot.HAT, 10);
 
         addQuestedWearable("Green d'hide body", 1, 1, 40, -1, 40, EquipmentSlot.CHEST, CombatType.RANGED,
-                Collections.singletonList(FreeQuest.DRAGON_SLAYER));
+                Collections.singletonList(FreeQuest.DRAGON_SLAYER), 10);
 
-        addSkilledWearable("Frog-leather boots", 1, 1, 25, -1, 25, CombatType.RANGED, EquipmentSlot.FEET);
-        addSkilledWearable("Ranger boots", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.FEET);
+        addSkilledWearable("Frog-leather boots", 1, 1, 25, -1, 25, CombatType.RANGED, EquipmentSlot.FEET, 10);
+        addSkilledWearable("Ranger boots", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.FEET, 10);
 
-        addSkilledWearable("Green d'hide chaps", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.LEGS);
-        addSkilledWearable("Green d'hide vambraces", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.HANDS);
-        addSkilledWearable("Blue d'hide body", 1, 1, 40, -1, 50, CombatType.RANGED, EquipmentSlot.CHEST);
-        addSkilledWearable("Blue d'hide chaps", 1, 1, 1, -1, 50, CombatType.RANGED, EquipmentSlot.LEGS);
-        addSkilledWearable("Blue d'hide vambraces", 1, 1, 1, -1, 50, CombatType.RANGED, EquipmentSlot.HANDS);
-        addSkilledWearable("Red d'hide body", 1, 1, 40, -1, 60, CombatType.RANGED, EquipmentSlot.CHEST);
-        addSkilledWearable("Red d'hide chaps", 1, 1, 1, -1, 60, CombatType.RANGED, EquipmentSlot.LEGS);
-        addSkilledWearable("Red d'hide vambraces", 1, 1, 1, -1, 60, CombatType.RANGED, EquipmentSlot.HANDS);
-        addSkilledWearable("Black d'hide body", 1, 1, 40, -1, 70, CombatType.RANGED, EquipmentSlot.CHEST);
-        addSkilledWearable("Black d'hide chaps", 1, 1, 1, -1, 70, CombatType.RANGED, EquipmentSlot.LEGS);
-        addSkilledWearable("Black d'hide vambraces", 1, 1, 1, -1, 70, CombatType.RANGED, EquipmentSlot.HANDS);
+        addSkilledWearable("Green d'hide chaps", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Green d'hide vambraces", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Blue d'hide body", 1, 1, 40, -1, 50, CombatType.RANGED, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Blue d'hide chaps", 1, 1, 1, -1, 50, CombatType.RANGED, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Blue d'hide vambraces", 1, 1, 1, -1, 50, CombatType.RANGED, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Red d'hide body", 1, 1, 40, -1, 60, CombatType.RANGED, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Red d'hide chaps", 1, 1, 1, -1, 60, CombatType.RANGED, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Red d'hide vambraces", 1, 1, 1, -1, 60, CombatType.RANGED, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Black d'hide body", 1, 1, 40, -1, 70, CombatType.RANGED, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Black d'hide chaps", 1, 1, 1, -1, 70, CombatType.RANGED, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Black d'hide vambraces", 1, 1, 1, -1, 70, CombatType.RANGED, EquipmentSlot.HANDS, 10);
 
         addQuestedWearable("Ava's attractor", 1, 1, 1, -1, 30, EquipmentSlot.CAPE, CombatType.RANGED,
-                Collections.singletonList(PaidQuest.ANIMAL_MAGNETISM));
+                Collections.singletonList(PaidQuest.ANIMAL_MAGNETISM), 8);
         addQuestedWearable("Ava's accumulator", 1, 1, 1, -1, 50, EquipmentSlot.CAPE, CombatType.RANGED,
-                Collections.singletonList(PaidQuest.ANIMAL_MAGNETISM));
+                Collections.singletonList(PaidQuest.ANIMAL_MAGNETISM), 9);
         addQuestedWearable("Ava's assembler", 1, 1, 1, -1, 70, EquipmentSlot.CAPE, CombatType.RANGED,
-                Collections.singletonList(PaidQuest.ANIMAL_MAGNETISM));
+                Collections.singletonList(PaidQuest.ANIMAL_MAGNETISM), 10);
 
-        addSkilledWeapon("Mithril scimitar", 20, 1, 1, -1, -1, CombatType.MELEE);
-        addSkilledWeapon("Adamant scimitar", 30, 1, 1, -1, -1, CombatType.MELEE);
-        addSkilledWeapon("Rune scimitar", 40, 1, 1, -1, -1, CombatType.MELEE);
-        addSkilledWeapon("Dragon sword", 60, 1, 1, -1, -1, CombatType.MELEE);
-        addSkilledWeapon("Abyssal whip", 70, 99, 1, -1, -1, CombatType.MELEE);
+        addSkilledWeapon("Mithril scimitar", 20, 1, 1, -1, -1, CombatType.MELEE, 10);
+        addSkilledWeapon("Adamant scimitar", 30, 1, 1, -1, -1, CombatType.MELEE, 10);
+        addSkilledWeapon("Rune scimitar", 40, 1, 1, -1, -1, CombatType.MELEE, 10);
+        addSkilledWeapon("Dragon sword", 60, 1, 1, -1, -1, CombatType.MELEE, 9);
+        addSkilledWeapon("Abyssal whip", 70, 99, 1, -1, -1, CombatType.MELEE, 10);
 
-        addQuestedWeapon("Dragon scimitar", 61, 1, 1, -1, -1, CombatType.MELEE,
-                Collections.singletonList(FreeQuest.DRAGON_SLAYER));
+        addQuestedWeapon("Dragon scimitar", 60, 1, 1, -1, -1, CombatType.MELEE,
+                Collections.singletonList(FreeQuest.DRAGON_SLAYER), 10);
 
-        addWearable("Iron arrow", EquipmentSlot.ARROWS, CombatType.RANGED);
-        addSkilledWearable("Steel arrow", 1, 1, 1, -1, 5, CombatType.RANGED, EquipmentSlot.ARROWS);
-        addSkilledWearable("Mithril arrow", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.ARROWS);
-        addSkilledWearable("Adamant arrow", 1, 1, 1, -1, 30, CombatType.RANGED, EquipmentSlot.ARROWS);
-        addSkilledWearable("Rune arrow", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.ARROWS);
+        addWearable("Iron arrow", EquipmentSlot.ARROWS, CombatType.RANGED, 10);
+        addSkilledWearable("Steel arrow", 1, 1, 1, -1, 5, CombatType.RANGED, EquipmentSlot.ARROWS, 10);
+        addSkilledWearable("Mithril arrow", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.ARROWS, 10);
+        addSkilledWearable("Adamant arrow", 1, 1, 1, -1, 30, CombatType.RANGED, EquipmentSlot.ARROWS, 10);
+        addSkilledWearable("Rune arrow", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.ARROWS, 10);
 
-        addWearable("Wooden shield", EquipmentSlot.SHIELD, CombatType.MELEE);
-        addWearable("Iron platelegs", EquipmentSlot.LEGS, CombatType.MELEE);
-        addWearable("Iron platebody", EquipmentSlot.CHEST, CombatType.MELEE);
-        addWearable("Iron kiteshield", EquipmentSlot.SHIELD, CombatType.MELEE);
-        addWearable("Iron full helm", EquipmentSlot.HAT, CombatType.MELEE);
+        addWearable("Wooden shield", EquipmentSlot.SHIELD, CombatType.MELEE, 10);
+        addWearable("Iron platelegs", EquipmentSlot.LEGS, CombatType.MELEE, 10);
+        addWearable("Iron platebody", EquipmentSlot.CHEST, CombatType.MELEE, 10);
+        addWearable("Iron kiteshield", EquipmentSlot.SHIELD, CombatType.MELEE, 10);
+        addWearable("Iron full helm", EquipmentSlot.HAT, CombatType.MELEE, 10);
 
-        addSkilledWearable("Bronze defender", 1, 1, 1, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Iron defender", 1, 1, 2, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Steel defender", 1, 1, 11, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Mithril defender", 1, 1, 21, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Adamant defender", 1, 1, 31, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Rune defender", 1, 1, 41, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Dragon defender", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Avernic defender", 1, 1, 61, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
+        addSkilledWearable("Bronze defender", 1, 1, 1, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Iron defender", 1, 1, 2, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Steel defender", 1, 1, 11, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Mithril defender", 1, 1, 21, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Adamant defender", 1, 1, 31, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Rune defender", 1, 1, 41, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Dragon defender", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 9);
+        addSkilledWearable("Avernic defender", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
 
-        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.MELEE);
-        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.RANGED);
-        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.MAGIC);
+        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.MELEE, 10);
+        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.RANGED, 10);
+        addWearable("Leather boots", EquipmentSlot.FEET, CombatType.MAGIC, 10);
 
-        addWearable("Iron boots", EquipmentSlot.FEET, CombatType.MELEE);
+        addWearable("Iron boots", EquipmentSlot.FEET, CombatType.MELEE, 10);
 
-        addSkilledWearable("Mithril boots", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
-        addSkilledWearable("Adamant boots", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
-        addSkilledWearable("Rune boots", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
-        addSkilledWearable("Dragon boots", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.FEET);
+        addSkilledWearable("Mithril boots", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.FEET, 10);
+        addSkilledWearable("Adamant boots", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.FEET, 10);
+        addSkilledWearable("Rune boots", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.FEET, 10);
+        addSkilledWearable("Dragon boots", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.FEET, 10);
 
-        addWearable("Leather gloves", EquipmentSlot.HANDS, CombatType.MELEE);
-        addWearable("Iron gloves", EquipmentSlot.HANDS, CombatType.MELEE);
-        addSkilledWearable("Mithril gloves", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
-        addSkilledWearable("Adamant gloves", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
-        addSkilledWearable("Rune gloves", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
-        addSkilledWearable("Barrows gloves", 1, 1, 70, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS);
+        addWearable("Leather gloves", EquipmentSlot.HANDS, CombatType.MELEE, 10);
+        addWearable("Iron gloves", EquipmentSlot.HANDS, CombatType.MELEE, 10);
+        addSkilledWearable("Mithril gloves", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Adamant gloves", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Rune gloves", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Barrows gloves", 1, 1, 70, -1, -1, CombatType.MELEE, EquipmentSlot.HANDS, 10);
 
-        addWearable("Amulet of strength", EquipmentSlot.AMULET, CombatType.MELEE);
-        addWearable("Amulet of accuracy", EquipmentSlot.AMULET, CombatType.RANGED);
-        addWearable("Amulet of magic", EquipmentSlot.AMULET, CombatType.MAGIC);
+        addWearable("Amulet of strength", EquipmentSlot.AMULET, CombatType.MELEE, 10);
+        addWearable("Amulet of accuracy", EquipmentSlot.AMULET, CombatType.RANGED, 10);
+        addWearable("Amulet of magic", EquipmentSlot.AMULET, CombatType.MAGIC, 10);
 
-        addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.MELEE, EquipmentSlot.AMULET);
-        addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.RANGED, EquipmentSlot.AMULET);
-        addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.MAGIC, EquipmentSlot.AMULET);
+        addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.MELEE, EquipmentSlot.AMULET, 10);
+        addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.RANGED, EquipmentSlot.AMULET, 10);
+        addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.MAGIC, EquipmentSlot.AMULET, 10);
 
-        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MELEE);
-        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.RANGED);
-        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MAGIC);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MELEE, 10);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.RANGED, 10);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MAGIC, 10);
 
-        addSkilledWearable("Obsidian cape", 9, 9, 9, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE);
-        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 9, CombatType.RANGED, EquipmentSlot.CAPE);
-        addSkilledWearable("Obsidian cape", 1, 1, 1, 9, 1, CombatType.MAGIC, EquipmentSlot.CAPE);
+        addSkilledWearable("Obsidian cape", 9, 9, 9, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 9, CombatType.RANGED, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 9, 1, CombatType.MAGIC, EquipmentSlot.CAPE, 10);
 
-        addSkilledWearable("Fire cape", 10, 10, 10, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE);
-        addSkilledWearable("Fire cape", 1, 1, 1, 1, 10, CombatType.RANGED, EquipmentSlot.CAPE);
-        addSkilledWearable("Fire cape", 1, 1, 1, 10, 1, CombatType.MAGIC, EquipmentSlot.CAPE);
+        addSkilledWearable("Fire cape", 10, 10, 10, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Fire cape", 1, 1, 1, 1, 10, CombatType.RANGED, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Fire cape", 1, 1, 1, 10, 1, CombatType.MAGIC, EquipmentSlot.CAPE, 10);
 
-        addSkilledWearable("Infernal cape", 11, 11, 11, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE);
-        addSkilledWearable("Infernal cape", 1, 1, 1, 1, 11, CombatType.RANGED, EquipmentSlot.CAPE);
-        addSkilledWearable("Infernal cape", 1, 1, 1, 11, 1, CombatType.MAGIC, EquipmentSlot.CAPE);
+        addSkilledWearable("Infernal cape", 11, 11, 11, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Infernal cape", 1, 1, 1, 1, 11, CombatType.RANGED, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Infernal cape", 1, 1, 1, 11, 1, CombatType.MAGIC, EquipmentSlot.CAPE, 10);
 
-        addSkilledWearable("Steel platelegs", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS);
-        addSkilledWearable("Steel platebody", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST);
-        addSkilledWearable("Steel kiteshield", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Steel full helm", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.HAT);
+        addSkilledWearable("Steel platelegs", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Steel platebody", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Steel kiteshield", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Steel full helm", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Mithril platelegs", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS);
-        addSkilledWearable("Mithril platebody", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST);
-        addSkilledWearable("Mithril kiteshield", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Mithril full helm", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.HAT);
+        addSkilledWearable("Mithril platelegs", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Mithril platebody", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Mithril kiteshield", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Mithril full helm", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Adamant platelegs", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS);
-        addSkilledWearable("Adamant platebody", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST);
-        addSkilledWearable("Adamant kiteshield", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Adamant full helm", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.HAT);
+        addSkilledWearable("Adamant platelegs", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Adamant platebody", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Adamant kiteshield", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Adamant full helm", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Rune platelegs", 1, 1, 40, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS);
-        addSkilledWearable("Rune chainbody", 1, 1, 40, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST);
+        addSkilledWearable("Rune platelegs", 1, 1, 40, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Rune chainbody", 1, 1, 40, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
 
         addQuestedWearable("Rune platebody", 1, 1, 40, -1, -1, EquipmentSlot.CHEST, CombatType.MELEE,
-                Collections.singletonList(FreeQuest.DRAGON_SLAYER));
+                Collections.singletonList(FreeQuest.DRAGON_SLAYER), 10);
 
-        addSkilledWearable("Rune kiteshield", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD);
-        addSkilledWearable("Rune full helm", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.HAT);
+        addSkilledWearable("Rune kiteshield", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Rune full helm", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Dragon platelegs", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS);
-        addSkilledWearable("Dragon chainbody", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST);
+        addSkilledWearable("Dragon platelegs", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Dragon chainbody", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST, 9);
 
-        addQuestedWearable("Dragon platebody", 1, 1, 61, -1, -1, EquipmentSlot.CHEST, CombatType.MELEE,
-                Collections.singletonList(FreeQuest.DRAGON_SLAYER));
+        addQuestedWearable("Dragon platebody", 1, 1, 60, -1, -1, EquipmentSlot.CHEST, CombatType.MELEE,
+                Collections.singletonList(FreeQuest.DRAGON_SLAYER), 8);
 
-        addSkilledWearable("Fighter torso", 1, 1, 62, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST);
-        addSkilledWearable("Dragon med helm", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.HAT);
-        addSkilledWearable("Obsidian helmet", 1, 1, 61, -1, -1, CombatType.MELEE, EquipmentSlot.HAT);
+        addSkilledWearable("Fighter torso", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Dragon med helm", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.HAT, 9);
+        addSkilledWearable("Obsidian helmet", 1, 1, 60, -1, -1, CombatType.MELEE, EquipmentSlot.HAT, 10);
 
         // other?
         addBasicItem("Coins");
@@ -203,6 +203,13 @@ public class ItemManager {
         addBasicItem("Lobster");
         addBasicItem("Tuna");
         addBasicItem("Shark");
+        
+        // teleport items
+        addBasicItem("Varrock teleport");
+        addBasicItem("Camelot teleport");
+        addBasicItem("Falador teleport");
+
+        //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
     }
 
     public WatItem getItem(String name) {
@@ -220,15 +227,15 @@ public class ItemManager {
         items.add(new WatItem(name));
     }
 
-    private void addWeapon(String name, CombatType type) {
-        items.add(new WatWeapon(name, type));
+    private void addWeapon(String name, CombatType type, int weight) {
+        items.add(new WatWeapon(name, type, weight));
     }
 
-    private void addWearable(String name, EquipmentSlot slot, CombatType type) {
-        items.add(new WatWearable(name, slot, type));
+    private void addWearable(String name, EquipmentSlot slot, CombatType type, int weight) {
+        items.add(new WatWearable(name, slot, type, weight));
     }
 
-    private void addSkilledWeapon(String name, int attack, int strength, int defence, int magic, int ranged, CombatType type) {
+    private void addSkilledWeapon(String name, int attack, int strength, int defence, int magic, int ranged, CombatType type, int weight) {
         items.add(new WatWeapon(name, type, new HashMap<Skill, Integer>()
         {
             {
@@ -238,10 +245,10 @@ public class ItemManager {
                 put(Skill.MAGIC, magic);
                 put(Skill.RANGED, ranged);
             }
-        }));
+        }, weight));
     }
 
-    private void addQuestedWeapon(String name, int attack, int strength, int defence, int magic, int ranged, CombatType type, List<Quest> quests) {
+    private void addQuestedWeapon(String name, int attack, int strength, int defence, int magic, int ranged, CombatType type, List<Quest> quests, int weight) {
         items.add(new WatWeapon(name, type, new HashMap<Skill, Integer>()
         {
             {
@@ -251,10 +258,10 @@ public class ItemManager {
                 put(Skill.MAGIC, magic);
                 put(Skill.RANGED, ranged);
             }
-        }, quests));
+        }, quests, weight));
     }
 
-    private void addSkilledWearable(String name, int attack, int strength, int defence, int magic, int ranged, CombatType type, EquipmentSlot slot) {
+    private void addSkilledWearable(String name, int attack, int strength, int defence, int magic, int ranged, CombatType type, EquipmentSlot slot, int weight) {
         items.add(new WatWearable(name, slot, type, new HashMap<Skill, Integer>()
         {
             {
@@ -264,10 +271,10 @@ public class ItemManager {
                 put(Skill.MAGIC, magic);
                 put(Skill.RANGED, ranged);
             }
-        }));
+        }, weight));
     }
 
-    private void addQuestedWearable(String name, int attack, int strength, int defence, int magic, int ranged, EquipmentSlot slot, CombatType type, List<Quest> quests) {
+    private void addQuestedWearable(String name, int attack, int strength, int defence, int magic, int ranged, EquipmentSlot slot, CombatType type, List<Quest> quests, int weight) {
         items.add(new WatWearable(name, slot, type, new HashMap<Skill, Integer>()
         {
             {
@@ -277,7 +284,7 @@ public class ItemManager {
                 put(Skill.MAGIC, magic);
                 put(Skill.RANGED, ranged);
             }
-        }, quests));
+        }, quests, weight));
     }
 
     private <T extends WatItem> T getBestItem(
@@ -321,7 +328,10 @@ public class ItemManager {
                 weapons,
                 weapon -> weapon.getCombatType() == type
                         && meetsSkillAndQuestReqs(weapon.getLevelRequirements(), weapon.getQuestRequirements()),
-                weapon -> weapon.getLevelRequirements() == null ? 0 : weapon.getLevelRequirements().values().stream().mapToInt(Integer::intValue).sum(),
+                weapon -> {
+                    int reqSum = weapon.getLevelRequirements() == null ? 0 : weapon.getLevelRequirements().values().stream().mapToInt(Integer::intValue).sum();
+                    return reqSum * weapon.getWeight();
+                },
                 weapon -> (Bank.isOpen() && Bank.contains(weapon.getName())) || Inventory.contains(weapon.getName()) || Equipment.contains(weapon.getName()),
                 WatItem::getPrice,
                 availableMoney
@@ -342,7 +352,10 @@ public class ItemManager {
                 wearable -> wearable.getCombatType() == type
                         && wearable.getSlot() == slot
                         && meetsSkillAndQuestReqs(wearable.getLevelRequirements(), wearable.getQuestRequirements()),
-                wearable -> wearable.getLevelRequirements() == null ? 0 : wearable.getLevelRequirements().values().stream().mapToInt(Integer::intValue).sum(),
+                wearable -> {
+                    int reqSum = wearable.getLevelRequirements() == null ? 0 : wearable.getLevelRequirements().values().stream().mapToInt(Integer::intValue).sum();
+                    return reqSum * wearable.getWeight();
+                },
                 wearable -> (Bank.isOpen() && Bank.contains(wearable.getName())) || Inventory.contains(wearable.getName()) || Equipment.contains(wearable.getName()),
                 WatItem::getPrice,
                 availableMoney

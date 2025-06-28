@@ -40,6 +40,7 @@ public class WatItem {
         this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
     }
 
+
     public WatItem(String name, String searchFor, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
         this.name = name;
         this.searchFor = searchFor;

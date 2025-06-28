@@ -51,6 +51,8 @@ public class CombatTask implements WatTask {
             type = CombatType.RANGED;
         else if (skill == Skill.MAGIC)
             type = CombatType.MAGIC;
+
+        this.lastUpgradeCheck = System.currentTimeMillis();
     }
 
     @Override
@@ -63,7 +65,7 @@ public class CombatTask implements WatTask {
 
         // check for required items. we will do this custom
         List<EquipmentSlot> slotsMissing = new ArrayList<>();
-        List<EquipmentSlot> slotsRequired = new ArrayList<>(target.getMobLogic().slotsRequired());
+        List<EquipmentSlot> slotsRequired = new ArrayList<>(target.getMobLogic().slotsRequired().keySet());
 
         if(type.equals(CombatType.RANGED)) {
             slotsRequired.add(EquipmentSlot.ARROWS);

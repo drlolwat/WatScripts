@@ -11,34 +11,42 @@ import java.util.List;
 public class WatWeapon extends WatItem {
     @Getter
     private CombatType combatType;
+    @Getter
+    private int weight;
 
-    public WatWeapon(String name, String searchFor, CombatType type) {
+    public WatWeapon(String name, String searchFor, CombatType type, int weight) {
         super(name, searchFor);
         this.combatType = type;
+        this.weight = weight;
     }
 
-    public WatWeapon(String name, CombatType type) {
+    public WatWeapon(String name, CombatType type, int weight) {
         super(name);
         this.combatType = type;
+        this.weight = weight;
     }
 
-    public WatWeapon(String name, String searchFor, CombatType type, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
+    public WatWeapon(String name, String searchFor, CombatType type, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements, int weight) {
         super(name, searchFor, levelRequirements, questRequirements);
         this.combatType = type;
+        this.weight = weight;
     }
 
-    public WatWeapon(String name, CombatType type, HashMap<Skill, Integer> levelRequirements) {
+    public WatWeapon(String name, CombatType type, HashMap<Skill, Integer> levelRequirements, int weight) {
         super(name, levelRequirements);
         this.combatType = type;
+        this.weight = weight;
     }
 
-    public WatWeapon(String name, CombatType type, List<Quest> questRequirements) {
+    public WatWeapon(String name, CombatType type, List<Quest> questRequirements, int weight) {
         super(name, questRequirements);
         this.combatType = type;
+        this.weight = weight;
     }
 
-    public WatWeapon(String name, CombatType type, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
+    public WatWeapon(String name, CombatType type, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements, int weight) {
         super(name, levelRequirements, questRequirements);
         this.combatType = type;
+        this.weight = weight;
     }
 }

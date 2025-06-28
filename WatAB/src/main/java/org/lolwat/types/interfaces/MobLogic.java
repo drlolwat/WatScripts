@@ -18,9 +18,7 @@ import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.mobs.Mob;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public interface MobLogic {
     default void execute(Mob mob, Skill skill) {
@@ -43,20 +41,25 @@ public interface MobLogic {
         }
     }
 
+    // WatItem, amount
     default HashMap<WatItem, Integer> inventoryLoadout() {
         return new HashMap<>();
     }
 
-    default List<EquipmentSlot> slotsRequired() {
-        return Arrays.asList(EquipmentSlot.WEAPON,
-                EquipmentSlot.SHIELD,
-                EquipmentSlot.HAT,
-                EquipmentSlot.CHEST,
-                EquipmentSlot.LEGS,
-                EquipmentSlot.AMULET,
-                EquipmentSlot.CAPE,
-                EquipmentSlot.HANDS,
-                EquipmentSlot.FEET);
+    // EquipmentSlot, continueIfCannotObtain
+    default HashMap<EquipmentSlot, Boolean> slotsRequired() {
+        return new HashMap<EquipmentSlot, Boolean>() {
+            {
+                put(EquipmentSlot.SHIELD, true);
+                put(EquipmentSlot.HAT, true);
+                put(EquipmentSlot.CHEST, true);
+                put(EquipmentSlot.LEGS, true);
+                put(EquipmentSlot.AMULET, true);
+                put(EquipmentSlot.CAPE, true);
+                put(EquipmentSlot.HANDS, true);
+                put(EquipmentSlot.FEET, true);
+            }
+        };
     }
 
     default void runPriority(Mob mob, Skill skill) {
