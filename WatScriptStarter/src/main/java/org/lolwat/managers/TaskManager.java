@@ -8,7 +8,7 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.WatScript;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.alching.HighAlchemyTask;
+import org.lolwat.tasks.checks.WealthCheckTask;
 
 public class TaskManager {
     @Getter @Setter
@@ -34,7 +34,7 @@ public class TaskManager {
             return;
         }
 
-        setCurrentTask(new HighAlchemyTask(), 0);
+        setCurrentTask(new WealthCheckTask(), 0);
     }
 
     public void setCurrentTask(WatTask task) {

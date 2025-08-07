@@ -13,7 +13,6 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
-import org.dreambot.api.methods.world.Worlds;
 import org.dreambot.api.randoms.RandomEvent;
 import org.dreambot.api.script.AbstractScript;
 import org.dreambot.api.script.Category;
@@ -36,11 +35,7 @@ import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.mouse.SmartMouseMultiDir;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
-import org.lolwat.misc.utils.GenericUtils;
-import org.lolwat.tasks.alching.HighAlchemyTask;
-import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.misc.MulingTask;
 
 import java.awt.*;
 import java.io.IOException;
@@ -54,11 +49,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@ScriptManifest(name = "WatMarketAlcher",
-        description = "Reads the OSRS market and performs High Level Alchemy at the Grand Exchange",
+@ScriptManifest(name = "WatScriptStarter",
+        description = "Checks accounts for pre-requisites, and then starts a follow-up script",
         author = "lolwat",
-        version = 1.21,
-        category = Category.MAGIC,
+        version = 1.00,
+        category = Category.UTILITY,
         image = "https://api.botbuddy.net/WatScripts.png")
 
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, AnimationListener, SpawnListener {
@@ -201,7 +196,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
     public int onLoop() {
         if (!Client.isLoggedIn()) {
             if (TaskManager.getInstance().getCurrentTask() == null) {
-                ConfigManager.getInstance().setCurrentTarget(null);
                 TaskManager.getInstance().setCurrentTask(null);
                 Logger.log("Enabling login manager");
                 enableLoginManager();
@@ -213,7 +207,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             ConfigManager.getInstance().setFirstStart(false);
         }
 
-        if(TaskManager.getInstance().getCurrentTask() != null) {
+        /*if(TaskManager.getInstance().getCurrentTask() != null) {
             if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
                     && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
                     && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
@@ -227,12 +221,12 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
                 }
             }
 
-            if(TaskManager.getInstance().getCurrentTask() instanceof BondingTask && GenericUtils.isMember()) {
+            /*if(TaskManager.getInstance().getCurrentTask() instanceof BondingTask && GenericUtils.isMember()) {
                 Logger.log("bonding while a member, going back to alchemy");
                 TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
                 return 300;
-            }
-        }
+            }/
+        }*/
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {
@@ -285,7 +279,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         }
 
         for(String s : logoutMessages) {
-            if(m.toString().toLowerCase().contains(s.toLowerCase())) {
+            if (m.toString().toLowerCase().contains(s.toLowerCase())) {
                 TaskManager.getInstance().setFutureTask
                         (
                                 new HopperTask(0, TaskManager.getInstance().getCurrentTask() != null
@@ -296,12 +290,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
 
                 return;
             }
-        }
-
-        if(m.getMessage().contains("You haven't got enough")) {
-            ConfigManager.getInstance().setCurrentTarget(null);
-            ConfigManager.getInstance().setCurrentTargetAmount(0);
-            TaskManager.getInstance().setFutureTask(new HighAlchemyTask());
         }
     }
 

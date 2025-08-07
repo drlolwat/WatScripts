@@ -9,7 +9,6 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
-import org.lolwat.tasks.alching.WaitForOfferTask;
 import org.lolwat.tasks.misc.TraversalTask;
 
 public class BuySingleItemTask implements WatTask {

@@ -1,4 +1,4 @@
-package org.lolwat.tasks.alching;
+package org.lolwat.tasks.exchange;
 
 import org.dreambot.api.Client;
 import org.dreambot.api.methods.container.impl.Inventory;
@@ -6,7 +6,6 @@ import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 
@@ -79,8 +78,8 @@ public class WaitForOfferTask implements WatTask {
         if(GrandExchange.slotContainsItem(slot)) {
             long now = Instant.now().getEpochSecond();
             if (!GrandExchange.isOpen() || (now - started) > 30 || !Client.isLoggedIn()) {
-                Logger.error("we had a weird issue, sending to alchemy..");
-                TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
+                Logger.error("we had a weird issue, nulling task");
+                TaskManager.getInstance().setCurrentTask(null);
                 return;
             }
 
@@ -115,37 +114,10 @@ public class WaitForOfferTask implements WatTask {
 
         int amountHave = Inventory.count(x -> x != null && x.getName().equals(target));
         if (amountHave > 0) {
-            if(target.equalsIgnoreCase(ConfigManager.getInstance().getCurrentTarget())) {
-                Logger.log("we fulfilled some of our alch buy, using those");
-                if (!GrandExchange.close()) {
-                    Logger.error("problem closing GE1");
-                }
-
-                ConfigManager.getInstance().setCurrentTargetAmount(amountHave);
-                ConfigManager.getInstance().addItemExpiry(target);
-
-                if (ConfigManager.getInstance().getPurchasedAmount().get(target) != null) {
-                    int toPut = amountHave + ConfigManager.getInstance().getPurchasedAmount().get(target);
-                    ConfigManager.getInstance().getPurchasedAmount().put(target, toPut);
-                } else {
-                    ConfigManager.getInstance().getPurchasedAmount().put(target, amountHave);
-                }
-
-                if (ConfigManager.getInstance().getPurchasedAmount().get(target) >= ConfigManager.getInstance().getBuyLimits().get(target)) {
-                    Logger.warn("bought >= 4 hour limit for: " + target);
-                    ConfigManager.getInstance().addItemExpiry(target);
-                }
-            } else {
-                Logger.log("purchased item: " + target + " x" + amountHave);
-            }
-
+            Logger.log("purchased item: " + target + " x" + amountHave);
             TaskManager.getInstance().setFutureTask(post);
         } else {
-            Logger.log("didnt get any items at all, finding new target");
-            ConfigManager.getInstance().getNoBuy().add(target);
-            ConfigManager.getInstance().addItemExpiry(target);
-            ConfigManager.getInstance().getNewAlchTarget();
-            TaskManager.getInstance().setFutureTask(new HighAlchemyTask());
+            Logger.log("didnt get any items at all");
         }
     }
 

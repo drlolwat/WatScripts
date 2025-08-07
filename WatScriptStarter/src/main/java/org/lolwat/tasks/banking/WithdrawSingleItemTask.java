@@ -10,7 +10,6 @@ import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.ItemUtils;
-import org.lolwat.tasks.alching.HighAlchemyTask;
 import org.lolwat.tasks.exchange.BuySingleItemTask;
 import org.lolwat.tasks.misc.MulingTask;
 
@@ -93,7 +92,7 @@ public class WithdrawSingleItemTask implements WatTask {
                         {
                             put("Coins", ConfigManager.getInstance().getConfigInt("keep_gp"));
                         }
-                    }, new HighAlchemyTask()));
+                    }, null));
                     return;
                 }
             }
@@ -124,7 +123,7 @@ public class WithdrawSingleItemTask implements WatTask {
                         {
                             put("Coins", ConfigManager.getInstance().getConfigInt("keep_gp"));
                         }
-                    }, new HighAlchemyTask()));
+                    }, null));
                     return;
                 }
             }
