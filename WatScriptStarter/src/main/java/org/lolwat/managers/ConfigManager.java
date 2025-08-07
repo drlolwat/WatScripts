@@ -47,7 +47,7 @@ public class ConfigManager {
     }
 
     public void loadFromProfile(String p) {
-        String filePath = System.getProperty("user.dir") + "/WatScriptStarter/" + p + ".json";
+        String filePath = System.getProperty("scripts.path") + "/WatScripts/WatScriptStarter/" + p + ".json";
 
         try {
             Gson gson = new Gson();
@@ -74,6 +74,10 @@ public class ConfigManager {
             FileWriter fileWriter = new FileWriter(file);
             gson.toJson(jsonObject, fileWriter);
             fileWriter.close();
+
+            for (String key : jsonObject.keySet()) {
+                config.put(key, jsonObject.get(key));
+            }
 
             config.put("hitpoints", 100);
             hasLoaded = true;

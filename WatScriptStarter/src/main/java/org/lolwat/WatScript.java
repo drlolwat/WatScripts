@@ -31,7 +31,6 @@ import org.dreambot.api.wrappers.widgets.message.Message;
 import org.dreambot.api.wrappers.widgets.message.MessageType;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.mouse.SmartMouseMultiDir;
 import org.lolwat.misc.paint.CustomPaint;
 import org.lolwat.misc.paint.Paint;
@@ -123,11 +122,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             Logger.log("Constructing ConfigManager singleton.");
             ConfigManager.setInstance(new ConfigManager());
             ConfigManager.getInstance().loadFromProfile(profile);
-        }
-
-        if (TeleportManager.getInstance() == null) {
-            Logger.log("Constructing TeleportManager singleton.");
-            TeleportManager.setInstance(new TeleportManager());
         }
 
         Walking.setMinimapTargetSize(15);
