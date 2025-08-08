@@ -39,6 +39,7 @@ public class ConfigManager {
         JsonObject defaultProfile = new JsonObject();
         defaultProfile.addProperty("need_gp", 1000000);
         defaultProfile.addProperty("mule_extra_gp", false);
+        defaultProfile.addProperty("bond_account", false);
         defaultProfile.addProperty("script_to_launch", "WatAIO");
         defaultProfile.addProperty("script_params_to_launch", "default");
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
