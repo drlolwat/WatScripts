@@ -28,11 +28,15 @@ public class ConfigManager {
     private boolean muleConnectionFailed;
     private final HashMap<Object, Object> config;
 
+    @Setter @Getter
+    private boolean isMember;
+
     public ConfigManager() {
         config = new HashMap<>();
         hasLoaded = false;
         firstStart = true;
         muleConnectionFailed = false;
+        isMember = false;
     }
 
     private JsonObject getDefaultProfile() {

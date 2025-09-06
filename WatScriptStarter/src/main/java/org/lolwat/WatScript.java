@@ -51,7 +51,7 @@ import java.util.List;
 @ScriptManifest(name = "WatScriptStarter",
         description = "Checks accounts for pre-requisites, and then starts a follow-up script",
         author = "lolwat",
-        version = 1.00,
+        version = 1.01,
         category = Category.UTILITY,
         image = "https://api.botbuddy.net/WatScripts.png")
 
@@ -200,27 +200,6 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         if (ConfigManager.getInstance().isFirstStart()) {
             ConfigManager.getInstance().setFirstStart(false);
         }
-
-        /*if(TaskManager.getInstance().getCurrentTask() != null) {
-            if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask)
-                    && !(TaskManager.getInstance().getCurrentTask() instanceof BondingTask)
-                    && !(TaskManager.getInstance().getCurrentTask() instanceof MulingTask)) {
-                if (GenericUtils.isMember() && !Worlds.getCurrent().isMembers()) {
-                    TaskManager.getInstance().setCurrentTask(new HopperTask(0,
-                            (TaskManager.getInstance().getCurrentTask() != null) ?
-                                    TaskManager.getInstance().getCurrentTask() : null), 0);
-
-                    Logger.log("We are hopping into a P2P world");
-                    return 300;
-                }
-            }
-
-            /*if(TaskManager.getInstance().getCurrentTask() instanceof BondingTask && GenericUtils.isMember()) {
-                Logger.log("bonding while a member, going back to alchemy");
-                TaskManager.getInstance().setCurrentTask(new HighAlchemyTask());
-                return 300;
-            }/
-        }*/
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
             if (!(TaskManager.getInstance().getCurrentTask() instanceof HopperTask) && Tabs.isOpen(Tab.LOGOUT)) {

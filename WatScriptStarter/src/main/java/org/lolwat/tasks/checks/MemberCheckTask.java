@@ -17,9 +17,9 @@ public class MemberCheckTask implements WatTask {
     @Override
     public void execute() {
         if(ConfigManager.getInstance().getConfigBoolean("bond_account")) {
-            if(!GenericUtils.isMember()) {
+            if(!GenericUtils.isMember() && !ConfigManager.getInstance().isMember()) {
                 Logger.log("P2P check failed, bonding account");
-                TaskManager.getInstance().setFutureTask(new BondingTask(this));
+                TaskManager.getInstance().setFutureTask(new BondingTask());
                 return;
             }
         }

@@ -16,10 +16,12 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.managers.types.WatTask;
 import org.lolwat.misc.utils.GenericUtils;
 import org.lolwat.tasks.banking.BankingTask;
+import org.lolwat.tasks.checks.WealthCheckTask;
 
 import java.util.HashMap;
 
@@ -27,11 +29,6 @@ public class BondingTask implements WatTask {
     @Override
     public String getName() {
         return "Bonding";
-    }
-    private final WatTask post;
-
-    public BondingTask(WatTask post) {
-        this.post = post;
     }
 
     @Override
@@ -41,8 +38,8 @@ public class BondingTask implements WatTask {
             return;
         }
 
-        if(GenericUtils.getMemberDays() >= 2) {
-            TaskManager.getInstance().setCurrentTask(post);
+        if (GenericUtils.getMemberDays() >= 2 || ConfigManager.getInstance().isMember()) {
+            TaskManager.getInstance().setFutureTask(new WealthCheckTask());
             return;
         }
 
@@ -102,30 +99,19 @@ public class BondingTask implements WatTask {
 
         Sleep.sleepUntil(Dialogues::canContinue, 25000);
 
-        if(!Inventory.contains("Old school bond (untradeable)")) {
-            if (!Menu.isMenuManipulationActive()) {
-                Logger.log("Enabling menu manipulation, bonding complete");
-                Menu.toggleMenuManipulation(true);
-            }
-
-            if(Client.isLoggedIn()) {
-                if(GenericUtils.getMemberDays() == 0) {
-                    if (!Tabs.isOpen(Tab.LOGOUT)) {
-                        Tabs.open(Tab.LOGOUT);
-                        Sleep.sleepUntil(() -> Tabs.isOpen(Tab.LOGOUT), 5000);
-                    }
-
-                    Tabs.logout();
-                } else {
-                    TaskManager.getInstance().setCurrentTask(new HopperTask(0, post));
-                    return;
+        if (!Inventory.contains("Old school bond (untradeable)")) {
+            ConfigManager.getInstance().setMember(true);
+            if (Client.isLoggedIn()) {
+                if (!Tabs.isOpen(Tab.LOGOUT)) {
+                    Tabs.open(Tab.LOGOUT);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.LOGOUT), 5000);
                 }
+
+                Tabs.logout();
             }
         }
 
-        if(post != null) {
-            TaskManager.getInstance().setCurrentTask(post);
-        }
+        TaskManager.getInstance().setFutureTask(new LogoutTask());
     }
 
     @Override
