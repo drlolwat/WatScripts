@@ -113,6 +113,7 @@ public class ConfigManager {
         defaultProfile.addProperty("price_modifier", 0);
         defaultProfile.addProperty("min_profit", 100);
         defaultProfile.addProperty("buy_nature_qty", 2000);
+        defaultProfile.addProperty("autobond", true);
         defaultProfile.addProperty("mule_ip", "127.0.0.1");
         defaultProfile.addProperty("mule_port", 8081);
         defaultProfile.addProperty("item_inventory_slot", 11);
@@ -357,7 +358,7 @@ public class ConfigManager {
     }
 
     public void loadFromProfile(String p) {
-        String filePath = System.getProperty("user.dir") + "/WatMarketAlcher/" + p + ".json";
+        String filePath = System.getProperty("scripts.path") + "/WatScripts/MarketAlcher/" + p + ".json";
 
         try {
             Gson gson = new Gson();

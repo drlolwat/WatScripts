@@ -104,7 +104,7 @@ public class HighAlchemyTask implements WatTask {
             }
         }
 
-        if (!GenericUtils.isMember()) {
+        if (!GenericUtils.isMember() && ConfigManager.getInstance().getConfigBoolean("autobond")) {
             Logger.log("need to bond");
             TaskManager.getInstance().setCurrentTask(new BondingTask(this));
             return;
