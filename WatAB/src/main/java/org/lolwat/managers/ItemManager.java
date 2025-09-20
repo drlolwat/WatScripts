@@ -39,6 +39,7 @@ public class ItemManager {
         addSkilledWeapon("Steel scimitar", 5, 1, 1, -1, -1, CombatType.MELEE, 10);
         addWeapon("Shortbow", CombatType.RANGED, 10);
         addWeapon("Staff of air", CombatType.MAGIC, 10);
+        addWeapon("Staff of fire", CombatType.MAGIC, 10);
 
         addSkilledWeapon("Oak shortbow", 1, 1, 1, -1, 5, CombatType.RANGED, 10);
         addSkilledWeapon("Willow shortbow", 1, 1, 1, -1, 20, CombatType.RANGED, 10);
