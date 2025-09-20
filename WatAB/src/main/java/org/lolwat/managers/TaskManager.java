@@ -26,9 +26,7 @@ import org.lolwat.types.interfaces.WatTask;
 
 import java.awt.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 
 public class TaskManager {
@@ -82,6 +80,21 @@ public class TaskManager {
                 List<WatTask> skillTasks = tasksBySkill.get(skill);
                 if(isCombatSkill(skill) && ConfigManager.getInstance().getSkillTarget(skill) > Skills.getRealLevel(skill)) {
                     Logger.log("TaskManager: Selecting combat for skill: " + skill);
+
+                    List<Skill> toCheck = new ArrayList<>(Arrays.asList(Skill.ATTACK, Skill.DEFENCE, Skill.STRENGTH));
+                    if(toCheck.contains(skill)) {
+                        toCheck.remove(skill);
+                        for(Skill s : toCheck) {
+                            if((Skills.getRealLevel(skill) - 10) >= Skills.getRealLevel(s) &&
+                                    ConfigManager.getInstance().getSkillTarget(s) > 1) {
+                                skill = s;
+                                Logger.log("TaskManager Override: skill diff was >= 10 with " + s.name());
+                                Logger.log("TaskManager Override: training that instead");
+                                break;
+                            }
+                        }
+                    }
+
                     setCurrentTask(new CombatTask(skill), 0);
                     return;
                 } else {
