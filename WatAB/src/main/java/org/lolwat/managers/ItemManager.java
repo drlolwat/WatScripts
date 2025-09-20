@@ -112,7 +112,7 @@ public class ItemManager {
         addSkilledWearable("Adamant arrow", 1, 1, 1, -1, 30, CombatType.RANGED, EquipmentSlot.ARROWS, 10);
         addSkilledWearable("Rune arrow", 1, 1, 1, -1, 40, CombatType.RANGED, EquipmentSlot.ARROWS, 10);
 
-        addWearable("Wooden shield", EquipmentSlot.SHIELD, CombatType.MELEE, 10);
+        addWearable("Wooden shield", EquipmentSlot.SHIELD, CombatType.MELEE, 9);
         addWearable("Iron platelegs", EquipmentSlot.LEGS, CombatType.MELEE, 10);
         addWearable("Iron platebody", EquipmentSlot.CHEST, CombatType.MELEE, 10);
         addWearable("Iron kiteshield", EquipmentSlot.SHIELD, CombatType.MELEE, 10);
