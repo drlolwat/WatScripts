@@ -1,6 +1,7 @@
 package org.lolwat.types.interfaces;
 
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.WatScript;
 import org.lolwat.types.gear.WatItem;
@@ -32,4 +33,5 @@ public interface WatTask {
     default void onExpGained(Skill skill, int amount, WatScript instance) { }
     default String getName() { return this.getClass().getSimpleName(); }
     default String getLocation() { return "Some location"; }
+    default void onGroundItemSpawn(GroundItem item) { }
 }
