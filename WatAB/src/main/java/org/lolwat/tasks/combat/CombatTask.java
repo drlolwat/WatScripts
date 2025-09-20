@@ -299,14 +299,12 @@ public class CombatTask implements WatTask {
                     if (needsBury) {
                         for (Item i : Inventory.all(x -> x.hasAction("Bury"))) {
                             if (i == null) continue;
-                            int bones = Inventory.count(x -> x.getName().toLowerCase().contains("bones"));
-
                             if (!i.interact("Bury")) {
                                 Logger.error("error burying bones during combat");
                                 continue;
                             }
 
-                            Sleep.sleepUntil(() -> Inventory.count(x -> x.getName().toLowerCase().contains("bones")) != bones, 1000);
+                            Sleep.sleepTicks(3);
                         }
                     }
                 }
