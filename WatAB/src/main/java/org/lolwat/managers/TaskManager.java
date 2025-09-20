@@ -260,6 +260,7 @@ public class TaskManager {
         skillsAvailable.add(Skill.DEFENCE);
         skillsAvailable.add(Skill.STRENGTH);
         skillsAvailable.add(Skill.RANGED);
+        skillsAvailable.add(Skill.MAGIC);
     }
 
     private List<WatTask> createAgilityTasks() {
