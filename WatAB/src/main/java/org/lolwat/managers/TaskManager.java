@@ -20,6 +20,7 @@ import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.combat.CombatTask;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
+import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
 import org.lolwat.tasks.tutorial.TutorialIslandTask;
 import org.lolwat.types.interfaces.WatTask;
@@ -42,7 +43,7 @@ public class TaskManager {
     private WatTask currentTask;
     @Getter
     private double taskSelectedAt;
-    @Getter
+    @Getter @Setter
     private int taskRunTime;
 
     public TaskManager() {
@@ -94,6 +95,8 @@ public class TaskManager {
                             }
                         }
                     }
+
+                    //TODO if magic level is 1 and magic is selected, pre-buy 2000 ish runes of each type
 
                     setCurrentTask(new CombatTask(skill), 0);
                     return;
@@ -185,6 +188,10 @@ public class TaskManager {
     }
 
     public void setCurrentTask(WatTask task) {
+        if(task instanceof WalkingTask) {
+            setTaskRunTime(getTaskRunTime() + 240);
+        }
+
         setCurrentTask(task, getTaskRunTime());
     }
 
