@@ -145,7 +145,7 @@ public class ConfigManager {
     }
 
     public void loadFromProfile(String p, boolean firstStart) {
-        String filePath = System.getProperty("user.dir") + "/WatAB/" + p + ".json";
+        String filePath = System.getProperty("scripts.path") + "/WatScripts/AccountBuilder/" + p + ".json";
         try {
             Gson gson = new Gson();
             File file = new File(filePath);
