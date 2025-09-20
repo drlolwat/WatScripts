@@ -1,12 +1,17 @@
 package org.lolwat.tasks.combat;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.magic.Normal;
+import org.dreambot.api.methods.magic.Spell;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.items.GroundItem;
@@ -73,6 +78,9 @@ public class CombatTask implements WatTask {
             slotsRequired.add(EquipmentSlot.ARROWS);
             slotsRequired.remove(EquipmentSlot.SHIELD);
         }
+        else if(type.equals(CombatType.MAGIC)) {
+            slotsRequired.remove(EquipmentSlot.SHIELD);
+        }
 
         for(EquipmentSlot s : slotsRequired) {
             boolean acceptable = true;
@@ -88,6 +96,36 @@ public class CombatTask implements WatTask {
                         if (!ItemManager.getInstance().isValidWearable(i.getName(), s, type)) {
                             Logger.log(i.getName() + " is not a valid item for this task: " + type);
                             acceptable = false;
+                        }
+                    }
+
+                    if(!acceptable) {
+                        if(Bank.isOpen()) {
+                            if(Inventory.isFull()) {
+                                if(!Bank.depositAllItems()) {
+                                    Logger.error("problem depositing all items to make room 1");
+                                    return;
+                                }
+                            }
+
+                            if(!Bank.close()) {
+                                Logger.error("problem closing bank to take off bad gear");
+                                return;
+                            }
+                        }
+
+                        if(!Tabs.isOpen(Tab.EQUIPMENT)) {
+                            if (!Tabs.open(Tab.EQUIPMENT)) {
+                                Logger.error("problem opening equipment tab to take off bad gear");
+                                return;
+                            }
+
+                            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.EQUIPMENT), 2000);
+                        }
+
+                        if(!Equipment.unequip(s)) {
+                            Logger.error("problem removing bad equipment");
+                            return;
                         }
                     }
                 }
@@ -201,19 +239,35 @@ public class CombatTask implements WatTask {
             }
         }
 
+        HashMap<WatItem, Integer> toObtain = new HashMap<>();
         if(!target.getMobLogic().inventoryLoadout().isEmpty()) {
-            HashMap<WatItem, Integer> toObtain = new HashMap<>();
             for(Map.Entry<WatItem, Integer> map : target.getMobLogic().inventoryLoadout().entrySet()) {
                 if(!Inventory.contains(x -> x != null && x.getName().equalsIgnoreCase(map.getKey().getName()) && !x.isNoted())) {
                     Logger.log("we need to get " + map.getKey().getName() + " x" + map.getValue());
                     toObtain.put(map.getKey(), map.getValue());
                 }
             }
+        }
 
-            if(!toObtain.isEmpty()) {
-                TaskManager.getInstance().setCurrentTask(new WithdrawMultipleItemsTask(toObtain, this));
-                return;
+        //TODO put this some place dynamic incase we need to force the usage of different spells
+        if(skill.equals(Skill.MAGIC)) {
+            Spell toCast = CombatUtils.getBestSpellForLevel();
+            if(!CombatUtils.canAffordCast(toCast)) {
+                Logger.log("we cant afford to cast " + toCast.toString() + ", fetching runes");
+                HashMap<WatItem, Integer> runes = CombatUtils.getRunesRequired((Normal) toCast, Calculations.random(100, 200));
+                for(Map.Entry<WatItem, Integer> i : runes.entrySet()) {
+                    if(!target.getMobLogic().inventoryLoadout().containsKey(i.getKey())) {
+                        target.getMobLogic().inventoryLoadout().put(i.getKey(), i.getValue());
+                    }
+                }
+
+                toObtain.putAll(runes);
             }
+        }
+
+        if(!toObtain.isEmpty()) {
+            TaskManager.getInstance().setCurrentTask(new WithdrawMultipleItemsTask(toObtain, this));
+            return;
         }
 
         //go to best location for mob
@@ -221,6 +275,15 @@ public class CombatTask implements WatTask {
             Logger.log("running to best location for " + target.getName());
             TaskManager.getInstance().setCurrentTask(new WalkingTask(target.getBestLocation(), this));
             return;
+        }
+
+        if(!Tabs.isOpen(Tab.INVENTORY)) {
+            if (!Tabs.open(Tab.INVENTORY)) {
+                Logger.error("problem opening inventory tab during combat task 1");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 2000);
         }
 
         //handle food, etc
