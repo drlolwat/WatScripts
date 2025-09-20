@@ -69,8 +69,9 @@ public class WithdrawMultipleItemsTask implements WatTask {
             }
 
             if (Bank.count(x -> x != null && x.getName().contains(itemName)) >= amount) {
-                Logger.log("adding" + amount + " of item to withdraw list: " + itemName);
+                Logger.log("adding " + amount + " of item to withdraw list: " + itemName);
                 toWithdraw.put(map.getKey(), amount);
+                toBuy.remove(map.getKey());
             } else {
                 Logger.log("not enough of item: " + itemName + " in bank");
                 int itemCost = (map.getKey().getPrice() * amount);
