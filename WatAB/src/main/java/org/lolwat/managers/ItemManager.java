@@ -210,6 +210,10 @@ public class ItemManager {
         addBasicItem("Camelot teleport");
         addBasicItem("Falador teleport");
 
+        // prayer stuff
+        addBasicItem("Bones");
+        addBasicItem("Big bones");
+
         //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
     }
 
