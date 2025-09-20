@@ -9,6 +9,7 @@ import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ItemManager;
@@ -31,6 +32,7 @@ public class CombatTask implements WatTask {
     private CombatType type;
     private long lastUpgradeCheck = 0;
     private static final long UPGRADE_CHECK_INTERVAL = 60 * 10; //TODO add to config
+    private final Queue<GroundItem> groundItemQueue = new LinkedList<>();
 
     @Override
     public String getName() {
@@ -192,7 +194,7 @@ public class CombatTask implements WatTask {
             boolean needsDeposit = false;
             WatItem wi = ItemManager.getInstance().getItem(i.getName());
             if (wi == null) needsDeposit = true;
-            if (!target.getMobLogic().inventoryLoadout().containsKey(wi)) needsDeposit = true;
+            //if (!target.getMobLogic().inventoryLoadout().containsKey(wi)) needsDeposit = true;
             if (needsDeposit) {
                 TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, Collections.emptyList()));
                 return;
@@ -224,8 +226,71 @@ public class CombatTask implements WatTask {
         //handle food, etc
         target.getMobLogic().runPriority(target, skill);
 
+        if(!Players.getLocal().isInCombat()) {
+            // pick some shit up if configured
+            this.processGroundItemQueue();
+
+            if (ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
+                if (Inventory.isFull()) {
+                    boolean needsBury = Inventory.count(x -> x.getName().toLowerCase().contains("bones")) > 0;
+                    if (needsBury) {
+                        for (Item i : Inventory.all(x -> x.hasAction("Bury"))) {
+                            if (i == null) continue;
+                            int bones = Inventory.count(x -> x.getName().toLowerCase().contains("bones"));
+
+                            if (!i.interact("Bury")) {
+                                Logger.error("error burying bones during combat");
+                                continue;
+                            }
+
+                            Sleep.sleepUntil(() -> Inventory.count(x -> x.getName().toLowerCase().contains("bones")) != bones, 1000);
+                        }
+                    }
+                }
+            }
+        }
+
         //run the targets logic
         target.getMobLogic().execute(target, skill);
+    }
+
+    private void processGroundItemQueue() {
+        if (groundItemQueue.isEmpty()) return;
+        GroundItem item = groundItemQueue.poll();
+
+        if (item == null) return;
+        if (!item.exists()) return;
+        if (!item.canReach()) return;
+
+        boolean attempted = false;
+
+        if(!Inventory.isFull()) {
+            if(!item.interact("Take")) {
+                Logger.log("failed to pickup bones");
+            }
+
+            Sleep.sleepUntil(() -> !item.exists(), 3000);
+            attempted = true;
+        }
+
+        if (item.exists() && attempted) {
+            Logger.log("didnt pick up item, readding to queue: " + item.getName());
+            groundItemQueue.add(item);
+        }
+    }
+
+    @Override
+    public void onGroundItemSpawn(GroundItem object) {
+        if(object == null)
+            return;
+
+        if(ConfigManager.getInstance().getConfigBoolean("pickup_bones")) {
+            if(!Inventory.isFull()) {
+                if(object.exists() && object.canReach() && object.getName().toLowerCase().contains("bones")) {
+                    groundItemQueue.add(object);
+                }
+            }
+        }
     }
 
     @Override
