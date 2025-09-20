@@ -13,21 +13,24 @@ import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.combat.CombatType;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.exchange.BuySingleItemTask;
+import org.lolwat.tasks.banking.WithdrawMultipleItemsTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CombatGearTask implements WatTask {
     private final WatTask parent;
     private final List<EquipmentSlot> slots;
     private final CombatType type;
+    private final HashMap<WatItem, Integer> toBuy;
 
     public CombatGearTask(WatTask parent, CombatType type, List<EquipmentSlot> slots) {
         this.parent = parent;
         this.slots = slots;
         this.type = type;
+        this.toBuy = new HashMap<>();
     }
 
     @Override
@@ -108,13 +111,19 @@ public class CombatGearTask implements WatTask {
                 if(!Equipment.contains(bestItem.getName()) && !Inventory.contains(bestItem.getName())) {
                     int quantity = s.equals(EquipmentSlot.ARROWS) ? Calculations.random(300, 600) : 1;
                     Logger.log("looks like we need to buy " + bestItem.getName() + " x" + quantity);
-                    TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(bestItem.getSearchFor(), quantity, bestItem.getPrice(), parent));
-                    return;
+                    toBuy.put(bestItem, quantity);
+                    //TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(bestItem.getSearchFor(), quantity, bestItem.getPrice(), parent));
                 }
             }
         }
 
         removeOtherItems();
+
+        if(!toBuy.isEmpty()) {
+            TaskManager.getInstance().setCurrentTask(new WithdrawMultipleItemsTask(toBuy, this));
+            return;
+        }
+
         Bank.resetCache();
         TaskManager.getInstance().setCurrentTask(parent);
     }
