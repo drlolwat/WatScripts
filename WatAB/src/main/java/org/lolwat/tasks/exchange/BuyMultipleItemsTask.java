@@ -1,6 +1,7 @@
 package org.lolwat.tasks.exchange;
 
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.grandexchange.GrandExchange;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.managers.TaskManager;
@@ -21,6 +22,11 @@ public class BuyMultipleItemsTask implements WatTask {
         this.items = items;
         this.parent = parent;
         this.processed = new ArrayList<>();
+    }
+
+    @Override
+    public String getLocation() {
+        return "Grand Exchange";
     }
 
     @Override
@@ -48,6 +54,10 @@ public class BuyMultipleItemsTask implements WatTask {
             }
 
             Logger.log("processed all exchange items");
+            if(GrandExchange.isOpen() && !GrandExchange.close()) {
+                Logger.error("problem closing Grand Exchange window");
+            }
+
             TaskManager.getInstance().setCurrentTask(parent);
         }
     }
