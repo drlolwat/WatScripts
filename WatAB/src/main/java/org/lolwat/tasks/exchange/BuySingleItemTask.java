@@ -27,6 +27,11 @@ public class BuySingleItemTask implements WatTask {
     }
 
     @Override
+    public String getLocation() {
+        return "Grand Exchange";
+    }
+
+    @Override
     public void execute() {
         if(!BankLocation.GRAND_EXCHANGE.getArea(15).contains(Players.getLocal())) {
             TaskManager.getInstance().setCurrentTask(new WalkingTask(BankLocation.GRAND_EXCHANGE.getArea(15), this));
