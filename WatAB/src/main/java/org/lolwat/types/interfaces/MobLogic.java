@@ -7,6 +7,7 @@ import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.NPCs;
 import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.magic.Magic;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.tabs.Tab;
 import org.dreambot.api.methods.tabs.Tabs;
@@ -14,6 +15,7 @@ import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
+import org.lolwat.misc.utils.CombatUtils;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.mobs.Mob;
@@ -80,7 +82,6 @@ public interface MobLogic {
 
         CombatStyle needed;
 
-        // TODO MAGIC FIRST ELSE STR
         if(skill.equals(Skill.STRENGTH))
             needed = CombatStyle.STRENGTH;
         else if(skill.equals(Skill.DEFENCE))
@@ -92,24 +93,41 @@ public interface MobLogic {
         else
             needed = current;
 
-        if(!current.equals(needed) || !Combat.isAutoRetaliateOn()) {
-            if(!Tabs.isOpen(Tab.COMBAT) && !Tabs.open(Tab.COMBAT)) {
-                Logger.error("error opening combat tab [default interface method]");
-                return;
+        if(!skill.equals(Skill.MAGIC)) {
+            if (!current.equals(needed) || !Combat.isAutoRetaliateOn()) {
+                if (!Tabs.isOpen(Tab.COMBAT) && !Tabs.open(Tab.COMBAT)) {
+                    Logger.error("error opening combat tab [default interface method]");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.COMBAT), 5000);
+
+                if (!Combat.setCombatStyle(needed)) {
+                    Logger.error("error setting combat style to " + needed + " [default interface method]");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> !Combat.getCombatStyle().equals(current), 5000);
+
+                if (!Combat.toggleAutoRetaliate(true)) {
+                    Logger.error("error toggling auto retaliate on [default interface method]");
+                    return;
+                }
             }
+        } else {
+            if (!Magic.isAutocasting()) {
+                if (!Tabs.isOpen(Tab.COMBAT)) {
+                    if(!Tabs.open(Tab.COMBAT)) {
+                        Logger.error("problem opening combat tab");
+                        return;
+                    }
 
-            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.COMBAT), 5000);
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.COMBAT), 2000);
+                }
 
-            if(!Combat.setCombatStyle(needed)) {
-                Logger.error("error setting combat style to " + needed + " [default interface method]");
-                return;
-            }
-
-            Sleep.sleepUntil(() -> !Combat.getCombatStyle().equals(current), 5000);
-
-            if(!Combat.toggleAutoRetaliate(true)) {
-                Logger.error("error toggling auto retaliate on [default interface method]");
-                return;
+                if (!Magic.setAutocastSpell(CombatUtils.getBestSpellForLevel())) {
+                    Logger.error("error setting autocast");
+                }
             }
         }
 
