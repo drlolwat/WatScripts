@@ -14,6 +14,8 @@ import org.dreambot.api.script.ScriptManifest;
 import org.dreambot.api.script.event.impl.ExperienceEvent;
 import org.dreambot.api.script.listener.ChatListener;
 import org.dreambot.api.script.listener.ExperienceListener;
+import org.dreambot.api.script.listener.SpawnListener;
+import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.widgets.message.Message;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ScriptManager;
@@ -36,7 +38,7 @@ import java.util.HashMap;
         version = 1.00,
         category = Category.MISC,
         image = "https://api.botbuddy.net/WatScripts.png")
-public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, MouseListener {
+public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, MouseListener, SpawnListener {
     @Getter
     private static WatScript instance;
     private static BufferedImage image;
@@ -226,6 +228,13 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
             }
 
             TaskManager.getInstance().getCurrentTask().onMessage(m);
+        }
+    }
+
+    @Override
+    public void onGroundItemSpawn(GroundItem object) {
+        if (TaskManager.getInstance().getCurrentTask() != null) {
+            TaskManager.getInstance().getCurrentTask().onGroundItemSpawn(object);
         }
     }
 
