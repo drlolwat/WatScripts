@@ -27,6 +27,11 @@ public class WaitForOfferTask implements WatTask {
     }
 
     @Override
+    public String getLocation() {
+        return "Grand Exchange";
+    }
+
+    @Override
     public String getName() {
         return "Waiting for offer";
     }
@@ -116,7 +121,7 @@ public class WaitForOfferTask implements WatTask {
 
         int amountHave = Inventory.count(x -> x != null && x.getName().equals(target));
         if (amountHave > 0) {
-            if (!GrandExchange.close()) {
+            if (!(post instanceof BuyMultipleItemsTask) && !GrandExchange.close()) {
                 Logger.error("problem closing GE1");
             }
 
