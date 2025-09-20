@@ -58,6 +58,7 @@ public interface MobLogic {
                 put(EquipmentSlot.CAPE, true);
                 put(EquipmentSlot.HANDS, true);
                 put(EquipmentSlot.FEET, true);
+                put(EquipmentSlot.WEAPON, false);
             }
         };
     }
