@@ -93,6 +93,16 @@ public class WalkingTask implements WatTask {
     }
 
     @Override
+    public String getLocation() {
+        return postTask.getLocation();
+    }
+
+    @Override
+    public String getName() {
+        return "Walking";
+    }
+
+    @Override
     public void execute() {
         if (TutUtils.needsOpenTab()) {
             TutUtils.handleTab();
