@@ -39,7 +39,6 @@ public class ItemManager {
         addSkilledWeapon("Steel scimitar", 5, 1, 1, -1, -1, CombatType.MELEE, 10);
         addWeapon("Shortbow", CombatType.RANGED, 10);
         addWeapon("Staff of air", CombatType.MAGIC, 10);
-        addWeapon("Staff of fire", CombatType.MAGIC, 10);
 
         addSkilledWeapon("Oak shortbow", 1, 1, 1, -1, 5, CombatType.RANGED, 10);
         addSkilledWeapon("Willow shortbow", 1, 1, 1, -1, 20, CombatType.RANGED, 10);
@@ -53,6 +52,17 @@ public class ItemManager {
         addWearable("Leather chaps", EquipmentSlot.LEGS, CombatType.RANGED, 10);
         addWearable("Leather vambraces", EquipmentSlot.HANDS, CombatType.RANGED, 10);
         addWearable("Spiky vambraces", EquipmentSlot.HANDS, CombatType.RANGED, 10);
+
+        addWearable("Zamorak monk top", EquipmentSlot.CHEST, CombatType.MAGIC, 10);
+        addWearable("Zamorak monk bottom", EquipmentSlot.LEGS, CombatType.MAGIC, 10);
+        addWearable("Blue wizard hat", EquipmentSlot.HAT, CombatType.MAGIC, 10);
+        addWearable("Leather gloves", EquipmentSlot.HANDS, CombatType.MAGIC, 10);
+
+        addSkilledWearable("Mystic hat", 1, 1, 20, 40, -1, CombatType.MAGIC, EquipmentSlot.HAT, 10);
+        addSkilledWearable("Mystic robe top", 1, 1, 20, 40, -1, CombatType.MAGIC, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Mystic robe bottom", 1, 1, 20, 40, -1, CombatType.MAGIC, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Mystic gloves", 1, 1, 20, 40, -1, CombatType.MAGIC, EquipmentSlot.HANDS, 10);
+        addSkilledWearable("Mystic boots", 1, 1, 20, 40, -1, CombatType.MAGIC, EquipmentSlot.FEET, 10);
 
         addSkilledWearable("Hardleather body", 1, 1, 10, -1, 1, CombatType.RANGED, EquipmentSlot.CHEST, 10);
         addSkilledWearable("Coif", 1, 1, 1, -1, 20, CombatType.RANGED, EquipmentSlot.HAT, 10);
@@ -213,6 +223,15 @@ public class ItemManager {
         // prayer stuff
         addBasicItem("Bones");
         addBasicItem("Big bones");
+
+        // runes
+        addBasicItem("Mind rune");
+        addBasicItem("Earth rune");
+        addBasicItem("Water rune");
+        addBasicItem("Fire rune");
+        addBasicItem("Chaos rune");
+        addBasicItem("Death rune");
+        addBasicItem("Nature rune");
 
         //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
     }
