@@ -1,6 +1,8 @@
 package org.lolwat.tasks.misc;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -11,6 +13,8 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Map;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.tabs.Tab;
+import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.widget.Widget;
 import org.dreambot.api.methods.widget.Widgets;
@@ -22,11 +26,13 @@ import org.dreambot.api.wrappers.items.Item;
 import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutUtils;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
+import org.lolwat.types.teleports.Teleport;
 
 import java.time.Instant;
 import java.util.*;
@@ -149,9 +155,8 @@ public class WalkingTask implements WatTask {
             }
         }
 
-        /*if (WatUtils.isMember() && postTask != null) {
+        if (WatUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
-            double exchangeDistance = Players.getLocal().walkingDistance(BankLocation.GRAND_EXCHANGE.getCenter());
 
             if (targetDistance >= 1000 && !hasTeleported) {
                 Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
@@ -172,7 +177,7 @@ public class WalkingTask implements WatTask {
                                 Sleep.sleepUntil(() -> Tabs.isOpen(Tab.EQUIPMENT), Calculations.random(200, 300));
                             }
 
-                            if (!Equipment.interact(Equipment.getSlotForItem(f -> f.getName().contains(teleportItem)),
+                            if (!Equipment.interact(Objects.requireNonNull(Equipment.getSlotForItem(f -> f.getName().contains(teleportItem))),
                                     teleport.getOption())) {
 
                                 Logger.log("Traversal: failed to use equipped teleport item");
@@ -183,23 +188,6 @@ public class WalkingTask implements WatTask {
                                     && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
                             hasTeleported = true;
                             return;
-                        } else {
-                            if (targetDistance > exchangeDistance
-                                    && (!(postTask instanceof BankingTask) && !(postTask instanceof GrandExchangeTask))) {
-
-                                TaskManager.getInstance().setCurrentTask(new BankingTask(new HashMap<WatItem, Integer>() {
-                                    {
-                                        put(ItemManager.getInstance().getItem(teleportItem), Calculations.random(2, 6));
-                                    }
-                                }, new HashMap<>(), 1, this));
-
-                                Logger.log("Traversal: missing teleport item " + teleportItem);
-                                return;
-                            } else {
-                                Logger.log("Traversal: missing teleport item " + teleportItem + ", too far from G.E, walking");
-                                hasTeleported = true;
-                                return;
-                            }
                         }
                     } else {
                         if (Bank.isOpen()) {
@@ -243,7 +231,7 @@ public class WalkingTask implements WatTask {
                     Logger.log("Traversal: no teleport item found for destination, walking");
                 }
             }
-        }*/
+        }
 
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
 
