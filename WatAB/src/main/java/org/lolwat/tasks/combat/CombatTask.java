@@ -16,7 +16,7 @@ import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.combat.CombatType;
 import org.lolwat.misc.utils.CombatUtils;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.banking.WithdrawSingleItemTask;
+import org.lolwat.tasks.banking.WithdrawMultipleItemsTask;
 import org.lolwat.tasks.combat.gearing.CombatGearTask;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
@@ -200,12 +200,17 @@ public class CombatTask implements WatTask {
         }
 
         if(!target.getMobLogic().inventoryLoadout().isEmpty()) {
+            HashMap<WatItem, Integer> toObtain = new HashMap<>();
             for(Map.Entry<WatItem, Integer> map : target.getMobLogic().inventoryLoadout().entrySet()) {
                 if(!Inventory.contains(x -> x != null && x.getName().equalsIgnoreCase(map.getKey().getName()) && !x.isNoted())) {
                     Logger.log("we need to get " + map.getKey().getName() + " x" + map.getValue());
-                    TaskManager.getInstance().setCurrentTask(new WithdrawSingleItemTask(map.getKey().getName(), map.getValue(), this));
-                    return;
+                    toObtain.put(map.getKey(), map.getValue());
                 }
+            }
+
+            if(!toObtain.isEmpty()) {
+                TaskManager.getInstance().setCurrentTask(new WithdrawMultipleItemsTask(toObtain, this));
+                return;
             }
         }
 
