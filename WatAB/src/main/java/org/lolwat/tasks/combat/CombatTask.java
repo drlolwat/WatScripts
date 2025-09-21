@@ -19,10 +19,11 @@ import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.types.combat.CombatType;
 import org.lolwat.misc.utils.CombatUtils;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.banking.WithdrawMultipleItemsTask;
+import org.lolwat.tasks.banking.WithdrawItemsTask;
 import org.lolwat.tasks.combat.gearing.CombatGearTask;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
@@ -240,16 +241,25 @@ public class CombatTask implements WatTask {
         }
 
         HashMap<WatItem, Integer> toObtain = new HashMap<>();
-        if(!target.getMobLogic().inventoryLoadout().isEmpty()) {
-            for(Map.Entry<WatItem, Integer> map : target.getMobLogic().inventoryLoadout().entrySet()) {
-                if(!Inventory.contains(x -> x != null && x.getName().equalsIgnoreCase(map.getKey().getName()) && !x.isNoted())) {
+        if (!target.getMobLogic().inventoryLoadout().isEmpty()) {
+            for (Map.Entry<WatItem, Integer> map : target.getMobLogic().inventoryLoadout().entrySet()) {
+                boolean haveItem = Inventory.contains(x -> x != null
+                        && x.getName().equalsIgnoreCase(map.getKey().getName())
+                        && !x.isNoted());
+
+                if (!haveItem) {
+                    if (TeleportManager.getInstance().isTeleportItem(map.getKey().getName())
+                            && (target.getBestLocation().contains(Players.getLocal()) ||
+                            target.getBestLocation().distance(Players.getLocal().getTile()) <= 100)) {
+                        continue;
+                    }
+
                     Logger.log("we need to get " + map.getKey().getName() + " x" + map.getValue());
                     toObtain.put(map.getKey(), map.getValue());
                 }
             }
         }
 
-        //TODO put this some place dynamic incase we need to force the usage of different spells
         if(skill.equals(Skill.MAGIC)) {
             Spell toCast = CombatUtils.getBestSpellForLevel();
             if(!CombatUtils.canAffordCast(toCast)) {
@@ -266,7 +276,7 @@ public class CombatTask implements WatTask {
         }
 
         if(!toObtain.isEmpty()) {
-            TaskManager.getInstance().setCurrentTask(new WithdrawMultipleItemsTask(toObtain, this));
+            TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(toObtain, this));
             return;
         }
 
