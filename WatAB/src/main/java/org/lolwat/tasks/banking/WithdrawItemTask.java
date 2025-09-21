@@ -11,12 +11,12 @@ import org.lolwat.tasks.exchange.BuySingleItemTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
-public class WithdrawSingleItemTask implements WatTask {
+public class WithdrawItemTask implements WatTask {
     private final WatTask parent;
     private final String itemName;
     private final int amount;
 
-    public WithdrawSingleItemTask(String itemName, int amount, WatTask parent) {
+    public WithdrawItemTask(String itemName, int amount, WatTask parent) {
         this.itemName = itemName;
         this.amount = amount;
         this.parent = parent;
@@ -35,6 +35,7 @@ public class WithdrawSingleItemTask implements WatTask {
             return;
         }
 
+        WatUtils.removeOtherItems(parent);
         Bank.resetCache();
 
         int coins = Inventory.count("Coins") + Bank.count("Coins");
