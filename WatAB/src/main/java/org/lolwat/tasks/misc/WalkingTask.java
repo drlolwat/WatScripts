@@ -221,6 +221,7 @@ public class WalkingTask implements WatTask {
                             hasTeleported = true;
                             return;
                         }
+                        hasTeleported = true;
                     } else {
                         if (Bank.isOpen()) {
                             Bank.close();
