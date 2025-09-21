@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WithdrawMultipleItemsTask implements WatTask {
+public class WithdrawItemsTask implements WatTask {
     private final WatTask parent;
     private final HashMap<WatItem, Integer> toObtain;
 
@@ -25,7 +25,7 @@ public class WithdrawMultipleItemsTask implements WatTask {
     private int coinsSpending;
     private List<WatItem> hasObtained;
 
-    public WithdrawMultipleItemsTask(HashMap<WatItem, Integer> toObtain, WatTask parent) {
+    public WithdrawItemsTask(HashMap<WatItem, Integer> toObtain, WatTask parent) {
         this.toObtain = toObtain;
         this.parent = parent;
 
@@ -43,6 +43,7 @@ public class WithdrawMultipleItemsTask implements WatTask {
             return;
         }
 
+        WatUtils.removeOtherItems(parent);
         Bank.resetCache();
 
         if(coinsAvailable == -1) {
