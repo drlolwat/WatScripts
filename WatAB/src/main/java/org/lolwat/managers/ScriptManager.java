@@ -14,6 +14,7 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
+import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
@@ -32,6 +33,7 @@ public class ScriptManager {
     private static int uniqueSleep;
     private static final MouseAlgorithm reg = new SmartMouseRegular();
     private static final MouseAlgorithm combat = new SmartMouseCombat();
+    private static ClientManager manager;
 
     public static void start(String profileName) {
         Logger.log("WatScripts.com");
@@ -39,6 +41,20 @@ public class ScriptManager {
                 org.dreambot.api.script.ScriptManager.getScriptManager().getCurrentScript().getManifest().name() +
                 ", profile: " + profileName
         );
+
+        if(Client.getForumUser() == null || Client.getForumUser().getUsername().isEmpty()) {
+            org.dreambot.api.script.ScriptManager.getScriptManager().stop();
+            return;
+        }
+
+        manager = new ClientManager(
+                "https://watscripts.com/auth",
+                Client.getForumUser().getUsername(),
+                AccountManager.getAccountUsername(),
+                3
+        );
+
+        manager.start();
 
         if(MobManager.getInstance() == null) {
             MobManager.setInstance(new MobManager());
