@@ -97,7 +97,6 @@ public class TaskManager {
                     }
 
                     //TODO if magic level is 1 and magic is selected, pre-buy 2000 ish runes of each type
-
                     setCurrentTask(new CombatTask(skill), 0);
                     return;
                 } else {
