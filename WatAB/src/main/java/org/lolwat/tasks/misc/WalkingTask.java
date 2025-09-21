@@ -168,13 +168,35 @@ public class WalkingTask implements WatTask {
         if (WatUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
 
-            if (targetDistance >= 1000 && !hasTeleported) {
+            if (targetDistance >= 500 && !hasTeleported) {
                 Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
                 if (teleport != null) {
                     Logger.log("Traversal: selected teleport " + teleport.getName() + " for destination "
                             + area.getRandomTile() + " for task " + postTask.getName());
 
                     String teleportItem = teleport.getSearchFor();
+
+                    if(Bank.isOpen()
+                            && !Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))
+                            && !Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+
+                        if(Bank.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                            if(!Bank.withdraw(teleportItem, 1)) {
+                                Logger.error("problem withdrawing teleport item during walking");
+                                return;
+                            }
+
+                            Sleep.sleepUntil(() -> Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)")), 5000);
+                        }
+
+                        if(!Bank.close()) {
+                            Logger.error("problem closing bank during walking");
+                            return;
+                        }
+
+                        Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+                    }
+
                     if (!Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
                         if (Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
                             if (Bank.isOpen()) {
@@ -233,6 +255,7 @@ public class WalkingTask implements WatTask {
 
                         Tile currentTile = Players.getLocal().getTile();
                         Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
+                        Sleep.sleepTicks(2);
                         hasTeleported = true;
                         return;
                     }
