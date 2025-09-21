@@ -151,9 +151,9 @@ public class MobManager {
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 20);
-                        put(Skill.DEFENCE, 20);
-                        put(Skill.STRENGTH, 20);
+                        put(Skill.ATTACK, 10);
+                        put(Skill.DEFENCE, 10);
+                        put(Skill.STRENGTH, 10);
                         put(Skill.RANGED, 20);
                         put(Skill.MAGIC, 20);
                     }
