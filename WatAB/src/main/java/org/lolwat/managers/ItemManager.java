@@ -15,6 +15,7 @@ import org.dreambot.api.methods.skills.Skills;
 import org.dreambot.api.utilities.Logger;
 import org.lolwat.misc.types.combat.CombatType;
 import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.gear.WatTool;
 import org.lolwat.types.gear.WatWeapon;
 import org.lolwat.types.gear.WatWearable;
 
@@ -247,6 +248,10 @@ public class ItemManager {
         return null;
     }
 
+    private void addTool(String name, Skill skillUsed, HashMap<Skill, Integer> skillsNeeded, HashMap<Skill, Integer> skillsToEquip) {
+        items.add(new WatTool(name, skillUsed, skillsNeeded, skillsToEquip));
+    }
+
     private void addBasicItem(String name) {
         items.add(new WatItem(name));
     }
@@ -337,6 +342,29 @@ public class ItemManager {
             // If not tradeable and not owned, skip
         }
         return null;
+    }
+
+    public WatTool getBestTool(Skill sk) {
+        int availableMoney = Inventory.count("Coins");
+        if (Bank.isOpen() || Bank.isCached()) availableMoney += Bank.count("Coins");
+
+        List<WatTool> tools = new ArrayList<>();
+        for (WatItem item : items) {
+            if (item instanceof WatTool) tools.add((WatTool) item);
+        }
+
+        return getBestItem(
+                tools,
+                tool -> tool.getSkillUsed() == sk
+                        && meetsSkillAndQuestReqs(tool.getLevelRequirements(), tool.getQuestRequirements()),
+                tool -> {
+                    int reqSum = tool.getLevelRequirements() == null ? 0 : tool.getLevelRequirements().values().stream().mapToInt(Integer::intValue).sum();
+                    return reqSum * tool.getWeight();
+                },
+                weapon -> (Bank.isOpen() && Bank.contains(weapon.getName())) || Inventory.contains(weapon.getName()) || Equipment.contains(weapon.getName()),
+                WatItem::getPrice,
+                availableMoney
+        );
     }
 
     public WatWeapon getBestWeapon(CombatType type) {
