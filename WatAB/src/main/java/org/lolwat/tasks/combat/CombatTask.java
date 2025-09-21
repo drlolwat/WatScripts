@@ -39,6 +39,7 @@ public class CombatTask implements WatTask {
     private long lastUpgradeCheck = 0;
     private static final long UPGRADE_CHECK_INTERVAL = 60 * 10; //TODO add to config
     private final Queue<GroundItem> groundItemQueue = new LinkedList<>();
+    private final int spellCasts;
 
     @Override
     public String getName() {
@@ -61,6 +62,7 @@ public class CombatTask implements WatTask {
             type = CombatType.MAGIC;
 
         this.lastUpgradeCheck = System.currentTimeMillis();
+        this.spellCasts = Calculations.random(100, 250);
     }
 
     @Override
@@ -264,7 +266,7 @@ public class CombatTask implements WatTask {
             Spell toCast = CombatUtils.getBestSpellForLevel();
             if(!CombatUtils.canAffordCast(toCast)) {
                 Logger.log("we cant afford to cast " + toCast.toString() + ", fetching runes");
-                HashMap<WatItem, Integer> runes = CombatUtils.getRunesRequired((Normal) toCast, Calculations.random(100, 200));
+                HashMap<WatItem, Integer> runes = CombatUtils.getRunesRequired((Normal) toCast, spellCasts);
                 for(Map.Entry<WatItem, Integer> i : runes.entrySet()) {
                     if(!target.getMobLogic().inventoryLoadout().containsKey(i.getKey())) {
                         target.getMobLogic().inventoryLoadout().put(i.getKey(), i.getValue());
