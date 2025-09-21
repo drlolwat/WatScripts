@@ -56,7 +56,6 @@ public class BuySingleItemTask implements WatTask {
 
         if(!GrandExchange.isOpen()) {
             if(!GrandExchange.open()) {
-                Logger.error("problem opening grand exchange during BuySingleItemTask");
                 return;
             }
 
