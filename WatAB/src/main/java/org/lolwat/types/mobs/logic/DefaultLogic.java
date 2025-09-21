@@ -11,7 +11,7 @@ public class DefaultLogic implements MobLogic {
     public HashMap<WatItem, Integer> inventoryLoadout() {
         return new HashMap<WatItem, Integer>() {
             {
-                put(ItemManager.getInstance().getItem("Tuna"), 20);
+                put(ItemManager.getInstance().getItem("Tuna"), 16);
             }
         };
     }
