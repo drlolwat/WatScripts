@@ -78,6 +78,10 @@ public class WatItem {
     }
 
     public void raisePrice() {
-        this.price = (int) (this.price * 1.1);
+        if(this.price > 10) {
+            this.price = (int) (this.price * 1.1);
+        } else {
+            this.price += 1;
+        }
     }
 }
