@@ -26,7 +26,7 @@ public class SandCrabLogic implements MobLogic {
     public HashMap<WatItem, Integer> inventoryLoadout() {
         return new HashMap<WatItem, Integer>() {
             {
-                put(ItemManager.getInstance().getItem("Lobster"), 20);
+                put(ItemManager.getInstance().getItem("Lobster"), 16);
                 put(ItemManager.getInstance().getItem("Camelot teleport"), 2);
                 put(ItemManager.getInstance().getItem("Varrock teleport"), 2);
             }
