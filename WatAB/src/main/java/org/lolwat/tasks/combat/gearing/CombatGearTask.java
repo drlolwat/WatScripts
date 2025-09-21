@@ -8,12 +8,11 @@ import org.dreambot.api.methods.container.impl.equipment.EquipmentSlot;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
-import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.types.combat.CombatType;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.banking.WithdrawMultipleItemsTask;
+import org.lolwat.tasks.banking.WithdrawItemsTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 
@@ -40,7 +39,7 @@ public class CombatGearTask implements WatTask {
             return;
         }
 
-        removeOtherItems();
+        WatUtils.removeOtherItems(parent);
         Bank.resetCache();
 
         for(EquipmentSlot s : slots) {
@@ -117,37 +116,15 @@ public class CombatGearTask implements WatTask {
             }
         }
 
-        removeOtherItems();
+        WatUtils.removeOtherItems(parent);
 
         if(!toBuy.isEmpty()) {
-            TaskManager.getInstance().setCurrentTask(new WithdrawMultipleItemsTask(toBuy, this));
+            TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(toBuy, this));
             return;
         }
 
         Bank.resetCache();
         TaskManager.getInstance().setCurrentTask(parent);
-    }
-
-    private void removeOtherItems() {
-        for(Item i : Inventory.all()) {
-            if(i == null) continue;
-            WatItem wi = ItemManager.getInstance().getItem(i.getName());
-            if(wi == null) {
-                if(!Bank.depositAll(i)) {
-                    Logger.error("no wi-error depositing " + i.getName());
-                    return;
-                }
-                continue;
-            }
-
-            if(!parent.loadout().containsKey(wi) && !parent.inventory().containsKey(wi) && !parent.inventoryTolerated().contains(i.getName())) {
-                Logger.log("removing " + i.getName() + " from inventory");
-                if(!Bank.depositAll(i)) {
-                    Logger.error("error depositing " + i.getName());
-                    return;
-                }
-            }
-        }
     }
 
     @Override
