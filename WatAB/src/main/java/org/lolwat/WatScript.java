@@ -144,7 +144,7 @@ public class WatScript extends AbstractScript implements ExperienceListener, Cha
         g2d.drawString(String.valueOf(Quests.getQuestPoints()), 335, 361); // qp
         g2d.drawString(String.valueOf(Skills.getTotalLevel()), 235, 361); // total level
         g2d.drawString((TaskManager.getInstance().getCurrentTask() != null && TaskManager.getInstance().getCurrentTask() instanceof BreakingTask) ? "Break" : String.valueOf(Combat.getCombatLevel()), 143, 361); // combat level
-        g2d.drawString(Players.getLocal().getName(), 35, 361);
+        g2d.drawString(Players.getLocal().getName().isEmpty() ? "lolwat" : Players.getLocal().getName(), 35, 361);
 
         g2d.drawString(taskTime, 34, 382);
         g2d.drawString(TaskManager.getInstance().getCurrentTask() != null ? TaskManager.getInstance().getCurrentTask().getName() : "Task selection", 233, 382);
