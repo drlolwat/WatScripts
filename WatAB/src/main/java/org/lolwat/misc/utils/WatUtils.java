@@ -34,6 +34,7 @@ import org.dreambot.api.wrappers.interactive.Player;
 import org.dreambot.api.wrappers.items.GroundItem;
 import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
+import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
@@ -567,5 +568,27 @@ public class WatUtils {
         }
 
         return true;
+    }
+
+    public static void removeOtherItems(WatTask t) {
+        for(Item i : Inventory.all()) {
+            if(i == null) continue;
+            WatItem wi = ItemManager.getInstance().getItem(i.getName());
+            if(wi == null) {
+                if(!Bank.depositAll(i)) {
+                    Logger.error("no wi-error depositing " + i.getName());
+                    return;
+                }
+                continue;
+            }
+
+            if(!t.loadout().containsKey(wi) && !t.inventory().containsKey(wi) && !t.inventoryTolerated().contains(i.getName())) {
+                Logger.log("removing " + i.getName() + " from inventory");
+                if(!Bank.depositAll(i)) {
+                    Logger.error("error depositing " + i.getName());
+                    return;
+                }
+            }
+        }
     }
 }
