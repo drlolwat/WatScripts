@@ -1,10 +1,13 @@
 package org.lolwat.tasks.banking;
 
+import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
 import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.exchange.BuyMultipleItemsTask;
 import org.lolwat.types.gear.WatItem;
@@ -75,6 +78,11 @@ public class WithdrawItemsTask implements WatTask {
                 toBuy.remove(map.getKey());
             } else {
                 Logger.log("not enough of item: " + itemName + " in bank");
+                if(TeleportManager.getInstance().isTeleportItem(itemName)) {
+                    amount = Calculations.random(10, 20);
+                    Logger.log("out of tele item, buying between 10-20");
+                }
+
                 int itemCost = (map.getKey().getPrice() * amount);
                 if (coinsAvailable >= itemCost) {
                     if(!toBuy.containsKey(map.getKey())) {
@@ -109,6 +117,7 @@ public class WithdrawItemsTask implements WatTask {
                     continue;
                 }
 
+                Sleep.sleepUntil(() -> Inventory.count(x -> x.getName().contains(i.getKey().getName())) >= i.getValue(), 5000);
                 hasObtained.add(i.getKey());
             }
         }
