@@ -16,6 +16,7 @@ import org.lolwat.types.interfaces.MobLogic;
 import org.lolwat.types.mobs.Mob;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class CrabLogic implements MobLogic {
     @Override
     public void execute(Mob mob, Skill skill) {
         if(!Players.getLocal().isInCombat() && !Players.getLocal().isHealthBarVisible()) {
+            Collections.shuffle(rockIds);
             for(int i : rockIds) {
                 NPC rock = NPCs.closest(x -> x != null && x.exists() && x.getID() == i);
                 if(rock != null) {
