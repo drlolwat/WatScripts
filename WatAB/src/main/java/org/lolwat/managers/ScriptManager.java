@@ -2,6 +2,7 @@ package org.lolwat.managers;
 
 import lombok.Getter;
 import org.dreambot.api.Client;
+import org.dreambot.api.ClientSettings;
 import org.dreambot.api.input.Mouse;
 import org.dreambot.api.input.mouse.algorithm.MouseAlgorithm;
 import org.dreambot.api.methods.Calculations;
@@ -14,10 +15,13 @@ import org.dreambot.api.methods.tabs.Tabs;
 import org.dreambot.api.methods.walking.impl.Walking;
 import org.dreambot.api.methods.walking.pathfinding.impl.web.WebFinder;
 import org.dreambot.api.methods.walking.web.node.impl.teleports.MagicTeleport;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
 import org.dreambot.api.utilities.AccountManager;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.widgets.Menu;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
 import org.lolwat.WatScript;
 import org.lolwat.misc.mouse.SmartMouseCombat;
 import org.lolwat.misc.mouse.SmartMouseRegular;
@@ -75,6 +79,10 @@ public class ScriptManager {
             ConfigManager.getInstance().cacheAssets();
         }
 
+        if(ZoneManager.getInstance() == null) {
+            ZoneManager.setInstance(new ZoneManager());
+        }
+
         if(TeleportManager.getInstance() == null) {
             TeleportManager.setInstance(new TeleportManager());
         }
@@ -129,6 +137,44 @@ public class ScriptManager {
 
         if (ConfigManager.getInstance().isFirstStart()) {
             ConfigManager.getInstance().setFirstStart(false);
+        }
+
+        if(!ClientSettings.isShiftClickDroppingEnabled()) {
+            if(!Tabs.isOpen(Tab.OPTIONS)) {
+                Tabs.open(Tab.OPTIONS);
+                Sleep.sleepUntil(() -> Tabs.isOpen(Tab.OPTIONS), Calculations.random(3000, 6000));
+            }
+
+            if(!ClientSettings.isOpen()) {
+                Widget settings = Widgets.getWidget(116);
+                if(settings != null) {
+                    WidgetChild settingsButton = settings.getChild(32);
+                    if(settingsButton != null) {
+                        if(settingsButton.interact()) {
+                            Sleep.sleepUntil(ClientSettings::isOpen, Calculations.random(3000, 6000));
+                        } else {
+                            Logger.error("Failed to interact with settings button");
+                            return 400;
+                        }
+                    } else {
+                        Logger.error("Failed to find settings button");
+                        return 400;
+                    }
+                }
+            }
+
+            if(!ClientSettings.isShiftClickDroppingEnabled() && !ClientSettings.toggleShiftClickDropping(true)) {
+                Logger.error("error toggling shift click");
+                return 400;
+            }
+
+            if(!ClientSettings.closeSettingsInterface()) {
+                Logger.error("failed to close settings interface");
+            }
+
+            if(!Tabs.open(Tab.INVENTORY)) {
+                Logger.error("problem opening inventory");
+            }
         }
 
         if (TaskManager.getInstance().getCurrentTask() != null) {
