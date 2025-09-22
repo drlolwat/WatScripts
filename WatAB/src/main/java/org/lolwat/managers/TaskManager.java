@@ -21,7 +21,6 @@ import org.lolwat.tasks.combat.CombatTask;
 import org.lolwat.tasks.gathering.GatheringTask;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
-import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.tasks.quests.wrapper.QuestWrapperTask;
 import org.lolwat.tasks.tutorial.TutorialIslandTask;
 import org.lolwat.types.interfaces.WatTask;
@@ -188,10 +187,6 @@ public class TaskManager {
     }
 
     public void setCurrentTask(WatTask task) {
-        if(task instanceof WalkingTask) {
-            setTaskRunTime(getTaskRunTime() + 240);
-        }
-
         setCurrentTask(task, getTaskRunTime());
     }
 
