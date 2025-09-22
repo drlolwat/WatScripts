@@ -18,6 +18,7 @@ import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.agility.AgilityCourseTask;
 import org.lolwat.tasks.agility.types.Obstacle;
 import org.lolwat.tasks.combat.CombatTask;
+import org.lolwat.tasks.gathering.GatheringTask;
 import org.lolwat.tasks.misc.BondingTask;
 import org.lolwat.tasks.misc.HopperTask;
 import org.lolwat.tasks.misc.WalkingTask;
@@ -247,6 +248,7 @@ public class TaskManager {
         skillsAvailable = new ArrayList<>();
 
         tasks.addAll(createAgilityTasks());
+        tasks.add(new GatheringTask(Skill.MINING));
 
         for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -267,6 +269,7 @@ public class TaskManager {
         skillsAvailable.add(Skill.STRENGTH);
         skillsAvailable.add(Skill.RANGED);
         skillsAvailable.add(Skill.MAGIC);
+        skillsAvailable.add(Skill.MINING);
     }
 
     private List<WatTask> createAgilityTasks() {
