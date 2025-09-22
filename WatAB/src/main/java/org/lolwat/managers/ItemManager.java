@@ -171,22 +171,22 @@ public class ItemManager {
         addSkilledWearable("Infernal cape", 1, 1, 1, 11, 1, CombatType.MAGIC, EquipmentSlot.CAPE, 10);
 
         addSkilledWearable("Steel platelegs", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS, 10);
-        addSkilledWearable("Steel platebody", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
-        addSkilledWearable("Steel kiteshield", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD, 10);
-        addSkilledWearable("Steel full helm", 1, 1, 10, -1, -1,CombatType.MELEE, EquipmentSlot.HAT, 10);
+        addSkilledWearable("Steel platebody", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Steel kiteshield", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Steel full helm", 1, 1, 10, -1, -1, CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Mithril platelegs", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS, 10);
-        addSkilledWearable("Mithril platebody", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
-        addSkilledWearable("Mithril kiteshield", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD, 10);
-        addSkilledWearable("Mithril full helm", 1, 1, 20, -1, -1,CombatType.MELEE, EquipmentSlot.HAT, 10);
+        addSkilledWearable("Mithril platelegs", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Mithril platebody", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Mithril kiteshield", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Mithril full helm", 1, 1, 20, -1, -1, CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Adamant platelegs", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS, 10);
-        addSkilledWearable("Adamant platebody", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
-        addSkilledWearable("Adamant kiteshield", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.SHIELD, 10);
-        addSkilledWearable("Adamant full helm", 1, 1, 30, -1, -1,CombatType.MELEE, EquipmentSlot.HAT, 10);
+        addSkilledWearable("Adamant platelegs", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Adamant platebody", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Adamant kiteshield", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.SHIELD, 10);
+        addSkilledWearable("Adamant full helm", 1, 1, 30, -1, -1, CombatType.MELEE, EquipmentSlot.HAT, 10);
 
-        addSkilledWearable("Rune platelegs", 1, 1, 40, -1, -1,CombatType.MELEE, EquipmentSlot.LEGS, 10);
-        addSkilledWearable("Rune chainbody", 1, 1, 40, -1, -1,CombatType.MELEE, EquipmentSlot.CHEST, 10);
+        addSkilledWearable("Rune platelegs", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.LEGS, 10);
+        addSkilledWearable("Rune chainbody", 1, 1, 40, -1, -1, CombatType.MELEE, EquipmentSlot.CHEST, 10);
 
         addQuestedWearable("Rune platebody", 1, 1, 40, -1, -1, EquipmentSlot.CHEST, CombatType.MELEE,
                 Collections.singletonList(FreeQuest.DRAGON_SLAYER), 10);
@@ -215,7 +215,7 @@ public class ItemManager {
         addBasicItem("Lobster");
         addBasicItem("Tuna");
         addBasicItem("Shark");
-        
+
         // teleport items
         addBasicItem("Varrock teleport");
         addBasicItem("Camelot teleport");
@@ -233,6 +233,56 @@ public class ItemManager {
         addBasicItem("Chaos rune");
         addBasicItem("Death rune");
         addBasicItem("Nature rune");
+
+        addTool("Bronze pickaxe", Skill.MINING, new HashMap<>(), new HashMap<>());
+        addTool("Mithril pickaxe", Skill.MINING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.MINING, 21);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 20);
+            }
+        });
+
+        addTool("Adamant pickaxe", Skill.MINING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.MINING, 31);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 30);
+            }
+        });
+
+        addTool("Rune pickaxe", Skill.MINING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.MINING, 41);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 40);
+            }
+        });
+
+        addTool("Dragon pickaxe", Skill.MINING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.MINING, 61);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 60);
+            }
+        });
+
+        // ore
+        addBasicItem("Tin ore");
+        addBasicItem("Copper ore");
+        addBasicItem("Iron ore");
+        addBasicItem("Coal");
+        addBasicItem("Mithril ore");
+        addBasicItem("Adamantite ore");
+        addBasicItem("Runite ore");
 
         //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
     }
@@ -355,13 +405,13 @@ public class ItemManager {
 
         return getBestItem(
                 tools,
-                tool -> tool.getSkillUsed() == sk
+                tool -> tool.getSkillUsed().equals(sk)
                         && meetsSkillAndQuestReqs(tool.getLevelRequirements(), tool.getQuestRequirements()),
                 tool -> {
                     int reqSum = tool.getLevelRequirements() == null ? 0 : tool.getLevelRequirements().values().stream().mapToInt(Integer::intValue).sum();
                     return reqSum * tool.getWeight();
                 },
-                weapon -> (Bank.isOpen() && Bank.contains(weapon.getName())) || Inventory.contains(weapon.getName()) || Equipment.contains(weapon.getName()),
+                tool -> (Bank.isOpen() && Bank.contains(tool.getName())) || Inventory.contains(tool.getName()) || Equipment.contains(tool.getName()),
                 WatItem::getPrice,
                 availableMoney
         );
@@ -437,6 +487,11 @@ public class ItemManager {
     public boolean isValidWeapon(String name, CombatType type) {
         WatItem item = getItem(name);
         return item instanceof WatWeapon && ((WatWeapon) item).getCombatType().equals(type);
+    }
+
+    public boolean isValidTool(String name, Skill s) {
+        WatItem item = getItem(name);
+        return item instanceof WatTool && ((WatTool) item).getSkillUsed().equals(s);
     }
 
     public boolean isValidWearable(String name, EquipmentSlot slot, CombatType type) {
