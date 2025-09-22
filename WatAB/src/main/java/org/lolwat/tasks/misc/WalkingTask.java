@@ -168,7 +168,7 @@ public class WalkingTask implements WatTask {
         if (WatUtils.isMember() && postTask != null) {
             double targetDistance = Players.getLocal().walkingDistance(area.getRandomTile());
 
-            if (targetDistance >= 500 && !hasTeleported) {
+            if (targetDistance >= 750 && !hasTeleported) {
                 Teleport teleport = TeleportManager.getInstance().getBestOption(area.getRandomTile());
                 if (teleport != null) {
                     Logger.log("Traversal: selected teleport " + teleport.getName() + " for destination "
