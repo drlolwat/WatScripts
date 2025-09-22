@@ -38,6 +38,7 @@ import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
+import org.lolwat.types.gear.WatTool;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.io.*;
@@ -49,49 +50,9 @@ import java.util.*;
 public class WatUtils {
     private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
         put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
-        put("user1", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
+        put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
     }};
-    private static final HashMap<String, Integer> levels = new HashMap<String, Integer>() {
-        {
-            // picks
-            put("Rune pickaxe", 40);
-            put("Adamant pickaxe", 30);
-            put("Mithril pickaxe", 20);
-            put("Black pickaxe", 10);
-            put("Steel pickaxe", 5);
-            put("Iron pickaxe", 1);
-            put("Bronze pickaxe", 1);
 
-            //axes
-            put("Rune axe", 40);
-            put("Adamant axe", 30);
-            put("Mithril axe", 20);
-            put("Black axe", 10);
-            put("Steel axe", 5);
-            put("Iron axe", 1);
-            put("Bronze axe", 1);
-
-            //staff?
-            put("Staff of fire", 1);
-
-            //scims..
-            put("Rune scimitar", 40);
-            put("Adamant scimitar", 30);
-            put("Mithril scimitar", 20);
-            put("Black scimitar", 10);
-            put("Steel scimitar", 5);
-            put("Iron scimitar", 1);
-            put("Bronze scimitar", 1);
-
-            //bows
-            put("Maple shortbow", 30);
-            put("Willow shortbow", 20);
-            put("Oak shortbow", 5);
-            put("Shortbow", 1);
-
-            //everything else is handled by combat utils
-        }
-    };
     private static long lastCallTime = 0;
     private static HashMap<String, Integer> itemPrices;
     private static double multiplier = 1.2;
@@ -326,6 +287,10 @@ public class WatUtils {
         return pl >= count;
     }
 
+    public static boolean equipItem(String item) {
+        return equipItem(item, null);
+    }
+
     public static boolean equipItem(String item, Item old) {
         Item i = Inventory.get(x -> x != null && !x.isNoted() && x.getName().contains(item));
         if(i != null) {
@@ -390,12 +355,13 @@ public class WatUtils {
         return name;
     }
 
-    public static boolean canEquipTool(String toolName) {
-        if(!levels.containsKey(toolName)) {
-            return true;
+    public static boolean canEquipTool(WatTool tool) {
+        for(Map.Entry<Skill, Integer> t : tool.getSkillsToEquip().entrySet()) {
+            if(Skills.getRealLevel(t.getKey()) < t.getValue())
+                return false;
         }
 
-        return levels.containsKey(toolName) && Skills.getRealLevel(Skill.ATTACK) >= levels.get(toolName);
+        return true;
     }
 
     public static <K, V> void shuffleHashMap(HashMap<K, V> hashMap) {
