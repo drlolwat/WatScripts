@@ -77,14 +77,11 @@ public class ConfigManager {
         skillTargets.addProperty("farming", 1);
         defaultProfile.add("skill_targets", skillTargets);
 
-        defaultProfile.addProperty("quests_enabled", true);
-        defaultProfile.addProperty("breaks_enabled", true);
-        defaultProfile.addProperty("ignore_trade_restriction", false);
+        defaultProfile.addProperty("quests_enabled", false);
+        defaultProfile.addProperty("breaks_enabled", false);
         defaultProfile.addProperty("mule_trigger", 125000);
         defaultProfile.addProperty("mule_safety_net", 75000);
-        defaultProfile.addProperty("logout_after_unrestricted", false);
         defaultProfile.addProperty("disable_mule", false);
-        defaultProfile.addProperty("quest_min_ttl", 175);
         defaultProfile.addProperty("bond_min_ttl", 0);
         defaultProfile.addProperty("use_profile_cape", false);
         defaultProfile.addProperty("faster_quests", false);
