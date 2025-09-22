@@ -48,12 +48,11 @@ public class CrabLogic implements MobLogic {
 
                         if(!Players.getLocal().isInCombat()) {
                             TaskManager.getInstance().setCurrentTask(new WalkingTask(new Area(
-                                    new Tile(2773, 10163, 0),
-                                    new Tile(2774, 10160, 0),
-                                    new Tile(2776, 10161, 0),
-                                    new Tile(2776, 10162, 0),
-                                    new Tile(2775, 10163, 0),
-                                    new Tile(2774, 10164, 0)), TaskManager.getInstance().getCurrentTask()));
+                                    new Tile(2708, 3663, 0),
+                                    new Tile(2717, 3667, 0),
+                                    new Tile(2725, 3665, 0),
+                                    new Tile(2727, 3658, 0),
+                                    new Tile(2714, 3650, 0)), TaskManager.getInstance().getCurrentTask()));
                             return;
                         } else {
                             break;
