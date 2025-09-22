@@ -115,7 +115,7 @@ public interface MobLogic {
                 }
             }
         } else {
-            if (!Magic.isAutocasting()) {
+            if (!Magic.isAutocasting() || (Magic.getAutocastSpell() != null && !Magic.getAutocastSpell().equals(CombatUtils.getBestSpellForLevel()))) {
                 if (!Tabs.isOpen(Tab.COMBAT)) {
                     if(!Tabs.open(Tab.COMBAT)) {
                         Logger.error("problem opening combat tab");
