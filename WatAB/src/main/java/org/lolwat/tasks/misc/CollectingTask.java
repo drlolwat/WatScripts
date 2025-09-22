@@ -13,7 +13,7 @@ import org.dreambot.api.wrappers.items.GroundItem;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.types.interfaces.WatTask;
 
-public class GatheringTask implements WatTask {
+public class CollectingTask implements WatTask {
     private final String objectName;
     private final String inventoryName;
     private final int amount;
@@ -21,7 +21,7 @@ public class GatheringTask implements WatTask {
     private final boolean ground;
     private final WatTask postTask;
 
-    public GatheringTask(String gameObject, String inventoryItem, Integer amountRequired, Area loc, boolean groundItem, WatTask post) {
+    public CollectingTask(String gameObject, String inventoryItem, Integer amountRequired, Area loc, boolean groundItem, WatTask post) {
         objectName = gameObject;
         inventoryName = inventoryItem;
         amount = amountRequired;
