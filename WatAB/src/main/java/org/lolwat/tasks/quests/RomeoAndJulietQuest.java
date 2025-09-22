@@ -19,7 +19,7 @@ import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
-import org.lolwat.tasks.misc.GatheringTask;
+import org.lolwat.tasks.misc.CollectingTask;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.QuestTask;
@@ -147,7 +147,7 @@ public class RomeoAndJulietQuest implements QuestTask {
                         put(ItemManager.getInstance().getItem("Cadava potion"), 1);
                     }}, null, 1, wrapper, new HashMap<String, WatTask>() {
                         {
-                            put("Cadava potion", new GatheringTask("Cadava bush", "Cadava berries", 1, new Area(
+                            put("Cadava potion", new CollectingTask("Cadava bush", "Cadava berries", 1, new Area(
                                     new Tile(3260, 3374, 0),
                                     new Tile(3261, 3364, 0),
                                     new Tile(3273, 3363, 0),

@@ -24,7 +24,7 @@ import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.tasks.misc.BankingTask;
 import org.lolwat.tasks.misc.ErnestTheChickenSolver;
-import org.lolwat.tasks.misc.GatheringTask;
+import org.lolwat.tasks.misc.CollectingTask;
 import org.lolwat.tasks.misc.WalkingTask;
 
 import java.util.Arrays;
@@ -113,13 +113,13 @@ public class ErnestTheChickenQuest implements QuestTask {
                     if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Pressure gauge"))) {
                         if (!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Fish food"))) {
                             Area get = new Area(3107, 3360, 3110, 3354, 1);
-                            TaskManager.getInstance().setCurrentTask(new GatheringTask("Fish food", "Fish food", 1, get, true, wrapper));
+                            TaskManager.getInstance().setCurrentTask(new CollectingTask("Fish food", "Fish food", 1, get, true, wrapper));
                             return;
                         }
 
                         if (!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Poison"))) {
                             Area get = new Area(3097, 3366, 3100, 3364);
-                            TaskManager.getInstance().setCurrentTask(new GatheringTask("Poison", "Poison", 1, get, true, wrapper));
+                            TaskManager.getInstance().setCurrentTask(new CollectingTask("Poison", "Poison", 1, get, true, wrapper));
                             return;
                         }
 
@@ -137,7 +137,7 @@ public class ErnestTheChickenQuest implements QuestTask {
 
                 if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Spade"))) {
                     Area get = new Area(3120, 3360, 3126, 3354);
-                    TaskManager.getInstance().setCurrentTask(new GatheringTask("Spade", "Spade", 1, get, true, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new CollectingTask("Spade", "Spade", 1, get, true, wrapper));
                     return;
                 }
 
@@ -220,7 +220,7 @@ public class ErnestTheChickenQuest implements QuestTask {
 
                 if(!Inventory.contains(x -> x != null && !x.isNoted() && x.getName().equals("Rubber tube"))) {
                     Area get = new Area(3108, 3368, 3111, 3366);
-                    TaskManager.getInstance().setCurrentTask(new GatheringTask("Rubber tube", "Rubber tube", 1, get, true, wrapper));
+                    TaskManager.getInstance().setCurrentTask(new CollectingTask("Rubber tube", "Rubber tube", 1, get, true, wrapper));
                     return;
                 }
 
