@@ -10,7 +10,6 @@ import org.lolwat.types.interfaces.MobLogic;
 import org.lolwat.types.mobs.Mob;
 import org.lolwat.types.mobs.logic.CrabLogic;
 import org.lolwat.types.mobs.logic.DefaultLogic;
-import org.lolwat.types.mobs.logic.EdgevilleGiantsLogic;
 import org.lolwat.types.mobs.logic.MossGiantsLogic;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class MobManager {
     }
 
     public void createMobs() {
-        /*addBasicMob("Chicken",
+        addBasicMob("Chicken",
                 new HashMap<String, Area>() {
                     {
                         put("Falador Outside", new Area(3026, 3289, 3036, 3284));
@@ -60,7 +59,7 @@ public class MobManager {
                         put(Skill.MAGIC, 1);
                     }
                 });
-
+        /*
         addBasicMob("Cow",
                 new HashMap<String, Area>() {
                     {
@@ -150,11 +149,11 @@ public class MobManager {
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 1);
-                        put(Skill.DEFENCE, 1);
-                        put(Skill.STRENGTH, 1);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
+                        put(Skill.ATTACK, 10);
+                        put(Skill.DEFENCE, 10);
+                        put(Skill.STRENGTH, 10);
+                        put(Skill.RANGED, 10);
+                        put(Skill.MAGIC, 10);
                     }
                 }, new CrabLogic());
 
@@ -180,11 +179,11 @@ public class MobManager {
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 40);
-                        put(Skill.DEFENCE, 40);
-                        put(Skill.STRENGTH, 40);
-                        put(Skill.RANGED, 40);
-                        put(Skill.MAGIC, 40);
+                        put(Skill.ATTACK, 60);
+                        put(Skill.DEFENCE, 60);
+                        put(Skill.STRENGTH, 60);
+                        put(Skill.RANGED, 60);
+                        put(Skill.MAGIC, 60);
                     }
                 });
 
@@ -212,41 +211,6 @@ public class MobManager {
                     }
                 });
 
-        addLogicMob("Hill Giant",
-                new HashMap<String, Area>() {
-                    {
-                        put("Edgeville", new Area(
-                                new Tile(3110, 9836, 0),
-                                new Tile(3110, 9824, 0),
-                                new Tile(3102, 9824, 0),
-                                new Tile(3097, 9829, 0),
-                                new Tile(3095, 9830, 0),
-                                new Tile(3095, 9835, 0),
-                                new Tile(3098, 9838, 0),
-                                new Tile(3101, 9839, 0),
-                                new Tile(3106, 9840, 0),
-                                new Tile(3108, 9844, 0),
-                                new Tile(3109, 9849, 0),
-                                new Tile(3113, 9851, 0),
-                                new Tile(3122, 9850, 0),
-                                new Tile(3125, 9847, 0),
-                                new Tile(3125, 9844, 0),
-                                new Tile(3122, 9838, 0),
-                                new Tile(3121, 9832, 0),
-                                new Tile(3110, 9826, 0)));
-                    }
-                },
-
-                new HashMap<Skill, Integer>() {
-                    {
-                        put(Skill.ATTACK, 45);
-                        put(Skill.DEFENCE, 45);
-                        put(Skill.STRENGTH, 45);
-                        put(Skill.RANGED, 60);
-                        put(Skill.MAGIC, 60);
-                    }
-                }, new EdgevilleGiantsLogic());
-
         addLogicMob("Moss giant",
                 new HashMap<String, Area>() {
                     {
@@ -271,9 +235,9 @@ public class MobManager {
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 60);
-                        put(Skill.DEFENCE, 50);
-                        put(Skill.STRENGTH, 50);
+                        put(Skill.ATTACK, 40);
+                        put(Skill.DEFENCE, 40);
+                        put(Skill.STRENGTH, 40);
                         put(Skill.RANGED, 60);
                         put(Skill.MAGIC, 60);
                     }
