@@ -26,11 +26,10 @@ public class MobManager {
 
     public MobManager() {
         mobs = new ArrayList<>();
-        instance = this;
     }
 
     public void createMobs() {
-        addBasicMob("Chicken",
+        /*addBasicMob("Chicken",
                 new HashMap<String, Area>() {
                     {
                         put("Falador Outside", new Area(3026, 3289, 3036, 3284));
@@ -120,7 +119,7 @@ public class MobManager {
                         put(Skill.RANGED, 1);
                         put(Skill.MAGIC, 1);
                     }
-                });
+                });*/
 
         addLogicMob("Rock crab",
                 new HashMap<String, Area>() {
@@ -151,11 +150,11 @@ public class MobManager {
 
                 new HashMap<Skill, Integer>() {
                     {
-                        put(Skill.ATTACK, 10);
-                        put(Skill.DEFENCE, 10);
-                        put(Skill.STRENGTH, 10);
-                        put(Skill.RANGED, 20);
-                        put(Skill.MAGIC, 20);
+                        put(Skill.ATTACK, 1);
+                        put(Skill.DEFENCE, 1);
+                        put(Skill.STRENGTH, 1);
+                        put(Skill.RANGED, 1);
+                        put(Skill.MAGIC, 1);
                     }
                 }, new CrabLogic());
 
