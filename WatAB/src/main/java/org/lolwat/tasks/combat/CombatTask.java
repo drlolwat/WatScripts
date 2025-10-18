@@ -76,6 +76,7 @@ public class CombatTask implements WatTask {
         // check for required items. we will do this custom
         List<EquipmentSlot> slotsMissing = new ArrayList<>();
         List<EquipmentSlot> slotsRequired = new ArrayList<>(target.getMobLogic().slotsRequired().keySet());
+        List<EquipmentSlot> slotsToRemove = new ArrayList<>();
 
         if(type.equals(CombatType.RANGED)) {
             slotsRequired.add(EquipmentSlot.ARROWS);
@@ -83,6 +84,47 @@ public class CombatTask implements WatTask {
         }
         else if(type.equals(CombatType.MAGIC)) {
             slotsRequired.remove(EquipmentSlot.SHIELD);
+            slotsToRemove.add(EquipmentSlot.SHIELD);
+        }
+
+        for(EquipmentSlot s : slotsToRemove) {
+            Item i = Equipment.getItemInSlot(s);
+
+            if(i != null) {
+                if (Bank.isOpen()) {
+                    if (!Bank.close()) {
+                        Logger.error("problem closing bank");
+                        return;
+                    }
+
+                    Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
+                }
+
+                if (!Tabs.isOpen(Tab.EQUIPMENT)) {
+                    if (!Tabs.open(Tab.EQUIPMENT)) {
+                        Logger.error("problem opening eq tab");
+                        return;
+                    }
+
+                    Sleep.sleepUntil(() -> Tabs.isOpen(Tab.EQUIPMENT), 5000);
+                }
+
+                if(!Equipment.unequip(s)) {
+                    Logger.error("problem unequipping unneeded slot");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> Equipment.getItemInSlot(s) == null, 5000);
+            }
+        }
+
+        if (!Bank.isOpen() && !Tabs.isOpen(Tab.INVENTORY)) {
+            if (!Tabs.open(Tab.INVENTORY)) {
+                Logger.error("problem opening invo tab");
+                return;
+            }
+
+            Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), 5000);
         }
 
         for(EquipmentSlot s : slotsRequired) {
