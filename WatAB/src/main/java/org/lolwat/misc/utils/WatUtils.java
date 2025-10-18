@@ -469,6 +469,18 @@ public class WatUtils {
             }
         };
 
+        if(Inventory.contains("Coin pouch")) {
+            Item pouch = Inventory.get("Coin pouch");
+            if(pouch != null) {
+                if(!pouch.interact("Open-all")) {
+                    Logger.error("problem opening coin pouches during banking");
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> !Inventory.contains("Coin pouch"), 5000);
+            }
+        }
+
         NPC banker = NPCs.closest("Banker");
         if (banker == null || !banker.exists()) {
             Logger.log("Banking: Looking for bank chest");
