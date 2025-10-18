@@ -244,6 +244,8 @@ public class TaskManager {
 
         tasks.addAll(createAgilityTasks());
         tasks.add(new GatheringTask(Skill.MINING));
+        tasks.add(new GatheringTask(Skill.WOODCUTTING));
+        tasks.add(new GatheringTask(Skill.THIEVING));
 
         for(WatTask task : tasks) {
             if(tasksBySkill.containsKey(task.trainsSkill())) {
@@ -265,6 +267,8 @@ public class TaskManager {
         skillsAvailable.add(Skill.RANGED);
         skillsAvailable.add(Skill.MAGIC);
         skillsAvailable.add(Skill.MINING);
+        skillsAvailable.add(Skill.WOODCUTTING);
+        skillsAvailable.add(Skill.THIEVING);
     }
 
     private List<WatTask> createAgilityTasks() {
