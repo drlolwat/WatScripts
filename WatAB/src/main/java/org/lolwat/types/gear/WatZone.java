@@ -19,8 +19,12 @@ public class WatZone {
     private final boolean isNpc;
     @Getter
     private final String contextSearch;
+    @Getter
+    private final boolean gatheringItemRequired;
+    @Getter
+    private final boolean foodRequired;
 
-    public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc, String contextSearch) {
+    public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc, String contextSearch, boolean gatheringItemRequired, boolean foodRequired) {
         this.name = name;
         this.skill = skill;
         this.minLevel = minLevel;
@@ -28,5 +32,7 @@ public class WatZone {
         this.objectName = objectName;
         this.isNpc = isNpc;
         this.contextSearch = contextSearch;
+        this.gatheringItemRequired = gatheringItemRequired;
+        this.foodRequired = foodRequired;
     }
 }
