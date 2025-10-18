@@ -5,6 +5,7 @@ import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.items.Item;
 import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
@@ -66,6 +67,18 @@ public class GatheringGearTask implements WatTask {
             TaskManager.getInstance().setCurrentTask(parent);
         } else {
             TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(bestTool.getName(), 1, bestTool.getPrice(), this));
+        }
+    }
+
+    private void depositNonTools() {
+        for(Item i : Inventory.all()) {
+            if(i == null) continue;
+            WatTool bestItem = ItemManager.getInstance().getBestTool(skill);
+            if(!bestItem.getName().equals(i.getName())) {
+                if(!Bank.depositAll(i.getName())) {
+                    Logger.error("problem depositing non-tool");
+                }
+            }
         }
     }
 
