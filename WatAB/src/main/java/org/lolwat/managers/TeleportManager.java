@@ -138,5 +138,11 @@ public class TeleportManager {
                 "Camelot teleport",
                 "Camelot teleport",
                 "Camelot"));
+
+        teleports.add(new Teleport("Castle Wars Arena",
+                new Tile(2439,3089,0),
+                "Ring of dueling",
+                "Ring of dueling(8)",
+                "Castle Wars"));
     }
 }
