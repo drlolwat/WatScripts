@@ -154,13 +154,13 @@ public class ItemManager {
         addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.RANGED, EquipmentSlot.AMULET, 10);
         addSkilledWearable("Amulet of fury", 1, 1, 1, 1, 1, CombatType.MAGIC, EquipmentSlot.AMULET, 10);
 
-        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MELEE, 10);
-        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.RANGED, 10);
-        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MAGIC, 10);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MELEE, 9);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.RANGED, 9);
+        addWearable("Black cape", EquipmentSlot.CAPE, CombatType.MAGIC, 9);
 
-        addSkilledWearable("Obsidian cape", 9, 9, 9, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE, 10);
-        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 9, CombatType.RANGED, EquipmentSlot.CAPE, 10);
-        addSkilledWearable("Obsidian cape", 1, 1, 1, 9, 1, CombatType.MAGIC, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 1, CombatType.RANGED, EquipmentSlot.CAPE, 10);
+        addSkilledWearable("Obsidian cape", 1, 1, 1, 1, 1, CombatType.MAGIC, EquipmentSlot.CAPE, 10);
 
         addSkilledWearable("Fire cape", 10, 10, 10, 1, 1, CombatType.MELEE, EquipmentSlot.CAPE, 10);
         addSkilledWearable("Fire cape", 1, 1, 1, 1, 10, CombatType.RANGED, EquipmentSlot.CAPE, 10);
@@ -275,6 +275,47 @@ public class ItemManager {
             }
         });
 
+        addTool("Bronze axe", Skill.WOODCUTTING, new HashMap<>(), new HashMap<>());
+        addTool("Mithril axe", Skill.WOODCUTTING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.WOODCUTTING, 21);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 20);
+            }
+        });
+
+        addTool("Adamant axe", Skill.WOODCUTTING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.WOODCUTTING, 31);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 30);
+            }
+        });
+
+        addTool("Rune axe", Skill.WOODCUTTING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.WOODCUTTING, 41);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 40);
+            }
+        });
+
+        addTool("Dragon axe", Skill.WOODCUTTING, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.WOODCUTTING, 61);
+            }
+        }, new HashMap<Skill, Integer>() {
+            {
+                put(Skill.ATTACK, 60);
+            }
+        });
+
         // ore
         addBasicItem("Tin ore");
         addBasicItem("Copper ore");
@@ -283,6 +324,14 @@ public class ItemManager {
         addBasicItem("Mithril ore");
         addBasicItem("Adamantite ore");
         addBasicItem("Runite ore");
+
+        // logs
+        addBasicItem("Logs");
+        addBasicItem("Oak logs");
+        addBasicItem("Maple logs");
+
+        // misc
+        addBasicItem("Coin pouch");
 
         //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
     }
