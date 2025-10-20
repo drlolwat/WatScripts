@@ -28,42 +28,10 @@ public class MobManager {
     }
 
     public void createMobs() {
-        addBasicMob("Chicken",
-                new HashMap<String, Area>() {
-                    {
-                        put("Falador Outside", new Area(3026, 3289, 3036, 3284));
-                        put("Falador Inside", new Area(3014, 3298, 3019, 3282));
-                        put("Lumbridge East", new Area(
-                                new Tile(3233, 3295, 0),
-                                new Tile(3225, 3295, 0),
-                                new Tile(3225, 3300, 0),
-                                new Tile(3226, 3301, 0),
-                                new Tile(3235, 3301, 0),
-                                new Tile(3237, 3299, 0),
-                                new Tile(3236, 3295, 0),
-                                new Tile(3237, 3292, 0),
-                                new Tile(3236, 3289, 0),
-                                new Tile(3235, 3287, 0),
-                                new Tile(3231, 3287, 0),
-                                new Tile(3231, 3294, 0),
-                                new Tile(3231, 3295, 0)));
-                    }
-                },
-
-                new HashMap<Skill, Integer>() {
-                    {
-                        put(Skill.ATTACK, 1);
-                        put(Skill.DEFENCE, 1);
-                        put(Skill.STRENGTH, 1);
-                        put(Skill.RANGED, 1);
-                        put(Skill.MAGIC, 1);
-                    }
-                });
-        /*
         addBasicMob("Cow",
                 new HashMap<String, Area>() {
                     {
-                        put("Lumbridge North", new Area(
+                        put("LumbridgeN", new Area(
                                 new Tile(3203, 3292, 0),
                                 new Tile(3202, 3283, 0),
                                 new Tile(3200, 3283, 0),
@@ -100,7 +68,7 @@ public class MobManager {
                                 new Tile(3031, 3298, 0),
                                 new Tile(3038, 3298, 0)));
 
-                        put("Crafting Guild", new Area(
+                        put("CraftingG", new Area(
                                 new Tile(2915, 3291, 0),
                                 new Tile(2916, 3287, 0),
                                 new Tile(2925, 3278, 0),
@@ -113,12 +81,12 @@ public class MobManager {
                 new HashMap<Skill, Integer>() {
                     {
                         put(Skill.ATTACK, 1);
-                        put(Skill.DEFENCE, 5);
+                        put(Skill.DEFENCE, 1);
                         put(Skill.STRENGTH, 1);
                         put(Skill.RANGED, 1);
                         put(Skill.MAGIC, 1);
                     }
-                });*/
+                });
 
         addLogicMob("Rock crab",
                 new HashMap<String, Area>() {
@@ -156,6 +124,38 @@ public class MobManager {
                         put(Skill.MAGIC, 10);
                     }
                 }, new CrabLogic());
+
+        addBasicMob("Barbarian",
+                new HashMap<String, Area>() {
+                    {
+                        put("BarbVillage", new Area(
+                                new Tile(3080, 3421, 0),
+                                new Tile(3087, 3421, 0),
+                                new Tile(3087, 3431, 0),
+                                new Tile(3082, 3434, 0),
+                                new Tile(3078, 3427, 0),
+                                new Tile(3073, 3426, 0),
+                                new Tile(3073, 3415, 0),
+                                new Tile(3077, 3409, 0),
+                                new Tile(3081, 3406, 0),
+                                new Tile(3087, 3406, 0),
+                                new Tile(3090, 3408, 0),
+                                new Tile(3089, 3413, 0),
+                                new Tile(3087, 3416, 0),
+                                new Tile(3090, 3419, 0),
+                                new Tile(3087, 3421, 0)));
+                    }
+                },
+
+                new HashMap<Skill, Integer>() {
+                    {
+                        put(Skill.ATTACK, 20);
+                        put(Skill.DEFENCE, 20);
+                        put(Skill.STRENGTH, 20);
+                        put(Skill.RANGED, 30);
+                        put(Skill.MAGIC, 30);
+                    }
+                });
 
         addBasicMob("Minotaur",
                 new HashMap<String, Area>() {
@@ -214,7 +214,7 @@ public class MobManager {
         addLogicMob("Moss giant",
                 new HashMap<String, Area>() {
                     {
-                        put("Varrock Sewers", new Area(
+                        put("VarrSewer", new Area(
                                 new Tile(3159, 9902, 0),
                                 new Tile(3159, 9898, 0),
                                 new Tile(3156, 9901, 0),
