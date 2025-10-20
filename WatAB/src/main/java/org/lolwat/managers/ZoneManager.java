@@ -7,7 +7,7 @@ import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
-import org.lolwat.types.gear.WatZone;
+import org.lolwat.types.WatZone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,13 +185,23 @@ public class ZoneManager {
 
         zones.add(new WatZone("LumbridgeC", Skill.THIEVING, 1,
                 new Area(
+                        new Tile(3222, 3219, 0),
                         new Tile(3226, 3219, 0),
-                        new Tile(3226, 3210, 0),
-                        new Tile(3220, 3204, 0),
-                        new Tile(3216, 3204, 0),
-                        new Tile(3217, 3211, 0),
-                        new Tile(3217, 3227, 0),
-                        new Tile(3226, 3229, 0)), "Man", true, "Pickpocket", false, true));
+                        new Tile(3226, 3209, 0),
+                        new Tile(3220, 3203, 0),
+                        new Tile(3213, 3203, 0),
+                        new Tile(3213, 3233, 0),
+                        new Tile(3214, 3234, 0),
+                        new Tile(3221, 3234, 0),
+                        new Tile(3226, 3229, 0),
+                        new Tile(3226, 3219, 0)), "Man", true, "Pickpocket", false, true));
+
+        zones.add(new WatZone("EdgevilleN", Skill.THIEVING, 1,
+                new Area(3087, 3516, 3105, 3503),
+                "Man", true, "Pickpocket", false, true));
+
+        zones.add(new WatZone("VarrockE", Skill.THIEVING, 5,
+                new Area(3270, 3408, 3267, 3416), "Tea stall", false, "Steal-from", false, false));
     }
 
     public WatZone getBestZone(Skill s) {
