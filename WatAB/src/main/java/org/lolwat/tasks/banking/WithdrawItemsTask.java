@@ -3,6 +3,7 @@ package org.lolwat.tasks.banking;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.utilities.Logger;
 import org.dreambot.api.utilities.Sleep;
@@ -46,7 +47,7 @@ public class WithdrawItemsTask implements WatTask {
             return;
         }
 
-        WatUtils.removeOtherItems(parent);
+        WatUtils.removeOtherItems(new ArrayList<>(toObtain.keySet()));
         Bank.resetCache();
 
         if(coinsAvailable == -1) {
@@ -59,6 +60,13 @@ public class WithdrawItemsTask implements WatTask {
 
             if (Inventory.count(x -> x != null && !x.isNoted() && x.getName().contains(itemName)) >= amount) {
                 Logger.log("we have enough of item: " + itemName + " (" + amount + "), moving on");
+                hasObtained.add(map.getKey());
+                toBuy.remove(map.getKey());
+                continue;
+            }
+
+            if (Equipment.count(x -> x != null && x.getName().contains(itemName)) >= amount) {
+                Logger.log("we have enough of item (equipped): " + itemName + " (" + amount + "), moving on");
                 hasObtained.add(map.getKey());
                 toBuy.remove(map.getKey());
                 continue;
