@@ -2,7 +2,6 @@ package org.lolwat.tasks.gathering;
 
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
-import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -24,7 +23,7 @@ import org.lolwat.tasks.gathering.gearing.GatheringGearTask;
 import org.lolwat.tasks.misc.WalkingTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.gear.WatTool;
-import org.lolwat.types.gear.WatZone;
+import org.lolwat.types.WatZone;
 import org.lolwat.types.interfaces.WatTask;
 
 import java.util.HashMap;
@@ -57,7 +56,7 @@ public class GatheringTask implements WatTask {
             boolean hasTool = false;
             String toolOwned = "";
 
-            for (Item i : Equipment.all()) {
+            for (Item i : Inventory.all()) {
                 if (i == null) continue;
                 if (ItemManager.getInstance().isValidTool(i.getName(), training)) {
                     hasTool = true;
@@ -67,7 +66,7 @@ public class GatheringTask implements WatTask {
             }
 
             if (!hasTool) {
-                for (Item i : Inventory.all()) {
+                for (Item i : Equipment.all()) {
                     if (i == null) continue;
                     if (ItemManager.getInstance().isValidTool(i.getName(), training)) {
                         hasTool = true;
@@ -83,7 +82,7 @@ public class GatheringTask implements WatTask {
                 return;
             }
 
-            if (Bank.isCached()) {
+            /*if (Bank.isCached()) {
                 long now = System.currentTimeMillis();
                 if (now - lastUpgradeCheck > UPGRADE_CHECK_INTERVAL) {
                     lastUpgradeCheck = now;
@@ -93,7 +92,7 @@ public class GatheringTask implements WatTask {
                         return;
                     }
                 }
-            }
+            }*/
         }
 
         if (Inventory.isFull()) {
@@ -161,7 +160,7 @@ public class GatheringTask implements WatTask {
                 TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(
                         new HashMap<WatItem, Integer>() {
                             {
-                                put(ItemManager.getInstance().getItem("Tuna"), 12);
+                                put(ItemManager.getInstance().getItem("Tuna"), 8);
                             }
                         }, this
                 ));
@@ -175,6 +174,8 @@ public class GatheringTask implements WatTask {
             return;
         }
 
+        WatUtils.handleCoinPouch(20);
+
         if (!bestZone.isNpc()) {
             GameObject bestObject = GameObjects.closest(x -> x.getName().equals(bestZone.getObjectName()) && x.canReach());
             if (bestObject != null) {
@@ -186,7 +187,8 @@ public class GatheringTask implements WatTask {
                 int inventoryCount = Inventory.size();
                 Sleep.sleepUntil(() -> Dialogues.canContinue() || Inventory.isFull() ||
                                 (training.equals(Skill.MINING) && (Inventory.size() > inventoryCount || bestObject.getModelColors() == null)) ||
-                                (training.equals(Skill.WOODCUTTING) && !bestObject.exists()),
+                                (training.equals(Skill.WOODCUTTING) && !bestObject.exists()) ||
+                                (training.equals(Skill.THIEVING) && bestObject.hasAction("Steal-from")),
                         (training.equals(Skill.MINING) ? 15000 : 60000));
             }
         } else {
@@ -206,6 +208,25 @@ public class GatheringTask implements WatTask {
                 }
             }
         }
+    }
+
+    @Override
+    public HashMap<WatItem, Integer> inventory() {
+        HashMap<WatItem, Integer> ret = new HashMap<>();
+        WatZone bestZone = ZoneManager.getInstance().getBestZone(training);
+
+        if(bestZone != null) {
+            if(bestZone.isFoodRequired()) {
+                ret.put(ItemManager.getInstance().getItem("Tuna"), 8);
+            }
+
+            if(bestZone.isGatheringItemRequired()) {
+                WatTool bestTool = ItemManager.getInstance().getBestTool(training);
+                ret.put(bestTool, 1);
+            }
+        }
+
+        return ret;
     }
 
     @Override
