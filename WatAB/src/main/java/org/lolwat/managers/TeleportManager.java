@@ -144,5 +144,17 @@ public class TeleportManager {
                 "Ring of dueling",
                 "Ring of dueling(8)",
                 "Castle Wars"));
+
+        teleports.add(new Teleport("Wintertotd",
+                new Tile(1623, 3937, 0),
+                "Games necklace",
+                "Games necklace(8)",
+                "Wintertotd"));
+
+        teleports.add(new Teleport("PVP Arena",
+                new Tile(3313,3236,0),
+                "Ring of dueling",
+                "Ring of dueling(6)",
+                "PVP"));
     }
 }
