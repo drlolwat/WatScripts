@@ -1,4 +1,4 @@
-package org.lolwat.types.gear;
+package org.lolwat.types;
 
 import lombok.Getter;
 import org.dreambot.api.methods.map.Area;
@@ -24,7 +24,8 @@ public class WatZone {
     @Getter
     private final boolean foodRequired;
 
-    public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc, String contextSearch, boolean gatheringItemRequired, boolean foodRequired) {
+    public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc,
+                   String contextSearch, boolean gatheringItemRequired, boolean foodRequired) {
         this.name = name;
         this.skill = skill;
         this.minLevel = minLevel;
