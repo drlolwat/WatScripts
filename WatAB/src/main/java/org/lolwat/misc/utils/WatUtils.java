@@ -460,16 +460,8 @@ public class WatUtils {
         return Bank.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
     }
 
-    public static void bank(WatTask task) {
-        List<String> allowedObjects = new ArrayList<String>() {
-            {
-                add("Bank booth");
-                add("Open chest");
-                add("Bank chest");
-            }
-        };
-
-        if(Inventory.contains("Coin pouch")) {
+    public static void handleCoinPouch(int min) {
+        if(Inventory.count("Coin pouch") >= min) {
             Item pouch = Inventory.get("Coin pouch");
             if(pouch != null) {
                 if(!pouch.interact("Open-all")) {
@@ -480,6 +472,18 @@ public class WatUtils {
                 Sleep.sleepUntil(() -> !Inventory.contains("Coin pouch"), 5000);
             }
         }
+    }
+
+    public static void bank(WatTask task) {
+        List<String> allowedObjects = new ArrayList<String>() {
+            {
+                add("Bank booth");
+                add("Open chest");
+                add("Bank chest");
+            }
+        };
+
+        handleCoinPouch(1);
 
         NPC banker = NPCs.closest("Banker");
         if (banker == null || !banker.exists()) {
@@ -549,24 +553,45 @@ public class WatUtils {
     }
 
     public static void removeOtherItems(WatTask t) {
-        for(Item i : Inventory.all()) {
-            if(i == null) continue;
-            WatItem wi = ItemManager.getInstance().getItem(i.getName());
-            if(wi == null) {
-                if(!Bank.depositAll(i)) {
-                    Logger.error("no wi-error depositing " + i.getName());
-                    return;
-                }
-                continue;
-            }
+        List<WatItem> toKeep = new ArrayList<>();
+        toKeep.addAll(new ArrayList<>(t.loadout().keySet()));
+        toKeep.addAll(new ArrayList<>(t.inventory().keySet()));
+        boolean depositAll = true;
 
-            if(!t.loadout().containsKey(wi) && !t.inventory().containsKey(wi) && !t.inventoryTolerated().contains(i.getName())) {
-                Logger.log("removing " + i.getName() + " from inventory");
-                if(!Bank.depositAll(i)) {
-                    Logger.error("error depositing " + i.getName());
-                    return;
-                }
+        for(WatItem i : toKeep) {
+            if(Inventory.contains(x -> x != null && x.getName().equalsIgnoreCase(i.getName()))) {
+                depositAll = false;
             }
         }
+
+        if(!depositAll) {
+            for (Item i : Inventory.all()) {
+                if (i == null) continue;
+                WatItem wi = ItemManager.getInstance().getItem(i.getName());
+                if (wi == null) {
+                    if (!Bank.depositAll(i)) {
+                        Logger.error("no wi-error depositing " + i.getName());
+                        return;
+                    }
+                    continue;
+                }
+
+                if (!t.loadout().containsKey(wi) && !t.inventory().containsKey(wi)) {
+                    Logger.log("removing " + i.getName() + " from inventory");
+                    if (!Bank.depositAll(i)) {
+                        Logger.error("error depositing " + i.getName());
+                        return;
+                    }
+                }
+            }
+        } else {
+            if(!Bank.depositAllItems()) {
+                Logger.error("problem depositing all items in WatUtils");
+            }
+        }
+    }
+
+    public static void removeOtherItems(List<WatItem> except) {
+        Bank.depositAllExcept(x -> x != null && !except.contains(ItemManager.getInstance().getItem(x.getName())));
     }
 }
