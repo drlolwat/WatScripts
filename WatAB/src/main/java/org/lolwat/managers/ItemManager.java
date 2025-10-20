@@ -332,6 +332,7 @@ public class ItemManager {
 
         // misc
         addBasicItem("Coin pouch");
+        addBasicItem("Cup of tea");
 
         //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
     }
