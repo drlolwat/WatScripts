@@ -39,7 +39,10 @@ public class CombatGearTask implements WatTask {
             return;
         }
 
-        WatUtils.removeOtherItems(parent);
+        if(Inventory.emptySlotCount() <= 5) {
+            WatUtils.removeOtherItems(parent);
+        }
+
         Bank.resetCache();
 
         for(EquipmentSlot s : slots) {
