@@ -3,6 +3,7 @@ package org.lolwat.tasks.misc;
 import org.dreambot.api.methods.Calculations;
 import org.dreambot.api.methods.container.impl.Inventory;
 import org.dreambot.api.methods.container.impl.bank.Bank;
+import org.dreambot.api.methods.container.impl.bank.BankLocation;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.input.Camera;
@@ -30,6 +31,7 @@ import org.lolwat.managers.TeleportManager;
 import org.lolwat.misc.utils.DialogueUtils;
 import org.lolwat.misc.utils.TutUtils;
 import org.lolwat.misc.utils.WatUtils;
+import org.lolwat.tasks.banking.WithdrawItemsTask;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.interfaces.WatTask;
 import org.lolwat.types.teleports.Teleport;
@@ -220,7 +222,30 @@ public class WalkingTask implements WatTask {
                                     && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
                             hasTeleported = true;
                             return;
+                        } else {
+                            if(Bank.isCached()) {
+                                if(BankLocation.getNearest().walkingDistance(Players.getLocal().getTile()) <= 100) {
+                                    if (Bank.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                                        TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(new HashMap<WatItem, Integer>() {
+                                            {
+                                                put(ItemManager.getInstance().getItem(teleportItem), 1);
+                                            }
+                                        }, postTask));
+                                        return;
+                                    }
+                                }
+                            } else {
+                                if(BankLocation.GRAND_EXCHANGE.walkingDistance(Players.getLocal().getTile()) <= 200) {
+                                    TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(new HashMap<WatItem, Integer>() {
+                                        {
+                                            put(ItemManager.getInstance().getItem(teleportItem), 1);
+                                        }
+                                    }, postTask));
+                                    return;
+                                }
+                            }
                         }
+
                         hasTeleported = true;
                     } else {
                         if (Bank.isOpen()) {
