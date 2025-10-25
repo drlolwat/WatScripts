@@ -2,6 +2,7 @@ package org.lolwat.tasks.gathering;
 
 import org.dreambot.api.methods.combat.Combat;
 import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.bank.Bank;
 import org.dreambot.api.methods.container.impl.equipment.Equipment;
 import org.dreambot.api.methods.dialogues.Dialogues;
 import org.dreambot.api.methods.interactive.GameObjects;
@@ -21,12 +22,15 @@ import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.banking.WithdrawItemsTask;
 import org.lolwat.tasks.gathering.gearing.GatheringGearTask;
 import org.lolwat.tasks.misc.WalkingTask;
+import org.lolwat.types.WatZone;
 import org.lolwat.types.gear.WatItem;
 import org.lolwat.types.gear.WatTool;
-import org.lolwat.types.WatZone;
 import org.lolwat.types.interfaces.WatTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GatheringTask implements WatTask {
     private final Skill training;
@@ -78,21 +82,21 @@ public class GatheringTask implements WatTask {
 
             if (!hasTool) {
                 Logger.log("need to fetch tool for gathering (" + training + ")");
-                TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, this));
+                TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, bestZone, this));
                 return;
             }
 
-            /*if (Bank.isCached()) {
+            if (Bank.isCached()) {
                 long now = System.currentTimeMillis();
                 if (now - lastUpgradeCheck > UPGRADE_CHECK_INTERVAL) {
                     lastUpgradeCheck = now;
                     if (!toolOwned.equals(bestTool.getName())) {
                         Logger.log("we need to upgrade our gathering item");
-                        TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, this));
+                        TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, bestZone, this));
                         return;
                     }
                 }
-            }*/
+            }
         }
 
         if (Inventory.isFull()) {
@@ -112,15 +116,7 @@ public class GatheringTask implements WatTask {
                     }
                 }
             } else {
-                TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(
-                        new HashMap<WatItem, Integer>() {
-                            {
-                                if(bestZone.isGatheringItemRequired()) {
-                                    put(bestTool, 1);
-                                }
-                            }
-                        }, this
-                ));
+                TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, bestZone, this));
                 return;
             }
         }
@@ -168,6 +164,17 @@ public class GatheringTask implements WatTask {
             }
         }
 
+        // check for gear needed for zone
+        if(!bestZone.getExtraGear().isEmpty()) {
+            for(Map.Entry<WatItem, Integer> item : bestZone.getExtraGear().entrySet()) {
+                if(!Equipment.contains(x -> x != null && x.getName().contains(item.getKey().getName()) && x.getAmount() >= item.getValue())) {
+                    Logger.log("we are missing a required gear item for the gathering task");
+                    TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, bestZone, this));
+                    return;
+                }
+            }
+        }
+
         if (!bestZone.getSearchArea().contains(Players.getLocal())) {
             Logger.log("We are walking to the best " + training + " area for " + bestZone.getObjectName());
             TaskManager.getInstance().setCurrentTask(new WalkingTask(bestZone.getSearchArea(), this));
@@ -177,11 +184,35 @@ public class GatheringTask implements WatTask {
         WatUtils.handleCoinPouch(20);
 
         if (!bestZone.isNpc()) {
-            GameObject bestObject = GameObjects.closest(x -> x.getName().equals(bestZone.getObjectName()) && x.canReach());
+            if(Players.getLocal().isInCombat()) {
+                Logger.warn("got into combat, running to bank");
+                TaskManager.getInstance().setCurrentTask(new GatheringGearTask(training, bestZone, this));
+                return;
+            }
+
+            GameObject bestObject = GameObjects.closest(x -> x.getName().equals(bestZone.getObjectName()) && x.canReach() && bestZone.getSearchArea().contains(x) && x.hasAction(bestZone.getContextSearch()));
             if (bestObject != null) {
                 if (!bestObject.interact(bestZone.getContextSearch())) {
                     Logger.error("problem interacting with object " + bestObject.getName());
                     return;
+                }
+
+                List<NPC> toAvoid = new ArrayList<>();
+                if(training.equals(Skill.THIEVING)) {
+                    toAvoid.addAll(NPCs.all("Guard"));
+                    toAvoid.addAll(NPCs.all("Paladin"));
+                }
+
+                if(!toAvoid.isEmpty()) {
+                    for(NPC n : toAvoid) {
+                        if(n == null) continue;
+                        if(!n.exists()) continue;
+
+                        if(n.distance(bestObject.getTile()) <= 2) {
+                            Logger.log("waiting for " + n.getName() + " to pass before interacting");
+                            return;
+                        }
+                    }
                 }
 
                 int inventoryCount = Inventory.size();
