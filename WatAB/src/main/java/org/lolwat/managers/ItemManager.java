@@ -334,7 +334,10 @@ public class ItemManager {
         addBasicItem("Coin pouch");
         addBasicItem("Cup of tea");
 
-        //addChargedItem("Ring of wealth (", "Ring of wealth (5)");
+        addChargedItem("Ring of wealth (", "Ring of wealth (5)");
+        addChargedItem("Ring of dueling", "Ring of dueling(8)");
+        addChargedItem("Games necklace", "Games necklace(8)");
+        addChargedItem("Skills necklace(", "Skills necklace(6)");
     }
 
     public WatItem getItem(String name) {
@@ -346,6 +349,10 @@ public class ItemManager {
 
         Logger.error("WatItem config missing: " + name);
         return null;
+    }
+
+    private void addChargedItem(String name, String searchFor) {
+        items.add(new WatItem(name, searchFor));
     }
 
     private void addTool(String name, Skill skillUsed, HashMap<Skill, Integer> skillsNeeded, HashMap<Skill, Integer> skillsToEquip) {
