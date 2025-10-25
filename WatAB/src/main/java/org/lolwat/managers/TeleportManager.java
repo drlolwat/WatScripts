@@ -154,7 +154,39 @@ public class TeleportManager {
         teleports.add(new Teleport("PVP Arena",
                 new Tile(3313,3236,0),
                 "Ring of dueling",
-                "Ring of dueling(6)",
-                "PVP"));
+                "Ring of dueling(8)",
+                "Emir's Arena"));
+
+        teleports.add(new Teleport("Ferox Enclave",
+                new Tile(3150,3633,0),
+                "Ring of dueling",
+                "Ring of dueling(8)",
+                "Ferox Enclave"));
+
+        teleports.add(new Teleport("Burthorpe",
+                new Tile(2898,3552,0),
+                "Games necklace",
+                "Games necklace(8)",
+                "Burthorpe"));
+
+        teleports.add(new Teleport("Barbarian Outpost",
+                new Tile(2520,3569,0),
+                "Games necklace",
+                "Games necklace(8)",
+                "Barbarian"));
+
+        teleports.add(new Teleport("Wintertotd",
+                new Tile(1623, 3937, 0),
+                "Games necklace",
+                "Games necklace(8)",
+                "Wintertotd"));
+
+        teleports.add(new Teleport("Woodcutting Guild",
+                new Tile(1659, 3505, 0),
+                "Skills necklace",
+                "Skills necklace(6)",
+                "Woodcutting Guild"));
+
+        // Skills necklace(6)
     }
 }
