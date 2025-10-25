@@ -36,7 +36,7 @@ public class BuyMultipleItemsTask implements WatTask {
                 Logger.log("MultipleItemsTask handing off to SingleItemTask");
                 processed.add(i.getKey());
                 TaskManager.getInstance().setCurrentTask(new BuySingleItemTask(
-                        i.getKey().getSearchFor(),
+                        i.getKey().getName(),
                         i.getValue(),
                         i.getKey().getPrice(),
                         this)
