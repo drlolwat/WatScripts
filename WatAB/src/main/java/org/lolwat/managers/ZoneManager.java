@@ -8,8 +8,10 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.types.WatZone;
+import org.lolwat.types.gear.WatItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ZoneManager {
@@ -202,6 +204,45 @@ public class ZoneManager {
 
         zones.add(new WatZone("VarrockE", Skill.THIEVING, 5,
                 new Area(3270, 3408, 3267, 3416), "Tea stall", false, "Steal-from", false, false));
+
+        zones.add(new WatZone("HosidiusE1", Skill.THIEVING, 25,
+                new Area(
+                        new Tile(1796, 3606, 0),
+                        new Tile(1795, 3607, 0),
+                        new Tile(1795, 3610, 0),
+                        new Tile(1796, 3610, 0),
+                        new Tile(1797, 3610, 0),
+                        new Tile(1797, 3606, 0)), "Fruit Stall", false, "Steal-from", false, false,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Skills necklace("), 1);
+                    }
+                }));
+
+        zones.add(new WatZone("HosidiusE2", Skill.THIEVING, 25,
+                new Area(
+                        new Tile(1799, 3606, 0),
+                        new Tile(1801, 3606, 0),
+                        new Tile(1802, 3608, 0),
+                        new Tile(1802, 3609, 0),
+                        new Tile(1800, 3611, 0),
+                        new Tile(1799, 3610, 0)), "Fruit Stall", false, "Steal-from", false, false,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Skills necklace("), 1);
+                    }
+                }));
+
+        /*zones.add(new WatZone("ArdyMarket", Skill.THIEVING, 250,
+                new Area(
+                        new Tile(2660, 3316, 0),
+                        new Tile(2662, 3314, 0),
+                        new Tile(2665, 3314, 0),
+                        new Tile(2666, 3316, 0),
+                        new Tile(2666, 3318, 0),
+                        new Tile(2660, 3318, 0)), "Silk stall", false, "Steal-from", false, false));*/
     }
 
     public WatZone getBestZone(Skill s) {
