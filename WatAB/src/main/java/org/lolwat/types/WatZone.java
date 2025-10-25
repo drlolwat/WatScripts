@@ -3,6 +3,9 @@ package org.lolwat.types;
 import lombok.Getter;
 import org.dreambot.api.methods.map.Area;
 import org.dreambot.api.methods.skills.Skill;
+import org.lolwat.types.gear.WatItem;
+
+import java.util.HashMap;
 
 public class WatZone {
     @Getter
@@ -23,6 +26,25 @@ public class WatZone {
     private final boolean gatheringItemRequired;
     @Getter
     private final boolean foodRequired;
+    @Getter
+    private final HashMap<WatItem, Integer> extraInventory;
+    @Getter
+    private final HashMap<WatItem, Integer> extraGear;
+
+    public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc,
+                   String contextSearch, boolean gatheringItemRequired, boolean foodRequired, HashMap<WatItem, Integer> extraInventory, HashMap<WatItem, Integer> extraGear) {
+        this.name = name;
+        this.skill = skill;
+        this.minLevel = minLevel;
+        this.searchArea = searchArea;
+        this.objectName = objectName;
+        this.isNpc = isNpc;
+        this.contextSearch = contextSearch;
+        this.gatheringItemRequired = gatheringItemRequired;
+        this.foodRequired = foodRequired;
+        this.extraInventory = extraInventory;
+        this.extraGear = extraGear;
+    }
 
     public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc,
                    String contextSearch, boolean gatheringItemRequired, boolean foodRequired) {
@@ -35,5 +57,7 @@ public class WatZone {
         this.contextSearch = contextSearch;
         this.gatheringItemRequired = gatheringItemRequired;
         this.foodRequired = foodRequired;
+        this.extraInventory = new HashMap<>();
+        this.extraGear = new HashMap<>();
     }
 }
