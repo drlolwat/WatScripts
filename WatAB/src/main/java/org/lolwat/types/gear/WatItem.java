@@ -29,7 +29,7 @@ public class WatItem {
         this.searchFor = searchFor;
         this.levelRequirements = new HashMap<>();
         this.questRequirements = new ArrayList<>();
-        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.searchFor) * 1.2);
     }
 
     public WatItem(String name) {
@@ -37,16 +37,15 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = new HashMap<>();
         this.questRequirements = new ArrayList<>();
-        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.searchFor) * 1.2);
     }
-
 
     public WatItem(String name, String searchFor, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
         this.name = name;
         this.searchFor = searchFor;
         this.levelRequirements = levelRequirements;
         this.questRequirements = questRequirements;
-        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.searchFor) * 1.2);
     }
 
     public WatItem(String name, HashMap<Skill, Integer> levelRequirements) {
@@ -54,7 +53,7 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = levelRequirements;
         this.questRequirements = new ArrayList<>();
-        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.searchFor) * 1.2);
     }
 
     public WatItem(String name, List<Quest> questRequirements) {
@@ -62,7 +61,7 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = new HashMap<>();
         this.questRequirements = questRequirements;
-        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.searchFor) * 1.2);
     }
 
     public WatItem(String name, HashMap<Skill, Integer> levelRequirements, List<Quest> questRequirements) {
@@ -70,11 +69,11 @@ public class WatItem {
         this.searchFor = name;
         this.levelRequirements = levelRequirements;
         this.questRequirements = questRequirements;
-        this.price = (int) (LivePrices.getHigh(this.name) * 1.2);
+        this.price = (int) (LivePrices.getHigh(this.searchFor) * 1.2);
     }
 
     public boolean isTradeable() {
-        return LivePrices.getHigh(this.name) > 0;
+        return LivePrices.getHigh(this.searchFor) > 0;
     }
 
     public void raisePrice() {
