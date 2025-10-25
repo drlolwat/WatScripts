@@ -202,7 +202,7 @@ public class TaskManager {
                 (
                         ConfigManager.getInstance().getConfigInt("min_task_time") * 60,
                         ConfigManager.getInstance().getConfigInt("max_task_time") * 60
-                );
+                ) + (Skills.getRealLevel(value.trainsSkill()) * 60);
     }
 
     private boolean preTaskSelection() {
