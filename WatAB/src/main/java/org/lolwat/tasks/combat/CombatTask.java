@@ -272,17 +272,17 @@ public class CombatTask implements WatTask {
             }
         }
 
-        for (Item i : Inventory.all()) {
+        /*for (Item i : Inventory.all()) {
             if (i == null) continue;
             boolean needsDeposit = false;
             WatItem wi = ItemManager.getInstance().getItem(i.getName());
-            if (wi == null) needsDeposit = true;
+            //if (wi == null) needsDeposit = true;
             //if (!target.getMobLogic().inventoryLoadout().containsKey(wi)) needsDeposit = true;
             if (needsDeposit) {
                 TaskManager.getInstance().setCurrentTask(new CombatGearTask(this, type, Collections.emptyList()));
                 return;
             }
-        }
+        }*/
 
         HashMap<WatItem, Integer> toObtain = new HashMap<>();
         if (!target.getMobLogic().inventoryLoadout().isEmpty()) {
