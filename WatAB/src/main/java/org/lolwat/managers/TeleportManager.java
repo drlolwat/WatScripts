@@ -149,7 +149,7 @@ public class TeleportManager {
                 new Tile(1623, 3937, 0),
                 "Games necklace",
                 "Games necklace(8)",
-                "Wintertotd"));
+                "Wintertotd Camp"));
 
         teleports.add(new Teleport("PVP Arena",
                 new Tile(3313,3236,0),
@@ -174,12 +174,6 @@ public class TeleportManager {
                 "Games necklace",
                 "Games necklace(8)",
                 "Barbarian"));
-
-        teleports.add(new Teleport("Wintertotd",
-                new Tile(1623, 3937, 0),
-                "Games necklace",
-                "Games necklace(8)",
-                "Wintertotd Camp"));
 
         teleports.add(new Teleport("Woodcutting Guild",
                 new Tile(1659, 3505, 0),
