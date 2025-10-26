@@ -179,7 +179,7 @@ public class TeleportManager {
                 new Tile(1623, 3937, 0),
                 "Games necklace",
                 "Games necklace(8)",
-                "Wintertotd"));
+                "Wintertotd Camp"));
 
         teleports.add(new Teleport("Woodcutting Guild",
                 new Tile(1659, 3505, 0),
@@ -187,6 +187,10 @@ public class TeleportManager {
                 "Skills necklace(6)",
                 "Woodcutting Guild"));
 
-        // Skills necklace(6)
+        teleports.add(new Teleport("Cooking Guild",
+                new Tile(3142, 3442, 0),
+                "Skills necklace",
+                "Skills necklace(6)",
+                "Cooking Guild"));
     }
 }
