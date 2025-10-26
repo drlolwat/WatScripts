@@ -40,7 +40,7 @@ public class ZoneManager {
                 new Tile(3281, 3366, 0),
                 new Tile(3280, 3364, 0),
                 new Tile(3280, 3360, 0),
-                new Tile(3285, 3360, 0)), "Copper rocks", false, "Mine", true, false)
+                new Tile(3285, 3360, 0)), "Copper rocks", false, "Mine", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -55,7 +55,7 @@ public class ZoneManager {
                 new Tile(3281, 3366, 0),
                 new Tile(3280, 3364, 0),
                 new Tile(3280, 3360, 0),
-                new Tile(3285, 3360, 0)), "Tin rocks", false, "Mine", true, false)
+                new Tile(3285, 3360, 0)), "Tin rocks", false, "Mine", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -70,7 +70,7 @@ public class ZoneManager {
                 new Tile(3281, 3366, 0),
                 new Tile(3280, 3364, 0),
                 new Tile(3280, 3360, 0),
-                new Tile(3285, 3360, 0)), "Iron rocks", false, "Mine", true, false)
+                new Tile(3285, 3360, 0)), "Iron rocks", false, "Mine", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -86,7 +86,7 @@ public class ZoneManager {
                         new Tile(2990, 3240, 0),
                         new Tile(2988, 3233, 0),
                         new Tile(2981, 3229, 0),
-                        new Tile(2977, 3229, 0)), "Tin rocks", false, "Mine", true, false)
+                        new Tile(2977, 3229, 0)), "Tin rocks", false, "Mine", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -102,7 +102,7 @@ public class ZoneManager {
                         new Tile(2990, 3240, 0),
                         new Tile(2988, 3233, 0),
                         new Tile(2981, 3229, 0),
-                        new Tile(2977, 3229, 0)), "Copper rocks", false, "Mine", true, false)
+                        new Tile(2977, 3229, 0)), "Copper rocks", false, "Mine", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -118,7 +118,7 @@ public class ZoneManager {
                         new Tile(2990, 3240, 0),
                         new Tile(2988, 3233, 0),
                         new Tile(2981, 3229, 0),
-                        new Tile(2977, 3229, 0)), "Iron rocks", false, "Mine", true, false)
+                        new Tile(2977, 3229, 0)), "Iron rocks", false, "Mine", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -132,7 +132,7 @@ public class ZoneManager {
                         new Tile(2692, 3470, 0),
                         new Tile(2698, 3473, 0),
                         new Tile(2698, 3486, 0),
-                        new Tile(2680, 3488, 0)), "Tree", false, "Chop down", true, false)
+                        new Tile(2680, 3488, 0)), "Tree", false, "Chop down", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -145,7 +145,7 @@ public class ZoneManager {
                         new Tile(2718, 3454, 0),
                         new Tile(2731, 3449, 0),
                         new Tile(2728, 3434, 0),
-                        new Tile(2720, 3432, 0)), "Tree", false, "Chop down", true, false)
+                        new Tile(2720, 3432, 0)), "Tree", false, "Chop down", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -158,7 +158,7 @@ public class ZoneManager {
                         new Tile(2725, 3484, 0),
                         new Tile(2733, 3483, 0),
                         new Tile(2738, 3480, 0),
-                        new Tile(2735, 3476, 0)), "Oak tree", false, "Chop down", true, false)
+                        new Tile(2735, 3476, 0)), "Oak tree", false, "Chop down", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -168,7 +168,7 @@ public class ZoneManager {
                         new Tile(2716, 3449, 0),
                         new Tile(2716, 3455, 0),
                         new Tile(2728, 3455, 0),
-                        new Tile(2731, 3445, 0)), "Oak tree", false, "Chop down", true, false)
+                        new Tile(2731, 3445, 0)), "Oak tree", false, "Chop down", true, false, true)
         );
 
         zones.add(new WatZone(
@@ -182,7 +182,7 @@ public class ZoneManager {
                         new Tile(2723, 3506, 0),
                         new Tile(2719, 3499, 0),
                         new Tile(2724, 3499, 0),
-                        new Tile(2726, 3499, 0)), "Maple tree", false, "Chop down", true, false)
+                        new Tile(2726, 3499, 0)), "Maple tree", false, "Chop down", true, false, true)
         );
 
         zones.add(new WatZone("LumbridgeC", Skill.THIEVING, 1,
@@ -196,14 +196,14 @@ public class ZoneManager {
                         new Tile(3214, 3234, 0),
                         new Tile(3221, 3234, 0),
                         new Tile(3226, 3229, 0),
-                        new Tile(3226, 3219, 0)), "Man", true, "Pickpocket", false, true));
+                        new Tile(3226, 3219, 0)), "Man", true, "Pickpocket", false, true, false));
 
         zones.add(new WatZone("EdgevilleN", Skill.THIEVING, 1,
                 new Area(3087, 3516, 3105, 3503),
-                "Man", true, "Pickpocket", false, true));
+                "Man", true, "Pickpocket", false, true, false));
 
         zones.add(new WatZone("VarrockE", Skill.THIEVING, 5,
-                new Area(3270, 3408, 3267, 3416), "Tea stall", false, "Steal-from", false, false));
+                new Area(3270, 3408, 3267, 3416), "Tea stall", false, "Steal-from", false, false, true));
 
         zones.add(new WatZone("HosidiusE1", Skill.THIEVING, 25,
                 new Area(
@@ -212,7 +212,7 @@ public class ZoneManager {
                         new Tile(1795, 3610, 0),
                         new Tile(1796, 3610, 0),
                         new Tile(1797, 3610, 0),
-                        new Tile(1797, 3606, 0)), "Fruit Stall", false, "Steal-from", false, false,
+                        new Tile(1797, 3606, 0)), "Fruit Stall", false, "Steal-from", false, false, true,
                 new HashMap<>(),
                 new HashMap<WatItem, Integer>() {
                     {
@@ -227,7 +227,7 @@ public class ZoneManager {
                         new Tile(1802, 3608, 0),
                         new Tile(1802, 3609, 0),
                         new Tile(1800, 3611, 0),
-                        new Tile(1799, 3610, 0)), "Fruit Stall", false, "Steal-from", false, false,
+                        new Tile(1799, 3610, 0)), "Fruit Stall", false, "Steal-from", false, false, true,
                 new HashMap<>(),
                 new HashMap<WatItem, Integer>() {
                     {
