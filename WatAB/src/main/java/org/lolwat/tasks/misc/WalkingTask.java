@@ -177,14 +177,13 @@ public class WalkingTask implements WatTask {
                             + area.getRandomTile() + " for task " + postTask.getName());
 
                     String teleportItem = teleport.getSearchFor();
-
                     if(Bank.isOpen()
                             && !Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))
                             && !Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
 
                         if(Bank.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
-                            if(!Bank.withdraw(teleportItem, 1)) {
-                                Logger.error("problem withdrawing teleport item during walking");
+                            if(!Bank.withdraw(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"), 1)) {
+                                Logger.error("problem withdrawing teleport item during walking: " + teleportItem);
                                 return;
                             }
 
@@ -269,11 +268,33 @@ public class WalkingTask implements WatTask {
                                 return;
                             }
 
-                            Sleep.sleepUntil(Dialogues::inDialogue, 5000);
+                            Sleep.sleepUntil(() -> Dialogues.inDialogue() || Widgets.getWidget(187) != null, 5000);
 
                             if (!Dialogues.inDialogue()) {
-                                Logger.log("Traversal: did not find dialogue for teleport item: " + teleportItem);
-                                return;
+                                Widget scroll = Widgets.getWidget(187);
+                                if (scroll != null && scroll.isVisible()) {
+                                    WidgetChild c = scroll.getChild(3);
+                                    if (c != null && c.isVisible()) {
+                                        WidgetChild option = null;
+                                        for (WidgetChild child : c.getChildren()) {
+                                            if (child == null) continue;
+                                            if (child.getText().contains(teleport.getOption())) {
+                                                option = child;
+                                                break;
+                                            }
+                                        }
+
+                                        if (option != null) {
+                                            if (!option.interact("Continue")) {
+                                                Logger.log("Traversal: failed to use teleport item " + teleportItem);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Logger.log("Traversal: did not find dialogue for teleport item: " + teleportItem);
+                                    return;
+                                }
                             } else {
                                 Dialogues.clickOption(teleport.getOption());
                             }
