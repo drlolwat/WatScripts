@@ -27,12 +27,14 @@ public class WatZone {
     @Getter
     private final boolean foodRequired;
     @Getter
+    private final boolean droppingResult;
+    @Getter
     private final HashMap<WatItem, Integer> extraInventory;
     @Getter
     private final HashMap<WatItem, Integer> extraGear;
 
     public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc,
-                   String contextSearch, boolean gatheringItemRequired, boolean foodRequired, HashMap<WatItem, Integer> extraInventory, HashMap<WatItem, Integer> extraGear) {
+                   String contextSearch, boolean gatheringItemRequired, boolean foodRequired, boolean droppingResult, HashMap<WatItem, Integer> extraInventory, HashMap<WatItem, Integer> extraGear) {
         this.name = name;
         this.skill = skill;
         this.minLevel = minLevel;
@@ -42,12 +44,13 @@ public class WatZone {
         this.contextSearch = contextSearch;
         this.gatheringItemRequired = gatheringItemRequired;
         this.foodRequired = foodRequired;
+        this.droppingResult = droppingResult;
         this.extraInventory = extraInventory;
         this.extraGear = extraGear;
     }
 
     public WatZone(String name, Skill skill, int minLevel, Area searchArea, String objectName, boolean isNpc,
-                   String contextSearch, boolean gatheringItemRequired, boolean foodRequired) {
+                   String contextSearch, boolean gatheringItemRequired, boolean foodRequired, boolean droppingResult) {
         this.name = name;
         this.skill = skill;
         this.minLevel = minLevel;
@@ -57,6 +60,7 @@ public class WatZone {
         this.contextSearch = contextSearch;
         this.gatheringItemRequired = gatheringItemRequired;
         this.foodRequired = foodRequired;
+        this.droppingResult = droppingResult;
         this.extraInventory = new HashMap<>();
         this.extraGear = new HashMap<>();
     }
