@@ -335,9 +335,35 @@ public class ItemManager {
         addBasicItem("Cup of tea");
 
         addChargedItem("Ring of wealth (", "Ring of wealth (5)");
-        addChargedItem("Ring of dueling", "Ring of dueling(8)");
-        addChargedItem("Games necklace", "Games necklace(8)");
+        addChargedItem("Ring of wealth (2)", "Ring of wealth (5)");
+        addChargedItem("Ring of wealth (3)", "Ring of wealth (5)");
+        addChargedItem("Ring of wealth (4)", "Ring of wealth (5)");
+        addChargedItem("Ring of wealth (5)", "Ring of wealth (5)");
+
+        addChargedItem("Ring of dueling(", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(2)", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(3)", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(4)", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(5)", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(6)", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(7)", "Ring of dueling(8)");
+        addChargedItem("Ring of dueling(8)", "Ring of dueling(8)");
+
+        addChargedItem("Games necklace(", "Games necklace(8)");
+        addChargedItem("Games necklace(2)", "Games necklace(8)");
+        addChargedItem("Games necklace(3)", "Games necklace(8)");
+        addChargedItem("Games necklace(4)", "Games necklace(8)");
+        addChargedItem("Games necklace(5)", "Games necklace(8)");
+        addChargedItem("Games necklace(6)", "Games necklace(8)");
+        addChargedItem("Games necklace(7)", "Games necklace(8)");
+        addChargedItem("Games necklace(8)", "Games necklace(8)");
+
         addChargedItem("Skills necklace(", "Skills necklace(6)");
+        addChargedItem("Skills necklace(2)", "Skills necklace(6)");
+        addChargedItem("Skills necklace(3)", "Skills necklace(6)");
+        addChargedItem("Skills necklace(4)", "Skills necklace(6)");
+        addChargedItem("Skills necklace(5)", "Skills necklace(6)");
+        addChargedItem("Skills necklace(6)", "Skills necklace(6)");
     }
 
     public WatItem getItem(String name) {
