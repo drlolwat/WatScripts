@@ -14,10 +14,7 @@ import org.dreambot.api.utilities.Sleep;
 import org.dreambot.api.wrappers.interactive.GameObject;
 import org.dreambot.api.wrappers.interactive.NPC;
 import org.dreambot.api.wrappers.items.Item;
-import org.lolwat.managers.ConfigManager;
-import org.lolwat.managers.ItemManager;
-import org.lolwat.managers.TaskManager;
-import org.lolwat.managers.ZoneManager;
+import org.lolwat.managers.*;
 import org.lolwat.misc.utils.WatUtils;
 import org.lolwat.tasks.banking.WithdrawItemsTask;
 import org.lolwat.tasks.gathering.gearing.GatheringGearTask;
@@ -100,12 +97,12 @@ public class GatheringTask implements WatTask {
         }
 
         if (Inventory.isFull()) {
-            if (training.equals(Skill.MINING) || training.equals(Skill.WOODCUTTING)) {
+            if (bestZone.isDroppingResult()) {
                 for (Item it : Inventory.all()) {
                     if (it == null) continue;
                     WatItem wi = ItemManager.getInstance().getItem(it.getName());
                     if(wi != null && wi.getPrice() >= 5000) continue;
-                    if (!ItemManager.getInstance().isValidTool(it.getName(), training)) {
+                    if (!ItemManager.getInstance().isValidTool(it.getName(), training) && !TeleportManager.getInstance().isTeleportItem(it.getName())) {
                         int count = Inventory.size();
                         if (!Inventory.drop(it.getName())) {
                             Logger.log("Failed to drop during " + training.toString().toLowerCase() + " task");
