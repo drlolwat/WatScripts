@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.lolwat</groupId>
-    <artifactId>WatAB</artifactId>
-    <version>1.00</version>
+    <artifactId>WatAB-ALPHA</artifactId>
+    <version>0.12</version>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dreambot.path>${user.home}/DreamBot/</dreambot.path>
     </properties>
