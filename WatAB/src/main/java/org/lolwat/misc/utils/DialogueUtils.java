@@ -43,6 +43,7 @@ public class DialogueUtils {
 
             if (usedOptions.isEmpty()) {
                 Logger.log("No unused options found: " + Arrays.toString(Dialogues.getOptions()));
+                Logger.log("We had: " + answers);
             }
         }
 
