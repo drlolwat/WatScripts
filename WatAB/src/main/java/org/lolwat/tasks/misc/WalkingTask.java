@@ -115,10 +115,6 @@ public class WalkingTask implements WatTask {
             return;
         }
 
-        if(Dialogues.inDialogue()) {
-            DialogueUtils.solve(possibleDialogues);
-        }
-
         Widget w = Widgets.getWidget(579);
         if(w != null && w.isVisible()) {
             WidgetChild c = w.getChild(17);
@@ -178,16 +174,16 @@ public class WalkingTask implements WatTask {
 
                     String teleportItem = teleport.getSearchFor();
                     if(Bank.isOpen()
-                            && !Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))
-                            && !Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                            && !Inventory.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("("))
+                            && !Equipment.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("("))) {
 
-                        if(Bank.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
-                            if(!Bank.withdraw(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"), 1)) {
+                        if(Bank.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("("))) {
+                            if(!Bank.withdraw(x -> x.getName().contains(teleportItem) && x.getName().contains("("), 1)) {
                                 Logger.error("problem withdrawing teleport item during walking: " + teleportItem);
                                 return;
                             }
 
-                            Sleep.sleepUntil(() -> Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)")), 5000);
+                            Sleep.sleepUntil(() -> Inventory.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("(")), 5000);
                         }
 
                         if(!Bank.close()) {
@@ -198,8 +194,8 @@ public class WalkingTask implements WatTask {
                         Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
                     }
 
-                    if (!Inventory.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
-                        if (Equipment.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                    if (!Inventory.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("("))) {
+                        if (Equipment.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("("))) {
                             if (Bank.isOpen()) {
                                 Bank.close();
                                 Sleep.sleepUntil(() -> !Bank.isOpen(), 5000);
@@ -224,7 +220,7 @@ public class WalkingTask implements WatTask {
                         } else {
                             if(Bank.isCached()) {
                                 if(BankLocation.getNearest().walkingDistance(Players.getLocal().getTile()) <= 100) {
-                                    if (Bank.contains(x -> x.getName().contains(teleportItem) && !x.getName().contains("(1)"))) {
+                                    if (Bank.contains(x -> x.getName().contains(teleportItem) && x.getName().contains("("))) {
                                         TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(new HashMap<WatItem, Integer>() {
                                             {
                                                 put(ItemManager.getInstance().getItem(teleportItem), 1);
@@ -257,52 +253,53 @@ public class WalkingTask implements WatTask {
                             Sleep.sleepUntil(() -> Tabs.isOpen(Tab.INVENTORY), Calculations.random(200, 300));
                         }
 
-                        if (teleportItem.contains("teleport")) {
-                            if (!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Break")) {
-                                Logger.log("Traversal: failed to use teleport tab: " + teleportItem);
-                                return;
-                            }
-                        } else {
-                            if (!Inventory.interact(x -> x != null && x.getName().contains(teleportItem), "Rub")) {
-                                Logger.log("Traversal: failed to use teleport item: " + teleportItem);
-                                return;
-                            }
-
-                            Sleep.sleepUntil(() -> Dialogues.inDialogue() || Widgets.getWidget(187) != null, 5000);
-
-                            if (!Dialogues.inDialogue()) {
-                                Widget scroll = Widgets.getWidget(187);
-                                if (scroll != null && scroll.isVisible()) {
-                                    WidgetChild c = scroll.getChild(3);
-                                    if (c != null && c.isVisible()) {
-                                        WidgetChild option = null;
-                                        for (WidgetChild child : c.getChildren()) {
-                                            if (child == null) continue;
-                                            if (child.getText().contains(teleport.getOption())) {
-                                                option = child;
-                                                break;
-                                            }
-                                        }
-
-                                        if (option != null) {
-                                            if (!option.interact("Continue")) {
-                                                Logger.log("Traversal: failed to use teleport item " + teleportItem);
-                                                return;
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    Logger.log("Traversal: did not find dialogue for teleport item: " + teleportItem);
+                        Item teleItem = Inventory.get(x -> x != null && x.getName().contains(teleportItem));
+                        if(teleItem != null) {
+                            if (teleportItem.contains("teleport")) {
+                                if (!teleItem.interact("Break")) {
+                                    Logger.log("Traversal: failed to use teleport tab: " + teleportItem);
                                     return;
                                 }
                             } else {
-                                Dialogues.clickOption(teleport.getOption());
+                                if (!teleItem.interact(teleport.getOption())) {
+                                    Logger.log("Traversal: failed to use teleport item: " + teleportItem);
+                                    Logger.log("actions: " + Arrays.toString(teleItem.getActions()));
+                                    Logger.log("tried: " + teleport.getOption());
+                                    return;
+                                }
+
+                                Sleep.sleepUntil(() -> Dialogues.inDialogue() || Widgets.getWidget(187) != null, 5000);
+
+                                if (!Dialogues.inDialogue()) {
+                                    Widget scroll = Widgets.getWidget(187);
+                                    if (scroll != null && scroll.isVisible()) {
+                                        WidgetChild c = scroll.getChild(3);
+                                        if (c != null && c.isVisible()) {
+                                            WidgetChild option = null;
+                                            for (WidgetChild child : c.getChildren()) {
+                                                if (child == null) continue;
+                                                if (child.getText().contains(teleport.getOption())) {
+                                                    option = child;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (option != null) {
+                                                if (!option.interact("Continue")) {
+                                                    Logger.log("Traversal: failed to use teleport item " + teleportItem);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
+                        } else {
+                            Logger.error("teleportItem was null");
                         }
 
                         Tile currentTile = Players.getLocal().getTile();
                         Sleep.sleepUntil(() -> Players.getLocal().getTile() != currentTile && !Players.getLocal().isAnimating(), Calculations.random(1500, 3000));
-                        Sleep.sleepTicks(2);
+                        Sleep.sleepTicks(3);
                         hasTeleported = true;
                         return;
                     }
@@ -311,6 +308,10 @@ public class WalkingTask implements WatTask {
                     Logger.log("Traversal: no teleport item found for destination, walking");
                 }
             }
+        }
+
+        if(Dialogues.inDialogue()) {
+            DialogueUtils.solve(possibleDialogues);
         }
 
         boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
