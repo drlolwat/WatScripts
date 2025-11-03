@@ -29,7 +29,7 @@ public class QuickWithdrawTask implements WatTask {
         if(WatUtils.inventoryContains(itemId, itemQty, false)) {
             TaskManager.getInstance().setCurrentTask(postTask);
         } else {
-            if(WatUtils.bankContains(itemId, itemQty, false)) {
+            if(WatUtils.bankContains(itemId, itemQty)) {
                 if(!Bank.withdraw(itemId, itemQty)) {
                     return;
                 }

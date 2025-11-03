@@ -452,12 +452,28 @@ public class WatUtils {
         return Inventory.contains(x -> x != null && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
     }
 
-    public static boolean equipmentSlotContains(String name, int itemQty) {
+    public static boolean equipmentContains(String name, int itemQty) {
         return Inventory.contains(x -> x != null && x.getName().equals(name) && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
     }
 
-    public static boolean bankContains(int itemId, int itemQty, boolean allowNoted) {
-        return Bank.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
+    public static boolean bankContains(int itemId, int itemQty) {
+        return Bank.contains(x -> x != null && x.getID() == itemId && x.getAmount() >= itemQty && !x.getName().contains("(1)"));
+    }
+
+    public static boolean gearContains(WatItem i, int qty) {
+        return (!Equipment.contains(x -> x != null && x.getName().contains(i.getName()) && x.getAmount() >= qty && !x.getName().contains("(1)")));
+    }
+
+    public static boolean inventoryContains(WatItem i, int qty, boolean allowNoted) {
+        return Inventory.contains(x -> x != null && (allowNoted || !x.isNoted()) && x.getName().contains(i.getName()) && x.getAmount() >= qty && !x.getName().contains("(1)"));
+    }
+
+    public static boolean bankContains(WatItem i, int qty) {
+        return Bank.contains(x -> x != null && x.getName().contains(i.getName()) && x.getAmount() >= qty && !x.getName().contains("(1)"));
+    }
+
+    public static boolean bankWithdraw(WatItem i, int qty) {
+        return Bank.withdraw(x -> x != null && x.getName().contains(i.getName()) && x.getAmount() >= qty && !x.getName().contains("(1)"));
     }
 
     public static void handleCoinPouch(int min) {
