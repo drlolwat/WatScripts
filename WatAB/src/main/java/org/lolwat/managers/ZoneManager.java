@@ -132,7 +132,13 @@ public class ZoneManager {
                         new Tile(2692, 3470, 0),
                         new Tile(2698, 3473, 0),
                         new Tile(2698, 3486, 0),
-                        new Tile(2680, 3488, 0)), "Tree", false, "Chop down", true, false, true)
+                        new Tile(2680, 3488, 0)), "Tree", false, "Chop down", true, false, true,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
+                    }
+                })
         );
 
         zones.add(new WatZone(
@@ -145,7 +151,13 @@ public class ZoneManager {
                         new Tile(2718, 3454, 0),
                         new Tile(2731, 3449, 0),
                         new Tile(2728, 3434, 0),
-                        new Tile(2720, 3432, 0)), "Tree", false, "Chop down", true, false, true)
+                        new Tile(2720, 3432, 0)), "Tree", false, "Chop down", true, false, true,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
+                    }
+                })
         );
 
         zones.add(new WatZone(
@@ -158,7 +170,13 @@ public class ZoneManager {
                         new Tile(2725, 3484, 0),
                         new Tile(2733, 3483, 0),
                         new Tile(2738, 3480, 0),
-                        new Tile(2735, 3476, 0)), "Oak tree", false, "Chop down", true, false, true)
+                        new Tile(2735, 3476, 0)), "Oak tree", false, "Chop down", true, false, true,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
+                    }
+                })
         );
 
         zones.add(new WatZone(
@@ -168,7 +186,13 @@ public class ZoneManager {
                         new Tile(2716, 3449, 0),
                         new Tile(2716, 3455, 0),
                         new Tile(2728, 3455, 0),
-                        new Tile(2731, 3445, 0)), "Oak tree", false, "Chop down", true, false, true)
+                        new Tile(2731, 3445, 0)), "Oak tree", false, "Chop down", true, false, true,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
+                    }
+                })
         );
 
         zones.add(new WatZone(
@@ -182,7 +206,13 @@ public class ZoneManager {
                         new Tile(2723, 3506, 0),
                         new Tile(2719, 3499, 0),
                         new Tile(2724, 3499, 0),
-                        new Tile(2726, 3499, 0)), "Maple tree", false, "Chop down", true, false, true)
+                        new Tile(2726, 3499, 0)), "Maple tree", false, "Chop down", true, false, true,
+                new HashMap<>(),
+                new HashMap<WatItem, Integer>() {
+                    {
+                        put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
+                    }
+                })
         );
 
         zones.add(new WatZone("LumbridgeC", Skill.THIEVING, 1,
