@@ -334,6 +334,9 @@ public class ItemManager {
         addBasicItem("Coin pouch");
         addBasicItem("Cup of tea");
 
+        addBasicItem("Ring of wealth");
+        addBasicItem("Skills necklace");
+
         addChargedItem("Ring of wealth (", "Ring of wealth (5)");
         addChargedItem("Ring of wealth (2)", "Ring of wealth (5)");
         addChargedItem("Ring of wealth (3)", "Ring of wealth (5)");
