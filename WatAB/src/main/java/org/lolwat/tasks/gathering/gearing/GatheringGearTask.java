@@ -118,16 +118,16 @@ public class GatheringGearTask implements WatTask {
             }
         }
 
+        HashMap<WatItem, Integer> toBuy = new HashMap<>();
         if(!zone.getExtraGear().isEmpty()) {
-            HashMap<WatItem, Integer> toBuy = new HashMap<>();
             for(Map.Entry<WatItem, Integer> item : zone.getExtraGear().entrySet()) {
-                if(!Equipment.contains(x -> x != null && x.getName().contains(item.getKey().getName()) && x.getAmount() >= item.getValue())) {
-                    if(!Inventory.contains(x -> x != null && x.getName().contains(item.getKey().getName()) && x.getAmount() >= item.getValue())) {
-                        if (!Bank.contains(x -> x != null && x.getName().contains(item.getKey().getName()) && x.getAmount() >= item.getValue())) {
+                if(!WatUtils.gearContains(item.getKey(), item.getValue())) {
+                    if(!WatUtils.inventoryContains(item.getKey(), item.getValue(), false)) {
+                        if (!WatUtils.bankContains(item.getKey(), item.getValue())) {
                             Logger.log("we will need to buy " + item.getKey().getName() + " x" + item.getValue() + " for the gathering task");
                             toBuy.put(item.getKey(), item.getValue());
                         } else {
-                            if(!Bank.withdraw(x -> x != null && x.getName().contains(item.getKey().getName()) && x.getAmount() >= item.getValue(), item.getValue())) {
+                            if(!WatUtils.bankWithdraw(item.getKey(), item.getValue())) {
                                 Logger.error("problem withdrawing gear item during gearing for gathering");
                             }
                         }
@@ -144,22 +144,57 @@ public class GatheringGearTask implements WatTask {
                             Logger.error("somehow the gathering item was not in the inventory");
                             return;
                         }
-                    } else {
-                        TaskManager.getInstance().setCurrentTask(new BuyMultipleItemsTask(toBuy, this));
-                        return;
+                    }
+                }
+            }
+        }
+
+        List<WatItem> toKeep = new ArrayList<>();
+        if(!zone.getExtraInventory().isEmpty()) {
+            toKeep.addAll(zone.getExtraInventory().keySet());
+        }
+
+        if(!zone.getExtraGear().isEmpty()) {
+            toKeep.addAll(zone.getExtraGear().keySet());
+        }
+
+        for(Item i : Inventory.all()) {
+            if(i == null) continue;
+            if(!toKeep.isEmpty()) {
+                for(WatItem wi : toKeep) {
+                    if(!wi.getName().contains(i.getName())) {
+                       if(!Bank.depositAll(i)) {
+                            Logger.error("problem depositing all extra gather inventory: " + i.getName());
+                            return;
+                       }
                     }
                 }
             }
         }
 
         if(!zone.getExtraInventory().isEmpty()) {
-
+            for(Map.Entry<WatItem, Integer> item : zone.getExtraInventory().entrySet()) {
+                if(!WatUtils.inventoryContains(item.getKey(), item.getValue(), false)) {
+                    if(!WatUtils.bankContains(item.getKey(), item.getValue())) {
+                        Logger.log("we need to buy " + item.getKey().getName() + " x" + item.getValue());
+                        toBuy.put(item.getKey(), item.getValue());
+                    } else {
+                        if(!WatUtils.bankWithdraw(item.getKey(), item.getValue())) {
+                            Logger.error("problem withdrawing inv item during gearing for gathering");
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
-        // get rid of non essentials
-        List<Item> toKeep = new ArrayList<>();
-
-        TaskManager.getInstance().setCurrentTask(parent);
+        if(toBuy.isEmpty()) {
+            Logger.log("all things obtained, lets go gathering");
+            TaskManager.getInstance().setCurrentTask(parent);
+        } else {
+            Logger.log("we need to buy some things");
+            TaskManager.getInstance().setCurrentTask(new BuyMultipleItemsTask(toBuy, this));
+        }
     }
 
     @Override
