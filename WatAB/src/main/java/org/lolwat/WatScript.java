@@ -35,7 +35,7 @@ import java.util.HashMap;
 @ScriptManifest(name = "WatAB Alpha",
         description = "All in one P2P account building script for OSRS",
         author = "lolwat",
-        version = 0.12,
+        version = 0.13,
         category = Category.MISC,
         image = "https://api.botbuddy.net/WatScripts.png")
 public class WatScript extends AbstractScript implements ExperienceListener, ChatListener, MouseListener, SpawnListener {
