@@ -607,7 +607,7 @@ public class WatUtils {
         }
     }
 
-    public static void removeOtherItems(List<WatItem> except) {
-        Bank.depositAllExcept(x -> x != null && !except.contains(ItemManager.getInstance().getItem(x.getName())));
+    public static boolean removeOtherItems(List<WatItem> except) {
+        return Bank.depositAllExcept(x -> x != null && !except.contains(ItemManager.getInstance().getItem(x.getName())));
     }
 }
