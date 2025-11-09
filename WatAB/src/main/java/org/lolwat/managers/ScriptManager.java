@@ -123,6 +123,13 @@ public class ScriptManager {
 
         Walking.setMinimapTargetSize(15);
         Camera.setCameraMode(CameraMode.MOUSE_ONLY);
+
+        WebFinder.getWebFinder().removeNode(788); // death plateau
+        WebFinder.getWebFinder().removeNode(787); // death plateau
+        WebFinder.getWebFinder().removeNode(786); // death plateau
+        WebFinder.getWebFinder().removeNode(785); // death plateau
+        WebFinder.getWebFinder().removeNode(784); // death plateau
+        WebFinder.getWebFinder().removeNode(783); // death plateau
     }
 
     public static int run() {
