@@ -12,7 +12,7 @@ import org.lolwat.managers.ConfigManager;
 import org.lolwat.managers.ItemManager;
 import org.lolwat.managers.TaskManager;
 import org.lolwat.misc.utils.WatUtils;
-import org.lolwat.tasks.exchange.BuyMultipleItemsTask;
+import org.lolwat.tasks.banking.WithdrawItemsTask;
 import org.lolwat.tasks.exchange.BuySingleItemTask;
 import org.lolwat.types.WatZone;
 import org.lolwat.types.gear.WatItem;
@@ -193,7 +193,7 @@ public class GatheringGearTask implements WatTask {
             TaskManager.getInstance().setCurrentTask(parent);
         } else {
             Logger.log("we need to buy some things");
-            TaskManager.getInstance().setCurrentTask(new BuyMultipleItemsTask(toBuy, this));
+            TaskManager.getInstance().setCurrentTask(new WithdrawItemsTask(toBuy, this));
         }
     }
 
