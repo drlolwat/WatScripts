@@ -48,14 +48,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class WatUtils {
-    private static final HashMap<String, String> webhookUrls = new HashMap<String, String>() {{
-        put("lolwat", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
-        put("user4", "https://discord.com/api/webhooks/REPLACE_ME/REPLACE_ME");
-    }};
-
     private static long lastCallTime = 0;
     private static HashMap<String, Integer> itemPrices;
-    private static double multiplier = 1.2;
+    private static final double multiplier = 1.2;
 
     public static void sendWebhook(String message, boolean error) {
         String webhookUrl = "https://api.botbuddy.net/ws_discord.php";
@@ -67,7 +62,7 @@ public class WatUtils {
     }
 
     public static void sendToDiscordApi(String message, String webhookUrl, boolean error) throws IOException {
-        if(Client.getForumUser() == null || !webhookUrls.containsKey(Client.getForumUser().getUsername().toLowerCase()))
+        if(Client.getForumUser() == null)
             return;
 
         URL url = new URL(webhookUrl);
@@ -97,7 +92,7 @@ public class WatUtils {
 
     public static String getRealResponse(String nm, String msg, String task) {
         try {
-            if(Client.getForumUser() == null || !webhookUrls.containsKey(Client.getForumUser().getUsername().toLowerCase()))
+            if(Client.getForumUser() == null)
                 return "";
 
             long currentTime = System.currentTimeMillis();
@@ -139,8 +134,7 @@ public class WatUtils {
             }
 
             String formattedMessage = String.format(
-                    "**Dreambot user**: %s\n**Replying to**: %s\n**Player sent**: %s\n**Bot sent**: %s",
-                    Client.getForumUser().getUsername(),
+                    "**Replying to**: %s\n**Player sent**: %s\n**Bot sent**: %s",
                     nm,
                     msg,
                     response);
