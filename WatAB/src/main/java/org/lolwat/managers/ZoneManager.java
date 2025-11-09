@@ -8,7 +8,6 @@ import org.dreambot.api.methods.map.Tile;
 import org.dreambot.api.methods.skills.Skill;
 import org.dreambot.api.methods.skills.Skills;
 import org.lolwat.types.WatZone;
-import org.lolwat.types.gear.WatItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class ZoneManager {
 
     public void createZones() {
         zones.add(new WatZone(
-                "Varrock South Copper", Skill.MINING, 1, new Area(
+                "Varr SCopper", Skill.MINING, 1, new Area(
                 new Tile(3285, 3364, 0),
                 new Tile(3285, 3360, 0),
                 new Tile(3291, 3360, 0),
@@ -44,7 +43,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Varrock South Tin", Skill.MINING, 1, new Area(
+                "Varr STin", Skill.MINING, 1, new Area(
                 new Tile(3285, 3364, 0),
                 new Tile(3285, 3360, 0),
                 new Tile(3291, 3360, 0),
@@ -59,7 +58,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Varrock South Iron", Skill.MINING, 15, new Area(
+                "Varr SIron", Skill.MINING, 15, new Area(
                 new Tile(3285, 3364, 0),
                 new Tile(3285, 3360, 0),
                 new Tile(3291, 3360, 0),
@@ -74,7 +73,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Rimmington Tin", Skill.MINING, 1,
+                "Rim Tin", Skill.MINING, 1,
                 new Area(
                         new Tile(2977, 3240, 0),
                         new Tile(2977, 3230, 0),
@@ -90,7 +89,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Rimmington Copper", Skill.MINING, 1,
+                "Rim Copper", Skill.MINING, 1,
                 new Area(
                         new Tile(2977, 3240, 0),
                         new Tile(2977, 3230, 0),
@@ -106,7 +105,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Rimmington Iron", Skill.MINING, 1,
+                "Rim Iron", Skill.MINING, 1,
                 new Area(
                         new Tile(2977, 3240, 0),
                         new Tile(2977, 3230, 0),
@@ -122,7 +121,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Seers Trees W", Skill.WOODCUTTING, 1,
+                "Seers TreeW 1", Skill.WOODCUTTING, 1,
                 new Area(
                         new Tile(2671, 3476, 0),
                         new Tile(2671, 3464, 0),
@@ -134,7 +133,7 @@ public class ZoneManager {
                         new Tile(2698, 3486, 0),
                         new Tile(2680, 3488, 0)), "Tree", false, "Chop down", true, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
                     }
@@ -142,7 +141,7 @@ public class ZoneManager {
         );
 
         zones.add(new WatZone(
-                "Seers Trees S", Skill.WOODCUTTING, 1,
+                "Seers TreeS 1", Skill.WOODCUTTING, 1,
                 new Area(
                         new Tile(2720, 3443, 0),
                         new Tile(2720, 3432, 0),
@@ -153,7 +152,7 @@ public class ZoneManager {
                         new Tile(2728, 3434, 0),
                         new Tile(2720, 3432, 0)), "Tree", false, "Chop down", true, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
                     }
@@ -172,7 +171,7 @@ public class ZoneManager {
                         new Tile(2738, 3480, 0),
                         new Tile(2735, 3476, 0)), "Oak tree", false, "Chop down", true, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
                     }
@@ -188,7 +187,7 @@ public class ZoneManager {
                         new Tile(2728, 3455, 0),
                         new Tile(2731, 3445, 0)), "Oak tree", false, "Chop down", true, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
                     }
@@ -208,7 +207,7 @@ public class ZoneManager {
                         new Tile(2724, 3499, 0),
                         new Tile(2726, 3499, 0)), "Maple tree", false, "Chop down", true, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Camelot teleport"), 1);
                     }
@@ -244,7 +243,7 @@ public class ZoneManager {
                         new Tile(1797, 3610, 0),
                         new Tile(1797, 3606, 0)), "Fruit Stall", false, "Steal-from", false, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Skills necklace("), 1);
                     }
@@ -259,7 +258,7 @@ public class ZoneManager {
                         new Tile(1800, 3611, 0),
                         new Tile(1799, 3610, 0)), "Fruit Stall", false, "Steal-from", false, false, true,
                 new HashMap<>(),
-                new HashMap<WatItem, Integer>() {
+                new HashMap<>() {
                     {
                         put(ItemManager.getInstance().getItem("Skills necklace("), 1);
                     }
