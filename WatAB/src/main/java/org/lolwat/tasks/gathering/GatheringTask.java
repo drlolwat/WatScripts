@@ -102,6 +102,11 @@ public class GatheringTask implements WatTask {
                     if (it == null) continue;
                     WatItem wi = ItemManager.getInstance().getItem(it.getName());
                     if(wi != null && wi.getPrice() >= 5000) continue;
+                    if(bestZone.getExtraInventory().containsKey(wi)) continue;
+                    if(bestZone.getExtraGear().containsKey(wi)) continue;
+                    if(it.getName().equals("Coins")) continue;
+                    if(it.getName().equals("Coin pouch")) continue;
+
                     if (!ItemManager.getInstance().isValidTool(it.getName(), training) && !TeleportManager.getInstance().isTeleportItem(it.getName())) {
                         int count = Inventory.size();
                         if (!Inventory.drop(it.getName())) {
