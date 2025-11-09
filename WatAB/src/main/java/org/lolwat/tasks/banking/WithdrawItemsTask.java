@@ -113,6 +113,15 @@ public class WithdrawItemsTask implements WatTask {
             for(Map.Entry<WatItem, Integer> i : toBuy.entrySet()) {
                 Logger.log(i.getKey().getName() + " x" + i.getValue());
             }
+
+            if(Inventory.emptySlotCount() < (toBuy.size() + 1)) {
+                Logger.log("depositing inventory to buy from G.E");
+                if(!Bank.depositAllItems()) {
+                    Logger.error("problem depositing all items to buy from G.E");
+                    return;
+                }
+            }
+
             Logger.log("handing off to G.E operations");
             TaskManager.getInstance().setCurrentTask(new BuyMultipleItemsTask(toBuy, this));
             return;
