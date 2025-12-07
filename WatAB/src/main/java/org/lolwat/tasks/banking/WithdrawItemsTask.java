@@ -128,6 +128,14 @@ public class WithdrawItemsTask implements WatTask {
         }
 
         if(!toWithdraw.isEmpty()) {
+            if(Inventory.emptySlotCount() < (toWithdraw.size())) {
+                Logger.log("depositing inventory to withdraw items we need");
+                if(!Bank.depositAllItems()) {
+                    Logger.error("problem depositing all items to withdraw");
+                    return;
+                }
+            }
+
             for(Map.Entry<WatItem, Integer> i : toWithdraw.entrySet()) {
                 if(!Bank.withdraw(i.getKey().getName(), i.getValue())) {
                     Logger.error("WMITask: problem withdrawing " + i.getKey().getName() + " x" + i.getValue());
