@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="updates">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/mouse/SmartMouseRegular.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/utils/DialogueUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/DeathsCofferTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/regular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/WatScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/misc/paint/Paint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/blast/BlastMiningTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/blast/BlastMiningTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/food/HealingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/food/HealingTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/lolwat/tasks/misc/BankingTask.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/indev" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;lolwat&quot;,
+      &quot;fullname&quot;: &quot;lolwat&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;http://gitlab.botbuddy.net/wat-scripts-private/WatScript2.git&quot;,
+    &quot;second&quot;: &quot;65dfe5d7-4534-488d-88ba-2e60a0939bdf&quot;
+  }
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2Mt2boZ0AnxoSyLqlKASgDIDf5F" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.WatAIO [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatAIO [test].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatAIO [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatScript1 [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatScript2 [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatScript2 [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.WatShamans [package].executor&quot;: &quot;Run&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-VCS Hosting Integrations&quot;: &quot;VCS hosting integrations&quot;,
+    &quot;Notification.DoNotAsk-VCS Hosting Integrations&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/lolwat/IdeaProjects/WatScript2/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+      <recent name="C:\Users\chchp\IdeaProjects\WatScript2\src\main\java\org\lolwat\misc" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="org.lolwat.misc.utils.ItemUtils" />
+      <recent name="org.lolwat.misc.utils.TutorialUtils" />
+      <recent name="org.lolwat.misc.utils.smithing.SmithingUtils" />
+      <recent name="org.lolwat.misc.utils.crafting.CraftingUtils" />
+      <recent name="org.lolwat.misc.utils.fishing.FishingUtils" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/lolwat/gui" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.lolwat.misc.utils" />
+      <recent name="org.lolwat.tasks.misc" />
+      <recent name="org.lolwat.misc.mouse" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3f67029a-e967-49b2-a198-9100e52228f7" name="Changes" comment="" />
+      <created>1678572631502</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678572631502</updated>
+      <workItem from="1687756491344" duration="524000" />
+      <workItem from="1687757022229" duration="90000" />
+      <workItem from="1687757118619" duration="4382000" />
+      <workItem from="1687761514210" duration="117684000" />
+      <workItem from="1688836180373" duration="9337000" />
+      <workItem from="1689178243237" duration="856000" />
+      <workItem from="1689270635846" duration="18081000" />
+      <workItem from="1689578327647" duration="635000" />
+      <workItem from="1689613364766" duration="37327000" />
+      <workItem from="1694880072709" duration="5780000" />
+      <workItem from="1696567473818" duration="16239000" />
+      <workItem from="1697042314419" duration="35174000" />
+      <workItem from="1699230296932" duration="934000" />
+      <workItem from="1699340775129" duration="13120000" />
+      <workItem from="1699712296640" duration="14510000" />
+      <workItem from="1700068272236" duration="12598000" />
+      <workItem from="1700416503479" duration="13651000" />
+      <workItem from="1700870574480" duration="32292000" />
+      <workItem from="1700944002527" duration="38787000" />
+      <workItem from="1703439198009" duration="2421000" />
+      <workItem from="1703695452981" duration="23221000" />
+      <workItem from="1704344410858" duration="601000" />
+      <workItem from="1704345644184" duration="5167000" />
+      <workItem from="1705467002550" duration="104000" />
+      <workItem from="1705467120785" duration="625000" />
+      <workItem from="1705686721065" duration="2557000" />
+      <workItem from="1705827036938" duration="4941000" />
+      <workItem from="1706079551295" duration="94290000" />
+      <workItem from="1707070905200" duration="20674000" />
+      <workItem from="1708153181231" duration="605000" />
+      <workItem from="1708189604594" duration="1842000" />
+      <workItem from="1708235596190" duration="1419000" />
+      <workItem from="1708301151554" duration="6460000" />
+      <workItem from="1710639896628" duration="40583000" />
+      <workItem from="1711141465021" duration="103395000" />
+      <workItem from="1712199543685" duration="22042000" />
+      <workItem from="1712405963408" duration="48189000" />
+      <workItem from="1712668749789" duration="63000" />
+      <workItem from="1712668823117" duration="424000" />
+      <workItem from="1723072779268" duration="5059000" />
+      <workItem from="1723332206842" duration="37175000" />
+      <workItem from="1723769201265" duration="7128000" />
+      <workItem from="1723912101475" duration="2319000" />
+      <workItem from="1723914827606" duration="1855000" />
+      <workItem from="1723942243384" duration="6757000" />
+      <workItem from="1725011936662" duration="50231000" />
+      <workItem from="1725219736756" duration="9063000" />
+      <workItem from="1725269211292" duration="12246000" />
+      <workItem from="1725444793318" duration="33846000" />
+      <workItem from="1725807986427" duration="739000" />
+      <workItem from="1726121741268" duration="6911000" />
+      <workItem from="1726525937702" duration="4126000" />
+      <workItem from="1726609570563" duration="1180000" />
+      <workItem from="1726611950707" duration="13245000" />
+      <workItem from="1726706501547" duration="6274000" />
+      <workItem from="1726785079394" duration="5867000" />
+      <workItem from="1726826324717" duration="6630000" />
+      <workItem from="1726931183100" duration="812000" />
+      <workItem from="1726956367625" duration="3631000" />
+      <workItem from="1726973728626" duration="756000" />
+      <workItem from="1727132754938" duration="12645000" />
+      <workItem from="1727145419860" duration="53238000" />
+      <workItem from="1727403120039" duration="71431000" />
+      <workItem from="1728600483357" duration="2347000" />
+      <workItem from="1728682661396" duration="5642000" />
+      <workItem from="1728784419530" duration="7000" />
+      <workItem from="1728784765412" duration="1208000" />
+      <workItem from="1728788171721" duration="2534000" />
+      <workItem from="1729522721615" duration="52197000" />
+      <workItem from="1729963746939" duration="35874000" />
+      <workItem from="1730079274214" duration="7613000" />
+      <workItem from="1730652261494" duration="9945000" />
+      <workItem from="1730933286237" duration="9000" />
+      <workItem from="1731290067445" duration="715000" />
+      <workItem from="1731719125204" duration="1343000" />
+      <workItem from="1732811202608" duration="355000" />
+      <workItem from="1732813657668" duration="1349000" />
+      <workItem from="1732820572723" duration="549000" />
+      <workItem from="1732939151726" duration="1020000" />
+      <workItem from="1733277179994" duration="362000" />
+      <workItem from="1733440070262" duration="604000" />
+      <workItem from="1733590845190" duration="8220000" />
+      <workItem from="1734397821531" duration="1122000" />
+      <workItem from="1734800084035" duration="552000" />
+      <workItem from="1736140933467" duration="51000" />
+      <workItem from="1746374614651" duration="4218000" />
+      <workItem from="1746388187546" duration="909000" />
+    </task>
+    <task id="LOCAL-00035" summary="small QOL">
+      <created>1685725940857</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1685725940857</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Fixed grand exchange infinite loop&#10;(hopeful) fix for buying items we already own&#10;(hopeful) fix for arriving to mining task and not starting to collect">
+      <created>1685751656115</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1685751656115</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Reverse muling">
+      <created>1685764886129</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1685764886129</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Traversal fix">
+      <created>1685766229276</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1685766229276</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Major restructure/refactor&#10;Spinning task coded and tested">
+      <created>1685804895030</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1685804895030</updated>
+    </task>
+    <task id="LOCAL-00040" summary="fixes, re-enable all skills">
+      <created>1685808818517</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1685808818517</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Jewelry update">
+      <created>1685813891869</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1685813891869</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Jewelry changes, firemaking first testing">
+      <created>1685824826072</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1685824826072</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Firemaking changes&#10;Traversal now supports areas">
+      <created>1685825198796</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1685825198796</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Firemaking changes">
+      <created>1685827291563</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1685827291563</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Firemaking changes">
+      <created>1685827575893</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1685827575893</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Yew logs&#10;Enable all tasks (again)">
+      <created>1685832991861</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1685832991861</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Refactoring">
+      <created>1685849676706</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1685849676706</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Tasks will now upgrade to the next version properly when their goal is reached&#10;Selling on G.E now uses LivePrices correctly to ensure instant selling">
+      <created>1685855601162</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1685855601162</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Cleanup">
+      <created>1685855855249</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1685855855249</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Cleanup&#10;Cooking skill, fish only">
+      <created>1685862809418</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1685862809418</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Fixed task evaluation not correctly ending tasks and removing them etc">
+      <created>1685864360781</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1685864360781</updated>
+    </task>
+    <task id="LOCAL-00052" summary="DUCKTAPE FOR MINING TASK HOPPER!&#10;Firemaking task duel arena location added">
+      <created>1685865284432</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1685865284433</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Melee combat training&#10;Armor/weapon utils&#10;Other QOL">
+      <created>1685922987138</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1685922987138</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Revert test changes to G.E.&#10;Enable willows until level 99&#10;Check for animation in wc task to (hopefully) stop the re-clicking">
+      <created>1685924047039</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1685924047039</updated>
+    </task>
+    <task id="LOCAL-00055" summary="More melee combat tasks (Hill giants)&#10;Change up on the requirements for melee tasks for less difficulty in xp gains">
+      <created>1685930734666</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1685930734666</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Smithing from 1-99 using bars and a hammer. Gets pretty expensive after lv 48.&#10;Fixes for hammer+mould problems, checking it separately now and ignoring it in the Bank task if it's part of a crafting/smithing request">
+      <created>1685944601240</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1685944601240</updated>
+    </task>
+    <task id="LOCAL-00057" summary="fixes">
+      <created>1686072403378</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1686072403378</updated>
+    </task>
+    <task id="LOCAL-00058" summary="fixes">
+      <created>1686123000559</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1686123000559</updated>
+    </task>
+    <task id="LOCAL-00059" summary="fixes">
+      <created>1686154525410</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1686154525410</updated>
+    </task>
+    <task id="LOCAL-00060" summary="fixes">
+      <created>1686157653279</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1686157653279</updated>
+    </task>
+    <task id="LOCAL-00061" summary="fixes">
+      <created>1686157682915</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1686157682915</updated>
+    </task>
+    <task id="LOCAL-00062" summary="fixes">
+      <created>1686158545531</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1686158545531</updated>
+    </task>
+    <task id="LOCAL-00063" summary="fixes">
+      <created>1686159201434</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1686159201434</updated>
+    </task>
+    <task id="LOCAL-00064" summary="updates">
+      <created>1686214359178</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1686214359178</updated>
+    </task>
+    <task id="LOCAL-00065" summary="remove edgeville cooking for now">
+      <created>1686242134287</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1686242134287</updated>
+    </task>
+    <task id="LOCAL-00066" summary="moss giants in melee&#10;slashing web in traversal">
+      <created>1686329668328</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1686329668328</updated>
+    </task>
+    <task id="LOCAL-00067" summary="beginnings of quests">
+      <created>1686442079376</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1686442079376</updated>
+    </task>
+    <task id="LOCAL-00068" summary="goblin diplomacy">
+      <created>1686517153892</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1686517153892</updated>
+    </task>
+    <task id="LOCAL-00069" summary="quest itemcheck fix">
+      <created>1686517331547</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1686517331547</updated>
+    </task>
+    <task id="LOCAL-00070" summary="make G.E use 5% button">
+      <created>1686518678226</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1686518678226</updated>
+    </task>
+    <task id="LOCAL-00071" summary="make G.E use 5% button">
+      <created>1686519304855</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1686519304855</updated>
+    </task>
+    <task id="LOCAL-00072" summary="romeo and juliet, other fixes">
+      <created>1686552256924</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1686552256924</updated>
+    </task>
+    <task id="LOCAL-00073" summary="fixes">
+      <created>1686556403136</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1686556403136</updated>
+    </task>
+    <task id="LOCAL-00074" summary="firemaking QOL">
+      <created>1686557105134</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1686557105134</updated>
+    </task>
+    <task id="LOCAL-00075" summary="add quest total to log">
+      <created>1686557325794</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1686557325794</updated>
+    </task>
+    <task id="LOCAL-00076" summary="add basic trade unlocked stuff to banking task">
+      <created>1686557507669</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1686557507669</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Grand exchange bug fix">
+      <created>1686591034576</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1686591034576</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Tutorial island without appearance or naming automation">
+      <created>1687126777813</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1687126777813</updated>
+    </task>
+    <task id="LOCAL-00079" summary="tutorial island, appearance needs work">
+      <created>1687149952440</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1687149952440</updated>
+    </task>
+    <task id="LOCAL-00080" summary="emerg sell">
+      <created>1687632386853</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1687632386853</updated>
+    </task>
+    <task id="LOCAL-00081" summary="emerg sell">
+      <created>1687635011064</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1687635011064</updated>
+    </task>
+    <task id="LOCAL-00082" summary="emerg sell">
+      <created>1687664127992</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1687664127992</updated>
+    </task>
+    <task id="LOCAL-00083" summary="emerg sell">
+      <created>1687664815842</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1687664815842</updated>
+    </task>
+    <option name="localTasksCounter" value="684" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Paths">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="file:$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" />
+                  <option value="file:$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="file:$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/BankingTask.java" />
+                        <option value="file:$PROJECT_DIR$/src/main/java/org/lolwat/tasks/types/misc/GrandExchangeTask.java" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ErnestTheChickenQuest: bank if inventory is full" />
+    <MESSAGE value="LogoutTask: address double-int cast error" />
+    <MESSAGE value="DoricsQuest: robustness" />
+    <MESSAGE value="ItemUtils: new methods: setBankMode, bank, bankContains, inventoryContains" />
+    <MESSAGE value="LiquidationTask: use ItemUtils" />
+    <MESSAGE value="BankingTask: use ItemUtils" />
+    <MESSAGE value="RuneMysteriesQuest: add dialogue to wizard dude" />
+    <MESSAGE value="WatAIO: version change" />
+    <MESSAGE value="new task: QuickWithdrawTask" />
+    <MESSAGE value="new task: GetPrysinKey" />
+    <MESSAGE value="new task: GetRovinsKey" />
+    <MESSAGE value="new task: GetTraibornKey" />
+    <MESSAGE value="new task: GetSilverlight" />
+    <MESSAGE value="DemonSlayerQuest: will collect items correctly, bank if needed" />
+    <MESSAGE value="QuickWithdrawTask: named" />
+    <MESSAGE value="ItemUtils: new method: equipmentContains" />
+    <MESSAGE value="GetSilverlight: inherit correct post task" />
+    <MESSAGE value="initial commit" />
+    <MESSAGE value="gets in and out like a champ" />
+    <MESSAGE value="dont talk about fight club" />
+    <MESSAGE value="dont talk about fight club again" />
+    <MESSAGE value="dont talk about fight club again 2" />
+    <MESSAGE value="dont talk about fight club again for real" />
+    <MESSAGE value="cleanup" />
+    <MESSAGE value="updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="updates" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
