@@ -1,0 +1,183 @@
+package org.lolwat.tasks.misc;
+
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.equipment.Equipment;
+import org.dreambot.api.methods.dialogues.Dialogues;
+import org.dreambot.api.methods.input.Camera;
+import org.dreambot.api.methods.interactive.GameObjects;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Map;
+import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.methods.walking.impl.Walking;
+import org.dreambot.api.methods.widget.Widget;
+import org.dreambot.api.methods.widget.Widgets;
+import org.dreambot.api.methods.world.Worlds;
+import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.GameObject;
+import org.dreambot.api.wrappers.items.Item;
+import org.dreambot.api.wrappers.widgets.WidgetChild;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.managers.types.WatTask;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+public class TraversalTask implements WatTask {
+    WatTask postTask;
+    boolean mustBeOnTile;
+    Tile target;
+    double lastWalk;
+    boolean usingArea;
+    Area area;
+    boolean hasTeleported = false;
+    double taskStartedAt;
+    Tile startedOnTile;
+
+    @Override
+    public String getName() {
+        if (postTask != null) {
+            return "W-" + postTask.getName();
+        }
+
+        return "Walking";
+    }
+
+    public TraversalTask(Area using, WatTask post) {
+        area = using;
+        postTask = post;
+        usingArea = true;
+        lastWalk = 0;
+        taskStartedAt = Instant.now().getEpochSecond();
+        startedOnTile = Players.getLocal().getTile();
+        Logger.log("Walking to area for task " + post.getName());
+    }
+
+    @Override
+    public void execute() {
+        Widget w = Widgets.getWidget(579);
+        if (w != null && w.isVisible()) {
+            WidgetChild c = w.getChild(17);
+            if (c != null && c.isVisible() && c.hasAction("Yes")) {
+                if (!c.interact("Yes")) {
+                    Logger.log("Traversal: failed to click yes on widget");
+                }
+
+                Tile t = Players.getLocal().getTile();
+                Sleep.sleepUntil(() -> !Players.getLocal().getTile().equals(t), 5000);
+                return;
+            }
+        }
+
+        boolean completedTile = !mustBeOnTile || Players.getLocal().getTile().equals(target);
+
+        List<String> types = Collections.singletonList("Web");
+        for (String t : types) {
+            if (GameObjects.closest(t) != null && GameObjects.closest(t).distance(Players.getLocal().getTile()) <= 10 && GameObjects.closest(t).interact()) {
+                Logger.log("Traversal: slashed " + t);
+                Sleep.sleepUntil(() -> GameObjects.closest(t) == null || !GameObjects.closest(t).exists(), 5000);
+                return;
+            }
+        }
+
+        if (Worlds.getCurrent().isF2P()) {
+            Area castleWars = new Area(2435, 3099, 2446, 3080);
+            if (castleWars.contains(Players.getLocal())) {
+                GameObject obj = GameObjects.closest("Large door");
+                if (obj != null && obj.interact()) {
+                    Sleep.sleep(2000, 3000);
+
+                    if (Dialogues.inDialogue() && Dialogues.getOptions() != null && Dialogues.chooseOption("Yes")) {
+                        Sleep.sleep(1000, 2000);
+                        TaskManager.getInstance().setCurrentTask(postTask);
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (!usingArea) {
+            if (completedTile && Map.isTileOnMap(target)) {
+                if (!Map.isTileOnScreen(target)) {
+                    Camera.rotateToTile(target);
+                    Sleep.sleepUntil(() -> Map.isTileOnScreen(target), 3000);
+                }
+
+                Logger.log("Reached target: X:" + target.getX() + ", Y:" + target.getY());
+                TaskManager.getInstance().setCurrentTask(postTask);
+                return;
+            }
+        } else {
+            if (area.contains(Players.getLocal())) {
+                Tile check = area.getRandomTile();
+                if (Map.isTileOnMap(check) && !Map.isTileOnScreen(check)) {
+                    Camera.rotateToTile(check);
+                    Sleep.sleepUntil(() -> Map.isTileOnScreen(check), 3000);
+                }
+
+                Logger.log("Reached target area for task " + postTask.getName());
+                TaskManager.getInstance().setCurrentTask(postTask);
+                return;
+            }
+        }
+
+        if (Walking.shouldWalk(5) || (lastWalk > 0 && (Instant.now().getEpochSecond() - lastWalk) >= (Walking.isRunEnabled() ? 1 : 2))) {
+            if (target == null && usingArea)
+                Walking.walk(area);
+            else
+                Walking.walk(target);
+
+            lastWalk = Instant.now().getEpochSecond();
+        }
+    }
+
+    @Override
+    public boolean requiresLogin() {
+        return true;
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return Skill.HITPOINTS;
+    }
+
+    @Override
+    public HashMap<String, Integer> clothesRequired() {
+        if (postTask != null) {
+            return postTask.clothesRequired();
+        }
+
+        HashMap<String, Integer> ret = new HashMap<>();
+        for (Item i : Equipment.all()) {
+            if (i == null)
+                continue;
+
+            ret.put(i.getName(), 1);
+        }
+
+        return ret;
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        List<String> ret = new ArrayList<>();
+        for (Item i : Inventory.all()) {
+            if (i == null)
+                continue;
+
+            ret.add(i.getName());
+        }
+
+        return ret;
+    }
+}
