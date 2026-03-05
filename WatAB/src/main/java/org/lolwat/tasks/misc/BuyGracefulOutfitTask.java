@@ -1,0 +1,110 @@
+package org.lolwat.tasks.misc;
+
+import org.dreambot.api.methods.container.impl.Inventory;
+import org.dreambot.api.methods.container.impl.Shop;
+import org.dreambot.api.methods.interactive.NPCs;
+import org.dreambot.api.methods.interactive.Players;
+import org.dreambot.api.methods.map.Area;
+import org.dreambot.api.methods.map.Tile;
+import org.dreambot.api.methods.skills.Skill;
+import org.dreambot.api.utilities.Logger;
+import org.dreambot.api.utilities.Sleep;
+import org.dreambot.api.wrappers.interactive.NPC;
+import org.lolwat.managers.TaskManager;
+import org.lolwat.types.interfaces.WatTask;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BuyGracefulOutfitTask implements WatTask {
+    private final Area grace = new Area(
+            new Tile(3046, 4961, 1),
+            new Tile(3050, 4961, 1),
+            new Tile(3053, 4965, 1),
+            new Tile(3047, 4967, 1));
+
+    private final WatTask post;
+    private final List<String> toBuy;
+
+    public BuyGracefulOutfitTask(WatTask post, List<String> toBuy) {
+        this.post = post;
+        this.toBuy = toBuy;
+    }
+
+    @Override
+    public boolean canPerformTask() {
+        return true;
+    }
+
+    @Override
+    public void execute() {
+        if(!Inventory.contains("Mark of grace")) {
+            TaskManager.getInstance().setCurrentTask(post);
+            return;
+        }
+
+        if(!grace.contains(Players.getLocal())) {
+            TaskManager.getInstance().setCurrentTask(new WalkingTask(grace, this));
+            return;
+        }
+
+        NPC grace = NPCs.closest("Grace");
+        if(grace != null) {
+            if(grace.interact("Trade")) {
+                Sleep.sleepUntil(Shop::isOpen, 5000);
+            }
+
+            if(!Shop.isOpen())
+                return;
+
+            for(String i : toBuy) {
+                if(Inventory.contains(i))
+                    continue;
+
+                if(!Shop.contains(i)) {
+                    Shop.close();
+                    Logger.error("Shop did not contain " + i);
+                    return;
+                }
+
+                if(!Shop.purchase(i, 1)) {
+                    Logger.error("Failed to purchase " + i);
+                    return;
+                }
+
+                Sleep.sleepUntil(() -> Inventory.contains(i), 5000);
+            }
+
+            if(!Shop.close()) {
+                Logger.error("Failed to close shop");
+            }
+        }
+
+        for(String i : toBuy) {
+            if(!Inventory.contains(i)) {
+                Logger.error("Inventory did not contain " + i + " after shopping");
+                return;
+            }
+        }
+
+        TaskManager.getInstance().setCurrentTask(post);
+    }
+
+    @Override
+    public Skill trainsSkill() {
+        return Skill.HITPOINTS;
+    }
+
+    @Override
+    public Integer avoidAfterLevel() {
+        return 101;
+    }
+
+    @Override
+    public List<String> inventoryTolerated() {
+        return new ArrayList<String>() { {
+            add("Monkfish");
+            add("Mark of grace");
+        } };
+    }
+}
